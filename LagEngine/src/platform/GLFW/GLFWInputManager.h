@@ -1,8 +1,8 @@
 #pragma once
 
 #include "../../io/InputManager.h"
-#include "GLFWRenderWindow.h"
-#include "GLFW/glfw3.h"
+
+struct GLFWwindow;
 
 //Callbacks for GLFW
 void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods);
@@ -11,6 +11,8 @@ void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 namespace Lag
 {
+	class GLFWRenderWindow;
+
 	class GLFWInputManager : public InputManager
 	{
 	public:

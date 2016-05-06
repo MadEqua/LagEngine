@@ -127,15 +127,23 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\core\log\LogManager.cpp" />
+    <ClCompile Include="src\io\ini\IniSettings.cpp" />
+    <ClCompile Include="src\io\ini\IniManager.cpp" />
+    <ClCompile Include="src\io\InputManager.cpp" />
+    <ClCompile Include="src\io\log\LogManager.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\platform\GLFW\GLFWInputManager.cpp" />
     <ClCompile Include="src\platform\GLFW\GLFWRenderWindow.cpp" />
+    <ClCompile Include="src\rendering\RenderWindow.cpp" />
+    <ClCompile Include="src\rendering\RenderWindowParameters.cpp" />
     <ClCompile Include="src\Root.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="src\core\log\LogManager.h" />
-    <ClInclude Include="src\core\log\LogTypes.h" />
+    <ClInclude Include="src\core\SingletonPattern.h" />
+    <ClInclude Include="src\io\ini\IniSettings.h" />
+    <ClInclude Include="src\io\ini\IniManager.h" />
+    <ClInclude Include="src\io\log\LogManager.h" />
+    <ClInclude Include="src\io\log\LogTypes.h" />
     <ClInclude Include="src\core\ObserverPattern.h" />
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\io\ICursorListener.h" />

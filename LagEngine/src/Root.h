@@ -1,41 +1,35 @@
 #pragma once
 
-#include "rendering/RenderWindowParameters.h"
-#include "rendering/RenderWindow.h"
-#include "io/InputManager.h"
-#include "core/log/LogManager.h"
+#include <string>
+
 #include "core/Timer.h"
 #include "rendering/IWindowListener.h"
+#include "core/SingletonPattern.h"
 
 namespace Lag
 {
 	class WindowListener;
+	class RenderWindow;
+	class InputManager;
+	class RenderWindowParameters;
 
 	class Root
 	{
+		GENERATE_SINGLETON(Root)
+
 	public:
 		bool initializeLag(const RenderWindowParameters &parameters);
+		bool initializeLag(const std::string &iniFile);
 		
 		inline InputManager& getInputManager() { return *inputManager; }
-		inline LogManager& getLogManager() { return *logManager; }
 		inline RenderWindow& getRenderWindow() { return *renderWindow; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
 
-
-		////////////////////////////////
-		//SINGLETON STUFF
-		////////////////////////////////
-		static Root& getInstance() {
-			// Guaranteed to be lazy initialized and that it will be destroyed correctly
-			static Root instance;
-			return instance;
-		}
 	private:
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
-		LogManager *logManager;
 
 		WindowListener *windowListener;
 
@@ -47,15 +41,7 @@ namespace Lag
 
 		void renderOneFrame();
 		void destroy();
-
-		////////////////////////////////
-		//SINGLETON STUFF
-		////////////////////////////////
-		Root();
-		~Root();
-
-		Root(Root const& copy);            // Not Implemented
-		Root& operator=(Root const& copy); // Not Implemented
+		bool internalInit(const RenderWindowParameters &parameters);
 	};
 
 

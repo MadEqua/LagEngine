@@ -1,7 +1,9 @@
 #include "GLFWInputManager.h"
 
-#include "../../core/log/LogManager.h"
-#include "../../Root.h"
+#include "GLFWRenderWindow.h"
+#include "../../io/log/LogManager.h"
+
+#include "GLFW/glfw3.h"
 
 using namespace Lag;
 
@@ -51,7 +53,7 @@ GLFWInputManager::GLFWInputManager(GLFWRenderWindow *renderWindow) : window(rend
 	glfwSetCursorPosCallback(window, cursorPositionCallback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
-	Root::getInstance().getLogManager().log(FILE, NORMAL, INFO, "GLFWInputManager", "Initialized successfully.");
+	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWInputManager", "Initialized successfully.");
 }
 
 GLFWInputManager::~GLFWInputManager()
@@ -60,5 +62,5 @@ GLFWInputManager::~GLFWInputManager()
 	glfwSetCursorPosCallback(window, 0);
 	glfwSetMouseButtonCallback(window, 0);
 
-	Root::getInstance().getLogManager().log(FILE, NORMAL, INFO, "GLFWInputManager", "Destroyed successfully.");
+	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWInputManager", "Destroyed successfully.");
 }

@@ -4,6 +4,7 @@
 #include <fstream>
 
 #include "LogTypes.h"
+#include "../../core/SingletonPattern.h"
 
 #define LOG_FILE_NAME "LagEngineLog.txt"
 
@@ -12,10 +13,9 @@ namespace Lag
 {
 	class LogManager
 	{
-	public:
-		LogManager();
-		~LogManager();
+		GENERATE_SINGLETON(LogManager)
 
+	public:
 		void log(LogOutput whereTo, LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message);
 
 	private:

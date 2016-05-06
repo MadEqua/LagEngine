@@ -1,7 +1,5 @@
 #pragma once
 
-#include "../Types.h"
-
 namespace Lag
 {
 	class IKeyboardListener

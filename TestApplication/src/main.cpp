@@ -2,8 +2,6 @@
 
 int main()
 {
-	Lag::RenderWindowParameters params;
-	
-	Lag::Root::getInstance().initializeLag(params);
+	Lag::Root::getInstance().initializeLag("startup.ini");
 	Lag::Root::getInstance().startRenderingLoop();
 }

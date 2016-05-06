@@ -1,7 +1,5 @@
 #pragma once
 
-class RenderWindow;
-
 namespace Lag
 {
 	class IWindowListener

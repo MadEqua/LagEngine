@@ -22,5 +22,10 @@ void unregisterObserver(Type &observer) { Type##observers.remove(&observer); }
 //Add a notifier method for Observers of <Type> with arbitrary name and arguments. This method notifies all registered Observers.
 //The method will have the same name as the one present on the Observer interface.
 //Example use: GENERATE_NOTIFY_METHOD(ISomeListener, onFooEvent, ARGS(int arg1, float arg2), ARGS(arg1, arg2))
-#define GENERATE_NOTIFY_METHOD(Type, Name, MethodArguments, CallbackArgs)\
-void Name##Notify(MethodArguments) { for (Type *obs : Type##observers) obs->Name(CallbackArgs); }
+
+#define DECLARE_NOTIFY_METHOD(Name, MethodArguments)\
+public:\
+void Name##Notify(MethodArguments);
+
+#define DEFINE_NOTIFY_METHOD(ClassName, Name, Type, MethodArguments, CallbackArgs)\
+void ClassName##::Name##Notify(MethodArguments) { for (Type *obs : Type##observers) obs->Name(CallbackArgs); }

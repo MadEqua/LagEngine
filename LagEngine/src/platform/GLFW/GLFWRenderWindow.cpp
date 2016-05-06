@@ -1,7 +1,6 @@
 #include "GLFWRenderWindow.h"
 #include "GLFW/glfw3.h"
-#include "../../Root.h"
-#include "../../core/log/LogManager.h"
+#include "../../io/log/LogManager.h"
 
 using namespace Lag;
 
@@ -43,26 +42,26 @@ GLFWRenderWindow::~GLFWRenderWindow()
 	glfwSetWindowFocusCallback(window, 0);
 	destroy();
 
-	Root::getInstance().getLogManager().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Destroyed successfully.");
+	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Destroyed successfully.");
 }
 
 bool GLFWRenderWindow::initialize()
 {
 	if (!glfwInit())
 	{
-		Root::getInstance().getLogManager().log(FILE, NORMAL, ERROR, "glfwInit()", "Cannot initialize GLFW.");
+		LogManager::getInstance().log(FILE, NORMAL, ERROR, "glfwInit()", "Cannot initialize GLFW.");
 		return false;
 	}
 	else
 	{
-		glfwWindowHint(GLFW_SAMPLES, parameters.msaaSamples);
+		glfwWindowHint(GLFW_SAMPLES, parameters.MSSAsamples);
 		glfwWindowHint(GLFW_SRGB_CAPABLE, parameters.sRGB ? GL_TRUE : GL_FALSE);
 		glfwSwapInterval(parameters.vsync ? 1 : 0);
 
 		window = glfwCreateWindow(parameters.width, parameters.height, parameters.title.c_str(), NULL, NULL);
 		if (window == 0)
 		{
-			Root::getInstance().getLogManager().log(FILE, NORMAL, ERROR, "glfwCreateWindow()", "Cannot create GLFW window.");
+			LogManager::getInstance().log(FILE, NORMAL, ERROR, "glfwCreateWindow()", "Cannot create GLFW window.");
 			return false;
 		}
 
@@ -71,7 +70,7 @@ bool GLFWRenderWindow::initialize()
 		glfwSetWindowPosCallback(window, windowPosCallback);
 		glfwSetWindowFocusCallback(window, windowFocusCallback);
 
-		Root::getInstance().getLogManager().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Initialized successfully.");
+		LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Initialized successfully.");
 
 		return true;
 	}
