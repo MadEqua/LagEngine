@@ -127,6 +127,21 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\renderer\Frustum.cpp" />
+    <ClCompile Include="src\renderer\SceneNode.cpp" />
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4GraphicsAPI.cpp" />
+    <ClCompile Include="src\renderer\Camera.cpp" />
+    <ClCompile Include="src\renderer\Entity.cpp" />
+    <ClCompile Include="src\renderer\Material.cpp" />
+    <ClCompile Include="src\renderer\Mesh.cpp" />
+    <ClCompile Include="src\renderer\Pass.cpp" />
+    <ClCompile Include="src\renderer\Renderable.cpp" />
+    <ClCompile Include="src\renderer\Renderer.cpp" />
+    <ClCompile Include="src\renderer\RenderQueue.cpp" />
+    <ClCompile Include="src\renderer\SceneObject.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\GpuProgram.cpp" />
+    <ClCompile Include="src\renderer\GpuProgramUniforms.cpp" />
+    <ClCompile Include="src\renderer\SceneGraph.cpp" />
     <ClCompile Include="src\io\ini\IniSettings.cpp" />
     <ClCompile Include="src\io\ini\IniManager.cpp" />
     <ClCompile Include="src\io\InputManager.cpp" />
@@ -134,11 +149,32 @@
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\platform\GLFW\GLFWInputManager.cpp" />
     <ClCompile Include="src\platform\GLFW\GLFWRenderWindow.cpp" />
-    <ClCompile Include="src\rendering\RenderWindow.cpp" />
-    <ClCompile Include="src\rendering\RenderWindowParameters.cpp" />
+    <ClCompile Include="src\renderer\RenderWindow.cpp" />
+    <ClCompile Include="src\renderer\RenderWindowParameters.cpp" />
     <ClCompile Include="src\Root.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\VertexBuffer.cpp" />
+    <ClCompile Include="src\renderer\VertexData.cpp" />
+    <ClCompile Include="src\renderer\Technique.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\Texture.cpp" />
+    <ClCompile Include="src\renderer\Viewport.cpp" />
+    <ClCompile Include="src\renderer\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\renderer\Frustum.h" />
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4GraphicsAPI.h" />
+    <ClInclude Include="src\renderer\Camera.h" />
+    <ClInclude Include="src\renderer\Entity.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\IGraphicsAPI.h" />
+    <ClInclude Include="src\renderer\Material.h" />
+    <ClInclude Include="src\renderer\Mesh.h" />
+    <ClInclude Include="src\renderer\Pass.h" />
+    <ClInclude Include="src\renderer\Renderable.h" />
+    <ClInclude Include="src\renderer\RenderQueue.h" />
+    <ClInclude Include="src\renderer\SceneNode.h" />
+    <ClInclude Include="src\renderer\SceneObject.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\GpuProgram.h" />
+    <ClInclude Include="src\renderer\GpuProgramUniforms.h" />
+    <ClInclude Include="src\renderer\SceneGraph.h" />
     <ClInclude Include="src\core\SingletonPattern.h" />
     <ClInclude Include="src\io\ini\IniSettings.h" />
     <ClInclude Include="src\io\ini\IniManager.h" />
@@ -152,13 +188,19 @@
     <ClInclude Include="src\io\Keys.h" />
     <ClInclude Include="src\platform\GLFW\GLFWInputManager.h" />
     <ClInclude Include="src\platform\GLFW\GLFWRenderWindow.h" />
-    <ClInclude Include="src\rendering\IRenderer.h" />
-    <ClInclude Include="src\rendering\IRenderTarget.h" />
-    <ClInclude Include="src\rendering\IWindowListener.h" />
-    <ClInclude Include="src\rendering\RenderWindow.h" />
-    <ClInclude Include="src\rendering\RenderWindowParameters.h" />
+    <ClInclude Include="src\renderer\Renderer.h" />
+    <ClInclude Include="src\renderer\IRenderTarget.h" />
+    <ClInclude Include="src\renderer\IWindowListener.h" />
+    <ClInclude Include="src\renderer\RenderWindow.h" />
+    <ClInclude Include="src\renderer\RenderWindowParameters.h" />
     <ClInclude Include="src\Root.h" />
     <ClInclude Include="src\Types.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\VertexBuffer.h" />
+    <ClInclude Include="src\renderer\VertexData.h" />
+    <ClInclude Include="src\renderer\Technique.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\Texture.h" />
+    <ClInclude Include="src\renderer\Viewport.h" />
+    <ClInclude Include="src\renderer\Transform.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

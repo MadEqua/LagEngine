@@ -3,6 +3,8 @@
 #include <string>
 #include "../Types.h"
 
+#include "Renderer.h"
+
 namespace Lag
 {
 	class RenderWindowParameters
@@ -17,6 +19,8 @@ namespace Lag
 		//Hints
 		uint32 MSSAsamples;
 		bool sRGB;
+
+		GpuInterface gpuInterface;
 
 		RenderWindowParameters();
 		explicit RenderWindowParameters(const std::string &iniFilePath);

@@ -13,7 +13,8 @@ RenderWindowParameters::RenderWindowParameters() :
 	maxFPS(60),
 
 	MSSAsamples(0),
-	sRGB(true)
+	sRGB(true),
+	gpuInterface(OPENGL4)
 {
 }
 
@@ -30,6 +31,9 @@ RenderWindowParameters::RenderWindowParameters(const std::string &iniFilePath) :
 		maxFPS = iniSettings->getFieldAsBasicType<int>("maxFPS", maxFPS);
 		MSSAsamples = iniSettings->getFieldAsBasicType<int>("MSSAsamples", MSSAsamples);
 		sRGB = iniSettings->getFieldAsBasicType<bool>("sRGB", sRGB);
+
+		std::string gpuInterfaceStr = iniSettings->getFieldAsString("gpuInterface", "OPENGL4");
+		if (gpuInterfaceStr == "OPENGL4") gpuInterface = OPENGL4;
 	}
 }
 

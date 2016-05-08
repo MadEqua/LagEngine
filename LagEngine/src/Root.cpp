@@ -3,19 +3,21 @@
 #include <thread>
 #include <chrono>
 
-#include "rendering/RenderWindow.h"
-#include "rendering/RenderWindowParameters.h"
+#include "renderer/RenderWindow.h"
+#include "renderer/RenderWindowParameters.h"
 #include "io/InputManager.h"
 #include "io/ini/IniManager.h"
 #include "io/log/LogManager.h"
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
+#include "renderer/Renderer.h"
 
 using namespace Lag;
 
 Root::Root() :
 	renderWindow(nullptr),
 	inputManager(nullptr),
+	renderer(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -34,6 +36,8 @@ void Root::destroy()
 		delete renderWindow;
 	if (inputManager != nullptr)
 		delete inputManager;
+	if (renderer != nullptr)
+		delete renderer;
 	if (windowListener != nullptr)
 		delete windowListener;
 }
@@ -61,6 +65,10 @@ bool Root::internalInit(const RenderWindowParameters &parameters)
 	//TODO auto detect platform?
 	renderWindow = new GLFWRenderWindow(parameters);
 	if (!renderWindow->initialize())
+		return false;
+
+	renderer = new Renderer();
+	if (!renderer->initialize(parameters.gpuInterface))
 		return false;
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));

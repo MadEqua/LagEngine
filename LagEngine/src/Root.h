@@ -3,7 +3,7 @@
 #include <string>
 
 #include "core/Timer.h"
-#include "rendering/IWindowListener.h"
+#include "renderer/IWindowListener.h"
 #include "core/SingletonPattern.h"
 
 namespace Lag
@@ -12,6 +12,7 @@ namespace Lag
 	class RenderWindow;
 	class InputManager;
 	class RenderWindowParameters;
+	class Renderer;
 
 	class Root
 	{
@@ -23,6 +24,7 @@ namespace Lag
 		
 		inline InputManager& getInputManager() { return *inputManager; }
 		inline RenderWindow& getRenderWindow() { return *renderWindow; }
+		inline Renderer& getRenderer() { return *renderer; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -30,6 +32,7 @@ namespace Lag
 	private:
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
+		Renderer *renderer;
 
 		WindowListener *windowListener;
 
