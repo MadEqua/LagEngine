@@ -1,6 +1,7 @@
 #include "SceneGraph.h"
 
 #include "SceneNode.h"
+#include "../io/log/LogManager.h"
 
 using namespace Lag;
 
@@ -9,12 +10,16 @@ SceneGraph::SceneGraph()
 	SceneNode *root = new SceneNode(*this);
 	nodeMap["root"] = root;
 	this->root = root;
+
+	LogManager::getInstance().log(FILE, NORMAL, INFO, "SceneGraph", "Initialized successfully.");
 }
 
 SceneGraph::~SceneGraph()
 {
 	for (auto &node : nodeMap)
 		delete node.second;
+
+	LogManager::getInstance().log(FILE, NORMAL, INFO, "SceneGraph", "Destroyed successfully.");
 }
 
 SceneNode& SceneGraph::createSceneNode(const std::string &name)

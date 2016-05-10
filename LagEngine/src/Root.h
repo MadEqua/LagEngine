@@ -13,6 +13,7 @@ namespace Lag
 	class InputManager;
 	class RenderWindowParameters;
 	class Renderer;
+	class SceneGraph;
 
 	class Root
 	{
@@ -25,6 +26,7 @@ namespace Lag
 		inline InputManager& getInputManager() { return *inputManager; }
 		inline RenderWindow& getRenderWindow() { return *renderWindow; }
 		inline Renderer& getRenderer() { return *renderer; }
+		inline SceneGraph& getSceneGraph() { return *sceneGraph; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -33,6 +35,7 @@ namespace Lag
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
 		Renderer *renderer;
+		SceneGraph *sceneGraph;
 
 		WindowListener *windowListener;
 

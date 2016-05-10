@@ -11,6 +11,7 @@
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
 #include "renderer/Renderer.h"
+#include "renderer/SceneGraph.h"
 
 using namespace Lag;
 
@@ -18,6 +19,7 @@ Root::Root() :
 	renderWindow(nullptr),
 	inputManager(nullptr),
 	renderer(nullptr),
+	sceneGraph(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -38,6 +40,8 @@ void Root::destroy()
 		delete inputManager;
 	if (renderer != nullptr)
 		delete renderer;
+	if (sceneGraph != nullptr)
+		delete sceneGraph;
 	if (windowListener != nullptr)
 		delete windowListener;
 }
@@ -61,6 +65,8 @@ bool Root::internalInit(const RenderWindowParameters &parameters)
 	windowListener = new WindowListener();
 
 	minFrameTime = parameters.maxFPS > 0 ? 1.0f / parameters.maxFPS : 0.0f;
+
+	sceneGraph = new SceneGraph();
 
 	//TODO auto detect platform?
 	renderWindow = new GLFWRenderWindow(parameters);
