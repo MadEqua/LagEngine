@@ -1,8 +1,8 @@
 #pragma once
 
-#include "Material.h"
-#include "Mesh.h"
-#include "SceneObject.h"
+#include "../renderer/Material.h"
+#include "../renderer/Mesh.h"
+#include "../scene/SceneObject.h"
 
 namespace Lag
 {
@@ -14,7 +14,7 @@ namespace Lag
 	{
 	public:
 		Entity();
-		~Entity();
+		virtual ~Entity();
 
 	private:
 		Material material;

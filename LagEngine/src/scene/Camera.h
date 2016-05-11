@@ -9,7 +9,7 @@ namespace Lag
 	{
 	public:
 		Camera();
-		~Camera();
+		virtual ~Camera();
 
 	private:
 		Frustum frustum;

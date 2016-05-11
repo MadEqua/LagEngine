@@ -29,8 +29,10 @@ namespace Lag
 		bool initialize(const GpuInterface &gpuInterface);
 		void shutdown();
 
-		void addRenderTarget(const std::string &name, RenderTarget *renderTarget);
+		void addRenderTarget(const std::string &name, RenderTarget &renderTarget);
 		void removeRenderTarget(const std::string &name);
+
+		void renderAllRenderTargets();
 
 		//void setViewport(const Viewport &vp);
 
@@ -53,8 +55,8 @@ namespace Lag
 		//uint32 getVertexCount(void) const;
 
 	protected:
-		std::unordered_map<std::string, RenderTarget*> renderTargetMap;
-		std::unordered_map<std::string, GpuProgram*> gpuProgramMap;
+		std::unordered_map<std::string, RenderTarget*> renderTargets;
+		std::unordered_map<std::string, GpuProgram*> gpuPrograms;
 
 		//texture manager?
 		//TextureManager *textureManager;

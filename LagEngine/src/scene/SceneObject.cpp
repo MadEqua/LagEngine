@@ -2,7 +2,8 @@
 
 using namespace Lag;
 
-SceneObject::SceneObject()
+SceneObject::SceneObject() :
+	parentSceneNode(nullptr)
 {
 }
 

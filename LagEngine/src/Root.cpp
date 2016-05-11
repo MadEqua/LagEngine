@@ -11,15 +11,20 @@
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
 #include "renderer/Renderer.h"
-#include "renderer/SceneGraph.h"
+#include "scene/SceneManager.h"
+#include "IFrameListener.h"
 
 using namespace Lag;
+
+DEFINE_NOTIFY_METHOD(Root, onFrameStart, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
+DEFINE_NOTIFY_METHOD(Root, onFrameRenderingQueued, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
+DEFINE_NOTIFY_METHOD(Root, onFrameEnd, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
 
 Root::Root() :
 	renderWindow(nullptr),
 	inputManager(nullptr),
 	renderer(nullptr),
-	sceneGraph(nullptr),
+	sceneManager(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -40,8 +45,8 @@ void Root::destroy()
 		delete inputManager;
 	if (renderer != nullptr)
 		delete renderer;
-	if (sceneGraph != nullptr)
-		delete sceneGraph;
+	if (sceneManager != nullptr)
+		delete sceneManager;
 	if (windowListener != nullptr)
 		delete windowListener;
 }
@@ -66,7 +71,7 @@ bool Root::internalInit(const RenderWindowParameters &parameters)
 
 	minFrameTime = parameters.maxFPS > 0 ? 1.0f / parameters.maxFPS : 0.0f;
 
-	sceneGraph = new SceneGraph();
+	sceneManager = new SceneManager();
 
 	//TODO auto detect platform?
 	renderWindow = new GLFWRenderWindow(parameters);
@@ -92,8 +97,12 @@ void Root::startRenderingLoop()
 		frameTimer.start();
 
 		renderWindow->processEvents();
+
+		onFrameStartNotify(0.0f); //TODO implement timing
+
 		renderOneFrame();
-		renderWindow->swapBuffers();
+
+		onFrameEndNotify(0.0f); //TODO implement timing
 
 		float elapsed = frameTimer.getElapsedSeconds();
 		//logManager->log(CONSOLE, NORMAL, DEBUG, "elapsed", std::to_string(elapsed));
@@ -113,12 +122,6 @@ void Root::stopRenderingLoop()
 
 void Root::renderOneFrame()
 {
-	//TODO
-	//update
-	//render
-	/*int i = 0;
-	while (i++ < 1000000)
-		;*/
-
-	//logManager->log(CONSOLE, NORMAL, DEBUG, "FRAME", "FRAME");
+	renderer->renderAllRenderTargets();	
+	renderWindow->startRender();
 }

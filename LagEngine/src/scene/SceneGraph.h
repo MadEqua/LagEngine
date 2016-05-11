@@ -6,15 +6,12 @@
 namespace Lag
 {
 	class SceneNode;
-	class Entity;
-	class Camera;
+	class SceneObject;
 
 	/*
 	* Hierarchical representation of a scene.
 	* Responsible for allocation and deallocation of all the SceneNodes.
 	*
-	* Can also create and manage (for convenience) Entities, Cameras, Lights, ...
-	* 
 	* TODO: optimize memory arrangment of the nodes, for traversal efficiency.
 	*/
 	class SceneGraph
@@ -27,16 +24,11 @@ namespace Lag
 
 		SceneNode* getSceneNode(const std::string &name);
 		inline SceneNode& getRootSceneNode() { return *root; }
-				
-		/*Entity& createEntity(const std::string &meshFileName);
-		Camera& createCamera();*/
-
-		void traverse();
 
 	private:
 		SceneNode *root;
 
-		//All created nodes
-		std::unordered_map<std::string, SceneNode*> nodeMap;
+		//All created nodes by name
+		std::unordered_map<std::string, SceneNode*> nodes;
 	};
 }

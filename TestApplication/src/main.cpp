@@ -1,6 +1,14 @@
 #include "Root.h"
-#include "renderer/SceneGraph.h"
-#include "renderer/SceneNode.h"
+#include "renderer/RenderWindow.h"
+#include "scene/SceneManager.h"
+#include "scene/SceneGraph.h"
+#include "scene/SceneNode.h"
+#include "scene/Camera.h"
+#include "io/InputManager.h"
+
+#include "io/IKeyboardListener.h"
+#include "io/ICursorListener.h"
+#include "IFrameListener.h"
 
 #include "glm/vec3.hpp"
 #include "glm/gtc/quaternion.hpp"
@@ -35,14 +43,48 @@ void print(char* s, const glm::mat4 &m)
 	print("col4", m[3]);
 }
 
+class InputListener : public IKeyboardListener
+{
+	virtual void onKeyPress(int key, int modifier)
+	{
+		cout << "KEY PRESS: " << key << endl;
+	}
+
+	virtual void onKeyRelease(int key, int modifier) 
+	{
+	}
+
+	virtual void onKeyRepeat(int key, int modifier)
+	{
+	}
+};
+
+class FrameListener : public IFrameListener
+{
+	virtual void onFrameStart(float timePassed)
+	{
+		///cout << "Frame Start\n";
+	}
+
+	virtual void onFrameRenderingQueued(float timePassed)
+	{
+	}
+
+	virtual void onFrameEnd(float timePassed)
+	{
+	}
+};
+
 int main()
 {
-	Root::getInstance().initializeLag("startup.ini");
+	if(!Root::getInstance().initializeLag("startup.ini"))
+		return 1;
 
-	SceneGraph &sg = Root::getInstance().getSceneGraph();
+	RenderWindow &renderWindow = Root::getInstance().getRenderWindow();
+	SceneManager &sm = Root::getInstance().getSceneManager();
 
-	SceneNode &rootNode = sg.getRootSceneNode();
-	SceneNode &node1 = rootNode.createChildSceneNode("node1");
+	SceneNode &rootNode = sm.getSceneGraph().getRootSceneNode();
+	/*SceneNode &node1 = rootNode.createChildSceneNode("node1");
 
 	rootNode.roll(90.0f, WORLD);
 
@@ -59,8 +101,19 @@ int main()
 	print("w scale", node1.getWorldScale());
 	print("w orientation", node1.getWorldOrientation());
 
-	print("\n\nmatrix", node1.getFinalTransform());
+	print("\n\nmatrix", node1.getFinalTransform());*/
+
+	FrameListener fl;
+	InputListener il;
+
+	Root::getInstance().registerObserver(fl);
+	Root::getInstance().getInputManager().registerObserver(il);
+
+	Camera &cam = sm.createCamera("camera");
+	cam.attachToSceneNode(rootNode);
+	renderWindow.createViewport("default", cam);
 
 
 	Root::getInstance().startRenderingLoop();
+	return 0;
 }

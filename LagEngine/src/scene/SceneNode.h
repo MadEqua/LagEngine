@@ -35,8 +35,9 @@ namespace Lag
 		void removeChildSceneNode(const std::string &name);
 		void removeChildSceneNode(SceneNode &node);
 
-		void attachSceneObject(SceneObject &sceneObject);
-		void detachSceneObject(SceneObject &sceneObject);
+		//TODO: find out if it's really needed to store the attached objects for a SceneNode
+		//void attachSceneObject(SceneObject &sceneObject);
+		//void detachSceneObject(SceneObject &sceneObject);
 
 		inline bool hasParent() { return parent != nullptr; }
 		inline SceneNode* getParentSceneNode() { return parent; }
@@ -88,7 +89,7 @@ namespace Lag
 		bool inheritScale;
 
 		std::forward_list<SceneNode*> children;
-		std::forward_list<SceneObject*> attachedObjects;
+		//std::forward_list<SceneObject*> attachedObjects;
 
 		//set dirty flags and notify children calling updateInheritedData()
 		void localChangeOccured();

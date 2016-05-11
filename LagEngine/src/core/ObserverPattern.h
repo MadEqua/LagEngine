@@ -24,7 +24,7 @@ void unregisterObserver(Type &observer) { Type##observers.remove(&observer); }
 //Example use: GENERATE_NOTIFY_METHOD(ISomeListener, onFooEvent, ARGS(int arg1, float arg2), ARGS(arg1, arg2))
 
 #define DECLARE_NOTIFY_METHOD(Name, MethodArguments)\
-public:\
+protected:\
 void Name##Notify(MethodArguments);
 
 #define DEFINE_NOTIFY_METHOD(ClassName, Name, Type, MethodArguments, CallbackArgs)\

@@ -1,6 +1,7 @@
 #include "SceneNode.h"
 
 #include "SceneGraph.h"
+#include "SceneObject.h"
 
 #include <glm/gtc/matrix_transform.hpp>
 
@@ -55,15 +56,17 @@ void SceneNode::removeChildSceneNode(SceneNode &node)
 	node.parent = nullptr;
 }
 
-void SceneNode::attachSceneObject(SceneObject &sceneObject)
+/*void SceneNode::attachSceneObject(SceneObject &sceneObject)
 {
+	sceneObject.attachToSceneNode(*this);
 	attachedObjects.push_front(&sceneObject);
 }
 
 void SceneNode::detachSceneObject(SceneObject &sceneObject)
 {
+	sceneObject.detachFromSceneNode();
 	attachedObjects.remove(&sceneObject);
-}
+}*/
 
 //////////////////////////////////
 //Transforms

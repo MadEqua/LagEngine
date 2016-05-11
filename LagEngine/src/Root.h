@@ -5,6 +5,7 @@
 #include "core/Timer.h"
 #include "renderer/IWindowListener.h"
 #include "core/SingletonPattern.h"
+#include "core/ObserverPattern.h"
 
 namespace Lag
 {
@@ -13,11 +14,18 @@ namespace Lag
 	class InputManager;
 	class RenderWindowParameters;
 	class Renderer;
-	class SceneGraph;
+	class SceneManager;
+	class IFrameListener;
 
 	class Root
 	{
 		GENERATE_SINGLETON(Root)
+
+		GENERATE_OBSERVER_STORAGE(IFrameListener)
+		DECLARE_NOTIFY_METHOD(onFrameStart, ARGS(float timePassed))
+		DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, ARGS(float timePassed))
+		DECLARE_NOTIFY_METHOD(onFrameEnd, ARGS(float timePassed))
+
 
 	public:
 		bool initializeLag(const RenderWindowParameters &parameters);
@@ -26,7 +34,7 @@ namespace Lag
 		inline InputManager& getInputManager() { return *inputManager; }
 		inline RenderWindow& getRenderWindow() { return *renderWindow; }
 		inline Renderer& getRenderer() { return *renderer; }
-		inline SceneGraph& getSceneGraph() { return *sceneGraph; }
+		inline SceneManager& getSceneManager() { return *sceneManager; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -35,7 +43,7 @@ namespace Lag
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
 		Renderer *renderer;
-		SceneGraph *sceneGraph;
+		SceneManager *sceneManager;
 
 		WindowListener *windowListener;
 

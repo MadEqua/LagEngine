@@ -7,22 +7,22 @@ using namespace Lag;
 //GLOBAL REFERENCE FOR CALLBACKS
 GLFWRenderWindow *glfwRenderWindow;
 
-void windowCloseCallback(GLFWwindow * window)
+void Lag::windowCloseCallback(GLFWwindow * window)
 {
 	glfwRenderWindow->onCloseNotify();
 }
 
-void windowSizeCallback(GLFWwindow * window, int width, int height)
+void Lag::windowSizeCallback(GLFWwindow * window, int width, int height)
 {
 	glfwRenderWindow->onResizeNotify(width, height);
 }
 
-void windowPosCallback(GLFWwindow * window, int xpos, int ypos)
+void Lag::windowPosCallback(GLFWwindow * window, int xpos, int ypos)
 {
 	glfwRenderWindow->onMoveNotify(xpos, ypos);
 }
 
-void windowFocusCallback(GLFWwindow * window, int focused)
+void Lag::windowFocusCallback(GLFWwindow * window, int focused)
 {
 	glfwRenderWindow->onFocusChangeNotify(focused == GLFW_FOCUSED ? true : false);
 }

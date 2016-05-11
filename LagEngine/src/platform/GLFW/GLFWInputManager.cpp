@@ -10,7 +10,7 @@ using namespace Lag;
 //GLOBAL REFERENCE FOR CALLBACKS
 GLFWInputManager *inputManager;
 
-void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+void Lag::keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 {
 	switch (action)
 	{
@@ -25,7 +25,7 @@ void keyCallback(GLFWwindow* window, int key, int scancode, int action, int mods
 	}
 }
 
-void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos) 
+void Lag::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	int x = static_cast<int>(xpos);
 	int y = static_cast<int>(ypos);
@@ -33,7 +33,7 @@ void cursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 	inputManager->onCursorMoveNotify(x, y);
 }
 
-void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) 
+void Lag::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods)
 {
 	switch (action)
 	{

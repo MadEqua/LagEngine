@@ -4,7 +4,9 @@
 
 using namespace Lag;
 
-RenderWindow::RenderWindow(const RenderWindowParameters &parameters) : parameters(parameters)
+RenderWindow::RenderWindow(const RenderWindowParameters &parameters) : 
+	RenderTarget(parameters.width, parameters.height),
+	parameters(parameters)
 {
 }
 
