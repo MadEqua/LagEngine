@@ -32,7 +32,7 @@ bool IniParser::parse(const std::string &filePath)
 			std::string fieldName = trim(line.substr(0, equalPos));
 			if(out.containsField(fieldName))
 			{
-				LogManager::getInstance().log(FILE, NORMAL, INFO, "IniParser", 
+				LogManager::getInstance().log(FILE, NORMAL, WARNING, "IniParser", 
 					"Duplicate field on .ini file: " + filePath + ". Only considering the first appearance.");
 				continue;
 			}

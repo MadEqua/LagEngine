@@ -39,7 +39,7 @@ void ResourceManager::add(const std::string &name, Resource *res)
 	auto it = resources.find(name);
 	if (it != resources.end())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, INFO, "ResourceManager", 
+		LogManager::getInstance().log(FILE, NORMAL, WARNING, "ResourceManager", 
 			"Adding a resource with an already existing name: " + name + ". Only considering the first one added.");
 
 		res->unload();
@@ -69,7 +69,7 @@ Resource* ResourceManager::get(const std::string &name) const
 	auto it = resources.find(fullName);
 	if (it == resources.end())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "ResourceManager",
+		LogManager::getInstance().log(FILE, NORMAL, WARNING, "ResourceManager",
 			"Trying to get an unknown resource: " + name + ". Forgot to add it to the resources file? :)");
 		return nullptr;
 	}

@@ -14,6 +14,6 @@ namespace Lag
 
 	enum LogPriority
 	{
-		DEBUG, INFO, ERROR, WTF
+		DEBUG, INFO, ERROR, WARNING
 	};
 }

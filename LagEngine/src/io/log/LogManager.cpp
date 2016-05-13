@@ -79,8 +79,8 @@ void LogManager::formatMessage(LogVerbosity verbosity, LogPriority priority, con
 		formattedMessage += (verbosity == MINIMAL ? "[I]" : "[INFO]");
 	else if (priority == ERROR)
 		formattedMessage += (verbosity == MINIMAL ? "[E]" : "[ERROR]");
-	else if (priority == WTF)
-		formattedMessage += (verbosity == MINIMAL ? "[?]" : "[WTF!?]");
+	else if (priority == WARNING)
+		formattedMessage += (verbosity == MINIMAL ? "[W]" : "[WARNING]");
 
 	formattedMessage += " [" + title + "] " + message;
 }
@@ -106,6 +106,7 @@ void LogManager::printToFile(const std::string &formattedMessage)
 	if (logFile.is_open())
 	{
 		logFile << formattedMessage << std::endl;
+		logFile.flush();
 	}
 }
 
