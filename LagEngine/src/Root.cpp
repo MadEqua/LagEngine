@@ -1,18 +1,21 @@
+
 #include "Root.h"
 
 #include <thread>
 #include <chrono>
 
 #include "renderer/RenderWindow.h"
-#include "renderer/RenderWindowParameters.h"
+#include "InitializationParameters.h"
 #include "io/InputManager.h"
-#include "io/ini/IniManager.h"
 #include "io/log/LogManager.h"
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
+#include "resources/GpuProgramStageManager.h"
 #include "renderer/Renderer.h"
 #include "scene/SceneManager.h"
 #include "IFrameListener.h"
+
+#include "io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
@@ -25,11 +28,11 @@ Root::Root() :
 	inputManager(nullptr),
 	renderer(nullptr),
 	sceneManager(nullptr),
+	gpuProgramStageManager(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
 	LogManager::getInstance();
-	IniManager::getInstance();
 }
 
 Root::~Root()
@@ -47,22 +50,25 @@ void Root::destroy()
 		delete renderer;
 	if (sceneManager != nullptr)
 		delete sceneManager;
+	if (gpuProgramStageManager != nullptr)
+		delete gpuProgramStageManager;
 	if (windowListener != nullptr)
 		delete windowListener;
 }
 
-bool Root::initializeLag(const RenderWindowParameters &parameters)
+bool Root::initializeLag(const InitializationParameters &parameters)
 {
+	initializationParameters = parameters;
 	return internalInit(parameters);
 }
 
 bool Root::initializeLag(const std::string &iniFile)
 {
-	RenderWindowParameters parameters(iniFile);
+	InitializationParameters parameters(iniFile);
 	return internalInit(parameters);
 }
 
-bool Root::internalInit(const RenderWindowParameters &parameters)
+bool Root::internalInit(const InitializationParameters &parameters)
 {
 	//in case of reinitialization
 	destroy();
@@ -73,18 +79,59 @@ bool Root::internalInit(const RenderWindowParameters &parameters)
 
 	sceneManager = new SceneManager();
 
-	//TODO auto detect platform?
+	//TODO auto detect platform and refactor this code
 	renderWindow = new GLFWRenderWindow(parameters);
 	if (!renderWindow->initialize())
 		return false;
 
-	renderer = new Renderer();
-	if (!renderer->initialize(parameters.gpuInterface))
+	renderer = new Renderer(*sceneManager);
+	if (!renderer->initialize(parameters.gpuInterfaceType))
 		return false;
+
+	renderer->addRenderTarget("renderWindow", *renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
 
+	if (!initResources(parameters.resourcesFile))
+		return false;
+
 	renderWindow->registerObserver(*windowListener);
+
+	return true;
+}
+
+bool Root::initResources(const std::string &resourcesFilePath)
+{
+	TiXmlDocument doc(resourcesFilePath);
+	if (!doc.LoadFile())
+	{
+		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Root",
+			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
+		return false;
+	}
+
+	const TiXmlElement *resourcesElement = nullptr;
+	for (const TiXmlElement* child = doc.FirstChildElement();
+		child != 0;
+		child = child->NextSiblingElement())
+	{
+		if (child->ValueStr() == "resources")
+		{
+			resourcesElement = child;
+			break;
+		}
+	}
+
+	if (!resourcesElement)
+	{
+		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Root",
+			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
+		return false;
+	}
+
+	//Init all ResourceManagers here
+	gpuProgramStageManager = new GpuProgramStageManager(initializationParameters.gpuInterfaceType);
+	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
 
 	return true;
 }
@@ -123,5 +170,4 @@ void Root::stopRenderingLoop()
 void Root::renderOneFrame()
 {
 	renderer->renderAllRenderTargets();	
-	renderWindow->startRender();
 }

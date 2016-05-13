@@ -11,12 +11,12 @@ namespace Lag
 		IniSettings();
 		~IniSettings();
 
-		bool containsField(const std::string &name);
+		bool containsField(const std::string &name) const;
 
 		template <class T>
-		T getFieldAsBasicType(const std::string &fieldName, T defaultValue = T());
+		T getFieldAsBasicType(const std::string &fieldName, T defaultValue = T()) const;
 
-		const std::string& getFieldAsString(const std::string &fieldName, const std::string &defaultValue = "");
+		const std::string& getFieldAsString(const std::string &fieldName, const std::string &defaultValue = "") const;
 
 		void addField(const std::string &name, const std::string &value);
 

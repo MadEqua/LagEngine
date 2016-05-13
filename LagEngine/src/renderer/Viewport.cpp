@@ -13,7 +13,7 @@ Viewport::~Viewport()
 {
 }
 
-void Viewport::render()
+/*void Viewport::render(RenderQueue &renderQueue)
 {
 
-}
+}*/

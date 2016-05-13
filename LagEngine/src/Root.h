@@ -3,6 +3,7 @@
 #include <string>
 
 #include "core/Timer.h"
+#include "InitializationParameters.h"
 #include "renderer/IWindowListener.h"
 #include "core/SingletonPattern.h"
 #include "core/ObserverPattern.h"
@@ -12,10 +13,10 @@ namespace Lag
 	class WindowListener;
 	class RenderWindow;
 	class InputManager;
-	class RenderWindowParameters;
 	class Renderer;
 	class SceneManager;
 	class IFrameListener;
+	class GpuProgramStageManager;
 
 	class Root
 	{
@@ -28,13 +29,15 @@ namespace Lag
 
 
 	public:
-		bool initializeLag(const RenderWindowParameters &parameters);
+		bool initializeLag(const InitializationParameters &parameters);
 		bool initializeLag(const std::string &iniFile);
 		
-		inline InputManager& getInputManager() { return *inputManager; }
-		inline RenderWindow& getRenderWindow() { return *renderWindow; }
-		inline Renderer& getRenderer() { return *renderer; }
-		inline SceneManager& getSceneManager() { return *sceneManager; }
+		inline InputManager& getInputManager() const { return *inputManager; }
+		inline RenderWindow& getRenderWindow() const { return *renderWindow; }
+		inline Renderer& getRenderer() const { return *renderer; }
+		inline SceneManager& getSceneManager() const { return *sceneManager; }
+		inline InitializationParameters& getInitializationParameters() { return initializationParameters; }
+		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -44,8 +47,12 @@ namespace Lag
 		InputManager *inputManager;
 		Renderer *renderer;
 		SceneManager *sceneManager;
+		GpuProgramStageManager *gpuProgramStageManager;
 
 		WindowListener *windowListener;
+
+		InitializationParameters initializationParameters;
+
 
 		//Frame Timing
 		Timer frameTimer;
@@ -55,7 +62,8 @@ namespace Lag
 
 		void renderOneFrame();
 		void destroy();
-		bool internalInit(const RenderWindowParameters &parameters);
+		bool internalInit(const InitializationParameters &parameters);
+		bool initResources(const std::string &resourcesFilePath);
 	};
 
 

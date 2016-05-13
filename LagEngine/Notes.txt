@@ -1,0 +1,15 @@
+TODO
+
+Short Term
+
+Check and apply copy constructors good practices
+Rethink folder structure and VS filters
+coherency between tinyxml and ini parsers
+check main loop and callbacks to the application
+
+
+Long Term
+
+Android/OpenGL ES
+Multi-Threading
+Research shader management techniques

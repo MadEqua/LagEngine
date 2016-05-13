@@ -29,7 +29,7 @@ namespace Lag
 		int cursorX, cursorY;
 
 		inline void updateCursorCoords(int x, int y) {cursorX = x; cursorY = y; }
-		inline int getCursorX() { return cursorX; }
-		inline int getCursorY() { return cursorY; }
+		inline int getCursorX() const { return cursorX; }
+		inline int getCursorY() const { return cursorY; }
 	};
 }

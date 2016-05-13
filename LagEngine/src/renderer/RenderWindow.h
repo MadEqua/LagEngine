@@ -1,7 +1,7 @@
 #pragma once
 
 #include "RenderTarget.h"
-#include "RenderWindowParameters.h"
+#include "../InitializationParameters.h"
 #include "../core/ObserverPattern.h"
 
 namespace Lag
@@ -18,12 +18,12 @@ namespace Lag
 		DECLARE_NOTIFY_METHOD(onFocusChange, ARGS(bool focused))
 
 	public:
-		explicit RenderWindow(const RenderWindowParameters &parameters);
+		explicit RenderWindow(const InitializationParameters &parameters);
 		virtual ~RenderWindow();
 
 		//Process messages coming from the OS
 		virtual void processEvents() = 0;
 	protected:
-		RenderWindowParameters parameters;
+		InitializationParameters parameters;
 	};
 }

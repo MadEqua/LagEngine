@@ -13,8 +13,8 @@ SceneManager::SceneManager()
 
 SceneManager::~SceneManager()
 {
-	for (auto &obj : sceneObjects)
-		delete obj.second;
+	for (auto &pair : sceneObjectMap)
+		delete pair.second;
 
 	LogManager::getInstance().log(FILE, NORMAL, INFO, "SceneManager", "Destroyed successfully.");
 }
@@ -28,14 +28,15 @@ SceneManager::~SceneManager()
 Camera& SceneManager::createCamera(const std::string &name)
 {
 	Camera *cam = new Camera();
-	sceneObjects[name] = cam;
+	sceneObjectMap[name] = cam;
+	cameraVector.push_back(cam);
 	return *cam;
 }
 
-SceneObject* SceneManager::getSceneObject(const std::string &name)
+SceneObject* SceneManager::getSceneObject(const std::string &name) const
 {
-	auto it = sceneObjects.find(name);
-	if (it != sceneObjects.end())
+	auto it = sceneObjectMap.find(name);
+	if (it != sceneObjectMap.end())
 		return it->second;
 	else
 		return nullptr;

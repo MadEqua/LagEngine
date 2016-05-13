@@ -22,8 +22,8 @@ namespace Lag
 
 		SceneNode& createSceneNode(const std::string &name);
 
-		SceneNode* getSceneNode(const std::string &name);
-		inline SceneNode& getRootSceneNode() { return *root; }
+		SceneNode* getSceneNode(const std::string &name) const;
+		inline SceneNode& getRootSceneNode() const { return *root; }
 
 	private:
 		SceneNode *root;

@@ -1,23 +1,27 @@
 #pragma once
 
-#include "../renderer/Material.h"
-#include "../renderer/Mesh.h"
-#include "../scene/SceneObject.h"
+#include "SceneObject.h"
 
 namespace Lag
 {
+	class Material;
+	class Mesh;
+	
 	/*
-	* Object that can be rendered. Represented by a 3d mesh and a material.
+	* Object represented by a 3d mesh and a material.
 	* Attach to a SceneNode to add to the scene.
 	*/	
 	class Entity : public SceneObject
 	{
 	public:
-		Entity();
+		Entity(Material &material, Mesh &mesh);
 		virtual ~Entity();
 
+		inline Material& getMaterial() const { return material; }
+		inline Mesh& getMesh() const { return mesh; }
+
 	private:
-		Material material;
-		Mesh mesh;
+		Material &material;
+		Mesh &mesh;
 	};
 }

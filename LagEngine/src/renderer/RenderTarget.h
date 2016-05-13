@@ -11,6 +11,7 @@ namespace Lag
 {
 	class Viewport;
 	class Camera;
+	class RenderQueue;
 	
 	class RenderTarget
 	{
@@ -26,14 +27,14 @@ namespace Lag
 		virtual void destroy() = 0;
 
 		//Call to start the Rendering process.
-		void startRender();
+		//void startRender(RenderQueue &renderQueue);
 		
 		//For double-buffered targets
 		virtual void swapBuffers() {}
 
 		Viewport& createViewport(const std::string &name, Camera &camera, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
 
-		Viewport* getViewport(const std::string &name);
+		Viewport* getViewport(const std::string &name) const;
 
 		//TODO (fps, frametimes...)
 		//FrameMetrics frameMetrics;

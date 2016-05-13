@@ -1,8 +1,9 @@
 #include "Material.h"
 
+using namespace Lag;
 
-
-Material::Material()
+Material::Material(ShaderProgram &shaderProgram) :
+	shaderProgram(shaderProgram)
 {
 }
 

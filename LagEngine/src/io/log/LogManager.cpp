@@ -53,7 +53,7 @@ void LogManager::closeLogFile()
 	}
 }
 
-void LogManager::formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage)
+void LogManager::formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage) const
 {
 	formattedMessage.clear();
 
@@ -109,7 +109,7 @@ void LogManager::printToFile(const std::string &formattedMessage)
 	}
 }
 
-void LogManager::appendDateTimeToString(std::string &str)
+void LogManager::appendDateTimeToString(std::string &str) const
 {
 	time_t rawtime;
 	std::time(&rawtime);

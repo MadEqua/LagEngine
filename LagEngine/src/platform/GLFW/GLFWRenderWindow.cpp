@@ -28,7 +28,7 @@ void Lag::windowFocusCallback(GLFWwindow * window, int focused)
 }
 
 
-GLFWRenderWindow::GLFWRenderWindow(const RenderWindowParameters &parameters) :
+GLFWRenderWindow::GLFWRenderWindow(const InitializationParameters &parameters) :
 	RenderWindow(parameters)
 {
 	glfwRenderWindow = this;

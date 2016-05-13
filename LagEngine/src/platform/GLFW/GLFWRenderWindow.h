@@ -20,7 +20,7 @@ namespace Lag
 		friend void windowFocusCallback(GLFWwindow* window, int focused);
 
 	public:
-		GLFWRenderWindow(const RenderWindowParameters &parameters);
+		GLFWRenderWindow(const InitializationParameters &parameters);
 		virtual ~GLFWRenderWindow();
 
 		virtual bool initialize() override;
@@ -29,7 +29,7 @@ namespace Lag
 		virtual void processEvents() override;
 		virtual void swapBuffers() override;
 
-		inline GLFWwindow* getGLFWwindow() { return window; }
+		inline GLFWwindow* getGLFWwindow() const { return window; }
 
 	private:
 		GLFWwindow *window;

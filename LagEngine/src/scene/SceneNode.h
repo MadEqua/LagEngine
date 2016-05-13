@@ -39,8 +39,8 @@ namespace Lag
 		//void attachSceneObject(SceneObject &sceneObject);
 		//void detachSceneObject(SceneObject &sceneObject);
 
-		inline bool hasParent() { return parent != nullptr; }
-		inline SceneNode* getParentSceneNode() { return parent; }
+		inline bool hasParent() const { return parent != nullptr; }
+		inline SceneNode* getParentSceneNode() const { return parent; }
 
 		//Transforms
 		void yaw(float angle, TransformSpace space);
@@ -62,9 +62,9 @@ namespace Lag
 		void setPosition(const glm::vec3 &pos);
 
 		//In relation to parent SceneNode
-		inline const glm::vec3& getLocalPosition() { return transform.position; }
-		inline const glm::quat& getLocalOrientation() { return transform.orientation; }
-		inline const glm::vec3& getLocalScale() { return transform.scale; }
+		inline const glm::vec3& getLocalPosition() const { return transform.position; }
+		inline const glm::quat& getLocalOrientation() const { return transform.orientation; }
+		inline const glm::vec3& getLocalScale() const { return transform.scale; }
 
 		const glm::vec3& getWorldPosition();
 		const glm::quat& getWorldOrientation();

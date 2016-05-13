@@ -21,7 +21,7 @@ Viewport& RenderTarget::createViewport(const std::string &name, Camera &camera, 
 	return *vp;
 }
 
-Viewport* RenderTarget::getViewport(const std::string &name)
+Viewport* RenderTarget::getViewport(const std::string &name) const
 {
 	auto it = viewports.find(name);
 	if (it != viewports.end())
@@ -30,13 +30,13 @@ Viewport* RenderTarget::getViewport(const std::string &name)
 		return nullptr;
 }
 
-void RenderTarget::startRender()
+/*void RenderTarget::startRender(RenderQueue &renderQueue)
 {
 	onPreRenderNotify();
 	for (auto &pair : viewports)
-		pair.second->render();
+		pair.second->render(renderQueue);
 	onPostRenderNotify();
-}
+}*/
 
 DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, ARGS(), ARGS())
 DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, ARGS(), ARGS())

@@ -24,10 +24,10 @@ namespace Lag
 		void initLogFile();
 		void closeLogFile();
 
-		void formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage);
+		void formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage) const;
 		void printMessage(LogOutput whereTo, const std::string &formattedMessage);
 		void printToFile(const std::string &formattedMessage);
 
-		void appendDateTimeToString(std::string &str);
+		void appendDateTimeToString(std::string &str) const;
 	};
 }

@@ -24,7 +24,7 @@ SceneNode& SceneGraph::createSceneNode(const std::string &name)
 	return *newNode;
 }
 
-SceneNode* SceneGraph::getSceneNode(const std::string &name)
+SceneNode* SceneGraph::getSceneNode(const std::string &name) const
 {
 	auto it = nodes.find(name);
 	if (it != nodes.end())

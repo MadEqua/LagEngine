@@ -1,15 +1,23 @@
 #include "Renderer.h"
 
 #include "RenderTarget.h"
-#include "RenderWindowParameters.h"
-#include "graphicsApi/IGraphicsApi.h"
-#include "../graphicsAPIs/gl4/GL4GraphicsAPI.h"
-#include "../io/log/LogManager.h"
 
+#include "../graphicsAPIs/gl4/GL4GraphicsAPI.h"
+#include "graphicsApi/IGraphicsApi.h"
+
+#include "../scene/SceneManager.h"
+#include "../scene/Entity.h"
+
+#include "Material.h"
+#include "Technique.h"
+#include "Pass.h"
+
+#include "../io/log/LogManager.h"
 
 using namespace Lag;
 
-Renderer::Renderer()
+Renderer::Renderer(SceneManager &sceneManager) :
+	sceneManager(sceneManager)
 {
 }
 
@@ -17,11 +25,11 @@ Renderer::~Renderer()
 {
 }
 
-bool Renderer::initialize(const GpuInterface &gpuInterface)
+bool Renderer::initialize(const GpuInterfaceType gpuInterface)
 {
 	switch (gpuInterface)
 	{
-	case OPENGL4:
+	case OPENGL_4:
 		this->graphicsAPI = new GL4GraphicsAPI();
 		return true;
 	default:
@@ -48,8 +56,30 @@ void Renderer::removeRenderTarget(const std::string &name)
 
 void Renderer::renderAllRenderTargets()
 {
-	for (auto &pair : renderTargets)
-		pair.second->startRender();
+	//TODO: rethink this chain of calls...
+	/*for (auto &pair : renderTargets)
+		pair.second->startRender(renderQueue);*/
+
+
+	renderQueue.clear();
+	const std::vector<Entity*> &objects = sceneManager.getEntities();
+	for (Entity* entity : objects)
+	{
+		Material &material = entity->getMaterial();
+		//Technique &technique = material.getTechnique();
+		//Pass &pass = technique.getPass();
+
+		ShaderProgram &shaderProgram = material.getShaderProgram();
+		Renderable &renderableToFill = renderQueue.getNextSlotToFill();
+
+		//fill renderable
+	}
+
+
+	//pass through all scene objects
+	//find the correct technique from the material
+	//extract passes and create a renderable with all the required data
+	//add renderable to queue
 }
 
 /* Renderer::setViewport(const Viewport &vp)

@@ -4,6 +4,8 @@
 #include <unordered_map>
 
 #include "../Types.h"
+#include "RenderQueue.h"
+#include "GpuInterfaceType.h"
 
 namespace Lag
 {
@@ -14,21 +16,23 @@ namespace Lag
 	class IGraphicsAPI;
 	class Viewport;
 	class GpuProgram;
+	class SceneManager;
 
-	enum GpuInterface
-	{
-		OPENGL4
-	};
-
+	/*
+	* Top level renderer. All the rendering process starts here culminating on concrete calls to a IGraphicsAPI.
+	* 
+	* TODO: describe the process...
+	*/
 	class Renderer
 	{
 	public:
-		Renderer();
+		Renderer(SceneManager &sceneManager);
 		~Renderer();
 
-		bool initialize(const GpuInterface &gpuInterface);
+		bool initialize(const GpuInterfaceType gpuInterface);
 		void shutdown();
 
+		//TODO: find a way for creating all the RenderTargets within the renderer.
 		void addRenderTarget(const std::string &name, RenderTarget &renderTarget);
 		void removeRenderTarget(const std::string &name);
 
@@ -56,13 +60,17 @@ namespace Lag
 
 	protected:
 		std::unordered_map<std::string, RenderTarget*> renderTargets;
-		std::unordered_map<std::string, GpuProgram*> gpuPrograms;
+		//std::unordered_map<std::string, GpuProgram*> gpuPrograms;
 
 		//texture manager?
 		//TextureManager *textureManager;
 
 		//active viewport
 		//uint32 batch, face and vx counter
+
+		SceneManager &sceneManager;
+
+		RenderQueue renderQueue;
 
 		IGraphicsAPI *graphicsAPI;
 	};

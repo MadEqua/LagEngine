@@ -1,10 +1,13 @@
 #pragma once
 
-class IRenderTargetListener
+namespace Lag
 {
-public:	
-	virtual ~IRenderTargetListener() {}
+	class IRenderTargetListener
+	{
+	public:
+		virtual ~IRenderTargetListener() {}
 
-	virtual void onPreRender() = 0;
-	virtual void onPostRender() = 0;
-};
+		virtual void onPreRender() = 0;
+		virtual void onPostRender() = 0;
+	};
+}
