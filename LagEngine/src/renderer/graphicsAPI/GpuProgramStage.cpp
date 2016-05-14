@@ -1,12 +1,13 @@
 #include "GpuProgramStage.h"
 
+#include "GpuProgramStageType.h"
 #include "../../io/log/LogManager.h"
 #include <fstream>
 
 using namespace Lag;
 
-GpuProgramStage::GpuProgramStage(const std::string &path, GpuProgramStageType type) :
-	Resource(path),
+GpuProgramStage::GpuProgramStage(const std::string &filePath, GpuProgramStageType type) :
+	Resource(filePath),
 	type(type)
 {
 }
@@ -41,7 +42,7 @@ bool GpuProgramStage::load()
 	if (!compile())
 		return false;
 
-	isLoaded = true;
+	loaded = true;
 
 	return true;
 }

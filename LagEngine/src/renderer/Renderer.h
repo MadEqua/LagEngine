@@ -5,7 +5,7 @@
 
 #include "../Types.h"
 #include "RenderQueue.h"
-#include "GpuInterfaceType.h"
+#include "GraphicsApiType.h"
 
 namespace Lag
 {
@@ -29,7 +29,7 @@ namespace Lag
 		Renderer(SceneManager &sceneManager);
 		~Renderer();
 
-		bool initialize(const GpuInterfaceType gpuInterface);
+		bool initialize(const GraphicsApiType graphicsApiType);
 		void shutdown();
 
 		//TODO: find a way for creating all the RenderTargets within the renderer.

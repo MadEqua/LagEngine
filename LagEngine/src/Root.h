@@ -16,7 +16,10 @@ namespace Lag
 	class Renderer;
 	class SceneManager;
 	class IFrameListener;
+
 	class GpuProgramStageManager;
+	class GpuProgramManager;
+	class MaterialManager;
 
 	class Root
 	{
@@ -32,12 +35,15 @@ namespace Lag
 		bool initializeLag(const InitializationParameters &parameters);
 		bool initializeLag(const std::string &iniFile);
 		
-		inline InputManager& getInputManager() const { return *inputManager; }
 		inline RenderWindow& getRenderWindow() const { return *renderWindow; }
+		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
 		inline SceneManager& getSceneManager() const { return *sceneManager; }
-		inline InitializationParameters& getInitializationParameters() { return initializationParameters; }
+		inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
+
 		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
+		inline GpuProgramManager& getGpuProgramManager() const { return *gpuProgramManager; }
+		inline MaterialManager& getMaterialManager() const { return *materialManager; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -47,7 +53,10 @@ namespace Lag
 		InputManager *inputManager;
 		Renderer *renderer;
 		SceneManager *sceneManager;
+
 		GpuProgramStageManager *gpuProgramStageManager;
+		GpuProgramManager *gpuProgramManager;
+		MaterialManager *materialManager;
 
 		WindowListener *windowListener;
 

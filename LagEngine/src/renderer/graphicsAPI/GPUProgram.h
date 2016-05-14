@@ -21,13 +21,18 @@ namespace Lag
 		GpuProgram(const std::vector<std::string> &names);
 		GpuProgram(const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgram();
+
+		virtual bool load() override;
+		virtual void unload() override;
 		
-		virtual void link() = 0;
+		virtual bool link() = 0;
 
 		inline bool hasStage(GpuProgramStageType stageType) const {return programStages[stageType] != nullptr; }
 
 	private:
 		static const int PROGRAM_STAGE_COUNT = 5;
 		GpuProgramStage* programStages[PROGRAM_STAGE_COUNT];
+
+		void initStages(const std::vector<GpuProgramStage*> &stages);
 	};
 }

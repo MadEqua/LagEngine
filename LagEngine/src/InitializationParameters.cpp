@@ -15,7 +15,7 @@ InitializationParameters::InitializationParameters() :
 
 	MSSAsamples(0),
 	sRGB(true),
-	gpuInterfaceType(OPENGL_4)
+	graphicsApiType(OPENGL_4)
 {
 }
 
@@ -36,8 +36,8 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		MSSAsamples = iniSettings.getFieldAsBasicType<int>("MSSAsamples", MSSAsamples);
 		sRGB = iniSettings.getFieldAsBasicType<bool>("sRGB", sRGB);
 
-		std::string gpuInterfaceStr = iniSettings.getFieldAsString("gpuInterfaceType", "OPENGL4");
-		if (gpuInterfaceStr == "OPENGL4") gpuInterfaceType = OPENGL_4;
+		std::string gpuInterfaceStr = iniSettings.getFieldAsString("graphicsApiType", "OPENGL_4");
+		if (gpuInterfaceStr == "OPENGL_4") graphicsApiType = OPENGL_4;
 	}
 }
 

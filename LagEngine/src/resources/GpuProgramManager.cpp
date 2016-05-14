@@ -6,7 +6,10 @@ GpuProgramManager::GpuProgramManager()
 {
 }
 
-
 GpuProgramManager::~GpuProgramManager()
+{
+}
+
+void GpuProgramManager::parseResourceDescription(const TiXmlElement &element)
 {
 }

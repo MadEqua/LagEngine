@@ -9,10 +9,13 @@
 #include "io/log/LogManager.h"
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
-#include "resources/GpuProgramStageManager.h"
 #include "renderer/Renderer.h"
 #include "scene/SceneManager.h"
 #include "IFrameListener.h"
+
+#include "resources/GpuProgramStageManager.h"
+#include "resources/GpuProgramManager.h"
+#include "resources/MaterialManager.h"
 
 #include "io/tinyxml/tinyxml.h"
 
@@ -28,6 +31,8 @@ Root::Root() :
 	renderer(nullptr),
 	sceneManager(nullptr),
 	gpuProgramStageManager(nullptr),
+	gpuProgramManager(nullptr),
+	materialManager(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -49,8 +54,14 @@ void Root::destroy()
 		delete renderer;
 	if (sceneManager != nullptr)
 		delete sceneManager;
+
 	if (gpuProgramStageManager != nullptr)
 		delete gpuProgramStageManager;
+	if (gpuProgramManager != nullptr)
+		delete gpuProgramManager;
+	if (materialManager != nullptr)
+		delete materialManager;
+
 	if (windowListener != nullptr)
 		delete windowListener;
 }
@@ -84,7 +95,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 		return false;
 
 	renderer = new Renderer(*sceneManager);
-	if (!renderer->initialize(parameters.gpuInterfaceType))
+	if (!renderer->initialize(parameters.graphicsApiType))
 		return false;
 
 	renderer->addRenderTarget("renderWindow", *renderWindow);
@@ -129,8 +140,13 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	}
 
 	//Init all ResourceManagers here
-	gpuProgramStageManager = new GpuProgramStageManager(initializationParameters.gpuInterfaceType);
+	gpuProgramStageManager = new GpuProgramStageManager();
 	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
+
+	gpuProgramManager = new GpuProgramManager();	
+
+	materialManager = new MaterialManager();
+	materialManager->initalizeFromResourcesFile(*resourcesElement);
 
 	return true;
 }

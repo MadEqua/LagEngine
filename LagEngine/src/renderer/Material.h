@@ -2,6 +2,8 @@
 
 #include <vector>
 
+#include "../resources/Resource.h"
+
 namespace Lag
 {
 	class ShaderProgram;
@@ -11,16 +13,19 @@ namespace Lag
 	*
 	* TODO: list of techniques. each technique with a list of passes, each pass with shader and textures...
 	*/
-	class Material
+	class Material : public Resource
 	{
 	public:
-		Material(ShaderProgram &shaderProgram);
-		~Material();
+		Material(const std::string &filePath);
+		virtual ~Material();
+
+		virtual bool load() override;
+		virtual void unload() override;
 	
-		inline ShaderProgram& getShaderProgram() const { return shaderProgram; }
+		inline ShaderProgram& getShaderProgram() const { return *shaderProgram; }
 
 	private:
-		ShaderProgram &shaderProgram;
+		ShaderProgram *shaderProgram;
 	};
 }
 

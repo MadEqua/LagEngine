@@ -127,20 +127,24 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\resources\MaterialFactory.cpp" />
+    <ClCompile Include="src\resources\GpuProgramFactory.cpp" />
+    <ClCompile Include="src\resources\GpuProgramStageFactory.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgram.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.cpp" />
     <ClCompile Include="src\resources\GpuProgramStageManager.cpp" />
     <ClCompile Include="src\io\tinyxml\tinyxml.cpp" />
     <ClCompile Include="src\io\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="src\io\tinyxml\tinyxmlparser.cpp" />
+    <ClCompile Include="src\resources\MaterialManager.cpp" />
     <ClCompile Include="src\resources\Resource.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramStage.cpp" />
     <ClCompile Include="src\resources\GpuProgramManager.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\resources\ResourceManager.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
@@ -178,20 +182,25 @@
     <ClCompile Include="src\scene\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\resources\MaterialFactory.h" />
+    <ClInclude Include="src\resources\GpuProgramFactory.h" />
+    <ClInclude Include="src\resources\GpuProgramStageFactory.h" />
+    <ClInclude Include="src\resources\IResourceFactory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgram.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.h" />
-    <ClInclude Include="src\renderer\GpuInterfaceType.h" />
+    <ClInclude Include="src\renderer\GraphicsApiType.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStageType.h" />
     <ClInclude Include="src\resources\GpuProgramStageManager.h" />
     <ClInclude Include="src\io\tinyxml\tinyxml.h" />
+    <ClInclude Include="src\resources\MaterialManager.h" />
     <ClInclude Include="src\resources\Resource.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStage.h" />
     <ClInclude Include="src\resources\GpuProgramManager.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
     <ClInclude Include="src\resources\ResourceManager.h" />
     <ClInclude Include="src\scene\SceneManager.h" />

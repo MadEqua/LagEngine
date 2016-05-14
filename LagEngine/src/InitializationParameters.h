@@ -4,7 +4,7 @@
 #include "Types.h"
 
 #include "renderer/Renderer.h"
-#include "renderer/GpuInterfaceType.h"
+#include "renderer/GraphicsApiType.h"
 
 namespace Lag
 {
@@ -23,7 +23,7 @@ namespace Lag
 		uint32 MSSAsamples;
 		bool sRGB;
 
-		GpuInterfaceType gpuInterfaceType;
+		GraphicsApiType graphicsApiType;
 
 		InitializationParameters();
 		explicit InitializationParameters(const std::string &iniFilePath);

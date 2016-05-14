@@ -4,13 +4,11 @@
 
 namespace Lag
 {
-	enum GraphicsApiType;
-	
-	class GpuProgramStageManager : public ResourceManager
+	class MaterialManager : public ResourceManager
 	{
 	public:
-		GpuProgramStageManager();
-		~GpuProgramStageManager();
+		MaterialManager();
+		virtual ~MaterialManager();
 
 	protected:
 		virtual void parseResourceDescription(const TiXmlElement &element) override;

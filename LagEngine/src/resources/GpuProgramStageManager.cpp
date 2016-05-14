@@ -1,16 +1,17 @@
 #include "GpuProgramStageManager.h"
 
 #include "../io/log/LogManager.h"
-#include "../graphicsAPIs/gl4/GL4GpuProgramStage.h"
+#include "../renderer/GraphicsApiType.h"
+#include "../renderer/graphicsAPI/GpuProgramStageType.h"
+#include "GpuProgramStageFactory.h"
+#include "../Root.h"
 
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-GpuProgramStageManager::GpuProgramStageManager(const GpuInterfaceType gpuInterfaceType) :
-	gpuInterfaceType(gpuInterfaceType)
+GpuProgramStageManager::GpuProgramStageManager()
 {
-
 }
 
 GpuProgramStageManager::~GpuProgramStageManager()
@@ -45,19 +46,11 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 		LogManager::getInstance().log(FILE, NORMAL, INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
-		//TODO: is this OK here?
-		if (gpuInterfaceType == OPENGL_4)
-		{
-			GpuProgramStageType realType;
-			if (type == "vertex") realType = VERTEX;
-			else if (type == "tesselationControl") realType = TESSELLATION_CONTROL;
-			else if (type == "tesselationEvaluation") realType = TESSELLATION_EVALUATION;
-			else if (type == "geometry") realType = GEOMETRY;
-			else if (type == "fragment") realType = FRAGMENT;
+		GpuProgramStageFactory factory;
+		factory.setGpuProgramStageType(type);
+		factory.setGraphicsApiType(Root::getInstance().getInitializationParameters().graphicsApiType);
+		factory.setPath(file);
 
-			GL4GpuProgramStage *gps = new GL4GpuProgramStage(file, realType);
-			gps->setPath(file);
-			add(const_cast<const std::string&>(name), gps);
-		}
+		create(name, factory);
 	}
 }

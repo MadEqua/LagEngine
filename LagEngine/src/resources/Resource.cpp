@@ -3,13 +3,13 @@
 using namespace Lag;
 
 Resource::Resource(const std::string &path) :
-	isLoaded(false),
+	loaded(false),
 	path(path)
 {
 }
 
 Resource::Resource() :
-	isLoaded(false)
+	loaded(false)
 {
 }
 

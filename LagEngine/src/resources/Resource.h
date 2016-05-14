@@ -24,8 +24,10 @@ namespace Lag
 		inline void setPath(const std::string &path) { this->path = path; }
 		inline const std::string& getPath() const { return path; }
 
+		inline bool isLoaded() const { return loaded; }
+
 	protected:
-		bool isLoaded;
+		bool loaded;
 		std::string path;
 	};
 }

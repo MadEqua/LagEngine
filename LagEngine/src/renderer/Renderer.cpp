@@ -25,9 +25,9 @@ Renderer::~Renderer()
 {
 }
 
-bool Renderer::initialize(const GpuInterfaceType gpuInterface)
+bool Renderer::initialize(const GraphicsApiType graphicsApiType)
 {
-	switch (gpuInterface)
+	switch (graphicsApiType)
 	{
 	case OPENGL_4:
 		this->graphicsAPI = new GL4GraphicsAPI();

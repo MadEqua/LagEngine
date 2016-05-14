@@ -1,6 +1,7 @@
 #include "ResourceManager.h"
 
 #include "Resource.h"
+#include "IResourceFactory.h"
 #include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
 
@@ -34,32 +35,37 @@ void ResourceManager::initalizeFromResourcesFile(const TiXmlElement &resourceFil
 	}
 }
 
+void ResourceManager::create(const std::string &name, const IResourceFactory &factory)
+{
+	Resource *res = factory.create();
+	add(name, res);
+}
+
 void ResourceManager::add(const std::string &name, Resource *res)
 {
+	bool ok = false;
 	auto it = resources.find(name);
 	if (it != resources.end())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, WARNING, "ResourceManager", 
+		LogManager::getInstance().log(FILE, NORMAL, WARNING, "ResourceManager",
 			"Adding a resource with an already existing name: " + name + ". Only considering the first one added.");
-
-		res->unload();
-		delete res;
+	}
+	else if (!res->load())
+	{
+		LogManager::getInstance().log(FILE, NORMAL, ERROR, "ResourceManager",
+			"Failed to load Resource: " + name);
 	}
 	else
 	{
-		if (!res->load())
-		{
-			LogManager::getInstance().log(FILE, NORMAL, ERROR, "ResourceManager",
-				"Failed to load Resource: " + name);
+		LogManager::getInstance().log(FILE, NORMAL, INFO, "ResourceManager",
+			"Successfully loaded Resource: " + name);
+		ok = true;
+	}
 
-			res->unload();
-			delete res;
-		}
-		else
-		{
-			LogManager::getInstance().log(FILE, NORMAL, INFO, "ResourceManager",
-				"Successfully loaded Resource: " + name);
-		}
+	if (!ok)
+	{
+		res->unload();
+		delete res;
 	}
 }
 

@@ -7,7 +7,10 @@ namespace Lag
 	class GL4GpuProgram : public GpuProgram
 	{
 	public:
-		GL4GpuProgram();
+		GL4GpuProgram(const std::vector<std::string> &names);
+		GL4GpuProgram(const std::vector<GpuProgramStage*> &stages);
 		virtual ~GL4GpuProgram();
+
+		virtual bool link();
 	};
 }
