@@ -12,6 +12,7 @@ namespace Lag
 	* A Material contains all the details for rendering an entity, except the geometry.
 	*
 	* TODO: list of techniques. each technique with a list of passes, each pass with shader and textures...
+	* add methods to create materials by hand (no file)
 	*/
 	class Material : public Resource
 	{
@@ -25,7 +26,10 @@ namespace Lag
 		inline ShaderProgram& getShaderProgram() const { return *shaderProgram; }
 
 	private:
+		std::vector<std::string> shaderStageNames;
 		ShaderProgram *shaderProgram;
+
+		bool parse();
 	};
 }
 

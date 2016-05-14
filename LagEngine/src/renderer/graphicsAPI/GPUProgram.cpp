@@ -54,7 +54,7 @@ bool GpuProgram::load()
 {
 	if (programStages[VERTEX] == nullptr)
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "GpuProgram", "Created without vertex stage.");
+		LogManager::getInstance().log(FILE, NORMAL, ERROR, "GpuProgram", "Trying to load without a vertex stage.");
 		return false;
 	}
 

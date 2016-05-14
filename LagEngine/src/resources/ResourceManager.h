@@ -27,10 +27,10 @@ namespace Lag
 		Resource* get(const std::string &name) const;
 		void create(const std::string &name, const IResourceFactory &factory);
 
-	protected:
-
+		//Consider using create() instead.
 		void add(const std::string &name, Resource *res);
 
+	protected:
 		//Handle a specific resource description
 		virtual void parseResourceDescription(const TiXmlElement &element) = 0;
 		

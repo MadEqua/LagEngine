@@ -21,6 +21,7 @@ namespace Lag
 
 	private:
 		std::vector<GpuProgramStage*> stages;
+		std::vector<std::string> stagesNames;
 		GraphicsApiType graphicsApiType;
 	};
 }

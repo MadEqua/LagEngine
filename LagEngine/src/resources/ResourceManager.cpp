@@ -76,7 +76,7 @@ Resource* ResourceManager::get(const std::string &name) const
 	if (it == resources.end())
 	{
 		LogManager::getInstance().log(FILE, NORMAL, WARNING, "ResourceManager",
-			"Trying to get an unknown resource: " + name + ". Forgot to add it to the resources file? :)");
+			"Trying to get an unknown resource: " + name + ". Forgot to add it to the resources file? Did it fail to load? :)");
 		return nullptr;
 	}
 
