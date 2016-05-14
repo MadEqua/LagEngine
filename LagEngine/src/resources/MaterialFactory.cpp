@@ -3,17 +3,13 @@
 
 using namespace Lag;
 
-MaterialFactory::MaterialFactory()
+MaterialFactory::MaterialFactory(const std::string &filePath) :
+	filePath(filePath)
 {
 }
 
 MaterialFactory::~MaterialFactory()
 {
-}
-
-void MaterialFactory::setFilePath(const std::string &filePath) 
-{
-	this->filePath = filePath;
 }
 
 Resource* MaterialFactory::create() const

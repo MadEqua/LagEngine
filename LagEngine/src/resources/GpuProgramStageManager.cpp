@@ -46,11 +46,8 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 		LogManager::getInstance().log(FILE, NORMAL, INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
-		GpuProgramStageFactory factory;
-		factory.setGpuProgramStageType(type);
-		factory.setGraphicsApiType(Root::getInstance().getInitializationParameters().graphicsApiType);
-		factory.setPath(file);
-
+		GpuProgramStageFactory factory(file, type, 
+			Root::getInstance().getInitializationParameters().graphicsApiType);
 		create(name, factory);
 	}
 }

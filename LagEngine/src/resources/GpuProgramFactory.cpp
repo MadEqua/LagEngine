@@ -7,27 +7,24 @@
 
 using namespace Lag;
 
-GpuProgramFactory::GpuProgramFactory() 
+GpuProgramFactory::GpuProgramFactory(const std::vector<GpuProgramStage*> &stages, GraphicsApiType graphicsApiType) : 
+	stages(stages),
+	graphicsApiType(graphicsApiType)
 {
+}
+
+GpuProgramFactory::GpuProgramFactory(const std::vector<std::string> &gpuProgramStageNames, GraphicsApiType graphicsApiType) :
+	graphicsApiType(graphicsApiType)
+{
+	for (const std::string &name : gpuProgramStageNames)
+	{
+		Resource *stage = Root::getInstance().getGpuProgramStageManager().get(name);
+		stages.push_back((GpuProgramStage*)stage);
+	}
 }
 
 GpuProgramFactory::~GpuProgramFactory()
 {
-}
-
-void GpuProgramFactory::addGpuProgramStage(const std::string &name)
-{
-	Resource *stage = Root::getInstance().getGpuProgramStageManager().get(name);
-	addGpuProgramStage(*((GpuProgramStage*)stage));
-}
-void GpuProgramFactory::addGpuProgramStage(GpuProgramStage& stage)
-{
-	stages.push_back(&stage);
-}
-
-void GpuProgramFactory::setGraphicsApiType(GraphicsApiType graphicsApiType)
-{
-	this->graphicsApiType = graphicsApiType;
 }
 
 Resource* GpuProgramFactory::create() const

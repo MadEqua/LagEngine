@@ -41,8 +41,7 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 		LogManager::getInstance().log(FILE, NORMAL, INFO, "MaterialManager",
 			"Material " + name + " has been declared from Resources file.");
 
-		MaterialFactory factory;
-		factory.setFilePath(file);
+		MaterialFactory factory(file);
 		create(name, factory);
 	}
 }

@@ -6,25 +6,16 @@
 
 using namespace Lag;
 
-GpuProgramStageFactory::GpuProgramStageFactory()
+GpuProgramStageFactory::GpuProgramStageFactory(const std::string &path, GpuProgramStageType gpuProgramStageType, GraphicsApiType graphicsApiType) :
+	path(path),
+	gpuProgramStageType(gpuProgramStageType),
+	graphicsApiType(graphicsApiType)
 {
 }
 
-GpuProgramStageFactory::~GpuProgramStageFactory()
-{
-}
-
-void GpuProgramStageFactory::setPath(const std::string &path)
-{
-	this->path = path;
-}
-
-void GpuProgramStageFactory::setGpuProgramStageType(GpuProgramStageType gpuProgramStageType)
-{
-	this->gpuProgramStageType = gpuProgramStageType;
-}
-
-void GpuProgramStageFactory::setGpuProgramStageType(const std::string &gpuProgramStageType)
+GpuProgramStageFactory::GpuProgramStageFactory(const std::string &path, const std::string &gpuProgramStageType, GraphicsApiType graphicsApiType) :
+	path(path),
+	graphicsApiType(graphicsApiType)
 {
 	if (gpuProgramStageType == "vertex") this->gpuProgramStageType = VERTEX;
 	else if (gpuProgramStageType == "tesselationControl") this->gpuProgramStageType = TESSELLATION_CONTROL;
@@ -33,9 +24,8 @@ void GpuProgramStageFactory::setGpuProgramStageType(const std::string &gpuProgra
 	else if (gpuProgramStageType == "fragment") this->gpuProgramStageType = FRAGMENT;
 }
 
-void GpuProgramStageFactory::setGraphicsApiType(GraphicsApiType graphicsApiType)
+GpuProgramStageFactory::~GpuProgramStageFactory()
 {
-	this->graphicsApiType = graphicsApiType;
 }
 
 Resource* GpuProgramStageFactory::create() const

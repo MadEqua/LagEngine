@@ -11,13 +11,10 @@ namespace Lag
 	class GpuProgramStageFactory : public IResourceFactory
 	{
 	public:
-		GpuProgramStageFactory();
+		GpuProgramStageFactory(const std::string &path, GpuProgramStageType gpuProgramStageType, GraphicsApiType graphicsApiType);
+		GpuProgramStageFactory(const std::string &path,	const std::string &gpuProgramStageType, GraphicsApiType graphicsApiType);
+		
 		virtual ~GpuProgramStageFactory();
-
-		void setPath(const std::string &path);
-		void setGpuProgramStageType(GpuProgramStageType gpuProgramStageType);
-		void setGpuProgramStageType(const std::string &gpuProgramStageType);
-		void setGraphicsApiType(GraphicsApiType graphicsApiType);
 
 		virtual Resource* create() const override;
 

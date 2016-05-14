@@ -31,7 +31,7 @@ namespace Lag
 
 		void add(const std::string &name, Resource *res);
 
-		//Each particular ResourceManager can handle a specific resource description
+		//Handle a specific resource description
 		virtual void parseResourceDescription(const TiXmlElement &element) = 0;
 		
 		std::unordered_map<std::string, Resource*> resources;

@@ -9,10 +9,8 @@ namespace Lag
 	class MaterialFactory : public IResourceFactory
 	{
 	public:
-		MaterialFactory();
+		MaterialFactory(const std::string &filePath);
 		~MaterialFactory();
-
-		void setFilePath(const std::string &filePath);
 
 		virtual Resource* create() const override;
 
