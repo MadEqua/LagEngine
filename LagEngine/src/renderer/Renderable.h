@@ -1,16 +1,30 @@
 #pragma once
 
+#include "glm/glm.hpp"
+
 namespace Lag
 {
+	class IndexBuffer;
+	class VertexBuffer;
+	class GpuProgram;
 	
 	/*
-	* A Renderable should be able to provide a Renderer all the necessary
-	* data to start a render call on the graphics pipeline.
+	* A Renderable should be able to provide the Renderer all the necessary
+	* data to start a render operation on the graphics pipeline.
 	*/
 	class Renderable
 	{
 	public:
 		Renderable();
-		~Renderable();
+		virtual ~Renderable();
+
+		virtual VertexBuffer& getVertexBuffer() = 0;
+		
+		virtual bool isIndexed() = 0;
+		virtual IndexBuffer& getIndexBuffer() = 0;
+
+		virtual glm::mat4& getModelMatrix() = 0;
+
+		//virtual GpuProgram& getGpuProgram() = 0;
 	};
 }

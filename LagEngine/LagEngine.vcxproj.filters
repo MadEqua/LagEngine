@@ -156,6 +156,12 @@
     <ClCompile Include="src\resources\MaterialFactory.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\resources\MeshFactory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\MeshManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -186,9 +192,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\io\log\LogManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\io\log\LogTypes.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\io\ini\IniSettings.h">
@@ -314,9 +317,6 @@
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStageType.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\GraphicsApiType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -333,6 +333,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\IResourceFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\MeshFactory.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\MeshManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -20,6 +20,7 @@ namespace Lag
 	class GpuProgramStageManager;
 	class GpuProgramManager;
 	class MaterialManager;
+	class MeshManager;
 
 	class Root
 	{
@@ -44,6 +45,7 @@ namespace Lag
 		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
 		inline GpuProgramManager& getGpuProgramManager() const { return *gpuProgramManager; }
 		inline MaterialManager& getMaterialManager() const { return *materialManager; }
+		inline MeshManager& getMeshManager() const { return *meshManager; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -57,6 +59,8 @@ namespace Lag
 		GpuProgramStageManager *gpuProgramStageManager;
 		GpuProgramManager *gpuProgramManager;
 		MaterialManager *materialManager;
+		MeshManager *meshManager;
+
 
 		WindowListener *windowListener;
 

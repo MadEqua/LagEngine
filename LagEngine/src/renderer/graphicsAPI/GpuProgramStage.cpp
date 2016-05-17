@@ -1,6 +1,5 @@
 #include "GpuProgramStage.h"
 
-#include "GpuProgramStageType.h"
 #include "../../io/log/LogManager.h"
 #include <fstream>
 
@@ -27,7 +26,7 @@ bool GpuProgramStage::load()
 	file.open(path);
 	if (!file.is_open())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "GpuProgramStage", "Cannot open code file: " + path);
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "GpuProgramStage", "Cannot open code file: " + path);
 		return false;
 	}
 

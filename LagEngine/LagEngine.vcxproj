@@ -127,6 +127,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\resources\MeshFactory.cpp" />
+    <ClCompile Include="src\resources\MeshManager.cpp" />
     <ClCompile Include="src\resources\MaterialFactory.cpp" />
     <ClCompile Include="src\resources\GpuProgramFactory.cpp" />
     <ClCompile Include="src\resources\GpuProgramStageFactory.cpp" />
@@ -182,6 +184,8 @@
     <ClCompile Include="src\scene\Transform.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\resources\MeshFactory.h" />
+    <ClInclude Include="src\resources\MeshManager.h" />
     <ClInclude Include="src\resources\MaterialFactory.h" />
     <ClInclude Include="src\resources\GpuProgramFactory.h" />
     <ClInclude Include="src\resources\GpuProgramStageFactory.h" />
@@ -192,7 +196,6 @@
     </ClInclude>
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.h" />
     <ClInclude Include="src\renderer\GraphicsApiType.h" />
-    <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStageType.h" />
     <ClInclude Include="src\resources\GpuProgramStageManager.h" />
     <ClInclude Include="src\io\tinyxml\tinyxml.h" />
     <ClInclude Include="src\resources\MaterialManager.h" />
@@ -225,7 +228,6 @@
     <ClInclude Include="src\io\ini\IniSettings.h" />
     <ClInclude Include="src\io\ini\IniParser.h" />
     <ClInclude Include="src\io\log\LogManager.h" />
-    <ClInclude Include="src\io\log\LogTypes.h" />
     <ClInclude Include="src\core\ObserverPattern.h" />
     <ClInclude Include="src\core\Timer.h" />
     <ClInclude Include="src\io\ICursorListener.h" />

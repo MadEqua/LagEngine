@@ -53,7 +53,8 @@ GLFWInputManager::GLFWInputManager(GLFWRenderWindow *renderWindow) : window(rend
 	glfwSetCursorPosCallback(window, cursorPositionCallback);
 	glfwSetMouseButtonCallback(window, mouseButtonCallback);
 
-	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWInputManager", "Initialized successfully.");
+	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+		"GLFWInputManager", "Initialized successfully.");
 }
 
 GLFWInputManager::~GLFWInputManager()
@@ -62,5 +63,6 @@ GLFWInputManager::~GLFWInputManager()
 	glfwSetCursorPosCallback(window, 0);
 	glfwSetMouseButtonCallback(window, 0);
 
-	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWInputManager", "Destroyed successfully.");
+	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+		"GLFWInputManager", "Destroyed successfully.");
 }

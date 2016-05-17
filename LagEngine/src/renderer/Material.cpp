@@ -44,7 +44,7 @@ bool Material::parse()
 	TiXmlDocument doc(path);
 	if (!doc.LoadFile())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Material",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "Material",
 			"Material file: " + path + " does not exist or is malformed.");
 		return false;
 	}
@@ -63,7 +63,7 @@ bool Material::parse()
 
 	if (!materialElement)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Material",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "Material",
 			"Material file: " + path + " does not contain <material> element.");
 		return false;
 	}

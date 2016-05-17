@@ -3,6 +3,7 @@ TODO
 Short Term
 
 implement techniques, passes, textures...
+define scenegraph through a xml file
 Check and apply copy constructors good practices
 Rethink folder structure and VS filters
 coherency between tinyxml and ini parsers

@@ -6,7 +6,14 @@
 
 namespace Lag
 {
-	enum GpuProgramStageType;
+	enum GpuProgramStageType
+	{
+		VERTEX,
+		TESS_CONTROL,
+		TESS_EVALUATION,
+		GEOMETRY,
+		FRAGMENT
+	};
 	
 	/*
 	* Abstract class representing one of the possible types of shaders that forms a GpuProgram.

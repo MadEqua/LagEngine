@@ -42,14 +42,16 @@ GLFWRenderWindow::~GLFWRenderWindow()
 	glfwSetWindowFocusCallback(window, 0);
 	destroy();
 
-	LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Destroyed successfully.");
+	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, 
+		"GLFWRenderWindow", "Destroyed successfully.");
 }
 
 bool GLFWRenderWindow::initialize()
 {
 	if (!glfwInit())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "glfwInit()", "Cannot initialize GLFW.");
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+			"glfwInit()", "Cannot initialize GLFW.");
 		return false;
 	}
 	else
@@ -61,7 +63,8 @@ bool GLFWRenderWindow::initialize()
 		window = glfwCreateWindow(parameters.width, parameters.height, parameters.title.c_str(), NULL, NULL);
 		if (window == 0)
 		{
-			LogManager::getInstance().log(FILE, NORMAL, ERROR, "glfwCreateWindow()", "Cannot create GLFW window.");
+			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+				"glfwCreateWindow()", "Cannot create GLFW window.");
 			return false;
 		}
 
@@ -70,7 +73,8 @@ bool GLFWRenderWindow::initialize()
 		glfwSetWindowPosCallback(window, windowPosCallback);
 		glfwSetWindowFocusCallback(window, windowFocusCallback);
 
-		LogManager::getInstance().log(FILE, NORMAL, INFO, "GLFWRenderWindow", "Initialized successfully.");
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+			"GLFWRenderWindow", "Initialized successfully.");
 
 		return true;
 	}

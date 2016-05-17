@@ -2,7 +2,6 @@
 
 #include "../io/log/LogManager.h"
 #include "../renderer/GraphicsApiType.h"
-#include "../renderer/graphicsAPI/GpuProgramStageType.h"
 #include "GpuProgramStageFactory.h"
 #include "../Root.h"
 
@@ -38,12 +37,12 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 
 		if (name.empty() || file.empty() || type.empty())
 		{
-			LogManager::getInstance().log(FILE, NORMAL, ERROR, "GpuProgramStageManager",
+			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "GpuProgramStageManager",
 				"A <shader> element on the Resources file does not contain all required elements: <name>, <file> and <type>");
 			return;
 		}
 
-		LogManager::getInstance().log(FILE, NORMAL, INFO, "GpuProgramStageManager",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
 		GpuProgramStageFactory factory(file, type, 

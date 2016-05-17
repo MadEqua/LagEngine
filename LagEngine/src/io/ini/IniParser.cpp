@@ -18,7 +18,8 @@ bool IniParser::parse(const std::string &filePath)
 	std::ifstream inFile(filePath, std::ios::in);
 	if (!inFile.is_open())
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "IniParser", "Error opening .ini file: " + filePath);
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+			"IniParser", "Error opening .ini file: " + filePath);
 		return false;
 	}
 		
@@ -32,7 +33,7 @@ bool IniParser::parse(const std::string &filePath)
 			std::string fieldName = trim(line.substr(0, equalPos));
 			if(out.containsField(fieldName))
 			{
-				LogManager::getInstance().log(FILE, NORMAL, WARNING, "IniParser", 
+				LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING, "IniParser",
 					"Duplicate field on .ini file: " + filePath + ". Only considering the first appearance.");
 				continue;
 			}

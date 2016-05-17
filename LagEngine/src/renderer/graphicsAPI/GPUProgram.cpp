@@ -1,7 +1,6 @@
 #include "GpuProgram.h"
 
 #include "GpuProgramStage.h"
-#include "GpuProgramStageType.h"
 #include "../../resources/GpuProgramStageManager.h"
 #include "../../Root.h"
 #include "../../io/log/LogManager.h"
@@ -17,7 +16,8 @@ GpuProgram::GpuProgram(const std::vector<std::string> &names)
 	{
 		GpuProgramStage *stage = static_cast<GpuProgramStage*>(man.get(name));
 		if (stage == nullptr)
-			LogManager::getInstance().log(FILE, NORMAL, WARNING, "GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
+			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING, 
+				"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
 		else
 			stages.push_back(stage);
 	}
@@ -38,7 +38,7 @@ void GpuProgram::initStages(const std::vector<GpuProgramStage*> &stages)
 	{
 		if (programStages[stage->getType()] != nullptr)
 		{
-			LogManager::getInstance().log(FILE, NORMAL, WARNING, "GpuProgram", 
+			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING, "GpuProgram",
 				"Receiving multiple GpuProgramStage for the same stage. Using only the first on list.");
 		}
 		else
@@ -54,7 +54,8 @@ bool GpuProgram::load()
 {
 	if (programStages[VERTEX] == nullptr)
 	{
-		LogManager::getInstance().log(FILE, NORMAL, ERROR, "GpuProgram", "Trying to load without a vertex stage.");
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+			"GpuProgram", "Trying to load without a vertex stage.");
 		return false;
 	}
 

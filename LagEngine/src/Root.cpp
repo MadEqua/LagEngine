@@ -16,6 +16,7 @@
 #include "resources/GpuProgramStageManager.h"
 #include "resources/GpuProgramManager.h"
 #include "resources/MaterialManager.h"
+#include "resources/MeshManager.h"
 
 #include "io/tinyxml/tinyxml.h"
 
@@ -33,6 +34,7 @@ Root::Root() :
 	gpuProgramStageManager(nullptr),
 	gpuProgramManager(nullptr),
 	materialManager(nullptr),
+	meshManager(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -61,6 +63,8 @@ void Root::destroy()
 		delete gpuProgramManager;
 	if (materialManager != nullptr)
 		delete materialManager;
+	if (meshManager != nullptr)
+		delete meshManager;
 
 	if (windowListener != nullptr)
 		delete windowListener;
@@ -115,7 +119,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	TiXmlDocument doc(resourcesFilePath);
 	if (!doc.LoadFile())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Root",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Root",
 			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
 		return false;
 	}
@@ -134,12 +138,15 @@ bool Root::initResources(const std::string &resourcesFilePath)
 
 	if (!resourcesElement)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, NORMAL, ERROR, "Root",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Root",
 			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
 		return false;
 	}
 
 	//Init all ResourceManagers here
+	meshManager = new MeshManager();
+	meshManager->initalizeFromResourcesFile(*resourcesElement);
+
 	gpuProgramStageManager = new GpuProgramStageManager();
 	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
 

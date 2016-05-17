@@ -2,7 +2,6 @@
 
 #include "../graphicsAPIs/gl4/GL4GpuProgramStage.h"
 #include "../renderer/GraphicsApiType.h"
-#include "../renderer/graphicsAPI/GpuProgramStageType.h"
 
 using namespace Lag;
 
@@ -18,8 +17,8 @@ GpuProgramStageFactory::GpuProgramStageFactory(const std::string &path, const st
 	graphicsApiType(graphicsApiType)
 {
 	if (gpuProgramStageType == "vertex") this->gpuProgramStageType = VERTEX;
-	else if (gpuProgramStageType == "tesselationControl") this->gpuProgramStageType = TESSELLATION_CONTROL;
-	else if (gpuProgramStageType == "tesselationEvaluation") this->gpuProgramStageType = TESSELLATION_EVALUATION;
+	else if (gpuProgramStageType == "tesselationControl") this->gpuProgramStageType = GpuProgramStageType::TESS_CONTROL;
+	else if (gpuProgramStageType == "tesselationEvaluation") this->gpuProgramStageType = GpuProgramStageType::TESS_EVALUATION;
 	else if (gpuProgramStageType == "geometry") this->gpuProgramStageType = GEOMETRY;
 	else if (gpuProgramStageType == "fragment") this->gpuProgramStageType = FRAGMENT;
 }

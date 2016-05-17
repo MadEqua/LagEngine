@@ -3,7 +3,6 @@
 #include <string>
 #include <fstream>
 
-#include "LogTypes.h"
 #include "../../core/SingletonPattern.h"
 
 #define LOG_FILE_NAME "LagEngineLog.txt"
@@ -11,6 +10,29 @@
 //TODO: add more flexibility
 namespace Lag
 {
+	enum LogOutput
+	{
+		CONSOLE,
+		FILE,
+		IDE
+	};
+
+	enum LogVerbosity
+	{
+		VERBOSE,
+		NORMAL,
+		MINIMAL
+	};
+
+	enum LogPriority
+	{
+		DEBUG,
+		INFO, 
+		ERROR, 
+		WARNING
+	};
+	
+	
 	class LogManager
 	{
 		GENERATE_SINGLETON(LogManager)

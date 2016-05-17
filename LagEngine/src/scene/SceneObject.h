@@ -4,7 +4,7 @@ namespace Lag
 {
 	class SceneNode;
 	
-	class SceneObject
+	class SceneObject 
 	{
 	public:
 		SceneObject();

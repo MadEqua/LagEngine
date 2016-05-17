@@ -1,6 +1,5 @@
 #include "MaterialManager.h"
 
-#include "../renderer/Material.h"
 #include "../io/log/LogManager.h"
 #include "MaterialFactory.h"
 #include "../io/tinyxml/tinyxml.h"
@@ -33,12 +32,12 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 
 		if (name.empty() || file.empty())
 		{
-			LogManager::getInstance().log(FILE, NORMAL, ERROR, "MaterialManager",
+			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "MaterialManager",
 				"A <material> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}
 
-		LogManager::getInstance().log(FILE, NORMAL, INFO, "MaterialManager",
+		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "MaterialManager",
 			"Material " + name + " has been declared from Resources file.");
 
 		MaterialFactory factory(file);

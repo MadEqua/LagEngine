@@ -36,12 +36,12 @@ bool Renderer::initialize(const GraphicsApiType graphicsApiType)
 		return false;
 	}
 
-	LogManager::getInstance().log(FILE, NORMAL, INFO, "Renderer", "Initialized successfully.");
+	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Renderer", "Initialized successfully.");
 }
 
 void Renderer::shutdown()
 {
-	LogManager::getInstance().log(FILE, NORMAL, INFO, "Renderer", "Destroyed successfully.");
+	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Renderer", "Destroyed successfully.");
 }
 
 void Renderer::addRenderTarget(const std::string &name, RenderTarget &renderTarget)
@@ -70,7 +70,7 @@ void Renderer::renderAllRenderTargets()
 		//Pass &pass = technique.getPass();
 
 		ShaderProgram &shaderProgram = material.getShaderProgram();
-		Renderable &renderableToFill = renderQueue.getNextSlotToFill();
+		//Renderable &renderableToFill = renderQueue.getNextSlotToFill();
 
 		//fill renderable
 	}

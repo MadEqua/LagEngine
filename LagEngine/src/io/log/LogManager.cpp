@@ -36,7 +36,7 @@ void LogManager::initLogFile()
 	}
 	else
 	{
-		log(CONSOLE, NORMAL, ERROR, LOG_FILE_NAME, "Failed to open log file.");
+		log(LogOutput::CONSOLE, LogVerbosity::NORMAL, LogPriority::ERROR, LOG_FILE_NAME, "Failed to open log file.");
 	}
 }
 

@@ -1,5 +1,6 @@
 #pragma once
 
+#include <string>
 #include "SceneObject.h"
 
 namespace Lag
@@ -15,6 +16,7 @@ namespace Lag
 	{
 	public:
 		Entity(Material &material, Mesh &mesh);
+		//Entity(const std::string &meshName, const std::string &materialName);
 		virtual ~Entity();
 
 		inline Material& getMaterial() const { return material; }

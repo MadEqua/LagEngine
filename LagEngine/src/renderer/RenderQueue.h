@@ -18,7 +18,7 @@ namespace Lag
 
 		void clear();
 
-		Renderable& getNextSlotToFill();
+		//Renderable& getNextSlotToFill();
 
 		void sort();
 
@@ -28,6 +28,6 @@ namespace Lag
 
 		//TODO: find out what's better: vector of pointers or actual Renderables.
 		//Pointers are better for sorting, but worse for fast sequential access.
-		std::vector<Renderable> queue;
+		//std::vector<Renderable> queue;
 	};
 }

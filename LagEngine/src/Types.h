@@ -2,6 +2,7 @@
 
 //Integers
 //1 byte
+typedef unsigned char byte;
 typedef unsigned char uint8;
 typedef char int8;
 
