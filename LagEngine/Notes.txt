@@ -2,8 +2,11 @@ TODO
 
 Short Term
 
+gpu program is really a resource? (are resources only coming from files?)
+create concrete managers, for the ones that need to create concrete graphicsapi objects
+
 implement techniques, passes, textures...
-define scenegraph through a xml file
+define scenegraph through a xml file or scene "mesh"
 Check and apply copy constructors good practices
 Rethink folder structure and VS filters
 coherency between tinyxml and ini parsers

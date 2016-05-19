@@ -18,6 +18,8 @@
 #include "resources/MaterialManager.h"
 #include "resources/MeshManager.h"
 
+#include "renderer/GpuBufferManager.h"
+
 #include "io/tinyxml/tinyxml.h"
 
 using namespace Lag;
@@ -35,6 +37,7 @@ Root::Root() :
 	gpuProgramManager(nullptr),
 	materialManager(nullptr),
 	meshManager(nullptr),
+	gpuBufferManager(nullptr),
 	windowListener(nullptr)
 {
 	//Initialize other singletons
@@ -65,6 +68,9 @@ void Root::destroy()
 		delete materialManager;
 	if (meshManager != nullptr)
 		delete meshManager;
+
+	if (gpuBufferManager != nullptr)
+		delete gpuBufferManager;
 
 	if (windowListener != nullptr)
 		delete windowListener;
@@ -105,6 +111,8 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	renderer->addRenderTarget("renderWindow", *renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
+
+	gpuBufferManager = new GpuBufferManager(parameters.graphicsApiType);
 
 	if (!initResources(parameters.resourcesFile))
 		return false;
@@ -150,7 +158,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	gpuProgramStageManager = new GpuProgramStageManager();
 	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
 
-	gpuProgramManager = new GpuProgramManager();	
+	gpuProgramManager = new GpuProgramManager();
 
 	materialManager = new MaterialManager();
 	materialManager->initalizeFromResourcesFile(*resourcesElement);

@@ -22,6 +22,8 @@ namespace Lag
 	class MaterialManager;
 	class MeshManager;
 
+	class GpuBufferManager;
+
 	class Root
 	{
 		GENERATE_SINGLETON(Root)
@@ -47,6 +49,8 @@ namespace Lag
 		inline MaterialManager& getMaterialManager() const { return *materialManager; }
 		inline MeshManager& getMeshManager() const { return *meshManager; }
 
+		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
+
 		void startRenderingLoop();
 		void stopRenderingLoop();
 
@@ -60,6 +64,8 @@ namespace Lag
 		GpuProgramManager *gpuProgramManager;
 		MaterialManager *materialManager;
 		MeshManager *meshManager;
+
+		GpuBufferManager *gpuBufferManager;
 
 
 		WindowListener *windowListener;

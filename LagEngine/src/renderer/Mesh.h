@@ -4,6 +4,12 @@
 
 namespace Lag
 {
+	class VertexData;
+	class IndexData;
+	
+	/*
+	* TODO: Support animations.
+	*/
 	class Mesh : public Resource
 	{
 	public:
@@ -12,5 +18,9 @@ namespace Lag
 
 		virtual bool load() override;
 		virtual void unload() override;
+
+	private:
+		VertexData *vertexData;
+		IndexData *indexData;
 	};
 }
