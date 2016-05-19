@@ -1,26 +1,30 @@
 #pragma once
 
 #include "../resources/Resource.h"
+#include <vector>
+#include <string>
 
 namespace Lag
 {
-	class VertexData;
-	class IndexData;
+	class SubMesh;
 	
 	/*
+	* Class that loads a mesh file using the Assimp library. 
+	* It depends on the SubMesh class which contains all the actual data. A mesh has at least one SubMesh.
+	* Usually associated with any number of Entities.
+	*
 	* TODO: Support animations.
 	*/
 	class Mesh : public Resource
 	{
 	public:
-		Mesh();
+		Mesh(const std::string &file);
 		~Mesh();
 
 		virtual bool load() override;
 		virtual void unload() override;
 
 	private:
-		VertexData *vertexData;
-		IndexData *indexData;
+		std::vector<SubMesh*> submeshes;
 	};
 }

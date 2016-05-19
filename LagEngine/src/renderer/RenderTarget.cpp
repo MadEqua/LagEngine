@@ -38,5 +38,5 @@ Viewport* RenderTarget::getViewport(const std::string &name) const
 	onPostRenderNotify();
 }*/
 
-DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, ARGS(), ARGS())
-DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, ARGS(), ARGS())
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())

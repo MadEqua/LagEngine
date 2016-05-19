@@ -32,12 +32,12 @@ void MeshManager::parseResourceDescription(const TiXmlElement &element)
 
 		if (name.empty() || file.empty())
 		{
-			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "MeshManager",
+			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "MeshManager",
 				"A <mesh> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}
 
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "MeshManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "MeshManager",
 			"Mesh " + name + " has been declared from Resources file.");
 
 		MeshFactory factory(file);

@@ -26,7 +26,7 @@ bool GpuProgramStage::load()
 	file.open(path);
 	if (!file.is_open())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "GpuProgramStage", "Cannot open code file: " + path);
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "GpuProgramStage", "Cannot open code file: " + path);
 		return false;
 	}
 

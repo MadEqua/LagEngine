@@ -29,7 +29,7 @@ void GpuBuffer::lock(uint32 offset, uint32 length)
 	}
 	else
 	{
-		return this->lock(offset, length);
+		return this->Buffer::lock(offset, length);
 	}
 }
 
@@ -45,11 +45,11 @@ void GpuBuffer::unlock()
 		mirrorBuffer->unlock();
 
 		//assuming writes happened. TODO: have an option to say the type of access on locking
-		updateFromMirror();
+		//updateFromMirror();
 	}
 	else
 	{
-		this->unlock();
+		this->Buffer::unlock();
 	}
 }
 
@@ -61,7 +61,7 @@ byte* GpuBuffer::map()
 	}
 	else
 	{
-		return this->map();
+		return this->Buffer::map();
 	}
 }
 
@@ -73,7 +73,7 @@ void GpuBuffer::unmap()
 	}
 	else
 	{
-		this->unmap();
+		this->Buffer::unmap();
 	}
 }
 
@@ -84,7 +84,7 @@ void GpuBuffer::write(uint32 offset, uint32 length, byte* src)
 		mirrorBuffer->write(offset, length, src);
 	}
 	else
-		this->write(offset, length, src);
+		this->Buffer::write(offset, length, src);
 }
 
 void GpuBuffer::read(uint32 offset, uint32 length, byte* dst)
@@ -94,7 +94,7 @@ void GpuBuffer::read(uint32 offset, uint32 length, byte* dst)
 		mirrorBuffer->read(offset, length, dst);
 	}
 	else
-		this->read(offset, length, dst);
+		this->Buffer::read(offset, length, dst);
 }
 
 
@@ -103,14 +103,14 @@ void GpuBuffer::updateFromMirror()
 	if (useMirror)
 	{
 		mirrorBuffer->lock(offsetLocked, lengthLocked);
-		this->lock(offsetLocked, lengthLocked);
+		this->Buffer::lock(offsetLocked, lengthLocked);
 
 		byte *src = mirrorBuffer->map();
 		byte *dst = this->map();
 
 		memcpy(dst, src, lengthLocked);
 
-		this->unlock();
+		this->Buffer::unlock();
 		mirrorBuffer->unlock();
 	}
 }

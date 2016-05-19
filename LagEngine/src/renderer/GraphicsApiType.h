@@ -4,6 +4,7 @@ namespace Lag
 {
 	enum GraphicsApiType
 	{
-		OPENGL_4, OPENGL_ES
+		LAG_GRAPHICS_API_TYPE_OPENGL_4, 
+		LAG_GRAPHICS_API_TYPE_OPENGL_ES
 	};
 }

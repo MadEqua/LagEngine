@@ -18,13 +18,13 @@ void Buffer::lock(uint32 offset, uint32 length)
 {
 	if (isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to lock an already locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to lock an area beyond buffer boundaries.");
 		return;
 	}
@@ -42,9 +42,9 @@ void Buffer::lock()
 
 void Buffer::unlock()
 {
-	if (isLocked)
+	if (!isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_WARNING,
 			"Buffer", "Trying to unlock a non-locked buffer.");
 		return;
 	}
@@ -57,13 +57,13 @@ byte* Buffer::map()
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to map a non-locked buffer.");
 		return nullptr;
 	}
 	else if (isMapped)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to map an already mapped buffer.");
 		return nullptr;
 	}
@@ -76,13 +76,13 @@ void Buffer::unmap()
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_WARNING,
 			"Buffer", "Trying to unmap a non-locked buffer.");
 		return;
 	}
 	else if (!isMapped)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_WARNING,
 			"Buffer", "Trying to unmap an non-mapped buffer.");
 		return;
 	}
@@ -95,13 +95,13 @@ void Buffer::write(uint32 offset, uint32 length, byte* src)
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to write into a non-locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to write beyond buffer boundaries.");
 		return;
 	}
@@ -113,13 +113,13 @@ void Buffer::read(uint32 offset, uint32 length, byte* dst)
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to read from a non-locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
 			"Buffer", "Trying to read beyond buffer boundaries.");
 		return;
 	}

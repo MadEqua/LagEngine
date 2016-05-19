@@ -10,22 +10,22 @@
 */
 
 //Add methods and storage allowing a class to be used as a Subject/Notifier of Observers/Listeners.
-#define GENERATE_OBSERVER_STORAGE(Type)\
+#define LAG_GENERATE_OBSERVER_STORAGE(Type)\
 protected:\
 std::forward_list<Type*> Type##observers;\
 public:\
 void registerObserver(Type &observer) { Type##observers.push_front(&observer); }\
 void unregisterObserver(Type &observer) { Type##observers.remove(&observer); }
 
-#define ARGS(...) __VA_ARGS__
+#define LAG_ARGS(...) __VA_ARGS__
 
 //Add a notifier method for Observers of <Type> with arbitrary name and arguments. This method notifies all registered Observers.
 //The method will have the same name as the one present on the Observer interface.
-//Example use: GENERATE_NOTIFY_METHOD(ISomeListener, onFooEvent, ARGS(int arg1, float arg2), ARGS(arg1, arg2))
+//Example use: GENERATE_NOTIFY_METHOD(ISomeListener, onFooEvent, LAG_ARGS(int arg1, float arg2), LAG_ARGS(arg1, arg2))
 
-#define DECLARE_NOTIFY_METHOD(Name, MethodArguments)\
+#define LAG_DECLARE_NOTIFY_METHOD(Name, MethodArguments)\
 protected:\
 void Name##Notify(MethodArguments);
 
-#define DEFINE_NOTIFY_METHOD(ClassName, Name, Type, MethodArguments, CallbackArgs)\
+#define LAG_DEFINE_NOTIFY_METHOD(ClassName, Name, Type, MethodArguments, CallbackArgs)\
 void ClassName##::Name##Notify(MethodArguments) { for (Type *obs : Type##observers) obs->Name(CallbackArgs); }

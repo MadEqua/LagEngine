@@ -15,9 +15,9 @@ namespace Lag
 	
 	class RenderTarget
 	{
-		GENERATE_OBSERVER_STORAGE(IRenderTargetListener)
-		DECLARE_NOTIFY_METHOD(onPreRender, ARGS())
-		DECLARE_NOTIFY_METHOD(onPostRender, ARGS())
+		LAG_GENERATE_OBSERVER_STORAGE(IRenderTargetListener)
+		LAG_DECLARE_NOTIFY_METHOD(onPreRender, LAG_ARGS())
+		LAG_DECLARE_NOTIFY_METHOD(onPostRender, LAG_ARGS())
 
 	public:
 		RenderTarget(uint32 width, uint32 height);

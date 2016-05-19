@@ -12,33 +12,33 @@ namespace Lag
 {
 	enum LogOutput
 	{
-		CONSOLE,
-		FILE,
-		IDE
+		LAG_LOG_OUT_CONSOLE,
+		LAG_LOG_OUT_FILE,
+		LAG_LOG_OUT_IDE
 	};
 
 	enum LogVerbosity
 	{
-		VERBOSE,
-		NORMAL,
-		MINIMAL
+		LAG_LOG_VERBOSITY_VERBOSE,
+		LAG_LOG_VERBOSITY_NORMAL,
+		LAG_LOG_VERBOSITY_MINIMAL
 	};
 
-	enum LogPriority
+	enum LogType
 	{
-		DEBUG,
-		INFO, 
-		ERROR, 
-		WARNING
+		LAG_LOG_TYPE_DEBUG,
+		LAG_LOG_TYPE_INFO, 
+		LAG_LOG_TYPE_ERROR, 
+		LAG_LOG_TYPE_WARNING
 	};
 	
 	
 	class LogManager
 	{
-		GENERATE_SINGLETON(LogManager)
+		LAG_GENERATE_SINGLETON(LogManager)
 
 	public:
-		void log(LogOutput whereTo, LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message);
+		void log(LogOutput whereTo, LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message);
 
 	private:
 		std::ofstream logFile;
@@ -46,7 +46,7 @@ namespace Lag
 		void initLogFile();
 		void closeLogFile();
 
-		void formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage) const;
+		void formatMessage(LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message, std::string &formattedMessage) const;
 		void printMessage(LogOutput whereTo, const std::string &formattedMessage);
 		void printToFile(const std::string &formattedMessage);
 

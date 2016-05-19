@@ -32,12 +32,12 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 
 		if (name.empty() || file.empty())
 		{
-			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "MaterialManager",
+			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "MaterialManager",
 				"A <material> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}
 
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "MaterialManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "MaterialManager",
 			"Material " + name + " has been declared from Resources file.");
 
 		MaterialFactory factory(file);

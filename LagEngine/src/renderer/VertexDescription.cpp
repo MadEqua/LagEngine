@@ -26,17 +26,17 @@ uint8 VertexAttribute::getTypeByteSize(VertexAttributeType type)
 {
 	switch (type)
 	{
-	case INT8:
-	case UINT8:
+	case LAG_VX_ATTR_TYPE_INT8:
+	case LAG_VX_ATTR_TYPE_UINT8:
 		return 1;
-	case HALF_FLOAT:
-	case FIXED:
-	case INT16:
-	case UINT16:
+	case LAG_VX_ATTR_TYPE_HALF_FLOAT:
+	case LAG_VX_ATTR_TYPE_FIXED:
+	case LAG_VX_ATTR_TYPE_INT16:
+	case LAG_VX_ATTR_TYPE_UINT16:
 		return 2;
-	case FLOAT:
-	case INT32:
-	case UINT32:
+	case LAG_VX_ATTR_TYPE_FLOAT:
+	case LAG_VX_ATTR_TYPE_INT32:
+	case LAG_VX_ATTR_TYPE_UINT32:
 		return 4;
 	default:
 		return 0;

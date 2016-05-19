@@ -26,12 +26,12 @@ namespace Lag
 
 	class Root
 	{
-		GENERATE_SINGLETON(Root)
+		LAG_GENERATE_SINGLETON(Root)
 
-		GENERATE_OBSERVER_STORAGE(IFrameListener)
-		DECLARE_NOTIFY_METHOD(onFrameStart, ARGS(float timePassed))
-		DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, ARGS(float timePassed))
-		DECLARE_NOTIFY_METHOD(onFrameEnd, ARGS(float timePassed))
+		LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
+		LAG_DECLARE_NOTIFY_METHOD(onFrameStart, LAG_ARGS(float timePassed))
+		LAG_DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, LAG_ARGS(float timePassed))
+		LAG_DECLARE_NOTIFY_METHOD(onFrameEnd, LAG_ARGS(float timePassed))
 
 
 	public:

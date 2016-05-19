@@ -23,7 +23,7 @@ GpuBufferManager::~GpuBufferManager()
 
 VertexBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, bool useMirrorBuffer)
 {
-	if (graphicsApiType == GraphicsApiType::OPENGL_4)
+	if (graphicsApiType == GraphicsApiType::LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
 		VertexBuffer *vb = new GL4VertexBuffer(vertexCount, vertexSizeBytes, useMirrorBuffer);
 		vertexBuffers.push_back(vb);
@@ -41,7 +41,7 @@ VertexDescription& GpuBufferManager::createVertexDescription()
 
 IndexBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirrorBuffer)
 {
-	if (graphicsApiType == GraphicsApiType::OPENGL_4)
+	if (graphicsApiType == GraphicsApiType::LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
 		IndexBuffer *ib = new GL4IndexBuffer(indexCount, indexSizeBytes, useMirrorBuffer);
 		indexBuffers.push_back(ib);

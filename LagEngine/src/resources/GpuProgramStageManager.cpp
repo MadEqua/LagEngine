@@ -37,12 +37,12 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 
 		if (name.empty() || file.empty() || type.empty())
 		{
-			LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "GpuProgramStageManager",
+			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
 				"A <shader> element on the Resources file does not contain all required elements: <name>, <file> and <type>");
 			return;
 		}
 
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "GpuProgramStageManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
 		GpuProgramStageFactory factory(file, type, 

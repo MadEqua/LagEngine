@@ -24,9 +24,9 @@
 
 using namespace Lag;
 
-DEFINE_NOTIFY_METHOD(Root, onFrameStart, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
-DEFINE_NOTIFY_METHOD(Root, onFrameRenderingQueued, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
-DEFINE_NOTIFY_METHOD(Root, onFrameEnd, IFrameListener, ARGS(float timePassed), ARGS(timePassed))
+LAG_DEFINE_NOTIFY_METHOD(Root, onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+LAG_DEFINE_NOTIFY_METHOD(Root, onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+LAG_DEFINE_NOTIFY_METHOD(Root, onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
 Root::Root() :
 	renderWindow(nullptr),
@@ -127,7 +127,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	TiXmlDocument doc(resourcesFilePath);
 	if (!doc.LoadFile())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Root",
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Root",
 			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
 		return false;
 	}
@@ -146,7 +146,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 
 	if (!resourcesElement)
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Root",
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Root",
 			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
 		return false;
 	}

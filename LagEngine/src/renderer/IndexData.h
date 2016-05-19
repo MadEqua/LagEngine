@@ -8,22 +8,20 @@ namespace Lag
 
 	enum IndexType
 	{
-		UINT8,
-		UINT16,
-		UINT32
+		LAG_IDX_TYPE_UINT8,
+		LAG_IDX_TYPE_UINT16,
+		LAG_IDX_TYPE_UINT32
 	};
 
-	class IndexDescription
+	/*class IndexDescription
 	{
 	public:
 		IndexDescription(IndexType type);
 		~IndexDescription();
-	
-		static uint8 getTypeByteSize(IndexType type);
 
 	private:
 		IndexType type;
-	};
+	};*/
 
 	/*
 	* Collects together all the index-related information used to render geometry.
@@ -32,11 +30,11 @@ namespace Lag
 	class IndexData
 	{
 	public:
-		IndexData(IndexType type);
+		IndexData();
 		~IndexData();
 
 		//How to interpret the indexes
-		IndexDescription indexDescription;
+		IndexType indexType;
 
 		//Where to get the index from
 		IndexBuffer *indexBuffer;
@@ -46,5 +44,7 @@ namespace Lag
 
 		//How many indices
 		uint32 indexCount;
+
+		static uint8 getTypeByteSize(IndexType type);
 	};
 }

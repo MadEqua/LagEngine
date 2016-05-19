@@ -16,11 +16,11 @@ GpuProgramStageFactory::GpuProgramStageFactory(const std::string &path, const st
 	path(path),
 	graphicsApiType(graphicsApiType)
 {
-	if (gpuProgramStageType == "vertex") this->gpuProgramStageType = VERTEX;
-	else if (gpuProgramStageType == "tesselationControl") this->gpuProgramStageType = GpuProgramStageType::TESS_CONTROL;
-	else if (gpuProgramStageType == "tesselationEvaluation") this->gpuProgramStageType = GpuProgramStageType::TESS_EVALUATION;
-	else if (gpuProgramStageType == "geometry") this->gpuProgramStageType = GEOMETRY;
-	else if (gpuProgramStageType == "fragment") this->gpuProgramStageType = FRAGMENT;
+	if (gpuProgramStageType == "vertex") this->gpuProgramStageType = LAG_GPU_PROG_STAGE_TYPE_VERTEX;
+	else if (gpuProgramStageType == "tesselationControl") this->gpuProgramStageType = GpuProgramStageType::LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
+	else if (gpuProgramStageType == "tesselationEvaluation") this->gpuProgramStageType = GpuProgramStageType::LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
+	else if (gpuProgramStageType == "geometry") this->gpuProgramStageType = LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
+	else if (gpuProgramStageType == "fragment") this->gpuProgramStageType = LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
 }
 
 GpuProgramStageFactory::~GpuProgramStageFactory()
@@ -29,7 +29,7 @@ GpuProgramStageFactory::~GpuProgramStageFactory()
 
 Resource* GpuProgramStageFactory::create() const
 {
-	if (graphicsApiType == OPENGL_4)
+	if (graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
 		return new GL4GpuProgramStage(path, gpuProgramStageType);
 	}

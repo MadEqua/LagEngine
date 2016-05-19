@@ -15,7 +15,7 @@ InitializationParameters::InitializationParameters() :
 
 	MSSAsamples(0),
 	sRGB(true),
-	graphicsApiType(OPENGL_4)
+	graphicsApiType(LAG_GRAPHICS_API_TYPE_OPENGL_4)
 {
 }
 
@@ -37,7 +37,7 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		sRGB = iniSettings.getFieldAsBasicType<bool>("sRGB", sRGB);
 
 		std::string gpuInterfaceStr = iniSettings.getFieldAsString("graphicsApiType", "OPENGL_4");
-		if (gpuInterfaceStr == "OPENGL_4") graphicsApiType = OPENGL_4;
+		if (gpuInterfaceStr == "OPENGL_4") graphicsApiType = LAG_GRAPHICS_API_TYPE_OPENGL_4;
 	}
 }
 

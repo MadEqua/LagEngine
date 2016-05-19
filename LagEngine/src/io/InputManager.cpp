@@ -13,10 +13,10 @@ InputManager::~InputManager()
 {
 }
 
-DEFINE_NOTIFY_METHOD(InputManager, onCursorMove, ICursorListener, ARGS(int x, int y), ARGS(x, y))
-DEFINE_NOTIFY_METHOD(InputManager, onButtonPressed, ICursorListener, ARGS(int x, int y, int button, int modifiers), ARGS(x, y, button, modifiers))
-DEFINE_NOTIFY_METHOD(InputManager, onButtonReleased, ICursorListener, ARGS(int x, int y, int button, int modifiers), ARGS(x, y, button, modifiers))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onCursorMove, ICursorListener, LAG_ARGS(int x, int y), LAG_ARGS(x, y))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onButtonPressed, ICursorListener, LAG_ARGS(int x, int y, int button, int modifiers), LAG_ARGS(x, y, button, modifiers))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onButtonReleased, ICursorListener, LAG_ARGS(int x, int y, int button, int modifiers), LAG_ARGS(x, y, button, modifiers))
 
-DEFINE_NOTIFY_METHOD(InputManager, onKeyPress, IKeyboardListener, ARGS(int key, int modifier), ARGS(key, modifier))
-DEFINE_NOTIFY_METHOD(InputManager, onKeyRelease, IKeyboardListener, ARGS(int key, int modifier), ARGS(key, modifier))
-DEFINE_NOTIFY_METHOD(InputManager, onKeyRepeat, IKeyboardListener, ARGS(int key, int modifier), ARGS(key, modifier))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onKeyPress, IKeyboardListener, LAG_ARGS(int key, int modifier), LAG_ARGS(key, modifier))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onKeyRelease, IKeyboardListener, LAG_ARGS(int key, int modifier), LAG_ARGS(key, modifier))
+LAG_DEFINE_NOTIFY_METHOD(InputManager, onKeyRepeat, IKeyboardListener, LAG_ARGS(int key, int modifier), LAG_ARGS(key, modifier))

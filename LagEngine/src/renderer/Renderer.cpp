@@ -29,19 +29,19 @@ bool Renderer::initialize(const GraphicsApiType graphicsApiType)
 {
 	switch (graphicsApiType)
 	{
-	case OPENGL_4:
+	case LAG_GRAPHICS_API_TYPE_OPENGL_4:
 		this->graphicsAPI = new GL4GraphicsAPI();
 		return true;
 	default:
 		return false;
 	}
 
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Renderer", "Initialized successfully.");
+	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Renderer", "Initialized successfully.");
 }
 
 void Renderer::shutdown()
 {
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "Renderer", "Destroyed successfully.");
+	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Renderer", "Destroyed successfully.");
 }
 
 void Renderer::addRenderTarget(const std::string &name, RenderTarget &renderTarget)

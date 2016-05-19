@@ -35,12 +35,12 @@ void Lag::MemoryBuffer::unmapImplementation()
 
 void MemoryBuffer::writeImplementation(uint32 offset, uint32 length, byte* src)
 {
-	memcpy(data + offset, src, length);
+	memcpy(data + offsetLocked + offset, src, length);
 }
 
 void MemoryBuffer::readImplementation(uint32 offset, uint32 length, byte* dst)
 {
-	memcpy(dst, data + offset, length);
+	memcpy(dst, data + offsetLocked + offset, length);
 }
 
 

@@ -17,6 +17,6 @@ MeshFactory::~MeshFactory()
 
 Resource* MeshFactory::create() const
 {
-	Mesh *m = new Mesh();
+	Mesh *m = new Mesh(file);
 	return m;
 }

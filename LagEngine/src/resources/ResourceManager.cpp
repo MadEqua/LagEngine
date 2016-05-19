@@ -9,7 +9,7 @@ using namespace Lag;
 
 ResourceManager::ResourceManager()
 {
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+	LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
 		"ResourceManager", "Initialized successfully.");
 }
 
@@ -20,11 +20,11 @@ ResourceManager::~ResourceManager()
 		pair.second->unload();
 		delete pair.second;
 
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
 			"ResourceManager", "Unloaded and deleted " + pair.first);
 	}
 
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+	LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
 		"ResourceManager", "Destroyed successfully.");
 }
 
@@ -50,17 +50,17 @@ void ResourceManager::add(const std::string &name, Resource *res)
 	auto it = resources.find(name);
 	if (it != resources.end())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING, "ResourceManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_WARNING, "ResourceManager",
 			"Adding a resource with an already existing name: " + name + ". Only considering the first one added.");
 	}
 	else if (!res->load())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::ERROR, "ResourceManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "ResourceManager",
 			"Failed to load Resource: " + name);
 	}
 	else
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "ResourceManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "ResourceManager",
 			"Successfully loaded Resource: " + name);
 		ok = true;
 	}
@@ -78,7 +78,7 @@ Resource* ResourceManager::get(const std::string &name) const
 	auto it = resources.find(fullName);
 	if (it == resources.end())
 	{
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::WARNING, "ResourceManager",
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_WARNING, "ResourceManager",
 			"Trying to get an unknown resource: " + name + ". Forgot to add it to the resources file? Did it fail to load? :)");
 		return nullptr;
 	}

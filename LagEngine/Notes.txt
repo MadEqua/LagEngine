@@ -3,6 +3,7 @@ TODO
 Short Term
 
 gpu program is really a resource? (are resources only coming from files?)
+allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...
 create concrete managers, for the ones that need to create concrete graphicsapi objects
 
 implement techniques, passes, textures...

@@ -2,35 +2,25 @@
 
 using namespace Lag;
 
-IndexDescription::IndexDescription(IndexType type) :
-	type(type)
-{
-}
-
-IndexDescription::~IndexDescription()
-{
-}
-
-uint8 IndexDescription::getTypeByteSize(IndexType type)
-{
-	switch (type)
-	{
-	case UINT8:
-		return 1;
-	case UINT16:
-		return 2;
-	case UINT32:
-		return 4;
-	default:
-		return 0;
-	}
-}
-
-IndexData::IndexData(IndexType type) :
-	indexDescription(type)
+IndexData::IndexData()
 {
 }
 
 IndexData::~IndexData()
 {
+}
+
+uint8 IndexData::getTypeByteSize(IndexType type)
+{
+	switch (type)
+	{
+	case LAG_IDX_TYPE_UINT8:
+		return 1;
+	case LAG_IDX_TYPE_UINT16:
+		return 2;
+	case LAG_IDX_TYPE_UINT32:
+		return 4;
+	default:
+		return 0;
+	}
 }

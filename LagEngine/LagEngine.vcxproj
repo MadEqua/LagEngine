@@ -191,6 +191,7 @@
     <ClCompile Include="src\renderer\Viewport.cpp" />
     <ClCompile Include="src\scene\Transform.cpp" />
     <ClCompile Include="src\renderer\VertexDescription.cpp" />
+    <ClCompile Include="src\renderer\SubMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\graphicsAPIs\gl4\GL4IndexBuffer.h" />
@@ -267,6 +268,7 @@
     <ClInclude Include="src\renderer\Viewport.h" />
     <ClInclude Include="src\scene\Transform.h" />
     <ClInclude Include="src\renderer\VertexDescription.h" />
+    <ClInclude Include="src\renderer\SubMesh.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt">

@@ -11,11 +11,11 @@ namespace Lag
 	class RenderWindow : public RenderTarget
 	{
 		//Observer Pattern stuff
-		GENERATE_OBSERVER_STORAGE(IWindowListener)
-		DECLARE_NOTIFY_METHOD(onMove, ARGS(int x, int y))
-		DECLARE_NOTIFY_METHOD(onResize, ARGS(int width, int height))
-		DECLARE_NOTIFY_METHOD(onClose, ARGS())
-		DECLARE_NOTIFY_METHOD(onFocusChange, ARGS(bool focused))
+		LAG_GENERATE_OBSERVER_STORAGE(IWindowListener)
+		LAG_DECLARE_NOTIFY_METHOD(onMove, LAG_ARGS(int x, int y))
+		LAG_DECLARE_NOTIFY_METHOD(onResize, LAG_ARGS(int width, int height))
+		LAG_DECLARE_NOTIFY_METHOD(onClose, LAG_ARGS())
+		LAG_DECLARE_NOTIFY_METHOD(onFocusChange, LAG_ARGS(bool focused))
 
 	public:
 		explicit RenderWindow(const InitializationParameters &parameters);

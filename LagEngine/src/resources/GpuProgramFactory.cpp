@@ -23,7 +23,7 @@ GpuProgramFactory::~GpuProgramFactory()
 
 Resource* GpuProgramFactory::create() const
 {
-	if (graphicsApiType == OPENGL_4)
+	if (graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
 		if (!stages.empty())
 			return new GL4GpuProgram(stages);

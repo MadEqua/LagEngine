@@ -16,10 +16,10 @@ LogManager::~LogManager()
 	closeLogFile();
 }
 
-void LogManager::log(LogOutput whereTo, LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message)
+void LogManager::log(LogOutput whereTo, LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message)
 {
 	std::string formattedMessage;
-	formatMessage(verbosity, priority, title, message, formattedMessage);
+	formatMessage(verbosity, type, title, message, formattedMessage);
 	printMessage(whereTo, formattedMessage);
 }
 
@@ -36,7 +36,7 @@ void LogManager::initLogFile()
 	}
 	else
 	{
-		log(LogOutput::CONSOLE, LogVerbosity::NORMAL, LogPriority::ERROR, LOG_FILE_NAME, "Failed to open log file.");
+		log(LogOutput::LAG_LOG_OUT_CONSOLE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, LOG_FILE_NAME, "Failed to open log file.");
 	}
 }
 
@@ -53,49 +53,49 @@ void LogManager::closeLogFile()
 	}
 }
 
-void LogManager::formatMessage(LogVerbosity verbosity, LogPriority priority, const std::string &title, const std::string &message, std::string &formattedMessage) const
+void LogManager::formatMessage(LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message, std::string &formattedMessage) const
 {
 	formattedMessage.clear();
 
 	uint32 size;
-	if (verbosity == MINIMAL)
+	if (verbosity == LAG_LOG_VERBOSITY_MINIMAL)
 		size = 10;
-	else if (verbosity == NORMAL)
-		size = 15;
-	else if (verbosity == VERBOSE)
-		size = 40;
+	else if (verbosity == LAG_LOG_VERBOSITY_NORMAL)
+		size = 20;
+	else if (verbosity == LAG_LOG_VERBOSITY_VERBOSE)
+		size = 45;
 
 	formattedMessage.reserve(title.size() + message.size() + size);
 
-	if (verbosity == VERBOSE)
+	if (verbosity == LAG_LOG_VERBOSITY_VERBOSE)
 	{
 		appendDateTimeToString(formattedMessage);
 		formattedMessage += " ";
 	}
 
-	if (priority == DEBUG)
-		formattedMessage += (verbosity == MINIMAL ? "[D]" : "[DEBUG]");
-	else if (priority == INFO)
-		formattedMessage += (verbosity == MINIMAL ? "[I]" : "[INFO]");
-	else if (priority == ERROR)
-		formattedMessage += (verbosity == MINIMAL ? "[E]" : "[ERROR]");
-	else if (priority == WARNING)
-		formattedMessage += (verbosity == MINIMAL ? "[W]" : "[WARNING]");
+	if (type == LAG_LOG_TYPE_DEBUG)
+		formattedMessage += (verbosity == LAG_LOG_VERBOSITY_MINIMAL ? "[D]" : "[DEBUG]");
+	else if (type == LAG_LOG_TYPE_INFO)
+		formattedMessage += (verbosity == LAG_LOG_VERBOSITY_MINIMAL ? "[I]" : "[INFO]");
+	else if (type == LAG_LOG_TYPE_ERROR)
+		formattedMessage += (verbosity == LAG_LOG_VERBOSITY_MINIMAL ? "[*E*]" : "[** ERROR **]");
+	else if (type == LAG_LOG_TYPE_WARNING)
+		formattedMessage += (verbosity == LAG_LOG_VERBOSITY_MINIMAL ? "[W]" : "[WARNING]");
 
 	formattedMessage += " [" + title + "] " + message;
 }
 
 void LogManager::printMessage(LogOutput whereTo, const std::string &formattedMessage)
 {
-	if (whereTo == CONSOLE)
+	if (whereTo == LAG_LOG_OUT_CONSOLE)
 	{
 		std::cout << formattedMessage << std::endl;
 	}
-	else if (whereTo == FILE)
+	else if (whereTo == LAG_LOG_OUT_FILE)
 	{
 		printToFile(formattedMessage);
 	}
-	else if (whereTo == IDE)
+	else if (whereTo == LAG_LOG_OUT_IDE)
 	{
 		//TODO
 	}

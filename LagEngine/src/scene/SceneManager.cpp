@@ -9,7 +9,7 @@ using namespace Lag;
 
 SceneManager::SceneManager()
 {
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+	LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
 		"SceneManager", "Initialized successfully.");
 }
 
@@ -19,7 +19,7 @@ SceneManager::~SceneManager()
 	for (auto &pair : sceneObjectMap)
 		delete pair.second;
 
-	LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO,
+	LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
 		"SceneManager", "Destroyed successfully.");
 }
 
