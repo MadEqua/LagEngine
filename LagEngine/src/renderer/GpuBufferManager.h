@@ -10,16 +10,20 @@ namespace Lag
 	class IndexBuffer;
 	class VertexBuffer;
 	class VertexDescription;
+	class IndexBufferFactory;
+	class VertexBufferFactory;
 
 	
 	/*
 	* Creates and manages all GpuBuffers. 
 	* Also creates and manages VertexDescriptions.
+	* Needs factories for Vx and Idx Buffers, because those types are graphicsAPI dependent. 
+	* Each implementation should provide this factories.
 	*/
 	class GpuBufferManager
 	{
 	public:
-		GpuBufferManager(GraphicsApiType graphicsApiType);
+		GpuBufferManager(VertexBufferFactory *vxBufferFactory, IndexBufferFactory *idxBufferFactory);
 		~GpuBufferManager();
 
 		VertexBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, bool useMirrorBuffer);
@@ -33,6 +37,7 @@ namespace Lag
 
 		std::vector<IndexBuffer*> indexBuffers;
 
-		GraphicsApiType graphicsApiType;
+		IndexBufferFactory *indexBufferFactory;
+		VertexBufferFactory *vertexBufferFactory;
 	};
 }

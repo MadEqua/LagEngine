@@ -1,15 +1,15 @@
 #include "GpuProgramStageManager.h"
 
 #include "../io/log/LogManager.h"
-#include "../renderer/GraphicsApiType.h"
 #include "GpuProgramStageFactory.h"
-#include "../Root.h"
+#include "../renderer/graphicsAPI/GpuProgramStage.h"
 
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-GpuProgramStageManager::GpuProgramStageManager()
+GpuProgramStageManager::GpuProgramStageManager(GpuProgramStageFactory *factory) :
+	ResourceManager(factory)
 {
 }
 
@@ -37,16 +37,27 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 
 		if (name.empty() || file.empty() || type.empty())
 		{
-			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
+			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
 				"A <shader> element on the Resources file does not contain all required elements: <name>, <file> and <type>");
 			return;
 		}
 
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "GpuProgramStageManager",
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
-		GpuProgramStageFactory factory(file, type, 
-			Root::getInstance().getInitializationParameters().graphicsApiType);
-		create(name, factory);
+		GpuProgramStageFactory *stageFactory = static_cast<GpuProgramStageFactory*>(factory);
+		stageFactory->path = file;
+		stageFactory->type = parseTypeFromString(type);
+		create(name);
 	}
+}
+
+GpuProgramStageType GpuProgramStageManager::parseTypeFromString(const std::string &type)
+{
+	if (type == "vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
+	else if (type == "tesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
+	else if (type == "tesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
+	else if (type == "geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
+	else if (type == "fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
+	else return LAG_GPU_PROG_STAGE_TYPE_UNKNOWN;
 }

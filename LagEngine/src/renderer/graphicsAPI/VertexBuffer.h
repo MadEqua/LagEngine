@@ -1,7 +1,7 @@
 ﻿#pragma once
 
 #include "../../Types.h"
-#include "GpuBuffer.h"
+#include "../GpuBuffer.h"
 
 namespace Lag
 {

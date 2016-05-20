@@ -1,6 +1,6 @@
-#include "GpuBuffer.h"
-#include "../../core/MemoryBuffer.h"
-#include "../../io/log/LogManager.h"
+	#include "GpuBuffer.h"
+#include "../core/MemoryBuffer.h"
+#include "../io/log/LogManager.h"
 
 using namespace Lag;
 

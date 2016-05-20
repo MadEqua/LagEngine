@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IResourceFactory.h"
+#include "../renderer/Material.h"
 
 #include <string>
 
@@ -9,12 +10,11 @@ namespace Lag
 	class MaterialFactory : public IResourceFactory
 	{
 	public:
-		MaterialFactory(const std::string &filePath);
-		~MaterialFactory();
+		MaterialFactory() {}
+		virtual ~MaterialFactory() {}
 
-		virtual Resource* create() const override;
+		virtual Material* create() const override { return new Material(file); }
 
-	private:
-		std::string filePath;
+		std::string file;
 	};
 }

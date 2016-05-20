@@ -42,7 +42,7 @@ GLFWRenderWindow::~GLFWRenderWindow()
 	glfwSetWindowFocusCallback(window, 0);
 	destroy();
 
-	LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, 
+	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, 
 		"GLFWRenderWindow", "Destroyed successfully.");
 }
 
@@ -50,7 +50,7 @@ bool GLFWRenderWindow::initialize()
 {
 	if (!glfwInit())
 	{
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"glfwInit()", "Cannot initialize GLFW.");
 		return false;
 	}
@@ -63,7 +63,7 @@ bool GLFWRenderWindow::initialize()
 		window = glfwCreateWindow(parameters.width, parameters.height, parameters.title.c_str(), NULL, NULL);
 		if (window == 0)
 		{
-			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
 				"glfwCreateWindow()", "Cannot create GLFW window.");
 			return false;
 		}
@@ -73,7 +73,7 @@ bool GLFWRenderWindow::initialize()
 		glfwSetWindowPosCallback(window, windowPosCallback);
 		glfwSetWindowFocusCallback(window, windowFocusCallback);
 
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"GLFWRenderWindow", "Initialized successfully.");
 
 		return true;

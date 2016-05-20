@@ -1,15 +1,15 @@
 #pragma once
 
+#include "../core/IFactory.h"
+
 namespace Lag
 {
 	class Resource;
 	
 	/*
-	* A class implementing this is responsible for the creation of a Resource type.
-	* Most likely will need some specific kind of internal parameters related to the construction, 
-	* allowing the build method to be parameter-less.
+	* Convenience class to make template/inheritance relations easier.
 	*/
-	class IResourceFactory
+	class IResourceFactory : public IFactory<Resource>
 	{
 	public:
 		IResourceFactory() {}

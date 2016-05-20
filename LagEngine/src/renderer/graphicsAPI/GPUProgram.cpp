@@ -50,7 +50,7 @@ GpuProgram::~GpuProgram()
 {
 }
 
-bool GpuProgram::load()
+/*bool GpuProgram::load()
 {
 	if (programStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX] == nullptr)
 	{
@@ -68,4 +68,4 @@ bool GpuProgram::load()
 
 void GpuProgram::unload()
 {
-}
+}*/

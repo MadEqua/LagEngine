@@ -42,7 +42,7 @@ namespace Lag
 		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
 		inline SceneManager& getSceneManager() const { return *sceneManager; }
-		inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
+		//inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
 
 		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
 		inline GpuProgramManager& getGpuProgramManager() const { return *gpuProgramManager; }

@@ -6,7 +6,8 @@
 
 using namespace Lag;
 
-MeshManager::MeshManager()
+MeshManager::MeshManager(MeshFactory *factory) :
+	ResourceManager(factory)
 {
 }
 
@@ -40,7 +41,8 @@ void MeshManager::parseResourceDescription(const TiXmlElement &element)
 		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "MeshManager",
 			"Mesh " + name + " has been declared from Resources file.");
 
-		MeshFactory factory(file);
-		create(name, factory);
+		MeshFactory *meshFactory = static_cast<MeshFactory*>(factory);
+		meshFactory->file = file;
+		create(name);
 	}
 }

@@ -4,13 +4,6 @@
 
 namespace Lag
 {
-	/*
-	* A Resource is any object that we don't want duplicates while using them. 
-	* They should be reutilized by any number of other objects depending on them. 
-	* This is accomplished by a Manager for each Resource type.
-	* Notable examples include objects loaded from the hard drive (Textures, GpuProgramStages, Meshes), 
-	* but also other "memory only" objects like GpuPrograms.
-	*/
 	class Resource
 	{
 	public:

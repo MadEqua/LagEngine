@@ -4,10 +4,12 @@
 
 namespace Lag
 {
+	class MaterialFactory;
+	
 	class MaterialManager : public ResourceManager
 	{
 	public:
-		MaterialManager();
+		MaterialManager(MaterialFactory *factory);
 		virtual ~MaterialManager();
 
 	protected:

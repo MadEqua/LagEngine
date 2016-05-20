@@ -1,6 +1,7 @@
 #pragma once
 
 #include "IResourceFactory.h"
+#include "../renderer/Mesh.h"
 
 #include <string>
 
@@ -9,12 +10,11 @@ namespace Lag
 	class MeshFactory : public IResourceFactory
 	{
 	public:
-		MeshFactory(const std::string &file);
-		~MeshFactory();
+		MeshFactory(){}
+		virtual ~MeshFactory(){}
 
-		virtual Resource* create() const override;
-	
-	private:
+		virtual Mesh* create() const override { return new Mesh(file); }
+
 		std::string file;
 	};
 }

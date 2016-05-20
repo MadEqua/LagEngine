@@ -14,8 +14,8 @@ namespace Lag
 	class VertexData
 	{
 	public:
-		VertexData();
-		~VertexData();
+		VertexData() {}
+		~VertexData() {};
 
 		//How to interpret the vertices
 		VertexDescription *vertexDescription;

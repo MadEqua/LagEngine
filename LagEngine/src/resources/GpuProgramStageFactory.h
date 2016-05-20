@@ -6,21 +6,19 @@
 namespace Lag
 {
 	enum GpuProgramStageType;
-	enum GraphicsApiType;
-	
+
+	/*
+	* To be overriden by each supported GraphicsAPI.
+	*/
 	class GpuProgramStageFactory : public IResourceFactory
 	{
 	public:
-		GpuProgramStageFactory(const std::string &path, GpuProgramStageType gpuProgramStageType, GraphicsApiType graphicsApiType);
-		GpuProgramStageFactory(const std::string &path,	const std::string &gpuProgramStageType, GraphicsApiType graphicsApiType);
-		
-		virtual ~GpuProgramStageFactory();
+		GpuProgramStageFactory() {}
+		virtual ~GpuProgramStageFactory() {}
 
-		virtual Resource* create() const override;
+		virtual Resource* create() const = 0;
 
-	private:
 		std::string path;
-		GpuProgramStageType gpuProgramStageType;
-		GraphicsApiType graphicsApiType;
+		GpuProgramStageType type;
 	};
 }

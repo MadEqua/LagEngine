@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../core/Buffer.h"
+#include "../core/Buffer.h"
 
 namespace Lag
 {

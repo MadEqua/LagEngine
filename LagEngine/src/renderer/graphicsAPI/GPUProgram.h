@@ -3,8 +3,6 @@
 #include <string>
 #include <vector>
 
-#include "../../resources/Resource.h"
-
 namespace Lag
 {
 	enum GpuProgramStageType;
@@ -15,15 +13,15 @@ namespace Lag
 	* Contains a set of GpuProgramStages, only the vertex stage is mandatory.
 	* Each GraphicsAPI implementation will have its own concrete version.
 	*/
-	class GpuProgram : public Resource
+	class GpuProgram
 	{
 	public:
 		GpuProgram(const std::vector<std::string> &names);
 		GpuProgram(const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgram();
 
-		virtual bool load() override;
-		virtual void unload() override;
+		//virtual bool load() override;
+		//virtual void unload() override;
 		
 		virtual bool link() = 0;
 

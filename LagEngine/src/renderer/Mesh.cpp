@@ -83,7 +83,7 @@ bool Mesh::load()
 	else idxSize = 4;
 
 	//create buffers
-	VertexBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, true);
+	VertexBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, false);
 	IndexBuffer *ib = nullptr;
 	if(idxCount > 0)
 		ib = bufferManager.createIndexBuffer(idxCount, idxSize, true);

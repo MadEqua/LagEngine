@@ -1,14 +1,17 @@
 #include "GpuBufferManager.h"
 
-#include "../graphicsAPIs/gl4/GL4VertexBuffer.h"
 #include "VertexDescription.h"
 
-#include "../graphicsAPIs/gl4/GL4IndexBuffer.h"
+#include "graphicsAPI/VertexBuffer.h"
+#include "graphicsAPI/IndexBuffer.h"
+#include "graphicsAPI/VertexBufferFactory.h"
+#include "graphicsAPI/IndexBufferFactory.h"
 
 using namespace Lag;
 
-GpuBufferManager::GpuBufferManager(GraphicsApiType graphicsApiType) :
-	graphicsApiType(graphicsApiType)
+GpuBufferManager::GpuBufferManager(VertexBufferFactory *vxBufferFactory, IndexBufferFactory *idxBufferFactory) :
+	vertexBufferFactory(vxBufferFactory),
+	indexBufferFactory(idxBufferFactory)
 {
 }
 
@@ -19,17 +22,20 @@ GpuBufferManager::~GpuBufferManager()
 
 	for (auto vd : vertexDescriptions)
 		delete vd;
+
+	delete indexBufferFactory;
+	delete vertexBufferFactory;
 }
 
 VertexBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, bool useMirrorBuffer)
 {
-	if (graphicsApiType == GraphicsApiType::LAG_GRAPHICS_API_TYPE_OPENGL_4)
-	{
-		VertexBuffer *vb = new GL4VertexBuffer(vertexCount, vertexSizeBytes, useMirrorBuffer);
-		vertexBuffers.push_back(vb);
-		return vb;
-	}
-	return nullptr;
+	vertexBufferFactory->vertexCount = vertexCount;
+	vertexBufferFactory->vertexSizeBytes = vertexSizeBytes;
+	vertexBufferFactory->useMirrorBuffer = useMirrorBuffer;
+
+	VertexBuffer *vb = vertexBufferFactory->create();
+	vertexBuffers.push_back(vb);
+	return vb;
 }
 
 VertexDescription& GpuBufferManager::createVertexDescription()
@@ -41,11 +47,11 @@ VertexDescription& GpuBufferManager::createVertexDescription()
 
 IndexBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirrorBuffer)
 {
-	if (graphicsApiType == GraphicsApiType::LAG_GRAPHICS_API_TYPE_OPENGL_4)
-	{
-		IndexBuffer *ib = new GL4IndexBuffer(indexCount, indexSizeBytes, useMirrorBuffer);
-		indexBuffers.push_back(ib);
-		return ib;
-	}
-	return nullptr;
+	indexBufferFactory->indexCount = indexCount;
+	indexBufferFactory->indexSizeBytes = indexSizeBytes;
+	indexBufferFactory->useMirrorBuffer = useMirrorBuffer;
+
+	IndexBuffer *ib = indexBufferFactory->create();
+	indexBuffers.push_back(ib);
+	return ib;
 }

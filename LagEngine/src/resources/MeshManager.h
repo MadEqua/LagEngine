@@ -4,10 +4,12 @@
 
 namespace Lag
 {
+	class MeshFactory;
+	
 	class MeshManager : public ResourceManager
 	{
 	public:
-		MeshManager();
+		MeshManager(MeshFactory *factory);
 		~MeshManager();
 
 	protected:

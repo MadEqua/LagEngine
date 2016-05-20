@@ -3,6 +3,8 @@
 #include <string>
 #include <unordered_map>
 
+#include "../core/Manager.h"
+
 class TiXmlElement;
 
 namespace Lag
@@ -15,25 +17,20 @@ namespace Lag
 	* Loads Resources on the act of adding them to itself. (no delayed load yet)
 	* Each concrete implementation can handle some Resource type from the XML resources file.
 	*/
-	class ResourceManager
+	class ResourceManager : public Manager<Resource>
 	{
 	public:
-		ResourceManager();
+		ResourceManager(IResourceFactory *factory);
 		virtual ~ResourceManager();
 
 		//TODO: pass some nicer structure instead of the XML file root?
 		void initalizeFromResourcesFile(const TiXmlElement &resourceFileRoot);
 
-		Resource* get(const std::string &name) const;
-		void create(const std::string &name, const IResourceFactory &factory);
-
-		//Consider using create() instead.
-		void add(const std::string &name, Resource *res);
+		virtual bool add(const std::string &name, Resource *res) override;
 
 	protected:
+
 		//Handle a specific resource description
 		virtual void parseResourceDescription(const TiXmlElement &element) = 0;
-		
-		std::unordered_map<std::string, Resource*> resources;
 	};
 }

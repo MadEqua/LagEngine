@@ -13,11 +13,20 @@
 #include "scene/SceneManager.h"
 #include "IFrameListener.h"
 
+#include "graphicsAPIs/gl4/GL4GpuProgramStageFactory.h"
 #include "resources/GpuProgramStageManager.h"
-#include "resources/GpuProgramManager.h"
+
+#include "graphicsAPIs/gl4/GL4GpuProgramFactory.h"
+#include "renderer/GpuProgramManager.h"
+
+#include "resources/MaterialFactory.h"
 #include "resources/MaterialManager.h"
+
+#include "resources/MeshFactory.h"
 #include "resources/MeshManager.h"
 
+#include "graphicsAPIs/gl4/GL4VertexBufferFactory.h"
+#include "graphicsAPIs/gl4/GL4IndexBufferFactory.h"
 #include "renderer/GpuBufferManager.h"
 
 #include "io/tinyxml/tinyxml.h"
@@ -111,8 +120,17 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	renderer->addRenderTarget("renderWindow", *renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
-
-	gpuBufferManager = new GpuBufferManager(parameters.graphicsApiType);
+	VertexBufferFactory *vertexBufferFactory = nullptr;
+	IndexBufferFactory *indexBufferFactory = nullptr;
+	GpuProgramFactory *gpuProgramFactory = nullptr;
+	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
+	{
+		vertexBufferFactory = new GL4VertexBufferFactory();
+		indexBufferFactory = new GL4IndexBufferFactory();
+		gpuProgramFactory = new GL4GpuProgramFactory();
+	}
+	gpuBufferManager = new GpuBufferManager(vertexBufferFactory, indexBufferFactory);
+	gpuProgramManager = new GpuProgramManager(gpuProgramFactory);
 
 	if (!initResources(parameters.resourcesFile))
 		return false;
@@ -151,16 +169,18 @@ bool Root::initResources(const std::string &resourcesFilePath)
 		return false;
 	}
 
-	//Init all ResourceManagers here
-	meshManager = new MeshManager();
+	//Initialize all ResourceManagers here
+	meshManager = new MeshManager(new MeshFactory());
 	meshManager->initalizeFromResourcesFile(*resourcesElement);
 
-	gpuProgramStageManager = new GpuProgramStageManager();
+	GpuProgramStageFactory *gpuProgramStageFactory = nullptr;
+	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
+		gpuProgramStageFactory = new GL4GpuProgramStageFactory();
+
+	gpuProgramStageManager = new GpuProgramStageManager(gpuProgramStageFactory);
 	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
 
-	gpuProgramManager = new GpuProgramManager();
-
-	materialManager = new MaterialManager();
+	materialManager = new MaterialManager(new MaterialFactory());
 	materialManager->initalizeFromResourcesFile(*resourcesElement);
 
 	return true;

@@ -6,7 +6,8 @@
 
 using namespace Lag;
 
-MaterialManager::MaterialManager()
+MaterialManager::MaterialManager(MaterialFactory *factory) :
+	ResourceManager(factory)
 {
 }
 
@@ -32,15 +33,16 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 
 		if (name.empty() || file.empty())
 		{
-			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "MaterialManager",
+			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "MaterialManager",
 				"A <material> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}
 
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "MaterialManager",
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "MaterialManager",
 			"Material " + name + " has been declared from Resources file.");
 
-		MaterialFactory factory(file);
-		create(name, factory);
+		MaterialFactory *materialFactory = static_cast<MaterialFactory*>(factory);
+		materialFactory->file = file;
+		create(name);
 	}
 }
