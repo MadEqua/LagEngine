@@ -4,14 +4,15 @@
 
 namespace Lag
 {
-	class GpuProgramStageFactory;
 	enum GpuProgramStageType;
 	
 	class GpuProgramStageManager : public ResourceManager
 	{
 	public:
-		GpuProgramStageManager(GpuProgramStageFactory *factory);
+		GpuProgramStageManager();
 		~GpuProgramStageManager();
+
+		virtual void create(const std::string &name, const std::string &file, GpuProgramStageType type) = 0;
 
 	protected:
 		virtual void parseResourceDescription(const TiXmlElement &element) override;

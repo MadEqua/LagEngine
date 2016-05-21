@@ -1,18 +1,22 @@
 #include "MaterialManager.h"
 
+#include "../renderer/Material.h"
 #include "../io/log/LogManager.h"
-#include "MaterialFactory.h"
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-MaterialManager::MaterialManager(MaterialFactory *factory) :
-	ResourceManager(factory)
+MaterialManager::MaterialManager()
 {
 }
 
 MaterialManager::~MaterialManager()
 {
+}
+
+void MaterialManager::create(const std::string &name, const std::string &file)
+{
+	add(name, new Material(file));
 }
 
 void MaterialManager::parseResourceDescription(const TiXmlElement &element)
@@ -41,8 +45,6 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "MaterialManager",
 			"Material " + name + " has been declared from Resources file.");
 
-		MaterialFactory *materialFactory = static_cast<MaterialFactory*>(factory);
-		materialFactory->file = file;
-		create(name);
+		create(name, file);
 	}
 }

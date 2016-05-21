@@ -1,8 +1,7 @@
 #include "Material.h"
 
 #include "../Root.h"
-#include "../renderer/GpuProgramManager.h"
-#include "../renderer/graphicsAPI/GpuProgramFactory.h"
+#include "../renderer/graphicsAPI/GpuProgramManager.h"
 #include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
 
@@ -30,10 +29,8 @@ bool Material::load()
 		combinedName += stageName;
 
 	GpuProgramManager &manager = root.getGpuProgramManager();
-	GpuProgramFactory *gpuProgramFactory = static_cast<GpuProgramFactory*>(manager.getFactory());
-	gpuProgramFactory->stagesNames = shaderStageNames; //copy :(
-	manager.create(combinedName);
-
+	manager.create(combinedName, shaderStageNames);
+	
 	loaded = true;
 	return true;
 }

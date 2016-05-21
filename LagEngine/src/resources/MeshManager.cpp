@@ -1,18 +1,22 @@
 #include "MeshManager.h"
 
+#include "../renderer/Mesh.h"
 #include "../io/log/LogManager.h"
-#include "MeshFactory.h"
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-MeshManager::MeshManager(MeshFactory *factory) :
-	ResourceManager(factory)
+MeshManager::MeshManager()
 {
 }
 
 MeshManager::~MeshManager()
 {
+}
+
+void MeshManager::create(const std::string &name, const std::string &file)
+{
+	add(name, new Mesh(file));
 }
 
 void MeshManager::parseResourceDescription(const TiXmlElement &element)
@@ -41,8 +45,6 @@ void MeshManager::parseResourceDescription(const TiXmlElement &element)
 		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_INFO, "MeshManager",
 			"Mesh " + name + " has been declared from Resources file.");
 
-		MeshFactory *meshFactory = static_cast<MeshFactory*>(factory);
-		meshFactory->file = file;
-		create(name);
+		create(name, file);
 	}
 }

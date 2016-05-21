@@ -1,15 +1,14 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
 #include "../core/Manager.h"
+#include "Resource.h"
 
 class TiXmlElement;
 
 namespace Lag
 {
-	class Resource;
 	class IResourceFactory;
 
 	/*
@@ -17,10 +16,10 @@ namespace Lag
 	* Loads Resources on the act of adding them to itself. (no delayed load yet)
 	* Each concrete implementation can handle some Resource type from the XML resources file.
 	*/
-	class ResourceManager : public Manager<Resource>
+	class ResourceManager : public Manager<std::string, Resource>
 	{
 	public:
-		ResourceManager(IResourceFactory *factory);
+		ResourceManager();
 		virtual ~ResourceManager();
 
 		//TODO: pass some nicer structure instead of the XML file root?

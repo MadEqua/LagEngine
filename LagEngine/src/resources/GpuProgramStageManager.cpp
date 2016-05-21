@@ -1,15 +1,13 @@
 #include "GpuProgramStageManager.h"
 
 #include "../io/log/LogManager.h"
-#include "GpuProgramStageFactory.h"
 #include "../renderer/graphicsAPI/GpuProgramStage.h"
 
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-GpuProgramStageManager::GpuProgramStageManager(GpuProgramStageFactory *factory) :
-	ResourceManager(factory)
+GpuProgramStageManager::GpuProgramStageManager()
 {
 }
 
@@ -45,10 +43,7 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "GpuProgramStageManager",
 			"GpuProgramStage " + name + " has been declared from Resources file.");
 
-		GpuProgramStageFactory *stageFactory = static_cast<GpuProgramStageFactory*>(factory);
-		stageFactory->path = file;
-		stageFactory->type = parseTypeFromString(type);
-		create(name);
+		create(name, file, parseTypeFromString(type));
 	}
 }
 

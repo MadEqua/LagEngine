@@ -1,14 +1,12 @@
 #include "ResourceManager.h"
 
 #include "Resource.h"
-#include "IResourceFactory.h"
 #include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-ResourceManager::ResourceManager(IResourceFactory *factory) :
-	Manager(factory)
+ResourceManager::ResourceManager()
 {
 }
 

@@ -4,36 +4,25 @@
 #include <unordered_map>
 
 #include "../io/log/LogManager.h"
-#include "IFactory.h"
 
 namespace Lag
 {
 	/*
-	* Generic class for managers that store a type mapped by name. 
-	*
-	* Depends on (and manages) a IFactory that can create the type T. This allows GraphicsAPI specific objects (like shaders)
-	* to only implement and override a simple Factory instead of deriving from a more complex Manager class.
+	* Generic class for managers that store a type mapped by a name.
 	*/
-	template<class T>
+	template<class K, class V>
 	class Manager
 	{
 	public:
-		Manager(IFactory<T> *factory);
+		Manager();
 		virtual ~Manager();
 
-		T* get(const std::string &name) const;
-
-		virtual bool create(const std::string &name);
-
-		virtual bool add(const std::string &name, T *obj);
-		
-		void remove(const std::string &name);
-
-		IFactory<T> *getFactory() const { return factory; }
+		V* get(const K &name) const;
+		virtual bool add(const K &name, V *obj);
+		void remove(const K &name);
 
 	protected:
-		std::unordered_map<std::string, T*> objects;
-		IFactory<T> *factory;
+		std::unordered_map<K, V*> objects;
 	};
 	
 
@@ -41,16 +30,15 @@ namespace Lag
 	/*
 	* DEFINITION HERE 'CAUSE C++ TEMPLATE COMPILATION...
 	*/
-	template<class T>
-	Manager<T>::Manager(IFactory<T> *factory) :
-		factory(factory)
+	template<class K, class V>
+	Manager<K, V>::Manager()
 	{
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"Manager", "Initialized successfully.");
 	}
 
-	template<class T>
-	Manager<T>::~Manager()
+	template<class K, class V>
+	Manager<K, V>::~Manager()
 	{
 		for (auto &pair : objects)
 		{
@@ -60,20 +48,14 @@ namespace Lag
 				"Manager", "Deleted " + pair.first);
 		}
 
-		delete factory;
+		//delete factory;
 
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"Manager", "Destroyed successfully.");
 	}
 
-	template<class T>
-	bool Manager<T>::create(const std::string &name)
-	{
-		return add(name, factory->create());
-	}
-
-	template<class T>
-	bool Manager<T>::add(const std::string &name, T *obj)
+	template<class K, class V>
+	bool Manager<K, V>::add(const K &name, V *obj)
 	{
 		auto it = objects.find(name);
 		if (it != objects.end())
@@ -93,8 +75,8 @@ namespace Lag
 		}
 	}
 
-	template<class T>
-	void Manager<T>::remove(const std::string &name)
+	template<class K, class V>
+	void Manager<K, V>::remove(const K &name)
 	{
 		auto it = objects.find(name);
 		if (it != objects.end())
@@ -102,7 +84,7 @@ namespace Lag
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 				"Manager", "Removing object with name: " + name);
 			delete it->second;
-			objects.erase(name);
+			objects.erase(it);
 		}
 		else
 		{
@@ -111,8 +93,8 @@ namespace Lag
 		}
 	}
 
-	template<class T>
-	T* Manager<T>::get(const std::string &name) const
+	template<class K, class V>
+	V* Manager<K,V>::get(const K &name) const
 	{
 		auto it = objects.find(name);
 		if (it == objects.end())
@@ -122,6 +104,6 @@ namespace Lag
 			return nullptr;
 		}
 
-		return objects.at(name);
+		return it->second;
 	}
 }

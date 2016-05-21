@@ -2,7 +2,7 @@
 
 #include "../io/log/LogManager.h"
 
-#include "GpuBufferManager.h"
+#include "graphicsAPI/GpuBufferManager.h"
 #include "../Root.h"
 
 #include "../Types.h"

@@ -4,13 +4,13 @@
 
 namespace Lag
 {
-	class MaterialFactory;
-	
 	class MaterialManager : public ResourceManager
 	{
 	public:
-		MaterialManager(MaterialFactory *factory);
+		MaterialManager();
 		virtual ~MaterialManager();
+
+		void create(const std::string &name, const std::string &file);
 
 	protected:
 		virtual void parseResourceDescription(const TiXmlElement &element) override;
