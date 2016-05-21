@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 #include "../resources/Resource.h"
 
@@ -19,13 +20,13 @@ namespace Lag
 	public:
 		Material(const std::string &filePath);
 		virtual ~Material();
-
-		virtual bool load() override;
-		virtual void unload() override;
 	
 		inline ShaderProgram& getShaderProgram() const { return *shaderProgram; }
 
 	private:
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
 		std::vector<std::string> shaderStageNames;
 		ShaderProgram *shaderProgram;
 

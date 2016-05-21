@@ -13,5 +13,5 @@ GL4GpuProgramStage::~GL4GpuProgramStage()
 
 bool GL4GpuProgramStage::compile()
 {
-	return false;
+	return true;
 }

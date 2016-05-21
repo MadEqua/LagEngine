@@ -15,8 +15,8 @@ GpuProgramStage::~GpuProgramStage()
 {
 }
 
-void GpuProgramStage::addUniformDescription(const std::string &name, GpuProgramUniformSize size, 
-	GpuProgramUniformType type, GpuProgramUniformSemantic semantic)
+void GpuProgramStage::addUniformDescription(const std::string &name, GpuProgramUniformSemantic semantic,
+	GpuProgramUniformSize size, GpuProgramUniformType type)
 {
 	GpuProgramUniformDescription desc;
 	desc.name = name;
@@ -26,11 +26,7 @@ void GpuProgramStage::addUniformDescription(const std::string &name, GpuProgramU
 	uniformDescriptions.push_back(desc);
 }
 
-void GpuProgramStage::unload()
-{
-}
-
-bool GpuProgramStage::load()
+bool GpuProgramStage::loadImplementation()
 {
 	std::ifstream file;
 	file.open(path);
@@ -52,7 +48,9 @@ bool GpuProgramStage::load()
 	if (!compile())
 		return false;
 
-	loaded = true;
-
 	return true;
+}
+
+void GpuProgramStage::unloadImplementation()
+{
 }

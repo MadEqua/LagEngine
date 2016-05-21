@@ -1,4 +1,5 @@
 #include "GL4GpuProgram.h"
+#include "GL4GpuProgramUniform.h"
 
 using namespace Lag;
 
@@ -18,10 +19,10 @@ GL4GpuProgram::~GL4GpuProgram()
 
 bool GL4GpuProgram::link()
 {
-	return false;
+	return true;
 }
 
 GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const
 {
-	return nullptr;
+	return new GL4GpuProgramUniform(description, dataLocation);
 }

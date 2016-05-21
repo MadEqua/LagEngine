@@ -18,7 +18,7 @@ namespace Lag
 	class GpuProgramUniforms
 	{
 	public:
-		GpuProgramUniforms(const GpuProgram &program, const std::vector<GpuProgramStage*> stages);
+		GpuProgramUniforms(const GpuProgram &program, const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgramUniforms();
 
 		void sendToGpu() const;

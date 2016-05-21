@@ -21,10 +21,10 @@ namespace Lag
 		Mesh(const std::string &file);
 		~Mesh();
 
-		virtual bool load() override;
-		virtual void unload() override;
-
 	private:
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
 		std::vector<SubMesh*> submeshes;
 	};
 }

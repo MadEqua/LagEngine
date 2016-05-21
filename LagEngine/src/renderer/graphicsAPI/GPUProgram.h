@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include "../../core/ManagedObject.h"
 
 namespace Lag
 {
@@ -18,24 +19,26 @@ namespace Lag
 	* Each GraphicsAPI implementation will have its own concrete version.
 	* which has the responsability of buildidng concrete GpuProgramUniforms also.
 	*/
-	class GpuProgram
+	class GpuProgram : public ManagedObject
 	{
 	public:
 		GpuProgram(const std::vector<std::string> &names);
 		GpuProgram(const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgram();
 
-		//virtual bool load() override;
-		//virtual void unload() override;
-		
-		virtual bool link() = 0;
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const = 0;
-
+		
 		inline bool hasStage(GpuProgramStageType stageType) const {return programStages[stageType] != nullptr; }
 
-	private:
+	protected:
+
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
+		virtual bool link() = 0;
+
 		static const int PROGRAM_STAGE_COUNT = 5;
-		GpuProgramStage* programStages[PROGRAM_STAGE_COUNT];
+		std::vector<GpuProgramStage*> programStages;
 
 		GpuProgramUniforms *uniforms;
 

@@ -29,18 +29,19 @@ namespace Lag
 		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);
 		virtual ~GpuProgramStage();
 
-		void addUniformDescription(const std::string &name, GpuProgramUniformSize size, 
-			GpuProgramUniformType type, GpuProgramUniformSemantic semantic);
+		void addUniformDescription(const std::string &name, GpuProgramUniformSemantic semantic,
+			GpuProgramUniformSize size = LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN, 
+			GpuProgramUniformType type = LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN);
 		
 		inline GpuProgramStageType getType() const { return type; }
 		inline const std::vector<GpuProgramUniformDescription>& getUniformDescriptions() const { return uniformDescriptions; }
 
 		virtual bool compile() = 0;
 
-		virtual bool load() override;
-		virtual void unload() override;
-
 	protected:
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
 		GpuProgramStageType type;
 		std::string code;
 

@@ -11,9 +11,9 @@ namespace Lag
 		GL4GpuProgramStageManager() {}
 		~GL4GpuProgramStageManager() {}
 
-		virtual void create(const std::string &name, const std::string &file, GpuProgramStageType type) override 
+		virtual bool create(const std::string &name, const std::string &file, GpuProgramStageType type) override 
 		{
-			add(name, new GL4GpuProgramStage(file, type));
+			return add(name, new GL4GpuProgramStage(file, type));
 		}
 	};
 }

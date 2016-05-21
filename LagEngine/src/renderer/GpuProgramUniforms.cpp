@@ -8,20 +8,24 @@
 using namespace Lag;
 
 GpuProgramUniforms::GpuProgramUniforms(const GpuProgram &program, 
-	const std::vector<GpuProgramStage*> stages) :
-	program(program)
+	const std::vector<GpuProgramStage*> &stages) :
+	program(program),
+	dataPool(1)
 {
 	uint32 byteSize = 0;
 	byte *location = dataPool.data();
 	for (GpuProgramStage *stage : stages)
 	{
-		auto &descriptions = stage->getUniformDescriptions();
-		for (const GpuProgramUniformDescription &desc : descriptions)
+		if (stage != nullptr)
 		{
-			GpuProgramUniform *un = program.createUniform(desc, location);
-			uint8 unSize = desc.getSizeBytes();
-			location += unSize;
-			byteSize += unSize;
+			auto &descriptions = stage->getUniformDescriptions();
+			for (const GpuProgramUniformDescription &desc : descriptions)
+			{
+				GpuProgramUniform *un = program.createUniform(desc, location);
+				uint8 unSize = desc.getSizeBytes();
+				location += unSize;
+				byteSize += unSize;
+			}
 		}
 	}
 	dataPool.reserve(byteSize);

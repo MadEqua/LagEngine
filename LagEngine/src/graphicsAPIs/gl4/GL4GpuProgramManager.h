@@ -12,14 +12,14 @@ namespace Lag
 		GL4GpuProgramManager() {}
 		virtual ~GL4GpuProgramManager() {}
 
-		virtual void create(const std::string &name, const std::vector<std::string> &stagesNames) override
+		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) override
 		{
-			add(name, new GL4GpuProgram(stagesNames));
+			return add(name, new GL4GpuProgram(stagesNames));
 		}
 
-		virtual void create(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
+		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
 		{
-			add(name, new GL4GpuProgram(stages));
+			return add(name, new GL4GpuProgram(stages));
 		}
 	};
 }

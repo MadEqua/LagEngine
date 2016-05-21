@@ -123,6 +123,12 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	renderWindow->registerObserver(*windowListener);
 
+	//Load the declared resources
+	meshManager->loadAll();
+	materialManager->loadAll();
+	gpuProgramStageManager->loadAll();
+	gpuProgramManager->loadAll();
+
 	return true;
 }
 
@@ -157,15 +163,15 @@ bool Root::initResources(const std::string &resourcesFilePath)
 
 	//Initialize all ResourceManagers here
 	meshManager = new MeshManager();
-	meshManager->initalizeFromResourcesFile(*resourcesElement);
+	meshManager->parseResourceFile(*resourcesElement);
 
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 		gpuProgramStageManager = new GL4GpuProgramStageManager();
 
-	gpuProgramStageManager->initalizeFromResourcesFile(*resourcesElement);
+	gpuProgramStageManager->parseResourceFile(*resourcesElement);
 
 	materialManager = new MaterialManager();
-	materialManager->initalizeFromResourcesFile(*resourcesElement);
+	materialManager->parseResourceFile(*resourcesElement);
 
 	return true;
 }

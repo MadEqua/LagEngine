@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\ManagedObject.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramUniform.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4IndexBuffer.cpp" />
@@ -188,6 +189,7 @@
     <ClCompile Include="src\renderer\SubMesh.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\ManagedObject.h" />
     <ClInclude Include="src\core\Manager.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramManager.h" />

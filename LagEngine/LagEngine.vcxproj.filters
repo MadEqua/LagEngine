@@ -183,6 +183,9 @@
     <ClCompile Include="src\renderer\graphicsAPI\GpuBufferManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\core\ManagedObject.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -396,6 +399,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\ManagedObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

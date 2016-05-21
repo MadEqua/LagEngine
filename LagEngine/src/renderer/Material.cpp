@@ -16,7 +16,7 @@ Material::~Material()
 {
 }
 
-bool Material::load()
+bool Material::loadImplementation()
 {
 	Root &root = Root::getInstance();
 	
@@ -29,9 +29,9 @@ bool Material::load()
 		combinedName += stageName;
 
 	GpuProgramManager &manager = root.getGpuProgramManager();
-	manager.create(combinedName, shaderStageNames);
-	
-	loaded = true;
+	if (!manager.create(combinedName, shaderStageNames))
+		return false;
+
 	return true;
 }
 
@@ -68,17 +68,28 @@ bool Material::parse()
 	}
 
 	//TODO: check for techniques and passes, not shaders
+	const TiXmlElement *shaderElement = nullptr;
 	for (const TiXmlElement* child = materialElement->FirstChildElement();
-		child != NULL;
+		child != 0;
 		child = child->NextSiblingElement())
 	{
 		if (child->ValueStr() == "shader")
-			shaderStageNames.push_back(child->GetText());
+		{
+			shaderElement = child;
+			break;
+		}
 	}
+
+	if (shaderElement == nullptr)
+		return false;
+
+	const char* name = shaderElement->Attribute("name");
+	if (name)
+		shaderStageNames.push_back(name);
 
 	return true;
 }
 
-void Material::unload()
+void Material::unloadImplementation()
 {
 }

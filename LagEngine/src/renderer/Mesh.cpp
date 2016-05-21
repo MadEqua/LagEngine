@@ -32,7 +32,7 @@ Mesh::~Mesh()
 		delete sm;
 }
 
-bool Mesh::load()
+bool Mesh::loadImplementation()
 {
 	Assimp::Importer importer;
 	
@@ -199,6 +199,6 @@ bool Mesh::load()
 	return true;
 }
 
-void Mesh::unload()
+void Mesh::unloadImplementation()
 {
 }

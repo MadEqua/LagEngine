@@ -5,7 +5,7 @@
 
 namespace Lag
 {
-	class GpuProgramUniformDescription;	
+	struct GpuProgramUniformDescription;	
 	
 	/*
 	* Represents an Uniform instance i.e. in use by a GpuProgram.

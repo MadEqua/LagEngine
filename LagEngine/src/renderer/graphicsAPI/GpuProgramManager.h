@@ -10,14 +10,14 @@ namespace Lag
 {
 	class GpuProgramStage;
 	
-	class GpuProgramManager : public Manager<std::string, GpuProgram>
+	class GpuProgramManager : public Manager<std::string>
 	{
 
 	public:
-		GpuProgramManager() {}
+		GpuProgramManager() : Manager("GpuProgramManager") {}
 		virtual ~GpuProgramManager() {}
 
-		virtual void create(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
-		virtual void create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;
+		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
+		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;
 	};
 }

@@ -3,107 +3,143 @@
 #include <string>
 #include <unordered_map>
 
+#include "ManagedObject.h"
 #include "../io/log/LogManager.h"
 
 namespace Lag
 {
 	/*
-	* Generic class for managers that store a type mapped by a name.
+	* Generic class for managers that store a objects mapped by a name.
+	* Loads and unloads can be decoupled from adds.
 	*/
-	template<class K, class V>
+	template<class K>
 	class Manager
 	{
 	public:
-		Manager();
+		Manager(const std::string &logTag);
 		virtual ~Manager();
 
-		V* get(const K &name) const;
-		virtual bool add(const K &name, V *obj);
+		ManagedObject* get(const K &name) const;
+		virtual bool add(const K &name, ManagedObject *obj);
 		void remove(const K &name);
 
+		void loadAll();
+		void unloadAll();
+
 	protected:
-		std::unordered_map<K, V*> objects;
+		std::unordered_map<K, ManagedObject*> objects;
+		std::string logTag;
 	};
-	
+
 
 
 	/*
 	* DEFINITION HERE 'CAUSE C++ TEMPLATE COMPILATION...
 	*/
-	template<class K, class V>
-	Manager<K, V>::Manager()
+	template<class K>
+	Manager<K>::Manager(const std::string &logTag) :
+		logTag(logTag)
 	{
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-			"Manager", "Initialized successfully.");
+			logTag, "Initialized successfully.");
 	}
 
-	template<class K, class V>
-	Manager<K, V>::~Manager()
+	template<class K>
+	Manager<K>::~Manager()
 	{
+		unloadAll();
+
 		for (auto &pair : objects)
 		{
 			delete pair.second;
 
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-				"Manager", "Deleted " + pair.first);
+				logTag, "Deleted " + pair.first);
 		}
 
-		//delete factory;
-
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-			"Manager", "Destroyed successfully.");
+			logTag, "Destroyed successfully.");
 	}
 
-	template<class K, class V>
-	bool Manager<K, V>::add(const K &name, V *obj)
+	template<class K>
+	bool Manager<K>::add(const K &name, ManagedObject *obj)
 	{
 		auto it = objects.find(name);
 		if (it != objects.end())
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
-				"Manager", "Trying to add an object with an already existing name: " + name + ". Only considering the first one added.");
+				logTag, "Trying to add an object with an already existing name: " + name + ". Only considering the first one added.");
 			delete obj;
 			return false;
 		}
 		else
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-				"Manager", "Successfully added object: " + name);
+				logTag, "Successfully added object: " + name);
 
 			objects[name] = obj;
 			return true;
 		}
 	}
 
-	template<class K, class V>
-	void Manager<K, V>::remove(const K &name)
+	template<class K>
+	void Manager<K>::remove(const K &name)
 	{
 		auto it = objects.find(name);
 		if (it != objects.end())
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-				"Manager", "Removing object with name: " + name);
+				logTag, "Removing object with name: " + name);
 			delete it->second;
 			objects.erase(it);
 		}
 		else
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
-				"Manager", "Trying to remove a non-existent object: " + name);
+				logTag, "Trying to remove a non-existent object: " + name);
 		}
 	}
 
-	template<class K, class V>
-	V* Manager<K,V>::get(const K &name) const
+	template<class K>
+	ManagedObject* Manager<K>::get(const K &name) const
 	{
 		auto it = objects.find(name);
 		if (it == objects.end())
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
-				"Manager", "Trying to get an unknown object: " + name);
+				logTag, "Trying to get an unknown object: " + name);
 			return nullptr;
 		}
 
 		return it->second;
+	}
+
+
+	template<class K>
+	void Manager<K>::loadAll()
+	{
+		for (auto &pair : objects)
+		{
+			if (pair.second->load())
+				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+					logTag, "Loaded Resource: " + pair.first);
+			else
+				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+					logTag, "Failed to load Resource: " + pair.first);
+		}
+	}
+
+	template<class K>
+	void Manager<K>::unloadAll()
+	{
+		for (auto &pair : objects)
+		{
+			if (pair.second->isLoaded())
+			{
+				pair.second->unload();
+				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+					logTag, "Unloaded Resource: " + pair.first);
+			}
+		}
 	}
 }
