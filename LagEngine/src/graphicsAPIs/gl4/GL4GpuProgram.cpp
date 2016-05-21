@@ -20,3 +20,8 @@ bool GL4GpuProgram::link()
 {
 	return false;
 }
+
+GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const
+{
+	return nullptr;
+}

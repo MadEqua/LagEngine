@@ -137,6 +137,7 @@
     <ClCompile Include="src\graphicsAPIs\gl4\GL4VertexBuffer.cpp" />
     <ClCompile Include="src\renderer\GpuBufferManager.cpp" />
     <ClCompile Include="src\renderer\GpuBuffer.cpp" />
+    <ClCompile Include="src\renderer\GpuProgramUniformDescription.cpp" />
     <ClCompile Include="src\resources\MaterialManager.cpp" />
     <ClCompile Include="src\resources\MeshManager.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgram.cpp">
@@ -166,7 +167,7 @@
     <ClCompile Include="src\renderer\RenderQueue.cpp" />
     <ClCompile Include="src\scene\SceneObject.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgram.cpp" />
-    <ClCompile Include="src\renderer\GpuProgramStageUniforms.cpp" />
+    <ClCompile Include="src\renderer\GpuProgramUniforms.cpp" />
     <ClCompile Include="src\scene\SceneGraph.cpp" />
     <ClCompile Include="src\io\ini\IniSettings.cpp" />
     <ClCompile Include="src\io\ini\IniParser.cpp" />
@@ -193,7 +194,6 @@
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStageFactory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4IndexBufferFactory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4VertexBufferFactory.h" />
-    <ClInclude Include="src\renderer\graphicsAPI\GpuProgramUniformFactory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramUniform.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4IndexBuffer.h" />
@@ -206,6 +206,7 @@
     <ClInclude Include="src\graphicsAPIs\gl4\GL4VertexBuffer.h" />
     <ClInclude Include="src\renderer\GpuBufferManager.h" />
     <ClInclude Include="src\renderer\GpuBuffer.h" />
+    <ClInclude Include="src\renderer\GpuProgramUniformDescription.h" />
     <ClInclude Include="src\resources\IResourceFactory.h" />
     <ClInclude Include="src\resources\MeshFactory.h" />
     <ClInclude Include="src\resources\MeshManager.h" />
@@ -244,7 +245,7 @@
     <ClInclude Include="src\scene\SceneNode.h" />
     <ClInclude Include="src\scene\SceneObject.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgram.h" />
-    <ClInclude Include="src\renderer\GpuProgramStageUniforms.h" />
+    <ClInclude Include="src\renderer\GpuProgramUniforms.h" />
     <ClInclude Include="src\scene\SceneGraph.h" />
     <ClInclude Include="src\core\SingletonPattern.h" />
     <ClInclude Include="src\io\ini\IniSettings.h" />

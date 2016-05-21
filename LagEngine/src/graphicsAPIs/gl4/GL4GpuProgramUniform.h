@@ -7,9 +7,7 @@ namespace Lag
 	class GL4GpuProgramUniform : public GpuProgramUniform
 	{
 	public:
-		GL4GpuProgramUniform(uint32 location, GpuProgramUniformSize size,
-			GpuProgramUniformType type, GpuProgramUniformSemantic semantic,
-			void* dataLocation);
+		GL4GpuProgramUniform(const GpuProgramUniformDescription &description, void* dataLocation);
 		~GL4GpuProgramUniform();
 
 	protected:

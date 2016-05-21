@@ -1,43 +1,24 @@
 #pragma once
 
 #include <string>
-
 #include "../../Types.h"
 
 namespace Lag
 {
-	enum GpuProgramUniformSize
-	{
-		LAG_GPU_PROG_UNIFORM_SIZE_1,
-		LAG_GPU_PROG_UNIFORM_SIZE_2,
-		LAG_GPU_PROG_UNIFORM_SIZE_3,
-		LAG_GPU_PROG_UNIFORM_SIZE_4
-	};
+	class GpuProgramUniformDescription;	
 	
-	enum GpuProgramUniformType
-	{
-		LAG_GPU_PROG_UNIFORM_TYPE_BOOL,
-		LAG_GPU_PROG_UNIFORM_TYPE_FLOAT,
-		LAG_GPU_PROG_UNIFORM_TYPE_INT32,
-		LAG_GPU_PROG_UNIFORM_TYPE_UINT32,
-		LAG_GPU_PROG_UNIFORM_TYPE_SAMPLER,	
-		LAG_GPU_PROG_UNIFORM_TYPE_MATRIX
-	};
-
-	enum GpuProgramUniformSemantic
-	{
-		LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_MVP_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_CUSTOM
-	};
-	
+	/*
+	* Represents an Uniform instance i.e. in use by a GpuProgram.
+	*
+	* Its value is stored in a memory location managed by GpuProgramUniforms to 
+	* avoid each Uniform having to allocate its own memory, leading to lots of fragmentation.
+	* 
+	* Each GraphicsAPI will have a concrete implementation.
+	*/
 	class GpuProgramUniform
 	{
 	public:
-		GpuProgramUniform(uint32 location, GpuProgramUniformSize size, 
-			GpuProgramUniformType type, GpuProgramUniformSemantic semantic,
-			void* dataLocation);
+		GpuProgramUniform(const GpuProgramUniformDescription &description, void* dataLocation);
 		virtual ~GpuProgramUniform();
 
 		template<class T>
@@ -50,21 +31,16 @@ namespace Lag
 
 		void sendToGpu();
 
-		uint8 getSize() const;
-		uint8 getSizeBytes() const;
+		const GpuProgramUniformDescription& getGpuProgramUniformDescription() const { return description; }
 
 	protected:
 		virtual void sendToGpuImpl() const = 0;
 
 		void internalSetValue(void* value);
 
-		uint32 location;
+		const GpuProgramUniformDescription &description;
 
-		GpuProgramUniformSize size;
-		GpuProgramUniformType type;
-		GpuProgramUniformSemantic semantic;
-
-		//Pointing to memory managed by GpuProgramStageUniforms
+		//Pointing to memory managed by GpuProgramUniforms
 		void* dataPtr;
 		
 		//Changed but not sent to Gpu

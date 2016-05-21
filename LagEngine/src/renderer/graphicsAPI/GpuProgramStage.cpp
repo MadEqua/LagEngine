@@ -15,9 +15,19 @@ GpuProgramStage::~GpuProgramStage()
 {
 }
 
+void GpuProgramStage::addUniformDescription(const std::string &name, GpuProgramUniformSize size, 
+	GpuProgramUniformType type, GpuProgramUniformSemantic semantic)
+{
+	GpuProgramUniformDescription desc;
+	desc.name = name;
+	desc.size = size;
+	desc.type = type;
+	desc.semantic = semantic;
+	uniformDescriptions.push_back(desc);
+}
+
 void GpuProgramStage::unload()
 {
-
 }
 
 bool GpuProgramStage::load()

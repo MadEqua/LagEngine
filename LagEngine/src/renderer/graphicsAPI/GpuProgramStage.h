@@ -1,8 +1,10 @@
 #pragma once
 
 #include <string>
+#include <vector>
 
 #include "../../resources/Resource.h"
+#include "../GpuProgramUniformDescription.h"
 
 namespace Lag
 {
@@ -27,7 +29,11 @@ namespace Lag
 		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);
 		virtual ~GpuProgramStage();
 
+		void addUniformDescription(const std::string &name, GpuProgramUniformSize size, 
+			GpuProgramUniformType type, GpuProgramUniformSemantic semantic);
+		
 		inline GpuProgramStageType getType() const { return type; }
+		inline const std::vector<GpuProgramUniformDescription>& getUniformDescriptions() const { return uniformDescriptions; }
 
 		virtual bool compile() = 0;
 
@@ -37,5 +43,8 @@ namespace Lag
 	protected:
 		GpuProgramStageType type;
 		std::string code;
+
+		//Details of the Uniforms declared for this stage
+		std::vector<GpuProgramUniformDescription> uniformDescriptions;
 	};
 }

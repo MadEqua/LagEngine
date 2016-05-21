@@ -29,9 +29,10 @@ bool Material::load()
 	for (std::string &stageName : shaderStageNames)
 		combinedName += stageName;
 
-	GpuProgramFactory *gpuProgramFactory = static_cast<GpuProgramFactory*>(root.getGpuProgramManager().getFactory());
+	GpuProgramManager &manager = root.getGpuProgramManager();
+	GpuProgramFactory *gpuProgramFactory = static_cast<GpuProgramFactory*>(manager.getFactory());
 	gpuProgramFactory->stagesNames = shaderStageNames; //copy :(
-	root.getGpuProgramManager().create(combinedName);
+	manager.create(combinedName);
 
 	loaded = true;
 	return true;
@@ -83,5 +84,4 @@ bool Material::parse()
 
 void Material::unload()
 {
-
 }

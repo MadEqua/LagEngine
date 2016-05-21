@@ -11,6 +11,7 @@ namespace Lag
 		GL4GpuProgram(const std::vector<GpuProgramStage*> &stages);
 		virtual ~GL4GpuProgram();
 
-		virtual bool link();
+		virtual bool link() override;
+		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const override;
 	};
 }
