@@ -2,10 +2,8 @@ TODO
 
 Short Term
 
-a stage has a uniform description(metadata). a program has uniform instances with actual locations and values
-think about uniforms and how to manage and automate them. add code for actual uniform creation.
+uniform update hints (per object, per frame, once...)
 allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...
-dont do immediate loading when adding stuff to managers
 
 implement techniques, passes, textures...
 define scenegraph through a xml file or scene "mesh"

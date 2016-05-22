@@ -36,7 +36,7 @@ void LogManager::initLogFile()
 	}
 	else
 	{
-		log(LogOutput::LAG_LOG_OUT_CONSOLE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, LOG_FILE_NAME, "Failed to open log file.");
+		log(LAG_LOG_OUT_CONSOLE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, LOG_FILE_NAME, "Failed to open log file.");
 	}
 }
 

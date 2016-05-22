@@ -49,22 +49,49 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, const TiXmlElement &element)
 {
 	const char* name = element.Attribute("name");
-	const char* semantic = element.Attribute("semantic");
+	const char* semanticString = element.Attribute("semantic");
 
-	if (!name || !semantic)
+	if (!name || !semanticString)
 	{
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
-			"A <uniform> element on a shader declaration does not contain all required attributes: <name> and <semantic>.");
+			"An <uniform> element on a shader declaration does not contain all required attributes: <name> and <semantic>.");
 		return;
 	}
 
-	const char* type = element.Attribute("type");
-	const char* size = element.Attribute("size");
+	GpuProgramUniformSize size;
+	GpuProgramUniformType type;
+	GpuProgramUniformSemantic semantic = parseUniformSemanticFromString(semanticString);
+	switch (semantic)
+	{
+	case LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX:
+	case LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX:
+	case LAG_GPU_PROG_UNI_SEM_MVP_MATRIX:
+		size = LAG_GPU_PROG_UNIFORM_SIZE_4;
+		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
+		break;
 
-	stage.addUniformDescription(name, 
-		parseUniformSemanticFromString(semantic),
-		parseUniformSizeFromString(size != 0 ? size : ""),
-		parseUniformTypeFromString(type != 0 ? type : ""));
+	case LAG_GPU_PROG_UNI_SEM_CUSTOM:
+	{
+		const char* typeString = element.Attribute("type");
+		const char* sizeString = element.Attribute("size");
+
+		if (!typeString || !sizeString)
+		{
+			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
+				"An <uniform> declared as custom does not have all required attributes declared (type and size).");
+			return;
+		}
+
+		type = parseUniformTypeFromString(typeString);
+		size = parseUniformSizeFromString(sizeString);
+	}
+		break;
+
+	default:
+		return;
+	}
+
+	stage.addUniformDescription(name, semantic, size, type);
 }
 
 GpuProgramUniformType GpuProgramStageManager::parseUniformTypeFromString(const std::string &type)

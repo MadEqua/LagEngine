@@ -9,7 +9,8 @@
 using namespace Lag;
 
 GpuProgram::GpuProgram(const std::vector<std::string> &names) :
-	programStages(PROGRAM_STAGE_COUNT)
+	programStages(PROGRAM_STAGE_COUNT),
+	uniforms(nullptr)
 {
 	GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
 	
@@ -48,14 +49,13 @@ void GpuProgram::initStages(const std::vector<GpuProgramStage*> &stages)
 
 GpuProgram::~GpuProgram()
 {
-	delete uniforms;
 }
 
 bool GpuProgram::loadImplementation()
 {
 	if (programStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX] == nullptr)
 	{
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
 			"GpuProgram", "Trying to load without a vertex stage.");
 		return false;
 	}
@@ -70,4 +70,5 @@ bool GpuProgram::loadImplementation()
 
 void GpuProgram::unloadImplementation()
 {
+	delete uniforms;
 }
