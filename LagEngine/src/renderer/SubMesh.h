@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include <vector>
 
 namespace Lag
@@ -15,13 +14,17 @@ namespace Lag
 	*/
 	class SubMesh
 	{
+	public:
+		inline const VertexData& getVertexData() const { return vertexData; }
+		inline const IndexData& getIndexData() const { return *indexData; }
+
 	private:
 		friend class Mesh;
 		SubMesh(VertexData &vxData, IndexData &idxData, const std::vector<Texture*> &textures);
 		SubMesh(VertexData &vxData, const std::vector<Texture*> &textures);
 		~SubMesh();
 
-		VertexData *vertexData;
+		VertexData &vertexData;
 		IndexData *indexData; //optional
 		std::vector<Texture*> textures;
 	};

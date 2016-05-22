@@ -9,43 +9,40 @@ RenderQueue::RenderQueue() :
 	actualSlot(0)
 {
 	//TODO: something smarter
-//	queue.resize(50);
+	queue.resize(50);
 }
 
 RenderQueue::~RenderQueue()
 {
 }
 
-/*void RenderQueue::addRenderable(Renderable &renderable)
+void RenderQueue::addItem(RenderCommand renderCommand, RenderType renderType,
+	VertexData &vertexData, IndexData &indexData,
+	ShaderProgram &shaderProgram)
 {
-	int cap = queue.capacity();
+	if (actualSlot >= queue.size())
+	{
+		queue.resize(queue.size() * 2);
+		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+			"RenderQueue", "Queue just got resized. Bad Bad!");
+	}
 	
-	queue.push_back(&renderable);
-
-	if (cap != queue.capacity()) 
-	{
-		cap = queue.capacity();
-		LogManager::getInstance().log(LogOutput::FILE, LogVerbosity::NORMAL, LogPriority::INFO, "RenderQueue", "Queue just got resized. Bad if happening every frame!");
-	}
-}*/
-
-/*Renderable& RenderQueue::getNextSlotToFill()
-{
-	if (actualSlot > queue.capacity())
-	{
-		queue.resize(queue.capacity() * 2);
-		LogManager::getInstance().log(CONSOLE, NORMAL, INFO, "RenderQueue", "Queue just got resized. Bad!");
-	}
-	return queue[actualSlot++];
-}*/
+	RenderOperation &renderOperation = queue[actualSlot];
+	renderOperation.renderCommand = renderCommand;
+	renderOperation.renderType = renderType;
+	renderOperation.vertexData = &vertexData;
+	renderOperation.indexData = &indexData;
+	renderOperation.shaderProgram = &shaderProgram;
+	
+	++actualSlot;
+}
 
 void RenderQueue::clear()
 {
-	//queue.clear();
-	//actualSlot = 0;
+	actualSlot = 0;
 }
 
 void RenderQueue::sort()
 {
-
+	//TODO
 }

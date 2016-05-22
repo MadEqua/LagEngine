@@ -28,7 +28,7 @@ Mesh::Mesh(const std::string &file) :
 
 Mesh::~Mesh()
 {
-	for (SubMesh *sm : submeshes)
+	for (SubMesh *sm : subMeshes)
 		delete sm;
 }
 
@@ -190,7 +190,7 @@ bool Mesh::loadImplementation()
 		else
 			subMesh = new SubMesh(*vd, textures);
 
-		submeshes.push_back(subMesh);
+		subMeshes.push_back(subMesh);
 
 		vxBufferOffset += vxSize * subMeshVxCount;
 		idxBufferOffset += idxSize * subMeshIdxCount;

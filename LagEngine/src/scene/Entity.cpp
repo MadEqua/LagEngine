@@ -1,15 +1,19 @@
 #include "Entity.h"
 
-#include "../renderer/Material.h"
+#include "SubEntity.h"
 #include "../renderer/Mesh.h"
-#include "../Root.h"
 
 using namespace Lag;
 
-Entity::Entity(Material &material, Mesh &mesh) :
-	material(material),
+Entity::Entity(Material &defaultMaterial, Mesh &mesh) :
+	defaultMaterial(defaultMaterial),
 	mesh(mesh)
 {
+	for (SubMesh *sm : mesh.getSubMeshes())
+	{
+		SubEntity *se = new SubEntity(defaultMaterial, *sm);
+		subEntities.push_back(se);
+	}
 }
 
 /*Entity::Entity(const std::string &meshName, const std::string &materialName) :
@@ -20,4 +24,6 @@ Entity::Entity(Material &material, Mesh &mesh) :
 
 Entity::~Entity()
 {
+	for (SubEntity *se : subEntities)
+		delete se;
 }

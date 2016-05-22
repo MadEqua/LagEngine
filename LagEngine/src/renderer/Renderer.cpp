@@ -65,11 +65,11 @@ void Renderer::renderAllRenderTargets()
 	const std::vector<Entity*> &objects = sceneManager.getEntities();
 	for (Entity* entity : objects)
 	{
-		Material &material = entity->getMaterial();
+		//Material &material = entity->getMaterial();
 		//Technique &technique = material.getTechnique();
 		//Pass &pass = technique.getPass();
 
-		ShaderProgram &shaderProgram = material.getShaderProgram();
+		//ShaderProgram &shaderProgram = material.getShaderProgram();
 		//Renderable &renderableToFill = renderQueue.getNextSlotToFill();
 
 		//fill renderable

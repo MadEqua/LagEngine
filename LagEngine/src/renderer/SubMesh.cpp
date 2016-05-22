@@ -6,21 +6,21 @@
 using namespace Lag;
 
 SubMesh::SubMesh(VertexData &vxData, IndexData &idxData, const std::vector<Texture*> &textures) :
-	vertexData(&vxData), indexData(&idxData),
+	vertexData(vxData), indexData(&idxData),
 	textures(textures)
 {
 }
 
 SubMesh::SubMesh(VertexData &vxData, const std::vector<Texture*> &textures) :
-	vertexData(&vxData),
+	vertexData(vxData), indexData(nullptr),
 	textures(textures)
 {
 }
 
 SubMesh::~SubMesh()
 {
-	if (vertexData != nullptr)
-		delete vertexData;
+	delete &vertexData;
+
 	if (indexData != nullptr)
 		delete indexData;
 }

@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\renderer\RenderOperation.cpp" />
     <ClCompile Include="src\core\ManagedObject.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramUniform.cpp" />
@@ -187,8 +188,10 @@
     <ClCompile Include="src\scene\Transform.cpp" />
     <ClCompile Include="src\renderer\VertexDescription.cpp" />
     <ClCompile Include="src\renderer\SubMesh.cpp" />
+    <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\renderer\RenderOperation.h" />
     <ClInclude Include="src\core\ManagedObject.h" />
     <ClInclude Include="src\core\Manager.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.h" />
@@ -267,6 +270,7 @@
     <ClInclude Include="src\scene\Transform.h" />
     <ClInclude Include="src\renderer\VertexDescription.h" />
     <ClInclude Include="src\renderer\SubMesh.h" />
+    <ClInclude Include="src\scene\SubEntity.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Notes.txt">
