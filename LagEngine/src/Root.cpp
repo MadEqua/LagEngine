@@ -20,6 +20,8 @@
 #include "resources/MeshManager.h"
 #include "graphicsAPIs/gl4/GL4GpuBufferManager.h"
 
+#include "graphicsAPIs/gl4/GL4GraphicsAPI.h"
+
 #include "io/tinyxml/tinyxml.h"
 
 using namespace Lag;
@@ -38,7 +40,8 @@ Root::Root() :
 	materialManager(nullptr),
 	meshManager(nullptr),
 	gpuBufferManager(nullptr),
-	windowListener(nullptr)
+	windowListener(nullptr),
+	graphicsAPI(nullptr)
 {
 	//Initialize other singletons
 	LogManager::getInstance();
@@ -72,6 +75,9 @@ void Root::destroy()
 	if (gpuBufferManager != nullptr)
 		delete gpuBufferManager;
 
+	if (graphicsAPI != nullptr)
+		delete graphicsAPI;
+
 	if (windowListener != nullptr)
 		delete windowListener;
 }
@@ -104,9 +110,10 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	if (!renderWindow->initialize())
 		return false;
 
-	renderer = new Renderer(*sceneManager);
-	if (!renderer->initialize(parameters.graphicsApiType))
-		return false;
+	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
+		graphicsAPI = new GL4GraphicsAPI();
+
+	renderer = new Renderer(*graphicsAPI, *sceneManager);
 
 	renderer->addRenderTarget("renderWindow", *renderWindow);
 

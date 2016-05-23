@@ -1,7 +1,6 @@
 #include "SubEntity.h"
 
 #include "../renderer/RenderQueue.h"
-#include "../renderer/RenderOperation.h"
 #include "../renderer/SubMesh.h"
 #include "../renderer/Material.h"
 
@@ -19,8 +18,13 @@ SubEntity::~SubEntity()
 
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue)
 {
-	renderQueue.addItem(LAG_RENDER_COMM_MULTI_INDEXED, LAG_RENDER_TYPE_TRIANGLES,
+	renderQueue.addRenderOperation(*this, 0,
 		const_cast<VertexData&>(subMesh.getVertexData()), 
 		const_cast<IndexData&>(subMesh.getIndexData()),
-		material.getShaderProgram());
+		material);
+}
+
+void SubEntity::render(IGraphicsAPI &graphicsAPI, uint32 passId)
+{
+	//TODO
 }

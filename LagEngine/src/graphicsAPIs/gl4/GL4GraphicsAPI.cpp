@@ -6,8 +6,15 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 {
 }
 
-
 GL4GraphicsAPI::~GL4GraphicsAPI()
+{
+}
+
+void GL4GraphicsAPI::renderVertices()
+{
+}
+
+void GL4GraphicsAPI::renderIndexed()
 {
 }
 

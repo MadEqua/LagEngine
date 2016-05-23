@@ -6,11 +6,11 @@
 
 namespace Lag
 {
-	enum RenderCommand;
-	enum RenderType;
 	class VertexData;
 	class IndexData;
-	class ShaderProgram;
+	class Material;
+	class IRenderable;
+	class IGraphicsAPI;
 	
 	class RenderQueue
 	{
@@ -18,12 +18,18 @@ namespace Lag
 		RenderQueue();
 		~RenderQueue();
 
-		void addItem(RenderCommand renderCommand, RenderType renderType, 
+		/*void addItem(RenderCommand renderCommand, RenderType renderType, 
 			VertexData &vertexData, IndexData &indexData,
-			ShaderProgram &shaderProgram);
+			ShaderProgram &shaderProgram);*/
 
+		void addRenderOperation(IRenderable &renderable, uint32 passId,
+			VertexData &vertexData, IndexData &indexData,
+			Material &material);
+		
 		//which one??
 		//void addItem(RenderOperation &renderOperation);
+
+		void dispatchRenderOperations(IGraphicsAPI &graphicsAPI);
  
 		void clear();
 		void sort();

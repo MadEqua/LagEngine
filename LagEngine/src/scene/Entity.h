@@ -2,6 +2,7 @@
 
 #include <vector>
 #include "SceneObject.h"
+#include "../renderer/IRenderable.h"
 
 namespace Lag
 {
@@ -15,17 +16,16 @@ namespace Lag
 	* This implies that there's always at least one SubEntity. 
 	* Attach to a SceneNode to add to the scene.
 	*/	
-	class Entity : public SceneObject
+	class Entity : public SceneObject, public IRenderable
 	{
 	public:
 
 		//defaultMaterial will be used if the meshes contain no material information
 		Entity(Material &defaultMaterial, Mesh &mesh);
-		//Entity(const std::string &meshName, const std::string &materialName);
 		virtual ~Entity();
 
-		//inline Material& getMaterial() const { return material; }
-		//inline Mesh& getMesh() const { return mesh; }
+		virtual void addToRenderQueue(RenderQueue &renderQueue) override;
+		virtual void render(IGraphicsAPI &graphicsAPI, uint32 passId) override;
 
 	private:
 		std::vector<SubEntity*> subEntities;

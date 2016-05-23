@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../renderer/Renderable.h"
+#include "../renderer/IRenderable.h"
 
 namespace Lag
 {
@@ -8,7 +8,7 @@ namespace Lag
 	class SubMesh;
 	class RenderQueue;
 	
-	class SubEntity : public Renderable
+	class SubEntity : public IRenderable
 	{
 		friend class Entity;
 	
@@ -17,6 +17,7 @@ namespace Lag
 		~SubEntity();
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue) override;
+		virtual void render(IGraphicsAPI &graphicsAPI, uint32 passId) override;
 
 	private:
 		Material &material;

@@ -1,9 +1,11 @@
 #pragma once
 
+#include "../Types.h"
+
 namespace Lag
 {
 	//TODO: check the possibilities
-	enum RenderCommand
+	/*enum RenderCommand
 	{
 		LAG_RENDER_COMM_VERTICES,
 		LAG_RENDER_COMM_INDEXED,
@@ -17,16 +19,17 @@ namespace Lag
 		LAG_RENDER_TYPE_TRIANGLES,
 		LAG_RENDER_TYPE_LINES,
 		LAG_RENDER_TYPE_POINTS
-	};
+	};*/
 
 	class VertexData;
 	class IndexData;
-	class ShaderProgram;
+	class Material;
+	class IRenderable;
 	
 	/*
-	* A RenderOperation represents a single draw call to the graphics API. 
-	* It should contain all needed data to draw something on a RenderTarget.
-	* Renderables provide this data to the RenderQueue.
+	* A RenderOperation represents a single render call to the graphics API. 
+	* Renderables provide this data to the RenderQueue, 
+	* which it uses for sorting and posterior render call dispatching.
 	*/
 	class RenderOperation
 	{
@@ -34,13 +37,10 @@ namespace Lag
 		RenderOperation();
 		~RenderOperation();
 
-		RenderCommand renderCommand;
-		RenderType renderType;
-
 		VertexData *vertexData;
 		IndexData *indexData;
-		ShaderProgram *shaderProgram;
-
-		//TODO: textures, blending, other pipeline parameters...
+		Material *material;
+		IRenderable *renderable;
+		uint32 passId;
 	};
 }

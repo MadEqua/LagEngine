@@ -12,9 +12,11 @@ namespace Lag
 	class Viewport;
 	class Camera;
 	class RenderQueue;
+	class SceneManager;
 	
 	class RenderTarget
 	{
+		//TODO: is this needed?
 		LAG_GENERATE_OBSERVER_STORAGE(IRenderTargetListener)
 		LAG_DECLARE_NOTIFY_METHOD(onPreRender, LAG_ARGS())
 		LAG_DECLARE_NOTIFY_METHOD(onPostRender, LAG_ARGS())
@@ -26,8 +28,7 @@ namespace Lag
 		virtual bool initialize() = 0;
 		virtual void destroy() = 0;
 
-		//Call to start the Rendering process.
-		//void startRender(RenderQueue &renderQueue);
+		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
 		
 		//For double-buffered targets
 		virtual void swapBuffers() {}

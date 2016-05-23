@@ -1,7 +1,7 @@
 #include "RenderQueue.h"
 
 #include "../io/log/LogManager.h"
-#include "Renderable.h"
+#include "IRenderable.h"
 
 using namespace Lag;
 
@@ -16,9 +16,9 @@ RenderQueue::~RenderQueue()
 {
 }
 
-void RenderQueue::addItem(RenderCommand renderCommand, RenderType renderType,
+void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
 	VertexData &vertexData, IndexData &indexData,
-	ShaderProgram &shaderProgram)
+	Material &material)
 {
 	if (actualSlot >= queue.size())
 	{
@@ -28,11 +28,11 @@ void RenderQueue::addItem(RenderCommand renderCommand, RenderType renderType,
 	}
 	
 	RenderOperation &renderOperation = queue[actualSlot];
-	renderOperation.renderCommand = renderCommand;
-	renderOperation.renderType = renderType;
+	renderOperation.renderable = &renderable;
+	renderOperation.passId = passId;
 	renderOperation.vertexData = &vertexData;
 	renderOperation.indexData = &indexData;
-	renderOperation.shaderProgram = &shaderProgram;
+	renderOperation.material = &material;
 	
 	++actualSlot;
 }
@@ -45,4 +45,13 @@ void RenderQueue::clear()
 void RenderQueue::sort()
 {
 	//TODO
+}
+
+void RenderQueue::dispatchRenderOperations(IGraphicsAPI &graphicsAPI)
+{
+	for (int i = 0; i < actualSlot; ++i)
+	{
+		RenderOperation &ro = queue[i];
+		ro.renderable->render(graphicsAPI, ro.passId);
+	}
 }

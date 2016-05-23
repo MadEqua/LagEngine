@@ -16,14 +16,20 @@ Entity::Entity(Material &defaultMaterial, Mesh &mesh) :
 	}
 }
 
-/*Entity::Entity(const std::string &meshName, const std::string &materialName) :
-	material(Root::getInstance().getMaterialManager().get(materialName)),
-	mesh(Root::getInstance().getMeshManager().get(meshName))
-{
-}*/
-
 Entity::~Entity()
 {
 	for (SubEntity *se : subEntities)
 		delete se;
+}
+
+void Entity::addToRenderQueue(RenderQueue &renderQueue)
+{
+	for (SubEntity *se : subEntities)
+		se->addToRenderQueue(renderQueue);
+}
+
+void Entity::render(IGraphicsAPI &graphicsAPI, uint32 passId)
+{
+	for (SubEntity *se : subEntities)
+		se->render(graphicsAPI, passId);
 }

@@ -24,6 +24,8 @@ namespace Lag
 
 	class GpuBufferManager;
 
+	class IGraphicsAPI;
+
 	class Root
 	{
 		LAG_GENERATE_SINGLETON(Root)
@@ -66,6 +68,8 @@ namespace Lag
 		MeshManager *meshManager;
 
 		GpuBufferManager *gpuBufferManager;
+
+		IGraphicsAPI *graphicsAPI;
 
 
 		WindowListener *windowListener;

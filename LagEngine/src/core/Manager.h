@@ -20,6 +20,7 @@ namespace Lag
 		virtual ~Manager();
 
 		ManagedObject* get(const K &name) const;
+		
 		virtual bool add(const K &name, ManagedObject *obj);
 		void remove(const K &name);
 
@@ -113,7 +114,6 @@ namespace Lag
 
 		return it->second;
 	}
-
 
 	template<class K>
 	void Manager<K>::loadAll()

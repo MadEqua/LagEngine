@@ -10,7 +10,8 @@ namespace Lag
 {
 	class Camera;
 	class Entity;
-	class Renderable;
+	class RenderQueue;
+	class IRenderable;
 	
 	/*
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
@@ -22,17 +23,19 @@ namespace Lag
 		SceneManager();
 		~SceneManager();
 
-		//Entity& createEntity(const std::string &name, const std::string &meshName, const std::string &materialName);
+		Entity* createEntity(const std::string &name, const std::string &meshName, const std::string &materialName);
 		Camera& createCamera(const std::string &name);
 
 		SceneObject* getSceneObject(const std::string &name) const;
 
+		//Fill a RenderQueue with objects in range of the received Camera
+		void addRenderablesToQueue(RenderQueue &renderQueue, Camera &camera);
+
 		//TODO: remove scene objects
 
-		inline SceneGraph& getSceneGraph() { return sceneGraph; }
 		inline const std::vector<Entity*>& getEntities() const { return entityVector; }
 		inline const std::vector<Camera*>& getCameras() const { return cameraVector; }
-		inline const std::vector<Renderable*>& getRenderables() const { return renderableVector; }
+		inline SceneGraph& getSceneGraph() { return sceneGraph; }
 
 	private:
 		SceneGraph sceneGraph;
@@ -44,8 +47,8 @@ namespace Lag
 		std::vector<Entity*> entityVector;
 		std::vector<Camera*> cameraVector;
 
-		//Renderable SceneObjects
-		std::vector<Renderable*> renderableVector;
+		//IRenderable SceneObjects
+		std::vector<IRenderable*> renderableVector;
 
 		//TODO lightvector?
 

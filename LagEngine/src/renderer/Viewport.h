@@ -5,6 +5,7 @@ namespace Lag
 	class Camera;
 	class RenderTarget;
 	class RenderQueue;
+	class SceneManager;
 	
 	class Viewport
 	{
@@ -13,7 +14,7 @@ namespace Lag
 		Viewport(Camera &camera, RenderTarget &renderTarget, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
 		~Viewport();
 
-		//void render(RenderQueue &renderQueue);
+		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
 
 	private:
 		float left, top, width, height;

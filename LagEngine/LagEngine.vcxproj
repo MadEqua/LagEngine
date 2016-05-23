@@ -164,7 +164,6 @@
     <ClCompile Include="src\renderer\Material.cpp" />
     <ClCompile Include="src\renderer\Mesh.cpp" />
     <ClCompile Include="src\renderer\Pass.cpp" />
-    <ClCompile Include="src\renderer\Renderable.cpp" />
     <ClCompile Include="src\renderer\Renderer.cpp" />
     <ClCompile Include="src\renderer\RenderQueue.cpp" />
     <ClCompile Include="src\scene\SceneObject.cpp" />
@@ -236,7 +235,7 @@
     <ClInclude Include="src\renderer\Material.h" />
     <ClInclude Include="src\renderer\Mesh.h" />
     <ClInclude Include="src\renderer\Pass.h" />
-    <ClInclude Include="src\renderer\Renderable.h" />
+    <ClInclude Include="src\renderer\IRenderable.h" />
     <ClInclude Include="src\renderer\RenderQueue.h" />
     <ClInclude Include="src\scene\SceneNode.h" />
     <ClInclude Include="src\scene\SceneObject.h" />

@@ -1,4 +1,5 @@
 #include "Viewport.h"
+#include "../scene/SceneManager.h"
 
 using namespace Lag;
 
@@ -13,7 +14,7 @@ Viewport::~Viewport()
 {
 }
 
-/*void Viewport::render(RenderQueue &renderQueue)
+void Viewport::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
 {
-
-}*/
+	sceneManager.addRenderablesToQueue(renderQueue, camera);
+}

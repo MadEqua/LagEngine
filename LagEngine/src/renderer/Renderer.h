@@ -5,17 +5,11 @@
 
 #include "../Types.h"
 #include "RenderQueue.h"
-#include "GraphicsApiType.h"
 
 namespace Lag
 {
-	class RenderWindow;
-	class RenderWindowParams;
 	class RenderTarget;
-	class Renderable;
 	class IGraphicsAPI;
-	class Viewport;
-	class GpuProgram;
 	class SceneManager;
 
 	/*
@@ -26,11 +20,8 @@ namespace Lag
 	class Renderer
 	{
 	public:
-		Renderer(SceneManager &sceneManager);
+		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager);
 		~Renderer();
-
-		bool initialize(const GraphicsApiType graphicsApiType);
-		void shutdown();
 
 		//TODO: find a way for creating all the RenderTargets within the renderer.
 		void addRenderTarget(const std::string &name, RenderTarget &renderTarget);
@@ -38,16 +29,6 @@ namespace Lag
 
 		void renderAllRenderTargets();
 
-		//void setViewport(const Viewport &vp);
-
-		/*void setWorldMatrix(const glm::mat4 &mat);
-		void setViewMatrix(const glm::mat4 &mat);
-		void setProjectionMatrix(const glm::mat4 &mat);*/
-
-		void clearFrameBuffer(/*buffers, color?*/);
-
-		void render(const Renderable &renderable);
-		
 		//TODO
 		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
 		//void beginGeometryCount();
@@ -60,18 +41,12 @@ namespace Lag
 
 	protected:
 		std::unordered_map<std::string, RenderTarget*> renderTargets;
-		//std::unordered_map<std::string, GpuProgram*> gpuPrograms;
 
-		//texture manager?
-		//TextureManager *textureManager;
-
-		//active viewport
 		//uint32 batch, face and vx counter
 
 		SceneManager &sceneManager;
+		IGraphicsAPI &graphicsAPI;
 
 		RenderQueue renderQueue;
-
-		IGraphicsAPI *graphicsAPI;
 	};
 }

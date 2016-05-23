@@ -30,13 +30,13 @@ Viewport* RenderTarget::getViewport(const std::string &name) const
 		return nullptr;
 }
 
-/*void RenderTarget::startRender(RenderQueue &renderQueue)
+void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
 {
 	onPreRenderNotify();
 	for (auto &pair : viewports)
-		pair.second->render(renderQueue);
+		pair.second->addRenderablesToQueue(renderQueue, sceneManager);
 	onPostRenderNotify();
-}*/
+}
 
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
