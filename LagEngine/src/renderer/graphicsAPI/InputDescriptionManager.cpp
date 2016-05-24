@@ -19,6 +19,9 @@ InputDescriptionManager::~InputDescriptionManager()
 	for (auto &pair : inputDescriptions)
 		delete pair.second;
 
+	for (auto vd : vertexDescriptions)
+		delete vd;
+
 	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 		"InputDescriptionManager", "Destroyed successfully.");
 }
@@ -42,6 +45,14 @@ InputDescription* InputDescriptionManager::getInputDescription(const VertexDescr
 		return createInputDescription(vertexDescription, vertexBuffer);
 	}
 }
+
+VertexDescription& InputDescriptionManager::createVertexDescription()
+{
+	VertexDescription *vd = new VertexDescription();
+	vertexDescriptions.push_back(vd);
+	return *vd;
+}
+
 
 
 InputDescriptionManager::MapKey::MapKey(const VertexDescription *vd, const VertexBuffer *vb) :

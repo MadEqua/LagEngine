@@ -1,5 +1,6 @@
 #pragma once
 
+#include <vector>
 #include <unordered_map>
 
 namespace Lag
@@ -12,6 +13,8 @@ namespace Lag
 	/*
 	* Create and manage InputDescriptions, based on VertexDescriptions and VertexBuffers.
 	* Only create new InputDescriptions when there is not one that satisfies the input.
+	* Also creates and manages VertexDescriptions.
+	*
 	* Concrete implementations that know how to create concrete InputDescriptions must be defined.
 	*/
 	class InputDescriptionManager
@@ -25,10 +28,14 @@ namespace Lag
 		InputDescription* getInputDescription(const VertexDescription &vertexDescription,
 			const VertexBuffer &vertexBuffer);
 
+		VertexDescription& createVertexDescription();
+
 	protected:
+
 		virtual InputDescription* createInputDescription(const VertexDescription &vertexDescription, 
 			const VertexBuffer &vertexBuffer) = 0;
 
+		
 		//We should return the same InputDescription if VertexData refers
 		//the same VertexBuffer, with a similar VertexDescription.
 		//(Basically ignore the offsets from a VertexData)
@@ -51,5 +58,7 @@ namespace Lag
 		};
 
 		std::unordered_map<MapKey, InputDescription*, MapKey::MapKeyHasher> inputDescriptions;
+
+		std::vector<VertexDescription*> vertexDescriptions;
 	};
 }

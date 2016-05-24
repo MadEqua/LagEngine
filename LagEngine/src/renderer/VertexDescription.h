@@ -83,8 +83,8 @@ namespace Lag
 	private:
 		std::vector<VertexAttribute> attributes;
 
-		//Only GpuBufferManager can construct VertexDescriptions
-		friend class GpuBufferManager;
+		//Only InputDescriptionManager can construct VertexDescriptions
+		friend class InputDescriptionManager;
 		VertexDescription();
 		~VertexDescription();
 	};

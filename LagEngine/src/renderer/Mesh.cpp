@@ -50,9 +50,10 @@ bool Mesh::loadImplementation()
 	}
 
 	GpuBufferManager &bufferManager = Root::getInstance().getGpuBufferManager();
+	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
 
 	//Create a VertexDescription
-	VertexDescription &vxDesc = bufferManager.createVertexDescription();
+	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 0, 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3 * sizeof(float), 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 6 * sizeof(float), 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
@@ -163,11 +164,9 @@ bool Mesh::loadImplementation()
 
 		//Create Data objects, will be managed by the SubMesh
 		VertexData *vd = new VertexData();
-		vd->vertexBuffer = vb;
+		vd->inputDescription = inputDescriptionManager.getInputDescription(vxDesc, *vb);
 		vd->vertexCount = mesh->mNumVertices;
 		vd->vertexStart = vxBufferOffset;
-		vd->vertexDescription = &vxDesc;
-		vd->inputDescription = Root::getInstance().getInputDescriptionManager().getInputDescription(vxDesc, *vb);
 
 		IndexData *id = nullptr;
 		if (idxCount > 0)
