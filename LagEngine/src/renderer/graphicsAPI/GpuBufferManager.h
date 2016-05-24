@@ -5,8 +5,7 @@
 
 namespace Lag
 {	
-	class VertexBuffer;
-	class IndexBuffer;
+	class GpuBuffer;
 	
 	/*
 	* Creates and manages all GpuBuffers.
@@ -17,11 +16,14 @@ namespace Lag
 		GpuBufferManager();
 		~GpuBufferManager();
 
-		virtual VertexBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, bool useMirrorBuffer) = 0;
-		virtual IndexBuffer* createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirrorBuffer) = 0;
+		virtual GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
+		virtual GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
+
+		virtual GpuBuffer* createIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
+		virtual GpuBuffer* createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
 
 	protected:
-		std::vector<VertexBuffer*> vertexBuffers;
-		std::vector<IndexBuffer*> indexBuffers;
+		std::vector<GpuBuffer*> vertexBuffers;
+		std::vector<GpuBuffer*> indexBuffers;
 	};
 }

@@ -1,16 +1,18 @@
 #pragma once
 
-#include "../../renderer/graphicsAPI/IndexBuffer.h"
+#include "GL4Includes.h"
+#include "../../renderer/graphicsAPI/GpuBuffer.h"
 
 namespace Lag
 {
-	class GL4IndexBuffer : public IndexBuffer
+	class GL4GpuBuffer : public GpuBuffer
 	{
 	public:
-		GL4IndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirror);
-		virtual ~GL4IndexBuffer();
+		GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 
-	protected:
+		virtual ~GL4GpuBuffer();
+
 		virtual void lockImplementation(uint32 offset, uint32 length) override;
 		virtual void unlockImplementation() override;
 
@@ -21,5 +23,9 @@ namespace Lag
 		virtual void readImplementation(uint32 offset, uint32 length, byte* dst) override;
 
 		virtual void bind() const override;
+
+	private:
+		GLuint handle;
+		GLbitfield convertFlagsToGL(uint32 flags);
 	};
 }

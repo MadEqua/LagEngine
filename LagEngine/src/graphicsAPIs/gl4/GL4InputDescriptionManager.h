@@ -4,6 +4,8 @@
 
 namespace Lag
 {
+	class GpuBuffer;
+	
 	class GL4InputDescriptionManager : public InputDescriptionManager
 	{
 	public:
@@ -12,6 +14,6 @@ namespace Lag
 
 	protected:
 		virtual InputDescription* createInputDescription(const VertexDescription &vertexDescription, 
-			const VertexBuffer &vertexBuffer) override;
+			const GpuBuffer &vertexBuffer) override;
 	};
 }

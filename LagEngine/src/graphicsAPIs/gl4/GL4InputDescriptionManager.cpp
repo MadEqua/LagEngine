@@ -12,7 +12,7 @@ GL4InputDescriptionManager::~GL4InputDescriptionManager()
 }
 
 InputDescription* GL4InputDescriptionManager::createInputDescription(const VertexDescription &vertexDescription, 
-	const VertexBuffer &vertexBuffer)
+	const GpuBuffer &vertexBuffer)
 {
 	return new GL4InputDescription(vertexDescription, vertexBuffer);
 }

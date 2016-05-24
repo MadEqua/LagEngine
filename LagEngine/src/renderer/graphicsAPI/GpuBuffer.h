@@ -1,10 +1,25 @@
 #pragma once
 
-#include "../core/Buffer.h"
+#include "../../core/Buffer.h"
 
 namespace Lag
 {
 	class MemoryBuffer;
+	
+	enum GpuBufferUsage
+	{
+		LAG_GPU_BUFFER_USAGE_DYNAMIC = 1, //Set this to be able to write to the buffer data at any time
+		LAG_GPU_BUFFER_USAGE_MAP_READ = 2, //Set this to be able to map the buffer
+		LAG_GPU_BUFFER_USAGE_MAP_WRITE = 4
+	};
+
+	enum GpuBufferContents
+	{
+		LAG_GPU_BUFFER_CONTENTS_VERTICES,
+		LAG_GPU_BUFFER_CONTENTS_INDICES,
+		LAG_GPU_BUFFER_CONTENTS_UNIFORMS,
+		LAG_GPU_BUFFER_CONTENTS_OTHER
+	};
 	
 	/*
 	* Representing a Buffer on the GPU. It may contain any kind of data.
@@ -13,12 +28,12 @@ namespace Lag
 	* Maintains an optional MemoryBuffer to serve as mirror for the GPU memory, making reads more efficient.
 	*
 	* Created and managed by GpuBufferManager.
-	* TODO: usage types: static/dynamic read/write, options for changing data and resend to gpu
 	*/
 	class GpuBuffer : public Buffer
 	{
 	public:
-		GpuBuffer(uint32 sizeBytes, bool useMirror);
+		GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 		virtual ~GpuBuffer();
 
 		virtual void lock(uint32 offset, uint32 length) override;
@@ -33,6 +48,8 @@ namespace Lag
 
 		virtual void bind() const = 0;
 
+		bool checkForFlag(GpuBufferUsage flagToCheck);
+
 	protected:
 		
 		//Basic implementation provided. Better ones can be made on concrete classes
@@ -41,5 +58,8 @@ namespace Lag
 		//if useMirror = true
 		MemoryBuffer *mirrorBuffer;
 		bool useMirror;
+
+		uint32 flags;
+		GpuBufferContents contents;
 	};
 }

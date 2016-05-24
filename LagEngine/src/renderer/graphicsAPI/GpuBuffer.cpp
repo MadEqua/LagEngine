@@ -1,13 +1,26 @@
 	#include "GpuBuffer.h"
-#include "../core/MemoryBuffer.h"
-#include "../io/log/LogManager.h"
+#include "../../core/MemoryBuffer.h"
+#include "../../io/log/LogManager.h"
 
 using namespace Lag;
 
-GpuBuffer::GpuBuffer(uint32 sizeBytes, bool useMirror) :
+GpuBuffer::GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror) :
 	Buffer(sizeBytes),
 	useMirror(useMirror),
-	mirrorBuffer(nullptr)
+	mirrorBuffer(nullptr),
+	flags(flags),
+	contents(contents)
+{
+	if (useMirror)
+		mirrorBuffer = new MemoryBuffer(sizeBytes, data);
+}
+
+GpuBuffer::GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror) :
+	Buffer(sizeBytes),
+	useMirror(useMirror),
+	mirrorBuffer(nullptr),
+	flags(flags),
+	contents(contents)
 {
 	if (useMirror)
 		mirrorBuffer = new MemoryBuffer(sizeBytes);
@@ -21,6 +34,13 @@ GpuBuffer::~GpuBuffer()
 
 void GpuBuffer::lock(uint32 offset, uint32 length)
 {
+	if (!checkForFlag(LAG_GPU_BUFFER_USAGE_DYNAMIC))
+	{
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+			"GpuBuffer", "Trying to lock non-dynamic GpuBuffer.");
+		return;
+	}
+	
 	if (useMirror)
 	{
 		offsetLocked = offset;
@@ -43,9 +63,9 @@ void GpuBuffer::unlock()
 	if (useMirror)
 	{
 		mirrorBuffer->unlock();
-
-		//assuming writes happened. TODO: have an option to say the type of access on locking
-		//updateFromMirror();
+		
+		if (checkForFlag(LAG_GPU_BUFFER_USAGE_DYNAMIC))
+			updateFromMirror();
 	}
 	else
 	{
@@ -55,6 +75,14 @@ void GpuBuffer::unlock()
 
 byte* GpuBuffer::map()
 {
+	if (!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_WRITE) &&
+		!!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_READ))
+	{
+		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+			"GpuBuffer", "Trying to map non-mappable GpuBuffer.");
+		return nullptr;
+	}
+	
 	if (useMirror)
 	{
 		return mirrorBuffer->map();
@@ -106,11 +134,16 @@ void GpuBuffer::updateFromMirror()
 		this->Buffer::lock(offsetLocked, lengthLocked);
 
 		byte *src = mirrorBuffer->map();
-		byte *dst = this->map();
+		byte *dst = this->Buffer::map();
 
 		memcpy(dst, src, lengthLocked);
 
 		this->Buffer::unlock();
 		mirrorBuffer->unlock();
 	}
+}
+
+bool GpuBuffer::checkForFlag(GpuBufferUsage flagToCheck)
+{
+	return static_cast<bool>(flags & flagToCheck);
 }

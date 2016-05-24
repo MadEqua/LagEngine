@@ -51,7 +51,7 @@ bool GLFWRenderWindow::initialize()
 	if (!glfwInit())
 	{
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
-			"glfwInit()", "Cannot initialize GLFW.");
+			"GLFWRenderWindow", "Cannot initialize GLFW.");
 		return false;
 	}
 	else
@@ -64,7 +64,7 @@ bool GLFWRenderWindow::initialize()
 		if (window == 0)
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
-				"glfwCreateWindow()", "Cannot create GLFW window.");
+				"GLFWRenderWindow", "Cannot create GLFW window.");
 			return false;
 		}
 
@@ -72,6 +72,15 @@ bool GLFWRenderWindow::initialize()
 		glfwSetWindowSizeCallback(window, windowSizeCallback);
 		glfwSetWindowPosCallback(window, windowPosCallback);
 		glfwSetWindowFocusCallback(window, windowFocusCallback);
+
+
+		glfwMakeContextCurrent(window);
+		if (!glfwGetCurrentContext()) 
+		{
+			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+				"GLFWRenderWindow", "Cannot create OpenGL context.");
+			return false;
+		}
 
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"GLFWRenderWindow", "Initialized successfully.");

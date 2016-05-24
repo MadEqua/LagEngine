@@ -19,15 +19,13 @@ namespace Lag
 		LAG_RENDER_MODE_POINTS,
 		LAG_RENDER_MODE_PATCHES
 	};
-	
-	
-	
+
 	class RenderTarget;
 	class IGraphicsAPI;
 	class SceneManager;
 	class GpuProgram;
-	class VertexBuffer;
-	class IndexBuffer;
+	class GpuBuffer;
+	class InputDescription;
 
 	/*
 	* Top level renderer. All the rendering process starts here culminating on concrete calls to a IGraphicsAPI.
@@ -49,20 +47,25 @@ namespace Lag
 
 		//Bind objects and settings
 		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
-		void bindVertexBuffer(VertexBuffer &vertexBuffer);
-		void bindIndexBuffer(IndexBuffer &indexBuffer);
+		void bindVertexBuffer(GpuBuffer &vertexBuffer);
+		void bindIndexBuffer(GpuBuffer &indexBuffer);
 		void bindGpuProgram(GpuProgram &gpuProgram);
+		void bindInputDescription(InputDescription &inputDescription);
 
 		//High-level render calls
 		void renderVertices(const VertexData &vertexData);
 		void renderIndexed(const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex = 0);
 
-		void renderMultiVertices(const VertexData *vertexData[], uint32 drawCount);
+		/*void renderMultiVertices(const VertexData *vertexData[], uint32 drawCount);
 		void renderMultiIndexed(const VertexData *vertexData[], const IndexData *indexData[], uint32 drawCount);
 
 		void renderVerticesInstanced(const VertexData &vertexData, uint32 instanceCount);
-		void renderIndexedInstanced(const VertexData &vertexData, const IndexData &indexData, uint32 instanceCount);
+		void renderIndexedInstanced(const VertexData &vertexData, const IndexData &indexData, uint32 instanceCount);*/
 
+		void clearColorBuffer(float value[4]);
+		void clearDepthBuffer(float value);
+		void clearStencilBuffer(int32 value);
+		void clearDepthAndStencilBuffer(float depth, int32 stencil);
 
 
 		//TODO
@@ -87,8 +90,9 @@ namespace Lag
 
 		//Bound objects
 		RenderMode actualRenderMode;
-		VertexBuffer *boundVertexBuffer;
-		IndexBuffer *boundIndexBuffer;
+		GpuBuffer *boundVertexBuffer;
+		GpuBuffer *boundIndexBuffer;
 		GpuProgram *boundGpuProgram;
+		InputDescription *boundInputDescription;
 	};
 }

@@ -56,15 +56,6 @@ Root::~Root()
 
 void Root::destroy()
 {
-	if (renderWindow != nullptr)
-		delete renderWindow;
-	if (inputManager != nullptr)
-		delete inputManager;
-	if (renderer != nullptr)
-		delete renderer;
-	if (sceneManager != nullptr)
-		delete sceneManager;
-
 	if (gpuProgramStageManager != nullptr)
 		delete gpuProgramStageManager;
 	if (gpuProgramManager != nullptr)
@@ -80,11 +71,21 @@ void Root::destroy()
 	if (graphicsAPI != nullptr)
 		delete graphicsAPI;
 
+	if (renderer != nullptr)
+		delete renderer;
+	if (sceneManager != nullptr)
+		delete sceneManager;
+
 	if (inputDescriptionManager != nullptr)
 		delete inputDescriptionManager;
 
 	if (windowListener != nullptr)
 		delete windowListener;
+
+	if (inputManager != nullptr)
+		delete inputManager;
+	if (renderWindow != nullptr)
+		delete renderWindow;
 }
 
 bool Root::initializeLag(const InitializationParameters &parameters)

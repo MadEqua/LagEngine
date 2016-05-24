@@ -27,7 +27,7 @@ InputDescriptionManager::~InputDescriptionManager()
 }
 
 InputDescription* InputDescriptionManager::getInputDescription(const VertexDescription &vertexDescription,
-	const VertexBuffer &vertexBuffer)
+	const GpuBuffer &vertexBuffer)
 {
 	MapKey key(&vertexDescription, &vertexBuffer);	
 	auto it = inputDescriptions.find(key);
@@ -55,7 +55,7 @@ VertexDescription& InputDescriptionManager::createVertexDescription()
 
 
 
-InputDescriptionManager::MapKey::MapKey(const VertexDescription *vd, const VertexBuffer *vb) :
+InputDescriptionManager::MapKey::MapKey(const VertexDescription *vd, const GpuBuffer *vb) :
 	vertexDescription(vd), vertexBuffer(vb)
 {
 }
@@ -72,6 +72,6 @@ bool InputDescriptionManager::MapKey::operator==(const MapKey &other) const
 
 std::size_t InputDescriptionManager::MapKey::MapKeyHasher::operator()(const MapKey& k) const
 {
-	return std::hash<const VertexBuffer*>()(k.vertexBuffer) ^ 
+	return std::hash<const GpuBuffer*>()(k.vertexBuffer) ^
 		static_cast<std::size_t>(*k.vertexDescription);
 }

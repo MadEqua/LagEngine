@@ -10,6 +10,7 @@ namespace Lag
 	class MemoryBuffer : public Buffer
 	{
 	public:
+		MemoryBuffer(uint32 sizeBytes, byte* data);
 		MemoryBuffer(uint32 sizeBytes);
 		virtual ~MemoryBuffer();
 

@@ -4,11 +4,10 @@
 #include "../scene/SceneManager.h"
 #include "graphicsAPI/GpuProgram.h"
 
-#include "graphicsAPI/VertexBuffer.h"
-#include "graphicsAPI/IndexBuffer.h"
-
+#include "graphicsAPI/GpuBuffer.h"
 #include "VertexData.h"
 #include "IndexData.h"
+#include "graphicsAPI/InputDescription.h"
 
 #include "graphicsAPI/IGraphicsAPI.h"
 
@@ -55,7 +54,7 @@ void Renderer::renderAllRenderTargets()
 	renderQueue.dispatchRenderOperations(graphicsAPI);
 }
 
-void Renderer::bindVertexBuffer(VertexBuffer &vertexBuffer)
+void Renderer::bindVertexBuffer(GpuBuffer &vertexBuffer)
 { 
 	if (&vertexBuffer != boundVertexBuffer)
 	{
@@ -64,7 +63,7 @@ void Renderer::bindVertexBuffer(VertexBuffer &vertexBuffer)
 	}
 }
 
-void Renderer::bindIndexBuffer(IndexBuffer &indexBuffer)
+void Renderer::bindIndexBuffer(GpuBuffer &indexBuffer)
 { 
 	if(&indexBuffer != boundIndexBuffer)
 	{
@@ -82,32 +81,64 @@ void Renderer::bindGpuProgram(GpuProgram &gpuProgram)
 	}
 }
 
+void Renderer::bindInputDescription(InputDescription &inputDescription)
+{
+	if (&inputDescription != boundInputDescription)
+	{
+		boundInputDescription = &inputDescription;
+		inputDescription.bind();
+	}
+}
+
 void Renderer::renderVertices(const VertexData &vertexData)
 {
-	//graphicsAPI.renderVertices(actualRenderMode, vertexData.vertexStart, vertexData.vertexCount);
+	bindInputDescription(*vertexData.inputDescription);
+	graphicsAPI.renderVertices(actualRenderMode, vertexData.vertexStart, vertexData.vertexCount);
 }
 
 void Renderer::renderIndexed(const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex)
 {
-	//bind index buffer?
-	//graphicsAPI.renderIndexed(actualRenderMode, indexData.indexStart, )
+	bindInputDescription(*vertexData.inputDescription);
+	bindIndexBuffer(*indexData.indexBuffer);
+	graphicsAPI.renderIndexed(actualRenderMode, indexData.indexStart, indexData.indexCount, baseVertex);
 }
 
-void Renderer::renderMultiVertices(const VertexData *vertexData[], uint32 drawCount)
+/*void Renderer::renderMultiVertices(const VertexData *vertexData[], uint32 drawCount)
 {
-
+	bindInputDescription(*vertexData.inputDescription);
 }
 
 void Renderer::renderMultiIndexed(const VertexData *vertexData[], const IndexData *indexData[], uint32 drawCount)
 {
+	bindInputDescription(*vertexData.inputDescription);
 }
 
 void Renderer::renderVerticesInstanced(const VertexData &vertexData, uint32 instanceCount)
 {
-
+	bindInputDescription(*vertexData.inputDescription);
 }
 
 void Renderer::renderIndexedInstanced(const VertexData &vertexData, const IndexData &indexData, uint32 instanceCount)
 {
+	bindInputDescription(*vertexData.inputDescription);
+}*/
 
+void Renderer::clearColorBuffer(float value[4])
+{
+	graphicsAPI.clearColorBuffer(value);
+}
+
+void Renderer::clearDepthBuffer(float value)
+{
+	graphicsAPI.clearDepthBuffer(value);
+}
+
+void Renderer::clearStencilBuffer(int32 value)
+{
+	graphicsAPI.clearStencilBuffer(value);
+}
+
+void Renderer::clearDepthAndStencilBuffer(float depth, int32 stencil)
+{
+	graphicsAPI.clearDepthAndStencilBuffer(depth, stencil);
 }

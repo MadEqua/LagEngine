@@ -8,8 +8,7 @@
 
 #include "../Types.h"
 
-#include "graphicsAPI/VertexBuffer.h"
-#include "graphicsAPI/IndexBuffer.h"
+#include "graphicsAPI/GpuBuffer.h"
 #include "IndexData.h"
 #include "VertexData.h"
 #include "VertexDescription.h"
@@ -85,10 +84,10 @@ bool Mesh::loadImplementation()
 	else idxSize = 4;
 
 	//create buffers
-	VertexBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, false);
-	IndexBuffer *ib = nullptr;
+	GpuBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+	GpuBuffer *ib = nullptr;
 	if(idxCount > 0)
-		ib = bufferManager.createIndexBuffer(idxCount, idxSize, true);
+		ib = bufferManager.createIndexBuffer(idxCount, idxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC | LAG_GPU_BUFFER_USAGE_MAP_WRITE, false);
 
 	//for each submesh
 	uint32 vxBufferOffset = 0, idxBufferOffset = 0;

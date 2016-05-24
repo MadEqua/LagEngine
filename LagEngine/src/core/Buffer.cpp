@@ -67,7 +67,7 @@ byte* Buffer::map()
 			"Buffer", "Trying to map an already mapped buffer.");
 		return nullptr;
 	}
-	
+
 	isMapped = true;
 	return mapImplementation();
 }

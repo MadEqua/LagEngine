@@ -4,6 +4,12 @@
 
 using namespace Lag;
 
+MemoryBuffer::MemoryBuffer(uint32 sizeBytes, byte* data) :
+	MemoryBuffer(sizeBytes)
+{
+	memcpy(this->data, data, sizeBytes);
+}
+
 MemoryBuffer::MemoryBuffer(uint32 sizeBytes) :
 	Buffer(sizeBytes)
 {

@@ -4,7 +4,7 @@
 
 namespace Lag
 {
-	class IndexBuffer;
+	class GpuBuffer;
 
 	enum IndexType
 	{
@@ -37,7 +37,7 @@ namespace Lag
 		IndexType indexType;
 
 		//Where to get the index from
-		IndexBuffer *indexBuffer;
+		GpuBuffer *indexBuffer;
 
 		//Offset from the start of the buffer (bytes)
 		uint32 indexStart;
