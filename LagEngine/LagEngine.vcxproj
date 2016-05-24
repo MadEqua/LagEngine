@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\renderer\RenderOperation.cpp" />
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp" />
     <ClCompile Include="src\core\ManagedObject.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramUniform.cpp" />
@@ -190,6 +192,10 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescription.h" />
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\InputDescription.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\InputDescriptionManager.h" />
     <ClInclude Include="src\renderer\RenderOperation.h" />
     <ClInclude Include="src\core\ManagedObject.h" />
     <ClInclude Include="src\core\Manager.h" />

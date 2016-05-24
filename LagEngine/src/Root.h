@@ -23,6 +23,7 @@ namespace Lag
 	class MeshManager;
 
 	class GpuBufferManager;
+	class InputDescriptionManager;
 
 	class IGraphicsAPI;
 
@@ -52,6 +53,7 @@ namespace Lag
 		inline MeshManager& getMeshManager() const { return *meshManager; }
 
 		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
+		inline InputDescriptionManager& getInputDescriptionManager() const { return *inputDescriptionManager; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();
@@ -68,6 +70,7 @@ namespace Lag
 		MeshManager *meshManager;
 
 		GpuBufferManager *gpuBufferManager;
+		InputDescriptionManager *inputDescriptionManager;
 
 		IGraphicsAPI *graphicsAPI;
 

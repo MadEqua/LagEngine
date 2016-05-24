@@ -20,7 +20,7 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue)
 {
 	renderQueue.addRenderOperation(*this, 0,
 		const_cast<VertexData&>(subMesh.getVertexData()), 
-		const_cast<IndexData&>(subMesh.getIndexData()),
+		const_cast<IndexData*>(&subMesh.getIndexData()),
 		material);
 }
 

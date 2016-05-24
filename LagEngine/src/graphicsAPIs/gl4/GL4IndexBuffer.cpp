@@ -19,7 +19,6 @@ void GL4IndexBuffer::readImplementation(uint32 offset, uint32 length, byte* dst)
 {
 }
 
-
 void GL4IndexBuffer::lockImplementation(uint32 offset, uint32 length)
 {
 }
@@ -34,5 +33,9 @@ byte* GL4IndexBuffer::mapImplementation()
 }
 
 void GL4IndexBuffer::unmapImplementation()
+{
+}
+
+void GL4IndexBuffer::bind() const
 {
 }

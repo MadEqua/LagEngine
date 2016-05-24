@@ -30,6 +30,8 @@ namespace Lag
 		
 		inline bool hasStage(GpuProgramStageType stageType) const {return programStages[stageType] != nullptr; }
 
+		virtual void bind() const = 0;
+
 	protected:
 
 		virtual bool loadImplementation() override;

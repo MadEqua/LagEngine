@@ -8,9 +8,26 @@
 
 namespace Lag
 {
+	enum RenderMode
+	{
+		LAG_RENDER_MODE_TRIANGLES,
+		LAG_RENDER_MODE_TRIANGLE_STRIP,
+		LAG_RENDER_MODE_TRIANGLE_FAN,
+		LAG_RENDER_MODE_LINES,
+		LAG_RENDER_MODE_LINE_STRIP,
+		LAG_RENDER_MODE_LINE_LOOP,
+		LAG_RENDER_MODE_POINTS,
+		LAG_RENDER_MODE_PATCHES
+	};
+	
+	
+	
 	class RenderTarget;
 	class IGraphicsAPI;
 	class SceneManager;
+	class GpuProgram;
+	class VertexBuffer;
+	class IndexBuffer;
 
 	/*
 	* Top level renderer. All the rendering process starts here culminating on concrete calls to a IGraphicsAPI.
@@ -27,7 +44,26 @@ namespace Lag
 		void addRenderTarget(const std::string &name, RenderTarget &renderTarget);
 		void removeRenderTarget(const std::string &name);
 
+		//Main entry point for rendering
 		void renderAllRenderTargets();
+
+		//Bind objects and settings
+		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
+		void bindVertexBuffer(VertexBuffer &vertexBuffer);
+		void bindIndexBuffer(IndexBuffer &indexBuffer);
+		void bindGpuProgram(GpuProgram &gpuProgram);
+
+		//High-level render calls
+		void renderVertices(const VertexData &vertexData);
+		void renderIndexed(const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex = 0);
+
+		void renderMultiVertices(const VertexData *vertexData[], uint32 drawCount);
+		void renderMultiIndexed(const VertexData *vertexData[], const IndexData *indexData[], uint32 drawCount);
+
+		void renderVerticesInstanced(const VertexData &vertexData, uint32 instanceCount);
+		void renderIndexedInstanced(const VertexData &vertexData, const IndexData &indexData, uint32 instanceCount);
+
+
 
 		//TODO
 		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
@@ -42,11 +78,17 @@ namespace Lag
 	protected:
 		std::unordered_map<std::string, RenderTarget*> renderTargets;
 
-		//uint32 batch, face and vx counter
-
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
 
 		RenderQueue renderQueue;
+
+		//TODO: uint32 batch, face and vx counter
+
+		//Bound objects
+		RenderMode actualRenderMode;
+		VertexBuffer *boundVertexBuffer;
+		IndexBuffer *boundIndexBuffer;
+		GpuProgram *boundGpuProgram;
 	};
 }

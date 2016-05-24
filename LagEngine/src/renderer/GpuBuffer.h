@@ -31,6 +31,8 @@ namespace Lag
 		virtual void write(uint32 offset, uint32 length, byte* src) override;
 		virtual void read(uint32 offset, uint32 length, byte* dst) override;
 
+		virtual void bind() const = 0;
+
 	protected:
 		
 		//Basic implementation provided. Better ones can be made on concrete classes

@@ -21,6 +21,7 @@ namespace Lag
 		virtual VertexBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, bool useMirrorBuffer) = 0;
 		virtual IndexBuffer* createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirrorBuffer) = 0;
 
+		//TODO: make it so that it does not create similar descriptions...
 		VertexDescription& createVertexDescription();
 
 	protected:

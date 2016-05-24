@@ -45,6 +45,9 @@ namespace Lag
 		uint16 getByteSize() const;
 		static uint8 getTypeByteSize(VertexAttributeType type);
 
+		bool operator==(const VertexAttribute &other) const;
+		operator std::size_t() const;
+
 		~VertexAttribute();
 
 	private:
@@ -73,6 +76,9 @@ namespace Lag
 		inline const std::vector<VertexAttribute>& getAttributes() const { return attributes; }
 
 		void addAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length, VertexAttributeType type, uint8 index = 0, bool isNormalized = false);
+
+		bool operator==(const VertexDescription &other) const;
+		operator std::size_t() const;
 
 	private:
 		std::vector<VertexAttribute> attributes;

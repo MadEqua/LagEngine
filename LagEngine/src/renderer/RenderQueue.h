@@ -23,7 +23,7 @@ namespace Lag
 			ShaderProgram &shaderProgram);*/
 
 		void addRenderOperation(IRenderable &renderable, uint32 passId,
-			VertexData &vertexData, IndexData &indexData,
+			VertexData &vertexData, IndexData *indexData,
 			Material &material);
 		
 		//which one??

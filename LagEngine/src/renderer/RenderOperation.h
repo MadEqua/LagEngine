@@ -11,14 +11,6 @@ namespace Lag
 		LAG_RENDER_COMM_INDEXED,
 		LAG_RENDER_COMM_MULTI_VERTICES,
 		LAG_RENDER_COMM_MULTI_INDEXED
-	};
-
-	//TODO: check the possibilities
-	enum RenderType
-	{
-		LAG_RENDER_TYPE_TRIANGLES,
-		LAG_RENDER_TYPE_LINES,
-		LAG_RENDER_TYPE_POINTS
 	};*/
 
 	class VertexData;
@@ -34,8 +26,8 @@ namespace Lag
 	class RenderOperation
 	{
 	public:
-		RenderOperation();
-		~RenderOperation();
+		RenderOperation() {}
+		~RenderOperation() {}
 
 		VertexData *vertexData;
 		IndexData *indexData;

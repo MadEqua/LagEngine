@@ -183,10 +183,16 @@
     <ClCompile Include="src\core\ManagedObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\RenderOperation.cpp">
+    <ClCompile Include="src\scene\SubEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\SubEntity.cpp">
+    <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -411,6 +417,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\IRenderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\graphicsAPI\InputDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\graphicsAPI\InputDescriptionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

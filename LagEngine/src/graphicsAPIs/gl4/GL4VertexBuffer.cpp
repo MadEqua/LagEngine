@@ -20,7 +20,6 @@ void GL4VertexBuffer::readImplementation(uint32 offset, uint32 length, byte* dst
 {
 }
 
-
 void GL4VertexBuffer::lockImplementation(uint32 offset, uint32 length)
 {
 }
@@ -35,5 +34,9 @@ byte* GL4VertexBuffer::mapImplementation()
 }
 
 void GL4VertexBuffer::unmapImplementation()
+{
+}
+
+void GL4VertexBuffer::bind() const
 {
 }

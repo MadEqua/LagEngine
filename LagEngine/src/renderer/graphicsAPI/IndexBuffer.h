@@ -12,6 +12,8 @@ namespace Lag
 	public:
 		IndexBuffer(uint32 indexCount, uint32 indexSizeBytes, bool useMirror);
 		virtual ~IndexBuffer();
+
+
 	
 	protected:
 		uint32 indexCount;

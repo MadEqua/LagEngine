@@ -3,6 +3,7 @@
 #include "../io/log/LogManager.h"
 
 #include "graphicsAPI/GpuBufferManager.h"
+#include "graphicsAPI/InputDescriptionManager.h"
 #include "../Root.h"
 
 #include "../Types.h"
@@ -166,6 +167,7 @@ bool Mesh::loadImplementation()
 		vd->vertexCount = mesh->mNumVertices;
 		vd->vertexStart = vxBufferOffset;
 		vd->vertexDescription = &vxDesc;
+		vd->inputDescription = Root::getInstance().getInputDescriptionManager().getInputDescription(vxDesc, *vb);
 
 		IndexData *id = nullptr;
 		if (idxCount > 0)

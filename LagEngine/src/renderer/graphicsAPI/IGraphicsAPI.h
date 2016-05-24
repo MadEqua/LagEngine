@@ -7,6 +7,7 @@ namespace Lag
 {
 	class GpuProgram;
 	class Texture;
+	enum RenderMode;
 	
 	/*
 	* Abstracting the calls of a Graphics API. A class implementing this interface is used
@@ -18,17 +19,21 @@ namespace Lag
 		IGraphicsAPI() {}
 		virtual ~IGraphicsAPI() {}
 
-		virtual void renderVertices() = 0;
-		virtual void renderIndexed() = 0;
 
-		//TODO: all draw calls
+		/*virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) = 0;
+		virtual void renderIndexed(RenderMode mode, uint32 first, uint32 count, uint32 baseVertex = 0) = 0;
+
+		virtual void renderMultiVertices(RenderMode mode, uint32 first[], uint32 count[], uint32 drawCount) = 0;
+		virtual void renderMultiIndexed(RenderMode mode, uint32 first[], uint32 count[], uint32 drawCount) = 0;
+
+		virtual void renderVerticesInstanced(RenderMode mode, uint32 first, uint32 count, uint32 instanceCount) = 0;
+		virtual void renderIndexedInstanced(RenderMode mode, uint32 first, uint32 count, uint32 instanceCount) = 0;*/
 
 		virtual void clearFrameBuffer(/*buffers, color?*/) = 0;
 
 		virtual void setTexture(uint32 unit, Texture &texture) = 0;
 		virtual void setTexture(uint32 unit, const std::string &textureName) = 0;
 
-		//virtual void bindGpuProgram(GpuProgram &program) = 0;
 
 		virtual void setStencilCheckEnabled(bool enabled) = 0;
 		/*virtual void setStencilBufferParams(CompareFunction func = CMPF_ALWAYS_PASS,
@@ -41,6 +46,5 @@ namespace Lag
 
 
 		/*TODO: set clipping planes*/
-
 	};
 }

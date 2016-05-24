@@ -21,6 +21,7 @@
 #include "graphicsAPIs/gl4/GL4GpuBufferManager.h"
 
 #include "graphicsAPIs/gl4/GL4GraphicsAPI.h"
+#include "graphicsAPIs/gl4/GL4InputDescriptionManager.h"
 
 #include "io/tinyxml/tinyxml.h"
 
@@ -41,7 +42,8 @@ Root::Root() :
 	meshManager(nullptr),
 	gpuBufferManager(nullptr),
 	windowListener(nullptr),
-	graphicsAPI(nullptr)
+	graphicsAPI(nullptr),
+	inputDescriptionManager(nullptr)
 {
 	//Initialize other singletons
 	LogManager::getInstance();
@@ -77,6 +79,9 @@ void Root::destroy()
 
 	if (graphicsAPI != nullptr)
 		delete graphicsAPI;
+
+	if (inputDescriptionManager != nullptr)
+		delete inputDescriptionManager;
 
 	if (windowListener != nullptr)
 		delete windowListener;
@@ -123,6 +128,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	{
 		gpuBufferManager = new GL4GpuBufferManager();
 		gpuProgramManager = new GL4GpuProgramManager();
+		inputDescriptionManager = new GL4InputDescriptionManager();
 	}
 
 	if (!initResources(parameters.resourcesFile))

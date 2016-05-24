@@ -39,7 +39,7 @@ namespace Lag
 		//Where to get the index from
 		IndexBuffer *indexBuffer;
 
-		//Offset from the start of the buffer
+		//Offset from the start of the buffer (bytes)
 		uint32 indexStart;
 
 		//How many indices

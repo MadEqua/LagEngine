@@ -13,6 +13,8 @@ namespace Lag
 
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const override;
 
+		virtual void bind() const override;
+
 	protected:
 		virtual bool link() override;
 	};

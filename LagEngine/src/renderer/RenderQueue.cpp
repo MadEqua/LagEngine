@@ -17,7 +17,7 @@ RenderQueue::~RenderQueue()
 }
 
 void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
-	VertexData &vertexData, IndexData &indexData,
+	VertexData &vertexData, IndexData *indexData,
 	Material &material)
 {
 	if (actualSlot >= queue.size())
@@ -31,7 +31,7 @@ void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
 	renderOperation.renderable = &renderable;
 	renderOperation.passId = passId;
 	renderOperation.vertexData = &vertexData;
-	renderOperation.indexData = &indexData;
+	renderOperation.indexData = indexData;
 	renderOperation.material = &material;
 	
 	++actualSlot;

@@ -19,5 +19,7 @@ namespace Lag
 
 		virtual void writeImplementation(uint32 offset, uint32 length, byte* src) override;
 		virtual void readImplementation(uint32 offset, uint32 length, byte* dst) override;
+
+		virtual void bind() const override;
 	};
 }

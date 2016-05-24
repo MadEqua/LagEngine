@@ -26,3 +26,7 @@ GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescripti
 {
 	return new GL4GpuProgramUniform(description, dataLocation);
 }
+
+void GL4GpuProgram::bind() const
+{
+}
