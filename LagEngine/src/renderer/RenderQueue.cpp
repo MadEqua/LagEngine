@@ -47,11 +47,11 @@ void RenderQueue::sort()
 	//TODO
 }
 
-void RenderQueue::dispatchRenderOperations(IGraphicsAPI &graphicsAPI)
+void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 {
 	for (int i = 0; i < actualSlot; ++i)
 	{
 		RenderOperation &ro = queue[i];
-		ro.renderable->render(graphicsAPI, ro.passId);
+		ro.renderable->render(renderer, ro.passId);
 	}
 }

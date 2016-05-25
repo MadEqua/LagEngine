@@ -9,6 +9,7 @@ namespace Lag
 	class Texture;
 	enum RenderMode;
 	enum BufferType;
+	enum IndexType;
 	
 	/*
 	* Abstracting the calls of a Graphics API. A class implementing this interface is used
@@ -22,7 +23,7 @@ namespace Lag
 
 
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) = 0;
-		virtual void renderIndexed(RenderMode mode, uint32 first, uint8 indexByteSize, uint32 count, uint32 baseVertex = 0) = 0;
+		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) = 0;
 
 		/*virtual void renderMultiVertices(RenderMode mode, uint32 first[], uint32 count[], uint32 drawCount) = 0;
 		virtual void renderMultiIndexed(RenderMode mode, uint32 first[], uint32 count[], uint32 drawCount) = 0;

@@ -53,13 +53,13 @@ bool Mesh::loadImplementation()
 
 	//Create a VertexDescription
 	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 0, 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3 * sizeof(float), 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 6 * sizeof(float), 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 0, 3, LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3 * sizeof(float), 3, LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 6 * sizeof(float), 3, LAG_VX_ATTR_TYPE_FLOAT);
 
 	//Make some space calculations
 	uint32 vxCount = 0, idxCount = 0;
-	uint32 vxSize = 3 * sizeof(float) + 3 * sizeof(float) + 3 * sizeof(float); //pos, normal and tangent
+	uint32 vxSize = vxDesc.getByteSize();
 	uint32 idxSize;
 	for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI)
 	{
@@ -71,8 +71,8 @@ bool Mesh::loadImplementation()
 		{
 			if (mesh->HasTextureCoords(i))
 			{
-				vxSize += 3 * sizeof(float); //3d coords...
-				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 9 * sizeof(float), 3 * sizeof(float), LAG_VX_ATTR_TYPE_FLOAT, i);
+				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, vxSize, 3, LAG_VX_ATTR_TYPE_FLOAT, i);
+				vxSize = vxDesc.getByteSize();
 			}
 			else
 				break;
@@ -102,20 +102,20 @@ bool Mesh::loadImplementation()
 		uint32 offset = 0;
 		for (uint32 vx = 0; vx < mesh->mNumVertices; ++vx)
 		{
-			vb->write(offset, 3 * sizeof(float), (byte*)mesh->mVertices);
+			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mVertices[vx]));
 			offset += 3 * sizeof(float);
 
-			vb->write(offset, 3 * sizeof(float), (byte*)mesh->mNormals);
+			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mNormals[vx]));
 			offset += 3 * sizeof(float);
 
-			vb->write(offset, 3 * sizeof(float), (byte*)mesh->mTangents);
+			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mTangents[vx]));
 			offset += 3 * sizeof(float);
 
 			for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
 			{
 				if (mesh->HasTextureCoords(i))
 				{
-					vb->write(offset, 3 * sizeof(float), (byte*)mesh->mTextureCoords[i]);
+					vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mTextureCoords[vx]));
 					offset += 3 * sizeof(float);
 				}
 				else break;
@@ -125,7 +125,7 @@ bool Mesh::loadImplementation()
 
 		if (idxCount > 0)
 		{
-			ib->lock(idxBufferOffset, subMeshIdxCount);
+			ib->lock(idxBufferOffset, subMeshIdxCount * idxSize);
 			byte *ptr = ib->map();
 			for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
 			{
@@ -134,20 +134,20 @@ bool Mesh::loadImplementation()
 					switch (idxSize)
 					{
 					case 1:
-						*ptr = mesh->mFaces[i].mIndices[j];
+						*ptr = static_cast<uint8>(mesh->mFaces[i].mIndices[j]);
 						ptr++;
 						break;
 					case 2: 
 					{
 						uint16 *ptr16 = reinterpret_cast<uint16*>(ptr);
-						*ptr16 = mesh->mFaces[i].mIndices[j];
+						*ptr16 = static_cast<uint16>(mesh->mFaces[i].mIndices[j]);
 						ptr += 2; 
 					}
 						break;
 					case 4:
 					{
 						uint32 *ptr32 = reinterpret_cast<uint32*>(ptr);
-						*ptr32 = mesh->mFaces[i].mIndices[j];
+						*ptr32 = static_cast<uint32>(mesh->mFaces[i].mIndices[j]);
 						ptr += 4;
 					}
 						break;

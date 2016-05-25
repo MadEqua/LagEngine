@@ -17,7 +17,7 @@ namespace Lag
 		~SubEntity();
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue) override;
-		virtual void render(IGraphicsAPI &graphicsAPI, uint32 passId) override;
+		virtual void render(Renderer &renderer, uint32 passId) override;
 
 	private:
 		Material &material;

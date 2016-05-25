@@ -1,7 +1,9 @@
 #include "SubEntity.h"
 
 #include "../renderer/RenderQueue.h"
+#include "../renderer/Renderer.h"
 #include "../renderer/SubMesh.h"
+#include "../renderer/VertexData.h"
 #include "../renderer/Material.h"
 
 using namespace Lag;
@@ -24,7 +26,8 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue)
 		material);
 }
 
-void SubEntity::render(IGraphicsAPI &graphicsAPI, uint32 passId)
+void SubEntity::render(Renderer &renderer, uint32 passId)
 {
-	//TODO
+	renderer.bindGpuProgram(material.getGpuProgram());
+	renderer.renderIndexed(subMesh.getVertexData(), subMesh.getIndexData(), subMesh.getVertexData().vertexStart);
 }

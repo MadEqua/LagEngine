@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../renderer/graphicsAPI/GpuProgramStage.h"
+#include "GL4Includes.h"
 
 namespace Lag
 {
@@ -11,5 +12,13 @@ namespace Lag
 		virtual ~GL4GpuProgramStage();
 
 		virtual bool compile() override;
+
+		inline GLuint getHandle() const { return handle; }
+
+	private:
+		GLuint handle;
+		GLenum convertTypeToGL();
+
+		bool checkCompilation() const;
 	};
 }

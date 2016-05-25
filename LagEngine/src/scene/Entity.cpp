@@ -28,8 +28,8 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue)
 		se->addToRenderQueue(renderQueue);
 }
 
-void Entity::render(IGraphicsAPI &graphicsAPI, uint32 passId)
+void Entity::render(Renderer &renderer, uint32 passId)
 {
 	for (SubEntity *se : subEntities)
-		se->render(graphicsAPI, passId);
+		se->render(renderer, passId);
 }

@@ -65,14 +65,14 @@ void GL4GpuBuffer::bind() const
 		GL_ERROR_CHECK(glBindBuffer(GL_ARRAY_BUFFER, handle))
 		break;
 	case LAG_GPU_BUFFER_CONTENTS_INDICES:
-		//GL_ERROR_CHECK(glBindBuffer(GL_ELEMENT_ARRAY, handle));
+		GL_ERROR_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle))
 		break;
 	case LAG_GPU_BUFFER_CONTENTS_UNIFORMS:
+		GL_ERROR_CHECK(glBindBuffer(GL_UNIFORM_BUFFER, handle))
 		break;
 	case LAG_GPU_BUFFER_CONTENTS_OTHER:
-		break;
 	default:
-		break;
+		return;
 	}
 }
 

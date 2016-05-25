@@ -51,7 +51,18 @@ void Renderer::renderAllRenderTargets()
 	}
 
 	renderQueue.sort();
-	renderQueue.dispatchRenderOperations(graphicsAPI);
+
+	float color[4] = { 0.5f, 0.5f, 0.5f, 1 };
+	clearColorBuffer(color);
+	clearDepthAndStencilBuffer(0.0f, 0);
+
+	renderQueue.dispatchRenderOperations(*this);
+
+	for (auto &rtPair : renderTargets)
+	{
+		RenderTarget &rt = *rtPair.second;
+		rt.swapBuffers();
+	}
 }
 
 void Renderer::bindVertexBuffer(GpuBuffer &vertexBuffer)
@@ -100,7 +111,7 @@ void Renderer::renderIndexed(const VertexData &vertexData, const IndexData &inde
 {
 	bindInputDescription(*vertexData.inputDescription);
 	bindIndexBuffer(*indexData.indexBuffer);
-	graphicsAPI.renderIndexed(actualRenderMode, indexData.indexStart, indexData.indexCount, baseVertex);
+	graphicsAPI.renderIndexed(actualRenderMode, indexData.indexStart, indexData.indexType, indexData.indexCount, baseVertex);
 }
 
 /*void Renderer::renderMultiVertices(const VertexData *vertexData[], uint32 drawCount)

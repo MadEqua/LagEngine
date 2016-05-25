@@ -13,7 +13,7 @@ namespace Lag
 		~GL4GraphicsAPI();
 
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) override;
-		virtual void renderIndexed(RenderMode mode, uint32 first, uint8 indexByteSize, uint32 count, uint32 baseVertex = 0) override;
+		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) override;
 
 		virtual void clearColorBuffer(float value[4]) override;
 		virtual void clearDepthBuffer(float value) override;

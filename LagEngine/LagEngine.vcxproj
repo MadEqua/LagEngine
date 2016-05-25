@@ -129,6 +129,7 @@
   <ItemGroup>
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp" />
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescription.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp" />

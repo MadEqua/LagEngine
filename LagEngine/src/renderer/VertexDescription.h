@@ -43,7 +43,7 @@ namespace Lag
 		inline bool getIsNormalized() const { return isNormalized; }
 
 		uint16 getByteSize() const;
-		static uint8 getTypeByteSize(VertexAttributeType type);
+		uint8 getTypeByteSize() const;
 
 		bool operator==(const VertexAttribute &other) const;
 		operator std::size_t() const;
@@ -68,12 +68,17 @@ namespace Lag
 	
 	/*
 	* Describes a vertex stored on a vertex buffer. (All the attributes of a vertex)
+	* TODO: put the attributes in a well-known/default order, the one expected on shader inputs
 	*/
 	class VertexDescription
 	{
 	public:
 		inline uint32 getAttributeCount() const { return attributes.size(); }
-		inline const std::vector<VertexAttribute>& getAttributes() const { return attributes; }
+		inline const VertexAttribute& getAttribute(uint32 index) const { return attributes[index]; }
+		//inline const std::vector<VertexAttribute>& getAttributes() const { return attributes; }
+
+		//The size of a full vertex
+		uint32 getByteSize() const;
 
 		void addAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length, VertexAttributeType type, uint8 index = 0, bool isNormalized = false);
 

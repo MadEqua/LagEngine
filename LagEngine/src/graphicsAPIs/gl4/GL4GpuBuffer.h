@@ -24,6 +24,8 @@ namespace Lag
 
 		virtual void bind() const override;
 
+		inline GLuint getHandle() const { return handle; }
+
 	private:
 		GLuint handle;
 		GLbitfield convertFlagsToGL(uint32 flags);

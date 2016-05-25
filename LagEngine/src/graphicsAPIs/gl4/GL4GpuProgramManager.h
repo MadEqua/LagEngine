@@ -14,12 +14,12 @@ namespace Lag
 
 		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) override
 		{
-			return add(name, new GL4GpuProgram(stagesNames));
+			return add(name, new GL4GpuProgram(name, stagesNames));
 		}
 
 		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
 		{
-			return add(name, new GL4GpuProgram(stages));
+			return add(name, new GL4GpuProgram(name, stages));
 		}
 	};
 }

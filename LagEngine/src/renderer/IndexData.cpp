@@ -10,9 +10,9 @@ IndexData::~IndexData()
 {
 }
 
-uint8 IndexData::getTypeByteSize(IndexType type)
+uint8 IndexData::getTypeByteSize() const
 {
-	switch (type)
+	switch (indexType)
 	{
 	case LAG_IDX_TYPE_UINT8:
 		return 1;

@@ -4,6 +4,7 @@
 #include "scene/SceneGraph.h"
 #include "scene/SceneNode.h"
 #include "scene/Camera.h"
+#include "scene/Entity.h"
 #include "io/InputManager.h"
 
 #include "io/IKeyboardListener.h"
@@ -113,6 +114,8 @@ int main()
 	cam.attachToSceneNode(rootNode);
 	renderWindow.createViewport("default", cam);
 
+	Entity *ent = sm.createEntity("sphere", "sphere", "testMaterial");
+	ent->attachToSceneNode(rootNode);
 
 	Root::getInstance().startRenderingLoop();
 	return 0;

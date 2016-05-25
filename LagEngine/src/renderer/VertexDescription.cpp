@@ -19,10 +19,10 @@ VertexAttribute::~VertexAttribute()
 
 uint16 VertexAttribute::getByteSize() const
 {
-	return getTypeByteSize(type) * length;
+	return getTypeByteSize() * length;
 }
 
-uint8 VertexAttribute::getTypeByteSize(VertexAttributeType type)
+uint8 VertexAttribute::getTypeByteSize() const
 {
 	switch (type)
 	{
@@ -78,6 +78,14 @@ void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint32 of
 {
 	VertexAttribute attr(semantic, offset, length, type, index, isNormalized);
 	attributes.push_back(attr);
+}
+
+uint32 VertexDescription::getByteSize() const
+{
+	uint32 size = 0;
+	for (const VertexAttribute &attr : attributes)
+		size += attr.getByteSize();
+	return size;
 }
 
 bool VertexDescription::operator==(const VertexDescription &other) const

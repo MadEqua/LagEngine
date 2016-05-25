@@ -7,7 +7,7 @@
 
 namespace Lag
 {
-	class ShaderProgram;
+	class GpuProgram;
 	
 	/*
 	* A Material contains all the details for rendering an entity, except the geometry.
@@ -21,14 +21,14 @@ namespace Lag
 		Material(const std::string &filePath);
 		virtual ~Material();
 	
-		inline ShaderProgram& getShaderProgram() const { return *shaderProgram; }
+		inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
 
 	private:
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
 		std::vector<std::string> shaderStageNames;
-		ShaderProgram *shaderProgram;
+		GpuProgram *gpuProgram;
 
 		bool parse();
 	};

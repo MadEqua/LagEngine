@@ -4,7 +4,6 @@
 
 namespace Lag
 {
-	class VertexDescription;
 	class InputDescription;
 	
 	/*

@@ -8,7 +8,8 @@
 
 using namespace Lag;
 
-GpuProgram::GpuProgram(const std::vector<std::string> &names) :
+GpuProgram::GpuProgram(const std::string &name, const std::vector<std::string> &names) :
+	name(name),
 	programStages(PROGRAM_STAGE_COUNT),
 	uniforms(nullptr)
 {
@@ -27,7 +28,10 @@ GpuProgram::GpuProgram(const std::vector<std::string> &names) :
 	initStages(stages);
 }
 
-GpuProgram::GpuProgram(const std::vector<GpuProgramStage*> &stages)
+GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages) :
+	name(name),
+	programStages(PROGRAM_STAGE_COUNT),
+	uniforms(nullptr)
 {
 	initStages(stages);
 }

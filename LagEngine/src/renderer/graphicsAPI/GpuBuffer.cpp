@@ -134,9 +134,7 @@ void GpuBuffer::updateFromMirror()
 		this->Buffer::lock(offsetLocked, lengthLocked);
 
 		byte *src = mirrorBuffer->map();
-		byte *dst = this->Buffer::map();
-
-		memcpy(dst, src, lengthLocked);
+		this->Buffer::write(0, lengthLocked, src);
 
 		this->Buffer::unlock();
 		mirrorBuffer->unlock();

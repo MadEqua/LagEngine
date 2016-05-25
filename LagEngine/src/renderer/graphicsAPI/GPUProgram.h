@@ -22,8 +22,8 @@ namespace Lag
 	class GpuProgram : public ManagedObject
 	{
 	public:
-		GpuProgram(const std::vector<std::string> &names);
-		GpuProgram(const std::vector<GpuProgramStage*> &stages);
+		GpuProgram(const std::string &name, const std::vector<std::string> &names);
+		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgram();
 
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const = 0;
@@ -33,6 +33,7 @@ namespace Lag
 		virtual void bind() const = 0;
 
 	protected:
+		std::string name;
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;

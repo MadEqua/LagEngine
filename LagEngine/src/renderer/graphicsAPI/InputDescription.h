@@ -1,5 +1,7 @@
 #pragma once
 
+#include "../../Types.h"
+
 namespace Lag
 {
 	class VertexDescription;
@@ -13,7 +15,7 @@ namespace Lag
 	class InputDescription
 	{
 	public:
-		virtual void bind() = 0;
+		virtual void bind() const = 0;
 
 	protected:
 		//Can only be created by InputDescriptionManager

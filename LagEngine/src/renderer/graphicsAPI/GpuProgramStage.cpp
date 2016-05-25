@@ -42,8 +42,9 @@ bool GpuProgramStage::loadImplementation()
 	while (std::getline(file, str))
 	{
 		code += str + '\n';
-		file.close();
 	}
+	
+	file.close();
 
 	if (!compile())
 		return false;

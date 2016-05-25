@@ -45,6 +45,6 @@ namespace Lag
 		//How many indices
 		uint32 indexCount;
 
-		static uint8 getTypeByteSize(IndexType type);
+		uint8 getTypeByteSize() const;
 	};
 }

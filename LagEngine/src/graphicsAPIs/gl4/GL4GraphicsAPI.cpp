@@ -2,6 +2,7 @@
 
 #include "../../io/log/LogManager.h"
 #include "../../renderer/Renderer.h"
+#include "../../renderer/IndexData.h"
 
 #include "GL4Error.h"
 
@@ -34,25 +35,31 @@ void GL4GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 count)
 	GL_ERROR_CHECK(glDrawArrays(convertRenderModeToGLenum(mode), first, count))
 }
 
-void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, uint8 indexByteSize, uint32 count, uint32 baseVertex)
+void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex)
 {
-	uint32 offset = first * indexByteSize;
+	uint32 indexByteSize;
 	GLenum type;
-	switch (indexByteSize)
+	switch (indexType)
 	{
-	case 8:
+	case LAG_IDX_TYPE_UINT8:
 		type = GL_UNSIGNED_BYTE;
+		indexByteSize = 1;
 		break;
-	case 16:
+	case LAG_IDX_TYPE_UINT16:
 		type = GL_UNSIGNED_SHORT;
+		indexByteSize = 2;
 		break;
-	case 32:
+	case LAG_IDX_TYPE_UINT32:
 		type = GL_UNSIGNED_INT;
+		indexByteSize = 4;
 		break;
 	default:
+		indexByteSize = 4;
 		type = GL_UNSIGNED_INT;
+		break;
 	}
-
+	
+	uint32 offset = first * indexByteSize;
 	GL_ERROR_CHECK(glDrawElementsBaseVertex(convertRenderModeToGLenum(mode), count, type, reinterpret_cast<void*>(offset), baseVertex))
 }
 
@@ -64,7 +71,6 @@ void GL4GraphicsAPI::clearColorBuffer(float value[4])
 void GL4GraphicsAPI::clearDepthBuffer(float value)
 {
 	GL_ERROR_CHECK(glClearBufferfv(GL_DEPTH, 0, &value))
-
 }
 
 void GL4GraphicsAPI::clearStencilBuffer(int32 value)

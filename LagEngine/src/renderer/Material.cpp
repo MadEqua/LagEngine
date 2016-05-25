@@ -32,6 +32,8 @@ bool Material::loadImplementation()
 	if (!manager.create(combinedName, shaderStageNames))
 		return false;
 
+	gpuProgram = static_cast<GpuProgram*>(manager.get(combinedName));
+
 	return true;
 }
 
@@ -68,25 +70,17 @@ bool Material::parse()
 	}
 
 	//TODO: check for techniques and passes, not shaders
-	const TiXmlElement *shaderElement = nullptr;
 	for (const TiXmlElement* child = materialElement->FirstChildElement();
 		child != 0;
 		child = child->NextSiblingElement())
 	{
 		if (child->ValueStr() == "shader")
 		{
-			shaderElement = child;
-			break;
+			const char* name = child->Attribute("name");
+			if (name)
+				shaderStageNames.push_back(name);
 		}
 	}
-
-	if (shaderElement == nullptr)
-		return false;
-
-	const char* name = shaderElement->Attribute("name");
-	if (name)
-		shaderStageNames.push_back(name);
-
 	return true;
 }
 

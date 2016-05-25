@@ -5,7 +5,7 @@
 namespace Lag
 {
 	class RenderQueue;
-	class IGraphicsAPI;
+	class Renderer;
 	
 	/*
 	* A Renderable should be able to add itself to a RenderQueue and
@@ -18,6 +18,6 @@ namespace Lag
 		virtual ~IRenderable() {}
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue) = 0;
-		virtual void render(IGraphicsAPI &graphicsAPI, uint32 passId) = 0;
+		virtual void render(Renderer &renderer, uint32 passId) = 0;
 	};
 }

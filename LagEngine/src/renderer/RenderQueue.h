@@ -10,7 +10,7 @@ namespace Lag
 	class IndexData;
 	class Material;
 	class IRenderable;
-	class IGraphicsAPI;
+	class Renderer;
 	
 	class RenderQueue
 	{
@@ -29,7 +29,7 @@ namespace Lag
 		//which one??
 		//void addItem(RenderOperation &renderOperation);
 
-		void dispatchRenderOperations(IGraphicsAPI &graphicsAPI);
+		void dispatchRenderOperations(Renderer &renderer);
  
 		void clear();
 		void sort();
