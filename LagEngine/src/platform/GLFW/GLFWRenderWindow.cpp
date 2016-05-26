@@ -1,6 +1,7 @@
 #include "GLFWRenderWindow.h"
 #include "GLFW/glfw3.h"
 #include "../../io/log/LogManager.h"
+#include "../../InitializationParameters.h"
 
 using namespace Lag;
 
@@ -14,7 +15,7 @@ void Lag::windowCloseCallback(GLFWwindow * window)
 
 void Lag::windowSizeCallback(GLFWwindow * window, int width, int height)
 {
-	glfwRenderWindow->onResizeNotify(width, height);
+	glfwRenderWindow->resize(width, height);
 }
 
 void Lag::windowPosCallback(GLFWwindow * window, int xpos, int ypos)
@@ -56,11 +57,15 @@ bool GLFWRenderWindow::initialize()
 	}
 	else
 	{
-		glfwWindowHint(GLFW_SAMPLES, parameters.MSSAsamples);
-		glfwWindowHint(GLFW_SRGB_CAPABLE, parameters.sRGB ? GL_TRUE : GL_FALSE);
-		glfwSwapInterval(parameters.vsync ? 1 : 0);
+		glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSSAsamples);
+		glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? GL_TRUE : GL_FALSE);
+		glfwSwapInterval(initializationParameters.vsync ? 1 : 0);
 
-		window = glfwCreateWindow(parameters.width, parameters.height, parameters.title.c_str(), NULL, NULL);
+		window = glfwCreateWindow(initializationParameters.width, 
+			initializationParameters.height, 
+			initializationParameters.title.c_str(),
+			NULL, NULL);
+
 		if (window == 0)
 		{
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,

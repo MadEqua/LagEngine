@@ -58,6 +58,8 @@ namespace Lag
 		void startRenderingLoop();
 		void stopRenderingLoop();
 
+		void onRenderWindowResize(int width, int height);
+
 	private:
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
@@ -74,11 +76,9 @@ namespace Lag
 
 		IGraphicsAPI *graphicsAPI;
 
-
 		WindowListener *windowListener;
 
 		InitializationParameters initializationParameters;
-
 
 		//Frame Timing
 		Timer frameTimer;
@@ -99,8 +99,10 @@ namespace Lag
 	class WindowListener : public IWindowListener
 	{
 	public:
-		virtual void onMove(int x, int y) {}
+		virtual void onPreRender() {}
+		virtual void onPostRender() {}
 		virtual void onResize(int width, int height) {}
+		virtual void onMove(int x, int y) {}
 		virtual void onFocusChange(bool focused) {}
 		virtual void onClose()
 		{

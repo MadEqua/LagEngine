@@ -105,8 +105,6 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	//in case of reinitialization
 	destroy();
 
-	windowListener = new WindowListener();
-
 	minFrameTime = parameters.maxFPS > 0 ? 1.0f / parameters.maxFPS : 0.0f;
 
 	sceneManager = new SceneManager();
@@ -135,6 +133,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	if (!initResources(parameters.resourcesFile))
 		return false;
 
+	windowListener = new WindowListener();
 	renderWindow->registerObserver(*windowListener);
 
 	//Load the declared resources

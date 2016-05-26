@@ -12,6 +12,7 @@ namespace Lag
 	class Entity;
 	class RenderQueue;
 	class IRenderable;
+	class Viewport;
 	
 	/*
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
@@ -24,12 +25,12 @@ namespace Lag
 		~SceneManager();
 
 		Entity* createEntity(const std::string &name, const std::string &meshName, const std::string &materialName);
-		Camera& createCamera(const std::string &name);
+		Camera& createCamera(const std::string &name, float fovy, float nearPlane, float farPlane);
 
 		SceneObject* getSceneObject(const std::string &name) const;
 
-		//Fill a RenderQueue with objects in range of the received Camera
-		void addRenderablesToQueue(RenderQueue &renderQueue, Camera &camera);
+		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
+		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport);
 
 		//TODO: remove scene objects
 

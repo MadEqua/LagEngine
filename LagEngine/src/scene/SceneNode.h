@@ -71,6 +71,7 @@ namespace Lag
 		const glm::vec3& getWorldScale();
 
 		const glm::mat4& getFinalTransform(); //Full transform, traversing the graph world coordinates
+		const glm::mat4& getFinalInverseTransform();
 
 		inline void setInheritOrientation(bool b) { inheritOrientation = b; }
 		inline void setInheritScale(bool b) { inheritScale = b; }

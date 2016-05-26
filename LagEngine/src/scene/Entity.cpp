@@ -11,7 +11,7 @@ Entity::Entity(Material &defaultMaterial, Mesh &mesh) :
 {
 	for (SubMesh *sm : mesh.getSubMeshes())
 	{
-		SubEntity *se = new SubEntity(defaultMaterial, *sm);
+		SubEntity *se = new SubEntity(*this, defaultMaterial, *sm);
 		subEntities.push_back(se);
 	}
 }
@@ -22,14 +22,14 @@ Entity::~Entity()
 		delete se;
 }
 
-void Entity::addToRenderQueue(RenderQueue &renderQueue)
+void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 {
 	for (SubEntity *se : subEntities)
-		se->addToRenderQueue(renderQueue);
+		se->addToRenderQueue(renderQueue, viewport);
 }
 
-void Entity::render(Renderer &renderer, uint32 passId)
+void Entity::render(Renderer &renderer, RenderOperation &renderOperation)
 {
 	for (SubEntity *se : subEntities)
-		se->render(renderer, passId);
+		se->render(renderer, renderOperation);
 }

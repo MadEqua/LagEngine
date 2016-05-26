@@ -178,6 +178,7 @@ void SceneNode::setPosition(const glm::vec3 &pos)
 void SceneNode::localChangeOccured()
 {
 	transform.finalTransformOutOfDate = true;
+	transform.finalInverseTransformOutOfDate = true;
 	notifyChildrenOfDataChange();
 }
 
@@ -216,8 +217,36 @@ const glm::mat4& SceneNode::getFinalTransform()
 			transform.finalTransform = glm::scale(transform.finalTransform, transform.scale * transform.inheritedScale);
 		else
 			transform.finalTransform = glm::scale(transform.finalTransform, transform.scale);
+
+		transform.finalTransformOutOfDate = false;
 	}
 	return transform.finalTransform;
+}
+
+const glm::mat4& SceneNode::getFinalInverseTransform()
+{
+	if (transform.finalInverseTransformOutOfDate)
+	{
+		transform.finalInverseTransform = glm::mat4();
+
+		if (inheritScale)
+			transform.finalInverseTransform = glm::scale(transform.finalInverseTransform, 1.0f / (transform.scale * transform.inheritedScale));
+		else
+			transform.finalInverseTransform = glm::scale(transform.finalInverseTransform, 1.0f / transform.scale);
+		
+		glm::mat4 rot;
+		if (inheritOrientation)
+			rot = glm::mat4(transform.inheritedOrientation * transform.orientation);
+		else
+			rot = glm::mat4(transform.orientation);
+
+		rot = glm::transpose(rot);
+		transform.finalInverseTransform = transform.finalInverseTransform * rot;
+
+		transform.finalInverseTransform = glm::translate(transform.finalInverseTransform, -transform.position - transform.inheritedPosition);
+		transform.finalInverseTransformOutOfDate = false;
+	}
+	return transform.finalInverseTransform;
 }
 
 const glm::vec3& SceneNode::getWorldPosition() 

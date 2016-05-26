@@ -14,6 +14,8 @@
 #include "glm/vec3.hpp"
 #include "glm/gtc/quaternion.hpp"
 
+#include "io/Keys.h"
+
 #include <iostream>
 
 using namespace Lag;
@@ -44,11 +46,16 @@ void print(char* s, const glm::mat4 &m)
 	print("col4", m[3]);
 }
 
-class InputListener : public IKeyboardListener
+class InputListener : public IKeyboardListener, public ICursorListener
 {
+public:
+	InputListener(Camera &camera) : camera(camera), lastX(-1), lastY(-1) {}
+
+	const float MOVE_VELOCITY = 0.15f;
+	
 	virtual void onKeyPress(int key, int modifier)
 	{
-		cout << "KEY PRESS: " << key << endl;
+		treatKey(key);
 	}
 
 	virtual void onKeyRelease(int key, int modifier) 
@@ -57,7 +64,61 @@ class InputListener : public IKeyboardListener
 
 	virtual void onKeyRepeat(int key, int modifier)
 	{
+		treatKey(key);
 	}
+
+	virtual void onCursorMove(int x, int y)
+	{
+		int dx, dy;
+
+		if (lastX != -1)
+		{
+			dx = lastX - x;
+			camera.getParentSceneNode()->yaw(dx * 0.1f, WORLD);
+		}
+
+		if (lastY != -1) 
+		{
+			dy = lastY - y;
+			camera.getParentSceneNode()->pitch(dy * 0.1f, LOCAL);
+		}
+		
+		lastX = x;
+		lastY = y;
+	}
+
+	virtual void onButtonPressed(int x, int y, int button, int modifiers)
+	{
+
+	}
+
+	virtual void onButtonReleased(int x, int y, int button, int modifiers)
+	{
+
+	}
+
+	void treatKey(int key)
+	{
+		switch (key)
+		{
+		case KEY_W:
+			camera.getParentSceneNode()->translate(glm::vec3(0, 0, -MOVE_VELOCITY), LOCAL);
+			break;
+		case KEY_S:
+			camera.getParentSceneNode()->translate(glm::vec3(0, 0, MOVE_VELOCITY), LOCAL);
+			break;
+		case KEY_A:
+			camera.getParentSceneNode()->translate(glm::vec3(-MOVE_VELOCITY, 0, 0), LOCAL);
+			break;
+		case KEY_D:
+			camera.getParentSceneNode()->translate(glm::vec3(MOVE_VELOCITY, 0, 0), LOCAL);
+			break;
+		default:
+			break;
+		}
+	}
+	int lastX, lastY;
+	Camera &camera;
 };
 
 class FrameListener : public IFrameListener
@@ -83,39 +144,36 @@ int main()
 
 	RenderWindow &renderWindow = Root::getInstance().getRenderWindow();
 	SceneManager &sm = Root::getInstance().getSceneManager();
-
-	SceneNode &rootNode = sm.getSceneGraph().getRootSceneNode();
-	/*SceneNode &node1 = rootNode.createChildSceneNode("node1");
-
-	rootNode.roll(90.0f, WORLD);
-
-	node1.translate(glm::vec3(10, 0, 0), PARENT);
-	node1.yaw(90, LOCAL);
 	
-	print("l position", node1.getLocalPosition());
-	print("l scale", node1.getLocalScale());
-	print("l orientation", node1.getLocalOrientation());
-
-	cout << endl;
-
-	print("w position", node1.getWorldPosition());
-	print("w scale", node1.getWorldScale());
-	print("w orientation", node1.getWorldOrientation());
-
-	print("\n\nmatrix", node1.getFinalTransform());*/
-
 	FrameListener fl;
-	InputListener il;
 
 	Root::getInstance().registerObserver(fl);
-	Root::getInstance().getInputManager().registerObserver(il);
 
-	Camera &cam = sm.createCamera("camera");
-	cam.attachToSceneNode(rootNode);
+	SceneNode &rootNode = sm.getSceneGraph().getRootSceneNode();
+	SceneNode &childNode = rootNode.createChildSceneNode("child");
+	SceneNode &cameraNode = rootNode.createChildSceneNode("cameraNode");
+
+	Camera &cam = sm.createCamera("camera", 45.0f, 0.1f, 100.0f);
 	renderWindow.createViewport("default", cam);
+	cam.attachToSceneNode(cameraNode);
+
+	InputListener il(cam);
+	Root::getInstance().getInputManager().registerObserver(static_cast<IKeyboardListener&>(il));
+	Root::getInstance().getInputManager().registerObserver(static_cast<ICursorListener&>(il));
 
 	Entity *ent = sm.createEntity("sphere", "sphere", "testMaterial");
-	ent->attachToSceneNode(rootNode);
+	ent->attachToSceneNode(childNode);
+
+	//Entity *ent2 = sm.createEntity("sphere", "sphere", "testMaterial");
+	//ent2->attachToSceneNode(childNode);
+
+	//rootNode.scale(glm::vec3(0.3f));
+	//childNode.scale(glm::vec3(0.1f));
+	//childNode.translate(glm::vec3(0,0,0), WORLD);
+
+	cameraNode.translate(glm::vec3(0, 0, 10.0f), WORLD);
+	//cameraNode.yaw(-10, WORLD);
+	//cameraNode.pitch(-10, WORLD);
 
 	Root::getInstance().startRenderingLoop();
 	return 0;

@@ -18,18 +18,12 @@ namespace Lag
 		GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
 		virtual ~GpuProgramUniform();
 
-		template<class T>
-		void setValue(T value);
-
-		template<class T>
-		void setValue(T *value);
-
+		//The implementation can deduce what to send based on the GpuProgramUniformDescription
+		virtual void setValue(const void* value) const = 0;
 
 		const GpuProgramUniformDescription& getGpuProgramUniformDescription() const { return description; }
 
 	protected:
-		virtual void setValueImpl(void* value) const = 0;
-
 		const GpuProgramUniformDescription &description;
 	};
 }

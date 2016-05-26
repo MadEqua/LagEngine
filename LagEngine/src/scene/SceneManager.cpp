@@ -50,9 +50,9 @@ Entity* SceneManager::createEntity(const std::string &name, const std::string &m
 	return e;
 }
 
-Camera& SceneManager::createCamera(const std::string &name)
+Camera& SceneManager::createCamera(const std::string &name, float fovy, float nearPlane, float farPlane)
 {
-	Camera *cam = new Camera();
+	Camera *cam = new Camera(fovy, nearPlane, farPlane);
 	sceneObjectMap[name] = cam;
 	cameraVector.push_back(cam);
 	return *cam;
@@ -67,10 +67,10 @@ SceneObject* SceneManager::getSceneObject(const std::string &name) const
 		return nullptr;
 }
 
-void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Camera &camera)
+void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport)
 {
 	//TODO: perform frustum culling with camera
 
 	for (IRenderable *renderable : renderableVector)
-		renderable->addToRenderQueue(renderQueue);
+		renderable->addToRenderQueue(renderQueue, viewport);
 }

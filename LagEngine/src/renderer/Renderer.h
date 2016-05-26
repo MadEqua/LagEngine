@@ -26,6 +26,7 @@ namespace Lag
 	class GpuProgram;
 	class GpuBuffer;
 	class InputDescription;
+	class Viewport;
 
 	/*
 	* Top level renderer. All the rendering process starts here culminating on concrete calls to a IGraphicsAPI.
@@ -47,10 +48,11 @@ namespace Lag
 
 		//Bind objects and settings
 		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
-		void bindVertexBuffer(GpuBuffer &vertexBuffer);
-		void bindIndexBuffer(GpuBuffer &indexBuffer);
-		void bindGpuProgram(GpuProgram &gpuProgram);
-		void bindInputDescription(InputDescription &inputDescription);
+		void bindVertexBuffer(const GpuBuffer &vertexBuffer);
+		void bindIndexBuffer(const GpuBuffer &indexBuffer);
+		void bindGpuProgram(const GpuProgram &gpuProgram);
+		void bindInputDescription(const InputDescription &inputDescription);
+		void bindViewport(const Viewport &viewport);
 
 		//High-level render calls
 		void renderVertices(const VertexData &vertexData);
@@ -66,7 +68,6 @@ namespace Lag
 		void clearDepthBuffer(float value);
 		void clearStencilBuffer(int32 value);
 		void clearDepthAndStencilBuffer(float depth, int32 stencil);
-
 
 		//TODO
 		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
@@ -90,9 +91,10 @@ namespace Lag
 
 		//Bound objects
 		RenderMode actualRenderMode;
-		GpuBuffer *boundVertexBuffer;
-		GpuBuffer *boundIndexBuffer;
-		GpuProgram *boundGpuProgram;
-		InputDescription *boundInputDescription;
+		const GpuBuffer *boundVertexBuffer;
+		const GpuBuffer *boundIndexBuffer;
+		const GpuProgram *boundGpuProgram;
+		const InputDescription *boundInputDescription;
+		const Viewport *boundViewport;
 	};
 }

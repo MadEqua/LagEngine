@@ -9,6 +9,7 @@ namespace Lag
 	class SubEntity;
 	class Material;
 	class Mesh;
+	class RenderOperation;
 	
 	/*
 	* Object represented by a Mesh (divided on SubMeshes) and a Material.
@@ -24,8 +25,8 @@ namespace Lag
 		Entity(Material &defaultMaterial, Mesh &mesh);
 		virtual ~Entity();
 
-		virtual void addToRenderQueue(RenderQueue &renderQueue) override;
-		virtual void render(Renderer &renderer, uint32 passId) override;
+		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport) override;
+		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
 	private:
 		std::vector<SubEntity*> subEntities;

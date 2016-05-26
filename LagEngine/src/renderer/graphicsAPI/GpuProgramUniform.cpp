@@ -12,15 +12,3 @@ GpuProgramUniform::GpuProgramUniform(const GpuProgramUniformDescription &descrip
 GpuProgramUniform::~GpuProgramUniform()
 {
 }
-
-template<class T>
-void GpuProgramUniform::setValue(T value)
-{
-	setValueImpl(&value);
-}
-
-template<class T>
-void GpuProgramUniform::setValue(T *value)
-{
-	setValueImpl(value);
-}

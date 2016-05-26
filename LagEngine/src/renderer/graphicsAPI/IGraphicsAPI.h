@@ -36,6 +36,8 @@ namespace Lag
 		virtual void clearStencilBuffer(int32 value) = 0;
 		virtual void clearDepthAndStencilBuffer(float depth, int32 stencil) = 0;
 
+		virtual void setViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
+
 
 		//virtual void setTexture(uint32 unit, Texture &texture) = 0;
 		//virtual void setTexture(uint32 unit, const std::string &textureName) = 0;

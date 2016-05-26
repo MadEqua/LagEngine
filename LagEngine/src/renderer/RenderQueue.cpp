@@ -2,6 +2,7 @@
 
 #include "../io/log/LogManager.h"
 #include "IRenderable.h"
+#include "Renderer.h"
 
 using namespace Lag;
 
@@ -17,8 +18,8 @@ RenderQueue::~RenderQueue()
 }
 
 void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
-	VertexData &vertexData, IndexData *indexData,
-	Material &material)
+	VertexData &vertexData, IndexData *indexData, Material &material,
+	Viewport &viewport)
 {
 	if (actualSlot >= queue.size())
 	{
@@ -33,6 +34,7 @@ void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
 	renderOperation.vertexData = &vertexData;
 	renderOperation.indexData = indexData;
 	renderOperation.material = &material;
+	renderOperation.viewport = &viewport;
 	
 	++actualSlot;
 }
@@ -52,6 +54,10 @@ void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 	for (int i = 0; i < actualSlot; ++i)
 	{
 		RenderOperation &ro = queue[i];
-		ro.renderable->render(renderer, ro.passId);
+		IRenderable *renderable = ro.renderable;
+
+		//TODO: render target?
+		renderer.bindViewport(*ro.viewport);
+		renderable->render(renderer, ro);
 	}
 }

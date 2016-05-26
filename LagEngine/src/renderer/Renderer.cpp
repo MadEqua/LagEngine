@@ -7,6 +7,7 @@
 #include "graphicsAPI/GpuBuffer.h"
 #include "VertexData.h"
 #include "IndexData.h"
+#include "Viewport.h"
 #include "graphicsAPI/InputDescription.h"
 
 #include "graphicsAPI/IGraphicsAPI.h"
@@ -18,7 +19,7 @@ using namespace Lag;
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
-	boundGpuProgram(nullptr)
+	boundGpuProgram(nullptr), boundViewport(nullptr)
 {
 	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 		"Renderer", "Initialized successfully.");
@@ -52,6 +53,7 @@ void Renderer::renderAllRenderTargets()
 
 	renderQueue.sort();
 
+	//TODO: do it right
 	float color[4] = { 0.5f, 0.5f, 0.5f, 1 };
 	clearColorBuffer(color);
 	clearDepthAndStencilBuffer(0.0f, 0);
@@ -65,7 +67,7 @@ void Renderer::renderAllRenderTargets()
 	}
 }
 
-void Renderer::bindVertexBuffer(GpuBuffer &vertexBuffer)
+void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
 { 
 	if (&vertexBuffer != boundVertexBuffer)
 	{
@@ -74,7 +76,7 @@ void Renderer::bindVertexBuffer(GpuBuffer &vertexBuffer)
 	}
 }
 
-void Renderer::bindIndexBuffer(GpuBuffer &indexBuffer)
+void Renderer::bindIndexBuffer(const GpuBuffer &indexBuffer)
 { 
 	if(&indexBuffer != boundIndexBuffer)
 	{
@@ -83,7 +85,7 @@ void Renderer::bindIndexBuffer(GpuBuffer &indexBuffer)
 	}
 }
 
-void Renderer::bindGpuProgram(GpuProgram &gpuProgram)
+void Renderer::bindGpuProgram(const GpuProgram &gpuProgram)
 { 
 	if(&gpuProgram != boundGpuProgram)
 	{
@@ -92,12 +94,23 @@ void Renderer::bindGpuProgram(GpuProgram &gpuProgram)
 	}
 }
 
-void Renderer::bindInputDescription(InputDescription &inputDescription)
+void Renderer::bindInputDescription(const InputDescription &inputDescription)
 {
 	if (&inputDescription != boundInputDescription)
 	{
 		boundInputDescription = &inputDescription;
 		inputDescription.bind();
+	}
+}
+
+void Renderer::bindViewport(const Viewport &viewport)
+{
+	//TODO: fix. won't work if the bound viewport was changed (or its rendertarget size)
+	//if (&viewport != boundViewport)
+	{
+		boundViewport = &viewport;
+		graphicsAPI.setViewport(viewport.getRealLeft(), viewport.getRealTop(),
+			viewport.getRealWidth(), viewport.getRealHeight());
 	}
 }
 

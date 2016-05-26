@@ -70,6 +70,11 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
 		break;
 
+	case LAG_GPU_PROG_UNI_SEM_NORMAL_MATRIX:
+		size = LAG_GPU_PROG_UNIFORM_SIZE_3;
+		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
+		break;
+
 	case LAG_GPU_PROG_UNI_SEM_CUSTOM:
 	{
 		const char* typeString = element.Attribute("type");
@@ -118,6 +123,7 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 	if (semantic == "ModelMatrix") return LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX;
 	else if (semantic == "ModelViewMatrix") return LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX;
 	else if (semantic == "MvpMatrix") return LAG_GPU_PROG_UNI_SEM_MVP_MATRIX;
+	else if (semantic == "NormalMatrix") return LAG_GPU_PROG_UNI_SEM_NORMAL_MATRIX;
 	else if (semantic == "Custom") return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 	else return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 }

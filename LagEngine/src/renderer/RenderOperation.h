@@ -4,19 +4,11 @@
 
 namespace Lag
 {
-	//TODO: check the possibilities
-	/*enum RenderCommand
-	{
-		LAG_RENDER_COMM_VERTICES,
-		LAG_RENDER_COMM_INDEXED,
-		LAG_RENDER_COMM_MULTI_VERTICES,
-		LAG_RENDER_COMM_MULTI_INDEXED
-	};*/
-
 	class VertexData;
 	class IndexData;
 	class Material;
 	class IRenderable;
+	class Viewport;
 	
 	/*
 	* A RenderOperation represents a single render call to the graphics API. 
@@ -33,6 +25,7 @@ namespace Lag
 		IndexData *indexData;
 		Material *material;
 		IRenderable *renderable;
+		Viewport *viewport;
 		uint32 passId;
 	};
 }

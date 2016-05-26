@@ -11,9 +11,9 @@ namespace Lag
 		GL4GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
 		~GL4GpuProgramUniform();
 
+		virtual void setValue(const void* value) const override;
+	
 	protected:
-		virtual void setValueImpl(void* value) const override;
-
 		GLint location;
 	};
 }

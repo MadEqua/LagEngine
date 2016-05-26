@@ -20,6 +20,8 @@ namespace Lag
 		virtual void clearStencilBuffer(int32 value) override;
 		virtual void clearDepthAndStencilBuffer(float depth, int32 stencil) override;
 
+		virtual void setViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
+
 		/*virtual void setTexture(uint32 unit, Texture & texture) override;
 		virtual void setTexture(uint32 unit, const std::string & textureName) override;
 		virtual void setStencilCheckEnabled(bool enabled) override;*/

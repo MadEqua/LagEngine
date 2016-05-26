@@ -29,6 +29,10 @@ namespace Lag
 		glm::mat4 finalTransform;
 		bool finalTransformOutOfDate;
 
+		//Final inverse transform in World coordinates. Cache, may be dirty.
+		glm::mat4 finalInverseTransform;
+		bool finalInverseTransformOutOfDate;
+
 		//for returning
 		glm::vec3 tempVec3;
 		glm::quat tempQuat;

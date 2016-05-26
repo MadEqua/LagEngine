@@ -18,13 +18,9 @@ namespace Lag
 		RenderQueue();
 		~RenderQueue();
 
-		/*void addItem(RenderCommand renderCommand, RenderType renderType, 
-			VertexData &vertexData, IndexData &indexData,
-			ShaderProgram &shaderProgram);*/
-
 		void addRenderOperation(IRenderable &renderable, uint32 passId,
-			VertexData &vertexData, IndexData *indexData,
-			Material &material);
+			VertexData &vertexData, IndexData *indexData, Material &material,
+			Viewport &viewport);
 		
 		//which one??
 		//void addItem(RenderOperation &renderOperation);

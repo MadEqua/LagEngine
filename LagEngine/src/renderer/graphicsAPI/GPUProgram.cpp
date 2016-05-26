@@ -1,6 +1,7 @@
 #include "GpuProgram.h"
 
 #include "GpuProgramStage.h"
+#include "GpuProgramUniform.h"
 #include "../../resources/GpuProgramStageManager.h"
 #include "../../Root.h"
 #include "../../io/log/LogManager.h"
@@ -51,6 +52,8 @@ void GpuProgram::initStages(const std::vector<GpuProgramStage*> &stages)
 
 GpuProgram::~GpuProgram()
 {
+	for (auto &un : uniformsByName)
+		delete un.second;
 }
 
 bool GpuProgram::loadImplementation()
@@ -72,10 +75,12 @@ bool GpuProgram::loadImplementation()
 			const GpuProgramUniformDescription &desc = stage->getUniformDescription(i);
 			GpuProgramUniform *uniform = createUniform(desc, *this);
 			if (uniform != nullptr)
-				uniforms[desc.name] = uniform;
+			{
+				uniformsByName[desc.name] = uniform;
+				uniformsBySemantic[desc.semantic].push_back(uniform);
+			}
 		}
 	}
-
 	return true;
 }
 
@@ -83,11 +88,20 @@ void GpuProgram::unloadImplementation()
 {
 }
 
-GpuProgramUniform *GpuProgram::getUniform(const std::string &name) const
+const GpuProgramUniform* GpuProgram::getUniformByName(const std::string &name) const
 {
-	auto it = uniforms.find(name);
-	if (it != uniforms.end())
+	auto it = uniformsByName.find(name);
+	if (it != uniformsByName.end())
 		return it->second;
+	else
+		return nullptr;
+}
+
+const std::vector<GpuProgramUniform*>* GpuProgram::getUniformBySemantic(GpuProgramUniformSemantic semantic) const
+{
+	auto it = uniformsBySemantic.find(semantic);
+	if (it != uniformsBySemantic.end())
+		return &it->second;
 	else
 		return nullptr;
 }

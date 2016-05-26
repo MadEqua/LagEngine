@@ -3,8 +3,9 @@
 
 using namespace Lag;
 
-RenderTarget::RenderTarget(uint32 width, uint32 height) :
-	width(width), height(height)
+RenderTarget::RenderTarget(uint32 width, uint32 height, bool isMainWindow) :
+	width(width), height(height), 
+	mainWindow(isMainWindow)
 {
 }
 
@@ -38,5 +39,13 @@ void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager 
 	onPostRenderNotify();
 }
 
+void RenderTarget::resize(int width, int height)
+{
+	this->width = width;
+	this->height = height;
+	onResizeNotify(width, height);
+}
+
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(int width, int height), LAG_ARGS(width, height))

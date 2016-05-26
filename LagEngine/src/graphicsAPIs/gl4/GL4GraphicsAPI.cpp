@@ -83,6 +83,11 @@ void GL4GraphicsAPI::clearDepthAndStencilBuffer(float depth, int32 stencil)
 	GL_ERROR_CHECK(glClearBufferfi(GL_DEPTH_STENCIL, 0, depth, stencil))
 }
 
+void GL4GraphicsAPI::setViewport(uint32 x, uint32 y, uint32 width, uint32 height)
+{
+	GL_ERROR_CHECK(glViewport(x, y, width, height))
+}
+
 GLenum GL4GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode)
 {
 	switch (renderMode)
