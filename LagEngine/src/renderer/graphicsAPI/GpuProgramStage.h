@@ -34,7 +34,8 @@ namespace Lag
 			GpuProgramUniformType type = LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN);
 		
 		inline GpuProgramStageType getType() const { return type; }
-		inline const std::vector<GpuProgramUniformDescription>& getUniformDescriptions() const { return uniformDescriptions; }
+		inline int getUniformDescriptionCount() const { return uniformDescriptions.size(); }
+		inline const GpuProgramUniformDescription& getUniformDescription(int i) const { return uniformDescriptions[i]; }
 
 		virtual bool compile() = 0;
 

@@ -1,7 +1,6 @@
 #include "GpuProgram.h"
 
 #include "GpuProgramStage.h"
-#include "../GpuProgramUniforms.h"
 #include "../../resources/GpuProgramStageManager.h"
 #include "../../Root.h"
 #include "../../io/log/LogManager.h"
@@ -9,9 +8,7 @@
 using namespace Lag;
 
 GpuProgram::GpuProgram(const std::string &name, const std::vector<std::string> &names) :
-	name(name),
-	programStages(PROGRAM_STAGE_COUNT),
-	uniforms(nullptr)
+	name(name)
 {
 	GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
 	
@@ -29,9 +26,7 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<std::string> &
 }
 
 GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages) :
-	name(name),
-	programStages(PROGRAM_STAGE_COUNT),
-	uniforms(nullptr)
+	name(name)
 {
 	initStages(stages);
 }
@@ -39,15 +34,18 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStag
 void GpuProgram::initStages(const std::vector<GpuProgramStage*> &stages)
 {
 	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
-		programStages[i] = nullptr;
+		presentStages[i] = false;
 
 	for (GpuProgramStage *stage : stages)
 	{
-		if (programStages[stage->getType()] != nullptr)
+		if (presentStages[stage->getType()])
 			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING, "GpuProgram",
 				"Receiving multiple GpuProgramStages for the same stage. Using only the first on list.");
 		else
-			programStages[stage->getType()] = stage;
+		{
+			presentStages[stage->getType()] = true;
+			this->stages.push_back(stage);
+		}
 	}
 }
 
@@ -57,7 +55,7 @@ GpuProgram::~GpuProgram()
 
 bool GpuProgram::loadImplementation()
 {
-	if (programStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX] == nullptr)
+	if (!presentStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX])
 	{
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
 			"GpuProgram", "Trying to load without a vertex stage.");
@@ -67,12 +65,29 @@ bool GpuProgram::loadImplementation()
 	if (!link())
 		return false;
 
-	uniforms = new GpuProgramUniforms(*this, programStages);
+	for (GpuProgramStage *stage : stages)
+	{
+		for (int i = 0; i < stage->getUniformDescriptionCount(); ++i)
+		{
+			const GpuProgramUniformDescription &desc = stage->getUniformDescription(i);
+			GpuProgramUniform *uniform = createUniform(desc, *this);
+			if (uniform != nullptr)
+				uniforms[desc.name] = uniform;
+		}
+	}
 
 	return true;
 }
 
 void GpuProgram::unloadImplementation()
 {
-	delete uniforms;
+}
+
+GpuProgramUniform *GpuProgram::getUniform(const std::string &name) const
+{
+	auto it = uniforms.find(name);
+	if (it != uniforms.end())
+		return it->second;
+	else
+		return nullptr;
 }

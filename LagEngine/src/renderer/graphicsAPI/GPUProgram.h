@@ -2,22 +2,21 @@
 
 #include <string>
 #include <vector>
+#include <unordered_map>
 #include "../../core/ManagedObject.h"
 
 namespace Lag
 {
 	class GpuProgramUniform;
-	struct GpuProgramUniformDescription;
 	enum GpuProgramStageType;
 	class GpuProgramStage;
-	class GpuProgramUniforms;
+	struct GpuProgramUniformDescription;
 	
 	/*
 	* Abstract a program meant to be run on the GPU. 
 	* Contains a set of GpuProgramStages, only the vertex stage is mandatory.
 	*
 	* Each GraphicsAPI implementation will have its own concrete version.
-	* which has the responsability of buildidng concrete GpuProgramUniforms also.
 	*/
 	class GpuProgram : public ManagedObject
 	{
@@ -25,25 +24,26 @@ namespace Lag
 		GpuProgram(const std::string &name, const std::vector<std::string> &names);
 		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 		virtual ~GpuProgram();
-
-		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const = 0;
 		
-		inline bool hasStage(GpuProgramStageType stageType) const {return programStages[stageType] != nullptr; }
+		inline bool hasStage(GpuProgramStageType stageType) const { return presentStages[stageType]; }
+		
+		GpuProgramUniform *getUniform(const std::string &name) const;
 
 		virtual void bind() const = 0;
 
 	protected:
 		std::string name;
+		std::unordered_map<std::string, GpuProgramUniform*> uniforms;
 
+		static const int PROGRAM_STAGE_COUNT = 5;
+		bool presentStages[PROGRAM_STAGE_COUNT];
+		std::vector<GpuProgramStage*> stages;
+		
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
 		virtual bool link() = 0;
-
-		static const int PROGRAM_STAGE_COUNT = 5;
-		std::vector<GpuProgramStage*> programStages;
-
-		GpuProgramUniforms *uniforms;
+		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, const GpuProgram &program) const = 0;
 
 		void initStages(const std::vector<GpuProgramStage*> &stages);
 	};

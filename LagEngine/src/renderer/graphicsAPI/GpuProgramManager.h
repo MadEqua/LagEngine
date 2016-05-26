@@ -1,9 +1,7 @@
 #pragma once
 
-#include <vector>
 #include <string>
 
-#include "GpuProgram.h"
 #include "../../core/Manager.h"
 
 namespace Lag
@@ -14,8 +12,8 @@ namespace Lag
 	{
 
 	public:
-		GpuProgramManager() : Manager("GpuProgramManager") {}
-		virtual ~GpuProgramManager() {}
+		GpuProgramManager();
+		virtual ~GpuProgramManager();
 
 		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
 		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;

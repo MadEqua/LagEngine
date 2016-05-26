@@ -5,20 +5,17 @@
 
 namespace Lag
 {
-	struct GpuProgramUniformDescription;	
+	struct GpuProgramUniformDescription;
+	class GpuProgram;
 	
 	/*
 	* Represents an Uniform instance i.e. in use by a GpuProgram.
-	*
-	* Its value is stored in a memory location managed by GpuProgramUniforms to 
-	* avoid each Uniform having to allocate its own memory, leading to lots of fragmentation.
-	* 
 	* Each GraphicsAPI will have a concrete implementation.
 	*/
 	class GpuProgramUniform
 	{
 	public:
-		GpuProgramUniform(const GpuProgramUniformDescription &description, void* dataLocation);
+		GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
 		virtual ~GpuProgramUniform();
 
 		template<class T>
@@ -27,23 +24,12 @@ namespace Lag
 		template<class T>
 		void setValue(T *value);
 
-		//TODO: sampler?
-
-		void sendToGpu();
 
 		const GpuProgramUniformDescription& getGpuProgramUniformDescription() const { return description; }
 
 	protected:
-		virtual void sendToGpuImpl() const = 0;
-
-		void internalSetValue(void* value);
+		virtual void setValueImpl(void* value) const = 0;
 
 		const GpuProgramUniformDescription &description;
-
-		//Pointing to memory managed by GpuProgramUniforms
-		void* dataPtr;
-		
-		//Changed but not sent to Gpu
-		bool isDirty; 
 	};
 }

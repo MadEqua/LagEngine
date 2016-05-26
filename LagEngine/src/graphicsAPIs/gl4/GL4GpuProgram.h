@@ -3,8 +3,6 @@
 #include "../../renderer/graphicsAPI/GpuProgram.h"
 #include "GL4Includes.h"
 
-#include <string>
-
 namespace Lag
 {
 	class GL4GpuProgram : public GpuProgram
@@ -14,9 +12,11 @@ namespace Lag
 		GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 		virtual ~GL4GpuProgram();
 
-		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const override;
+		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram) const override;
 
 		virtual void bind() const override;
+
+		inline GLuint getHandle() const { return handle; }
 
 	protected:
 		virtual bool link() override;

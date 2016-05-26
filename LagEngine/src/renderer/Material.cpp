@@ -2,6 +2,7 @@
 
 #include "../Root.h"
 #include "../renderer/graphicsAPI/GpuProgramManager.h"
+#include "../renderer/graphicsAPI/GpuProgram.h"
 #include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
 

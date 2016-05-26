@@ -115,19 +115,19 @@ GpuProgramUniformSize GpuProgramStageManager::parseUniformSizeFromString(const s
 
 GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString(const std::string &semantic)
 {
-	if (semantic == "modelMatrix") return LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX;
-	else if (semantic == "modelViewMatrix") return LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX;
-	else if (semantic == "mvpMatrix") return LAG_GPU_PROG_UNI_SEM_MVP_MATRIX;
-	else if (semantic == "custom") return LAG_GPU_PROG_UNI_SEM_CUSTOM;
+	if (semantic == "ModelMatrix") return LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX;
+	else if (semantic == "ModelViewMatrix") return LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX;
+	else if (semantic == "MvpMatrix") return LAG_GPU_PROG_UNI_SEM_MVP_MATRIX;
+	else if (semantic == "Custom") return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 	else return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 }
 
 GpuProgramStageType GpuProgramStageManager::parseStageTypeFromString(const std::string &type)
 {
-	if (type == "vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
-	else if (type == "tesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
-	else if (type == "tesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
-	else if (type == "geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
-	else if (type == "fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
+	if (type == "Vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
+	else if (type == "TtesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
+	else if (type == "TesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
+	else if (type == "Geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
+	else if (type == "Fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
 	else return LAG_GPU_PROG_STAGE_TYPE_UNKNOWN;
 }

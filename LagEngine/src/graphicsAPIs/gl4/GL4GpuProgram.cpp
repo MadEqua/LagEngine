@@ -25,11 +25,10 @@ GL4GpuProgram::~GL4GpuProgram()
 
 bool GL4GpuProgram::link()
 {
-	for (GpuProgramStage *stage : programStages)
+	for (GpuProgramStage *stage : stages)
 	{
-		if(stage != nullptr)
-			GL_ERROR_CHECK(glAttachShader(handle,
-				static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
+		GL_ERROR_CHECK(glAttachShader(handle,
+			static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
 	}
 	
 	GL_ERROR_CHECK(glLinkProgram(handle))
@@ -64,9 +63,9 @@ bool GL4GpuProgram::checkLinking() const
 	return true;
 }
 
-GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description, void* dataLocation) const
+GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram) const
 {
-	return new GL4GpuProgramUniform(description, dataLocation);
+	return new GL4GpuProgramUniform(description, gpuProgram);
 }
 
 void GL4GpuProgram::bind() const

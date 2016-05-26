@@ -131,6 +131,7 @@
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescription.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp" />
     <ClCompile Include="src\core\ManagedObject.cpp" />
@@ -170,7 +171,6 @@
     <ClCompile Include="src\renderer\RenderQueue.cpp" />
     <ClCompile Include="src\scene\SceneObject.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgram.cpp" />
-    <ClCompile Include="src\renderer\GpuProgramUniforms.cpp" />
     <ClCompile Include="src\scene\SceneGraph.cpp" />
     <ClCompile Include="src\io\ini\IniSettings.cpp" />
     <ClCompile Include="src\io\ini\IniParser.cpp" />
@@ -245,7 +245,6 @@
     <ClInclude Include="src\scene\SceneNode.h" />
     <ClInclude Include="src\scene\SceneObject.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgram.h" />
-    <ClInclude Include="src\renderer\GpuProgramUniforms.h" />
     <ClInclude Include="src\scene\SceneGraph.h" />
     <ClInclude Include="src\core\SingletonPattern.h" />
     <ClInclude Include="src\io\ini\IniSettings.h" />

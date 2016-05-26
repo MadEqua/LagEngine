@@ -38,7 +38,7 @@ namespace Lag
 	*/
 	struct GpuProgramUniformDescription
 	{
-		std::string name; //needed?
+		std::string name;
 		GpuProgramUniformSize size;
 		GpuProgramUniformType type;
 		GpuProgramUniformSemantic semantic;
