@@ -18,7 +18,7 @@ namespace Lag
 	{
 	public:
 		//left, top, width and height are relative (0.0 to 1.0)
-		Viewport(Camera &camera, RenderTarget &renderTarget, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
+		Viewport(Camera &camera, RenderTarget &renderTarget, float left = 0.0f, float bottom = 0.0f, float width = 1.0f, float height = 1.0f);
 		~Viewport();
 
 		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
@@ -26,12 +26,12 @@ namespace Lag
 		inline const Camera& getCamera() { return camera;}
 
 		uint32 getRealLeft() const;
-		uint32 getRealTop() const;
+		uint32 getRealBottom() const;
 		uint32 getRealWidth() const;
 		uint32 getRealHeight() const;
 
 	private:
-		float left, top, width, height;
+		float left, bottom, width, height;
 
 		Camera &camera;
 		RenderTarget &renderTarget;

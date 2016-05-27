@@ -6,10 +6,10 @@
 
 using namespace Lag;
 
-Viewport::Viewport(Camera &camera, RenderTarget &renderTarget, float left, float top, float width, float height) :
+Viewport::Viewport(Camera &camera, RenderTarget &renderTarget, float left, float bottom, float width, float height) :
 	camera(camera),
 	renderTarget(renderTarget),
-	left(left), top(top), width(width), height(height),
+	left(left), bottom(bottom), width(width), height(height),
 	renderTargetListener(*this)
 
 {
@@ -31,9 +31,9 @@ uint32 Viewport::getRealLeft() const
 	return static_cast<uint32>(static_cast<float>(renderTarget.getWidth()) * left);
 }
 
-uint32 Viewport::getRealTop() const
+uint32 Viewport::getRealBottom() const
 {
-	return static_cast<uint32>(static_cast<float>(renderTarget.getHeight()) * top);
+	return static_cast<uint32>(static_cast<float>(renderTarget.getHeight()) * bottom);
 }
 
 uint32 Viewport::getRealWidth() const

@@ -19,7 +19,7 @@ namespace Lag
 
 		inline const glm::mat4& getProjectionMatrix() const { return projectionMatrix; }
 
-	private:
+	protected:
 		Frustum frustum;
 
 		float fieldOfViewY;

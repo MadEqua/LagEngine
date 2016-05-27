@@ -16,10 +16,13 @@ void Lag::keyCallback(GLFWwindow* window, int key, int scancode, int action, int
 	{
 	case GLFW_PRESS:
 		inputManager->onKeyPressNotify(key, mods);
+		break;
 	case GLFW_RELEASE:
 		inputManager->onKeyReleaseNotify(key, mods);
+		break;
 	case GLFW_REPEAT:
 		inputManager->onKeyRepeatNotify(key, mods);
+		break;
 	default:
 		break;
 	}
@@ -39,8 +42,10 @@ void Lag::mouseButtonCallback(GLFWwindow* window, int button, int action, int mo
 	{
 	case GLFW_PRESS:
 		inputManager->onButtonPressedNotify(inputManager->getCursorX(), inputManager->getCursorY(), button, mods);
+		break;
 	case GLFW_RELEASE:
 		inputManager->onButtonReleasedNotify(inputManager->getCursorX(), inputManager->getCursorY(), button, mods);
+		break;
 	default:
 		break;
 	}

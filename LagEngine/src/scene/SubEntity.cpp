@@ -41,19 +41,26 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 	if (uniformList != nullptr)
 	{
 		GpuProgramUniform *modelMatrixUniform = uniformList->at(0);
-		glm::mat4 model = this->parent.getTransform();
+		glm::mat4 model = parent.getTransform();
 		modelMatrixUniform->setValue(&model);
 	}
 
-	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX);
+	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX);
 	if (uniformList != nullptr)
 	{
-		GpuProgramUniform *vpMatrixUniform = uniformList->at(0);
+		GpuProgramUniform *viewMatrixUniform = uniformList->at(0);
 		const Camera &camera = renderOperation.viewport->getCamera();
-		glm::mat4 vp = camera.getProjectionMatrix() *
-			camera.getInverseTransform();
+		glm::mat4 view = camera.getInverseTransform();
+		viewMatrixUniform->setValue(&view);
+	}
 
-		vpMatrixUniform->setValue(&vp);
+	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX);
+	if (uniformList != nullptr)
+	{
+		GpuProgramUniform *pMatrixUniform = uniformList->at(0);
+		const Camera &camera = renderOperation.viewport->getCamera();
+		glm::mat4 p = camera.getProjectionMatrix();
+		pMatrixUniform->setValue(&p);
 	}
 
 	//TODO: take out the normal calculation from here
@@ -61,7 +68,9 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 	if (uniformList != nullptr)
 	{
 		GpuProgramUniform *normalMatrixUniform = uniformList->at(0);
-		glm::mat3 nor = glm::transpose(glm::mat3(parent.getInverseTransform()));
+		const Camera &camera = renderOperation.viewport->getCamera();
+		glm::mat3 nor = glm::mat3(camera.getInverseTransform())
+			* glm::transpose(glm::mat3(parent.getInverseTransform()));
 		normalMatrixUniform->setValue(&nor);
 	}
 	

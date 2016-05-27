@@ -68,6 +68,7 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 	case LAG_GPU_PROG_UNI_SEM_MVP_MATRIX:
 	case LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX:
 	case LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX:
+	case LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX:
 		size = LAG_GPU_PROG_UNIFORM_SIZE_4;
 		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
 		break;
@@ -127,6 +128,7 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 	else if (semantic == "MvpMatrix") return LAG_GPU_PROG_UNI_SEM_MVP_MATRIX;
 	else if (semantic == "ViewMatrix") return LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX;
 	else if (semantic == "ViewProjectionMatrix") return LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX;
+	else if (semantic == "ProjectionMatrix") return LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX;
 	else if (semantic == "NormalMatrix") return LAG_GPU_PROG_UNI_SEM_NORMAL_MATRIX;
 	else if (semantic == "Custom") return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 	else return LAG_GPU_PROG_UNI_SEM_CUSTOM;

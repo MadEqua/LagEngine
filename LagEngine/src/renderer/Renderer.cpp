@@ -109,7 +109,7 @@ void Renderer::bindViewport(const Viewport &viewport)
 	//if (&viewport != boundViewport)
 	{
 		boundViewport = &viewport;
-		graphicsAPI.setViewport(viewport.getRealLeft(), viewport.getRealTop(),
+		graphicsAPI.setViewport(viewport.getRealLeft(), viewport.getRealBottom(),
 			viewport.getRealWidth(), viewport.getRealHeight());
 	}
 }

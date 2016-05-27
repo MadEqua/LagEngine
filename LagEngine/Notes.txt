@@ -3,6 +3,7 @@ TODO
 Short Term
 
 improve uniform sending
+camera/scenenode look at
 disallow bind methods. only allowed through renderer
 adjust vertex attributes format on the mesh class
 uniform update hints (per object, per frame, once...)

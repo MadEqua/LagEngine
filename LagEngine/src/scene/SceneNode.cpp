@@ -194,8 +194,7 @@ void SceneNode::updateInheritedData()
 	transform.inheritedOrientation = parent->transform.inheritedOrientation * parent->transform.orientation;
 	transform.inheritedScale = parent->transform.inheritedScale * parent->transform.scale;
 
-	transform.finalTransformOutOfDate = true;
-	notifyChildrenOfDataChange();
+	localChangeOccured();
 }
 
 const glm::mat4& SceneNode::getFinalTransform()
