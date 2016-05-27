@@ -53,9 +53,9 @@ bool Mesh::loadImplementation()
 
 	//Create a VertexDescription
 	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 0, 3, LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3 * sizeof(float), 3, LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 6 * sizeof(float), 3, LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3, LAG_VX_ATTR_TYPE_FLOAT);
+	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 3, LAG_VX_ATTR_TYPE_FLOAT);
 
 	//Make some space calculations
 	uint32 vxCount = 0, idxCount = 0;
@@ -71,7 +71,7 @@ bool Mesh::loadImplementation()
 		{
 			if (mesh->HasTextureCoords(i))
 			{
-				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, vxSize, 3, LAG_VX_ATTR_TYPE_FLOAT, i);
+				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 3, LAG_VX_ATTR_TYPE_FLOAT, i);
 				vxSize = vxDesc.getByteSize();
 			}
 			else

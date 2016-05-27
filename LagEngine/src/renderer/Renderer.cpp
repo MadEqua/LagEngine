@@ -56,7 +56,7 @@ void Renderer::renderAllRenderTargets()
 	//TODO: do it right
 	float color[4] = { 0.5f, 0.5f, 0.5f, 1 };
 	clearColorBuffer(color);
-	clearDepthAndStencilBuffer(0.0f, 0);
+	clearDepthAndStencilBuffer(1.0f, 0);
 
 	renderQueue.dispatchRenderOperations(*this);
 

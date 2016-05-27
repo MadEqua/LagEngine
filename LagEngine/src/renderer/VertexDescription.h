@@ -80,7 +80,7 @@ namespace Lag
 		//The size of a full vertex
 		uint32 getByteSize() const;
 
-		void addAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length, VertexAttributeType type, uint8 index = 0, bool isNormalized = false);
+		void addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index = 0, bool isNormalized = false);
 
 		bool operator==(const VertexDescription &other) const;
 		operator std::size_t() const;

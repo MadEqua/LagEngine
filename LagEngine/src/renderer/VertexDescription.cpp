@@ -74,8 +74,9 @@ VertexDescription::~VertexDescription()
 {
 }
 
-void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length, VertexAttributeType type, uint8 index, bool isNormalized)
+void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index, bool isNormalized)
 {
+	uint32 offset = getByteSize(); //offset is what's already before of this attribute
 	VertexAttribute attr(semantic, offset, length, type, index, isNormalized);
 	attributes.push_back(attr);
 }

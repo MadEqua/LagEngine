@@ -24,6 +24,12 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"GL4GraphicsAPI", "OpenGL 4.5 is supported!");
 	}
+
+	GL_ERROR_CHECK(glEnable(GL_DEPTH_TEST))
+	GL_ERROR_CHECK(glDepthFunc(GL_LESS))
+
+	GL_ERROR_CHECK(glEnable(GL_CULL_FACE))
+	GL_ERROR_CHECK(glCullFace(GL_BACK))
 }
 
 GL4GraphicsAPI::~GL4GraphicsAPI()
