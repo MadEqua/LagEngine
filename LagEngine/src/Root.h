@@ -4,13 +4,15 @@
 
 #include "core/Timer.h"
 #include "InitializationParameters.h"
+
 #include "renderer/IWindowListener.h"
+#include "io/IKeyboardListener.h"
+
 #include "core/SingletonPattern.h"
 #include "core/ObserverPattern.h"
 
 namespace Lag
 {
-	class WindowListener;
 	class RenderWindow;
 	class InputManager;
 	class Renderer;
@@ -76,8 +78,6 @@ namespace Lag
 
 		IGraphicsAPI *graphicsAPI;
 
-		WindowListener *windowListener;
-
 		InitializationParameters initializationParameters;
 
 		//Frame Timing
@@ -90,23 +90,32 @@ namespace Lag
 		void destroy();
 		bool internalInit(const InitializationParameters &parameters);
 		bool initResources(const std::string &resourcesFilePath);
-	};
 
-
-	/*
-	* Listen for window close and stop looping.
-	*/
-	class WindowListener : public IWindowListener
-	{
-	public:
-		virtual void onPreRender() {}
-		virtual void onPostRender() {}
-		virtual void onResize(int width, int height) {}
-		virtual void onMove(int x, int y) {}
-		virtual void onFocusChange(bool focused) {}
-		virtual void onClose()
+		/*
+		* Listen for toggle virtual cursor and escape.
+		*/
+		class KeyboardListener : public IKeyboardListener
 		{
-			Root::getInstance().stopRenderingLoop();
-		}
+			virtual void onKeyPress(int key, int modifier);
+			virtual void onKeyRelease(int key, int modifier) {}
+			virtual void onKeyRepeat(int key, int modifier) {}
+		};
+
+		/*
+		* Listen for window close and stop looping.
+		*/
+		class WindowListener : public IWindowListener
+		{
+		public:
+			virtual void onPreRender() {}
+			virtual void onPostRender() {}
+			virtual void onResize(int width, int height) {}
+			virtual void onMove(int x, int y) {}
+			virtual void onFocusChange(bool focused) {}
+			virtual void onClose();
+		};
+
+		WindowListener *windowListener;
+		KeyboardListener *keyboardListener;
 	};
 }

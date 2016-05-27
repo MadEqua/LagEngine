@@ -87,6 +87,8 @@ bool GLFWRenderWindow::initialize()
 			return false;
 		}
 
+		setVirtualCursor(false);
+
 		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
 			"GLFWRenderWindow", "Initialized successfully.");
 
@@ -107,4 +109,16 @@ void GLFWRenderWindow::processEvents()
 void GLFWRenderWindow::swapBuffers()
 {
 	glfwSwapBuffers(window);
+}
+
+void GLFWRenderWindow::setVirtualCursor(bool value)
+{
+	virtualCursor = value;
+	int v = value ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
+	glfwSetInputMode(window, GLFW_CURSOR, v);
+}
+
+bool GLFWRenderWindow::isVirtualCursorEnabled()
+{
+	return virtualCursor;
 }

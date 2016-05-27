@@ -23,6 +23,8 @@
 #include "graphicsAPIs/gl4/GL4GraphicsAPI.h"
 #include "graphicsAPIs/gl4/GL4InputDescriptionManager.h"
 
+#include "io/Keys.h"
+
 #include "io/tinyxml/tinyxml.h"
 
 using namespace Lag;
@@ -42,6 +44,7 @@ Root::Root() :
 	meshManager(nullptr),
 	gpuBufferManager(nullptr),
 	windowListener(nullptr),
+	keyboardListener(nullptr),
 	graphicsAPI(nullptr),
 	inputDescriptionManager(nullptr)
 {
@@ -81,6 +84,8 @@ void Root::destroy()
 
 	if (windowListener != nullptr)
 		delete windowListener;
+	if (keyboardListener != nullptr)
+		delete keyboardListener;
 
 	if (inputManager != nullptr)
 		delete inputManager;
@@ -134,7 +139,9 @@ bool Root::internalInit(const InitializationParameters &parameters)
 		return false;
 
 	windowListener = new WindowListener();
+	keyboardListener = new KeyboardListener();
 	renderWindow->registerObserver(*windowListener);
+	inputManager->registerObserver(*keyboardListener);
 
 	//Load the declared resources
 	meshManager->loadAll();
@@ -222,5 +229,28 @@ void Root::stopRenderingLoop()
 
 void Root::renderOneFrame()
 {
-	renderer->renderAllRenderTargets();	
+	renderer->renderAllRenderTargets();
+}
+
+
+void Root::KeyboardListener::onKeyPress(int key, int modifier)
+{
+	switch (key)
+	{
+	case KEY_LEFT_CONTROL:
+	{
+		RenderWindow &rw = Root::getInstance().getRenderWindow();
+		rw.setVirtualCursor(!rw.isVirtualCursorEnabled());
+	} break;
+	case KEY_ESCAPE:
+		Root::getInstance().stopRenderingLoop();
+		break;
+	default:
+		break;
+	}
+}
+
+void Root::WindowListener::onClose()
+{
+	Root::getInstance().stopRenderingLoop();
 }

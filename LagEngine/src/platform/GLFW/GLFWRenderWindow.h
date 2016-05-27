@@ -29,9 +29,13 @@ namespace Lag
 		virtual void processEvents() override;
 		virtual void swapBuffers() override;
 
+		virtual void setVirtualCursor(bool value) override;
+		virtual bool isVirtualCursorEnabled() override;
+
 		inline GLFWwindow* getGLFWwindow() const { return window; }
 
 	private:
 		GLFWwindow *window;
+		bool virtualCursor;
 	};
 }

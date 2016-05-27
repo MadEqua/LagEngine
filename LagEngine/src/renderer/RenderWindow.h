@@ -23,6 +23,10 @@ namespace Lag
 		//Process messages coming from the OS
 		virtual void processEvents() = 0;
 
+		//Useful for camera movement
+		virtual void setVirtualCursor(bool value) {}
+		virtual bool isVirtualCursorEnabled() { return false; }
+
 	protected:
 		const InitializationParameters &initializationParameters;
 	};

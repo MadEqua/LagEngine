@@ -37,16 +37,23 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 {
 	const GpuProgram &gpuProgram = material.getGpuProgram();
-	auto uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_MVP_MATRIX);
+	auto uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX);
 	if (uniformList != nullptr)
 	{
-		GpuProgramUniform *mvpMatrixUniform = uniformList->at(0);
-		const Camera &camera = renderOperation.viewport->getCamera();
-		glm::mat4 mvp = camera.getProjectionMatrix() *
-			camera.getInverseTransform() *
-			this->parent.getTransform();
+		GpuProgramUniform *modelMatrixUniform = uniformList->at(0);
+		glm::mat4 model = this->parent.getTransform();
+		modelMatrixUniform->setValue(&model);
+	}
 
-		mvpMatrixUniform->setValue(&mvp);
+	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX);
+	if (uniformList != nullptr)
+	{
+		GpuProgramUniform *vpMatrixUniform = uniformList->at(0);
+		const Camera &camera = renderOperation.viewport->getCamera();
+		glm::mat4 vp = camera.getProjectionMatrix() *
+			camera.getInverseTransform();
+
+		vpMatrixUniform->setValue(&vp);
 	}
 
 	//TODO: take out the normal calculation from here
