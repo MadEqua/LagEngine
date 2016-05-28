@@ -157,7 +157,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	TiXmlDocument doc(resourcesFilePath);
 	if (!doc.LoadFile())
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Root",
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
 			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
 		return false;
 	}
@@ -176,7 +176,7 @@ bool Root::initResources(const std::string &resourcesFilePath)
 
 	if (!resourcesElement)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO, "Root",
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
 			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
 		return false;
 	}

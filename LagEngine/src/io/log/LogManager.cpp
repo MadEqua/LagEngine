@@ -3,12 +3,16 @@
 
 #include <iostream>
 #include <ctime>
+#include "Windows.h"
 
 using namespace Lag;
 
 LogManager::LogManager()
 {
 	initLogFile();
+
+	for (int i = 0; i < LOG_TYPE_COUNT; ++i)
+		addFlow(static_cast<LogType>(i), LAG_LOG_OUT_FILE);
 }
 
 LogManager::~LogManager()
@@ -16,11 +20,23 @@ LogManager::~LogManager()
 	closeLogFile();
 }
 
-void LogManager::log(LogOutput whereTo, LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message)
+void LogManager::addFlow(LogType type, LogOutput out)
+{
+	flows[type].insert(out);
+}
+
+void LogManager::removeFlow(LogType type, LogOutput out)
+{
+	flows[type].erase(out);
+}
+
+void LogManager::log(LogType type, LogVerbosity verbosity, const std::string &title, const std::string &message)
 {
 	std::string formattedMessage;
 	formatMessage(verbosity, type, title, message, formattedMessage);
-	printMessage(whereTo, formattedMessage);
+
+	for(LogOutput out : flows[type])
+		printMessage(out, formattedMessage);
 }
 
 void LogManager::initLogFile()
@@ -36,7 +52,7 @@ void LogManager::initLogFile()
 	}
 	else
 	{
-		log(LAG_LOG_OUT_CONSOLE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, LOG_FILE_NAME, "Failed to open log file.");
+		log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, LOG_FILE_NAME, "Failed to open log file.");
 	}
 }
 
@@ -82,14 +98,14 @@ void LogManager::formatMessage(LogVerbosity verbosity, LogType type, const std::
 	else if (type == LAG_LOG_TYPE_WARNING)
 		formattedMessage += (verbosity == LAG_LOG_VERBOSITY_MINIMAL ? "[W]" : "[WARNING]");
 
-	formattedMessage += " [" + title + "] " + message;
+	formattedMessage += " [" + title + "] " + message + '\n';
 }
 
 void LogManager::printMessage(LogOutput whereTo, const std::string &formattedMessage)
 {
 	if (whereTo == LAG_LOG_OUT_CONSOLE)
 	{
-		std::cout << formattedMessage << std::endl;
+		std::cout << formattedMessage;
 	}
 	else if (whereTo == LAG_LOG_OUT_FILE)
 	{
@@ -97,7 +113,7 @@ void LogManager::printMessage(LogOutput whereTo, const std::string &formattedMes
 	}
 	else if (whereTo == LAG_LOG_OUT_IDE)
 	{
-		//TODO
+		OutputDebugString(formattedMessage.c_str());
 	}
 }
 
@@ -105,7 +121,7 @@ void LogManager::printToFile(const std::string &formattedMessage)
 {
 	if (logFile.is_open())
 	{
-		logFile << formattedMessage << std::endl;
+		logFile << formattedMessage;
 		logFile.flush();
 	}
 }

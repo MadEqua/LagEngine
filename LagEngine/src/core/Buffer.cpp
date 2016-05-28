@@ -18,19 +18,19 @@ void Buffer::lock(uint32 offset, uint32 length)
 {
 	if (isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to lock an already locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes || offset < 0)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to lock an area beyond buffer boundaries.");
 		return;
 	}
 	else if (length <= 0)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to lock an area with zero size.");
 		return;
 	}
@@ -50,7 +50,7 @@ void Buffer::unlock()
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to unlock a non-locked buffer.");
 		return;
 	}
@@ -64,13 +64,13 @@ byte* Buffer::map()
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to map a non-locked buffer.");
 		return nullptr;
 	}
 	else if (isMapped)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to map an already mapped buffer.");
 		return nullptr;
 	}
@@ -83,13 +83,13 @@ void Buffer::unmap()
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to unmap a non-locked buffer.");
 		return;
 	}
 	else if (!isMapped)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to unmap an non-mapped buffer.");
 		return;
 	}
@@ -102,25 +102,25 @@ void Buffer::write(uint32 offset, uint32 length, byte* src)
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to write into a non-locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes || offset < 0)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to write beyond buffer boundaries.");
 		return;
 	}
 	else if (length < 0)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to write to an area with zero size.");
 		return;
 	}
 	else if (src == nullptr)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to write from null source data.");
 		return;
 	}
@@ -132,25 +132,25 @@ void Buffer::read(uint32 offset, uint32 length, byte* dst)
 {
 	if (!isLocked)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to read from a non-locked buffer.");
 		return;
 	}
 	else if (offset + length > sizeBytes)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to read beyond buffer boundaries.");
 		return;
 	}
 	else if (length < 0)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to read an area with zero size.");
 		return;
 	}
 	else if (dst == nullptr)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Buffer", "Trying to read to a null destination.");
 		return;
 	}

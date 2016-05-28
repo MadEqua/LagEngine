@@ -29,7 +29,7 @@ void MaterialManager::parseResourceDescription(const TiXmlElement &element)
 		
 		if (!name || !file)
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "MaterialManager",
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "MaterialManager",
 				"A <material> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}

@@ -18,7 +18,7 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<std::string> &
 	{
 		GpuProgramStage *stage = static_cast<GpuProgramStage*>(man.get(name));
 		if (stage == nullptr)
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING, 
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 				"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
 		else
 			stages.push_back(stage);
@@ -40,7 +40,7 @@ void GpuProgram::initStages(const std::vector<GpuProgramStage*> &stages)
 	for (GpuProgramStage *stage : stages)
 	{
 		if (presentStages[stage->getType()])
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING, "GpuProgram",
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL, "GpuProgram",
 				"Receiving multiple GpuProgramStages for the same stage. Using only the first on list.");
 		else
 		{
@@ -60,7 +60,7 @@ bool GpuProgram::loadImplementation()
 {
 	if (!presentStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX])
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GpuProgram", "Trying to load without a vertex stage.");
 		return false;
 	}

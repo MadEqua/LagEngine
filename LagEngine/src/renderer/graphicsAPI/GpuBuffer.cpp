@@ -36,7 +36,7 @@ void GpuBuffer::lock(uint32 offset, uint32 length)
 {
 	if (!checkForFlag(LAG_GPU_BUFFER_USAGE_DYNAMIC))
 	{
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GpuBuffer", "Trying to lock non-dynamic GpuBuffer.");
 		return;
 	}
@@ -78,7 +78,7 @@ byte* GpuBuffer::map()
 	if (!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_WRITE) &&
 		!!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_READ))
 	{
-		LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GpuBuffer", "Trying to map non-mappable GpuBuffer.");
 		return nullptr;
 	}

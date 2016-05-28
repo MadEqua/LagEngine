@@ -26,7 +26,7 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 		
 		if (!name || !file || !type)
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
 				"A <shader> element on the Resources file does not contain all required attributes: <name>, <file> and <type>.");
 			return;
 		}
@@ -53,7 +53,7 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 
 	if (!name || !semanticString)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
 			"An <uniform> element on a shader declaration does not contain all required attributes: <name> and <semantic>.");
 		return;
 	}
@@ -85,7 +85,7 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 
 		if (!typeString || !sizeString)
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR, "GpuProgramStageManager",
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
 				"An <uniform> declared as custom does not have all required attributes declared (type and size).");
 			return;
 		}

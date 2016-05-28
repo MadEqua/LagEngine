@@ -41,7 +41,7 @@ namespace Lag
 	Manager<K>::Manager(const std::string &logTag) :
 		logTag(logTag)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			logTag, "Initialized successfully.");
 	}
 
@@ -54,11 +54,11 @@ namespace Lag
 		{
 			delete pair.second;
 
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Deleted " + pair.first);
 		}
 
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			logTag, "Destroyed successfully.");
 	}
 
@@ -68,14 +68,14 @@ namespace Lag
 		auto it = objects.find(name);
 		if (it != objects.end())
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Trying to add an object with an already existing name: " + name + ". Only considering the first one added.");
 			delete obj;
 			return false;
 		}
 		else
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Successfully added object: " + name);
 
 			objects[name] = obj;
@@ -89,14 +89,14 @@ namespace Lag
 		auto it = objects.find(name);
 		if (it != objects.end())
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Removing object with name: " + name);
 			delete it->second;
 			objects.erase(it);
 		}
 		else
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Trying to remove a non-existent object: " + name);
 		}
 	}
@@ -107,7 +107,7 @@ namespace Lag
 		auto it = objects.find(name);
 		if (it == objects.end())
 		{
-			LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Trying to get an unknown object: " + name);
 			return nullptr;
 		}
@@ -121,10 +121,10 @@ namespace Lag
 		for (auto &pair : objects)
 		{
 			if (pair.second->load())
-				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+				LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 					logTag, "Loaded Resource: " + pair.first);
 			else
-				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 					logTag, "Failed to load Resource: " + pair.first);
 		}
 	}
@@ -137,7 +137,7 @@ namespace Lag
 			if (pair.second->isLoaded())
 			{
 				pair.second->unload();
-				LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+				LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 					logTag, "Unloaded Resource: " + pair.first);
 			}
 		}

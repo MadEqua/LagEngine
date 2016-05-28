@@ -15,13 +15,13 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 	if (GLEW_OK != err)
 	{
 		std::string errorString = reinterpret_cast<const char*>(glewGetErrorString(err));
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Failed to initialize GLEW: " + errorString);
 	}
 
 	if (GLEW_VERSION_4_5)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "OpenGL 4.5 is supported!");
 	}
 

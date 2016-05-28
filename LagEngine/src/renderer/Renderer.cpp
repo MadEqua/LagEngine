@@ -21,13 +21,13 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr)
 {
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
 }
 
 Renderer::~Renderer()
 {
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Destroyed successfully.");
 }
 

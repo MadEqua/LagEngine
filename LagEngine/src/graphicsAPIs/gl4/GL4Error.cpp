@@ -11,7 +11,7 @@ void Lag::CheckOpenGLError(const char* stmt, const char* fname, int line)
 		std::stringstream sstream;
 		sstream << "Code: " << err << ", file: " << fname << ", line: " << line << ", statement: " << stmt;
 
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_VERBOSE, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_VERBOSE,
 			"OpenGL Error", sstream.str());
 	}
 }

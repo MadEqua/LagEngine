@@ -7,7 +7,7 @@ using namespace Lag;
 
 GpuBufferManager::GpuBufferManager() 
 {
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"GpuBufferManager", "Initialized successfully.");
 }
 
@@ -19,6 +19,6 @@ GpuBufferManager::~GpuBufferManager()
 	for (auto ib : indexBuffers)
 		delete ib;
 
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"GpuBufferManager", "Destroyed successfully.");
 }

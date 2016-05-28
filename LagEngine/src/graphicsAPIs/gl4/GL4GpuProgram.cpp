@@ -42,7 +42,7 @@ bool GL4GpuProgram::checkLinking() const
 
 	if (!result)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgram", "Failed to link shader: " + name);
 
 		GLint logLength;
@@ -51,14 +51,14 @@ bool GL4GpuProgram::checkLinking() const
 		GLchar *log = new GLchar[logLength];
 		GL_ERROR_CHECK(glGetProgramInfoLog(handle, logLength, 0, log))
 
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgram", std::string("Linking Log:\n") + log);
 
 		delete[] log;
 		return false;
 	}
 
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"GL4GpuProgram", "Shader linked succesfully: " + name);
 	return true;
 }

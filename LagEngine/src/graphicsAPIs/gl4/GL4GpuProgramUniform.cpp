@@ -12,7 +12,7 @@ GL4GpuProgramUniform::GL4GpuProgramUniform(const GpuProgramUniformDescription &d
 	GL_ERROR_CHECK(location = glGetUniformLocation(programHandle, description.name.c_str()))
 
 	if(location == -1)
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_WARNING,
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgramUniform", "Could not locate an Uniform with name:" + description.name);
 }
 

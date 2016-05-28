@@ -29,7 +29,7 @@ void MeshManager::parseResourceDescription(const TiXmlElement &element)
 		
 		if (!name || !file)
 		{
-			LogManager::getInstance().log(LogOutput::LAG_LOG_OUT_FILE, LogVerbosity::LAG_LOG_VERBOSITY_NORMAL, LogType::LAG_LOG_TYPE_ERROR, "MeshManager",
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "MeshManager",
 				"A <mesh> element on the Resources file does not contain all required elements: <name> and <file>");
 			return;
 		}

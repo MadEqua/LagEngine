@@ -32,7 +32,7 @@ bool GL4GpuProgramStage::checkCompilation() const
 
 	if (!result)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgramStage", "Failed to compile shader: " + path);
 
 		GLint logLength;
@@ -41,14 +41,14 @@ bool GL4GpuProgramStage::checkCompilation() const
 		GLchar *log = new GLchar[logLength];
 		GL_ERROR_CHECK(glGetShaderInfoLog(handle, logLength, 0, log))
 
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgramStage", std::string("Compilation Log:\n") + log);
 
 		delete[] log;
 		return false;
 	}
 	
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"GL4GpuProgramStage", "Shader compiled succesfully: " + path);
 
 	return true;

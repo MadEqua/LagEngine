@@ -10,7 +10,7 @@ using namespace Lag;
 
 InputDescriptionManager::InputDescriptionManager()
 {
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"InputDescriptionManager", "Initialized successfully.");
 }
 
@@ -22,7 +22,7 @@ InputDescriptionManager::~InputDescriptionManager()
 	for (auto vd : vertexDescriptions)
 		delete vd;
 
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"InputDescriptionManager", "Destroyed successfully.");
 }
 
@@ -33,13 +33,13 @@ InputDescription* InputDescriptionManager::getInputDescription(const VertexDescr
 	auto it = inputDescriptions.find(key);
 	if (it != inputDescriptions.end())
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_CONSOLE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_DEBUG,
+		LogManager::getInstance().log(LAG_LOG_TYPE_DEBUG, LAG_LOG_VERBOSITY_NORMAL,
 			"InputDescriptionManager", "Reutilizing InputDescription.");
 		return it->second;
 	}
 	else
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_CONSOLE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_DEBUG,
+		LogManager::getInstance().log(LAG_LOG_TYPE_DEBUG, LAG_LOG_VERBOSITY_NORMAL,
 			"InputDescriptionManager", "Creating InputDescription.");
 		
 		return createInputDescription(vertexDescription, vertexBuffer);

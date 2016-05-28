@@ -2,12 +2,12 @@
 
 #include <string>
 #include <fstream>
+#include <unordered_set>
 
 #include "../../core/SingletonPattern.h"
 
 #define LOG_FILE_NAME "LagEngineLog.txt"
 
-//TODO: add more flexibility
 namespace Lag
 {
 	enum LogOutput
@@ -38,9 +38,16 @@ namespace Lag
 		LAG_GENERATE_SINGLETON(LogManager)
 
 	public:
-		void log(LogOutput whereTo, LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message);
+		//Adds another place where each log type goes (All to file by default)
+		void addFlow(LogType type, LogOutput out);
+		void removeFlow(LogType type, LogOutput out);
+
+		void log(LogType type, LogVerbosity verbosity, const std::string &title, const std::string &message);
 
 	private:
+		static const int LOG_TYPE_COUNT = 4;
+		std::unordered_set<LogOutput> flows[LOG_TYPE_COUNT];
+
 		std::ofstream logFile;
 
 		void initLogFile();

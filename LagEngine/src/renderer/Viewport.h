@@ -17,7 +17,7 @@ namespace Lag
 	class Viewport
 	{
 	public:
-		//left, top, width and height are relative (0.0 to 1.0)
+		//left, bottom, width and height are relative (0.0 to 1.0)
 		Viewport(Camera &camera, RenderTarget &renderTarget, float left = 0.0f, float bottom = 0.0f, float width = 1.0f, float height = 1.0f);
 		~Viewport();
 

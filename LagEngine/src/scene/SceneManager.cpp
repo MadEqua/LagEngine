@@ -14,7 +14,7 @@ using namespace Lag;
 
 SceneManager::SceneManager()
 {
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Initialized successfully.");
 }
 
@@ -24,7 +24,7 @@ SceneManager::~SceneManager()
 	for (auto &pair : sceneObjectMap)
 		delete pair.second;
 
-	LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_INFO,
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Destroyed successfully.");
 }
 
@@ -38,7 +38,7 @@ Entity* SceneManager::createEntity(const std::string &name, const std::string &m
 
 	if (!mesh || !material)
 	{
-		LogManager::getInstance().log(LAG_LOG_OUT_FILE, LAG_LOG_VERBOSITY_NORMAL, LAG_LOG_TYPE_ERROR,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"SceneManager", "Trying to create an Entity with a non-existent Mesh or Material: " + meshName + ", " + materialName);
 		return nullptr;
 	}
