@@ -11,6 +11,7 @@ namespace Lag
 	class Material;
 	class IRenderable;
 	class Renderer;
+	class IFrameListener;
 	
 	class RenderQueue
 	{

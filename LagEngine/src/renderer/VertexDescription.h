@@ -6,6 +6,8 @@
 
 namespace Lag
 {
+	//The order of this enum is important. 
+	//It's the same order that will be expected (and sent to) shaders.
 	enum VertexAttributeSemantic
 	{
 		LAG_VX_ATTR_SEMANTIC_POSITION,
@@ -47,6 +49,7 @@ namespace Lag
 
 		bool operator==(const VertexAttribute &other) const;
 		operator std::size_t() const;
+		bool operator<(const VertexAttribute &other) const;
 
 		~VertexAttribute();
 
@@ -63,12 +66,14 @@ namespace Lag
 		VertexAttributeType type;
 		uint8 index; //Allowing several attributes with the same semantic (ex: texCoord1, texCoord2)
 		bool isNormalized;
+
+		//used to sort a list of attributes
+		uint8 sortKey;
 	};
 
 	
 	/*
 	* Describes a vertex stored on a vertex buffer. (All the attributes of a vertex)
-	* TODO: put the attributes in a well-known/default order, the one expected on shader inputs
 	*/
 	class VertexDescription
 	{

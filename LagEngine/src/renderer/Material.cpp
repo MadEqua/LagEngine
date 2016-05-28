@@ -24,16 +24,14 @@ bool Material::loadImplementation()
 	if (!parse())
 		return false;
 
-	//TODO: set a fixed order to avoid duplicates
-	std::string combinedName;
-	for (std::string &stageName : shaderStageNames)
-		combinedName += stageName;
+	std::string gpuProgramName;
+	GpuProgram::generateName(shaderStageNames, gpuProgramName);
 
 	GpuProgramManager &manager = root.getGpuProgramManager();
-	if (!manager.create(combinedName, shaderStageNames))
+	if (!manager.create(gpuProgramName, shaderStageNames))
 		return false;
 
-	gpuProgram = static_cast<GpuProgram*>(manager.get(combinedName));
+	gpuProgram = static_cast<GpuProgram*>(manager.get(gpuProgramName));
 
 	return true;
 }

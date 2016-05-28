@@ -5,6 +5,8 @@
 
 #include "../Types.h"
 #include "RenderQueue.h"
+#include "Color.h"
+#include "IRenderTargetListener.h"
 
 namespace Lag
 {
@@ -64,10 +66,14 @@ namespace Lag
 		void renderVerticesInstanced(const VertexData &vertexData, uint32 instanceCount);
 		void renderIndexedInstanced(const VertexData &vertexData, const IndexData &indexData, uint32 instanceCount);*/
 
-		void clearColorBuffer(float value[4]);
-		void clearDepthBuffer(float value);
-		void clearStencilBuffer(int32 value);
-		void clearDepthAndStencilBuffer(float depth, int32 stencil);
+		void setClearColor(const Color &color);
+		void setClearDepthValue(float value);
+		void setClearStencilValue(int32 value);
+
+		void clearColorBuffer();
+		void clearDepthBuffer();
+		void clearStencilBuffer();
+		void clearDepthAndStencilBuffer();
 
 		//TODO
 		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
@@ -79,13 +85,17 @@ namespace Lag
 		/** Reports the number of vertices passed to the renderer since the last _beginGeometryCount call. */
 		//uint32 getVertexCount(void) const;
 
-	protected:
+	private:
 		std::unordered_map<std::string, RenderTarget*> renderTargets;
 
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
 
 		RenderQueue renderQueue;
+
+		Color clearColor;
+		float depthClearValue;
+		int32 stencilClearValue;
 
 		//TODO: uint32 batch, face and vx counter
 
@@ -96,5 +106,22 @@ namespace Lag
 		const GpuProgram *boundGpuProgram;
 		const InputDescription *boundInputDescription;
 		const Viewport *boundViewport;
+
+
+		//Listening to resizes. A resize may invalidate the current bound Viewport.
+		class RenderTargetListener : public IRenderTargetListener
+		{
+		public:
+			RenderTargetListener(Renderer &renderer) :
+				renderer(renderer) {}
+
+			virtual void onPreRender(RenderTarget &notifier) {};
+			virtual void onPostRender(RenderTarget &notifier) {};
+			virtual void onResize(RenderTarget &notifier, int width, int height) override;
+
+		private:
+			Renderer &renderer;
+		};
+		RenderTargetListener renderTargetListener;
 	};
 }

@@ -34,6 +34,9 @@ namespace Lag
 
 		virtual void bind() const = 0;
 
+		//Generates a name for the program, combining the names of the stages on a predefined order
+		static void generateName(std::vector<std::string> &stageNames, std::string &out);
+
 	protected:
 		std::string name;
 		std::unordered_map<std::string, GpuProgramUniform*> uniformsByName;

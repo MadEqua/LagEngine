@@ -16,6 +16,6 @@ RenderWindow::~RenderWindow()
 {
 }
 
-LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onMove, IWindowListener, LAG_ARGS(int x, int y), LAG_ARGS(x, y))
-LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onClose, IWindowListener, LAG_ARGS(), LAG_ARGS())
-LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onFocusChange, IWindowListener, LAG_ARGS(bool focused), LAG_ARGS(focused))
+LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onMove, IWindowListener, LAG_ARGS(RenderWindow &notifier, int x, int y), LAG_ARGS(notifier, x, y))
+LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onClose, IWindowListener, LAG_ARGS(RenderWindow &notifier), LAG_ARGS(notifier))
+LAG_DEFINE_NOTIFY_METHOD(RenderWindow, onFocusChange, IWindowListener, LAG_ARGS(RenderWindow &notifier, bool focused), LAG_ARGS(notifier, focused))

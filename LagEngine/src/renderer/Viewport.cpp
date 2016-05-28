@@ -6,7 +6,9 @@
 
 using namespace Lag;
 
-Viewport::Viewport(Camera &camera, RenderTarget &renderTarget, float left, float bottom, float width, float height) :
+Viewport::Viewport(const std::string &name, Camera &camera, RenderTarget &renderTarget,
+	float left, float bottom, float width, float height) :
+	name(name),
 	camera(camera),
 	renderTarget(renderTarget),
 	left(left), bottom(bottom), width(width), height(height),
@@ -58,15 +60,15 @@ Viewport::RenderTargetListener::RenderTargetListener(const Viewport &vp) :
 {
 }
 
-void Viewport::RenderTargetListener::onPreRender()
+void Viewport::RenderTargetListener::onPreRender(RenderTarget &notifier)
 {
 }
 
-void Viewport::RenderTargetListener::onPostRender()
+void Viewport::RenderTargetListener::onPostRender(RenderTarget &notifier)
 {
 }
 
-void Viewport::RenderTargetListener::onResize(int width, int height)
+void Viewport::RenderTargetListener::onResize(RenderTarget &notifier, int width, int height)
 {
 	viewport.computeCameraAspectRatio();
 }

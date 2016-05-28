@@ -17,9 +17,9 @@ namespace Lag
 	class RenderTarget
 	{
 		LAG_GENERATE_OBSERVER_STORAGE(IRenderTargetListener)
-		LAG_DECLARE_NOTIFY_METHOD(onPreRender, LAG_ARGS())
-		LAG_DECLARE_NOTIFY_METHOD(onPostRender, LAG_ARGS())
-		LAG_DECLARE_NOTIFY_METHOD(onResize, LAG_ARGS(int width, int height))
+		LAG_DECLARE_NOTIFY_METHOD(onPreRender, LAG_ARGS(RenderTarget &notifier))
+		LAG_DECLARE_NOTIFY_METHOD(onPostRender, LAG_ARGS(RenderTarget &notifier))
+		LAG_DECLARE_NOTIFY_METHOD(onResize, LAG_ARGS(RenderTarget &notifier, int width, int height))
 
 	public:
 		RenderTarget(uint32 width, uint32 height, bool isMainWindow = false);
@@ -35,7 +35,8 @@ namespace Lag
 		//For double-buffered targets
 		virtual void swapBuffers() {}
 
-		Viewport& createViewport(const std::string &name, Camera &camera, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
+		Viewport& createViewport(const std::string &name, Camera &camera, 
+			float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
 
 		Viewport* getViewport(const std::string &name) const;
 

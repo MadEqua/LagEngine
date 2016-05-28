@@ -59,8 +59,7 @@ bool Mesh::loadImplementation()
 
 	//Make some space calculations
 	uint32 vxCount = 0, idxCount = 0;
-	uint32 vxSize = vxDesc.getByteSize();
-	uint32 idxSize;
+	uint32 vxSize, idxSize;
 	for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI)
 	{
 		aiMesh *mesh = scene->mMeshes[meshI];
@@ -72,12 +71,14 @@ bool Mesh::loadImplementation()
 			if (mesh->HasTextureCoords(i))
 			{
 				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 3, LAG_VX_ATTR_TYPE_FLOAT, i);
-				vxSize = vxDesc.getByteSize();
 			}
 			else
 				break;
 		}
 	}
+
+	vxSize = vxDesc.getByteSize();
+
 	if (idxCount == 0) idxSize = 0;
 	else if (idxCount < 256) idxSize = 1;
 	else if (idxCount < 65536) idxSize = 2;

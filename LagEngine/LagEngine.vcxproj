@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\renderer\Color.cpp" />
     <ClCompile Include="src\scene\FreeCamera.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp" />
@@ -192,6 +193,7 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\renderer\Color.h" />
     <ClInclude Include="src\scene\FreeCamera.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBuffer.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4Error.h" />

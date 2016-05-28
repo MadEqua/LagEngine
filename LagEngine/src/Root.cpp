@@ -199,25 +199,33 @@ bool Root::initResources(const std::string &resourcesFilePath)
 void Root::startRenderingLoop()
 {
 	shouldLoop = true;
+	float elapsed = 0.0f;
+
 	while (shouldLoop)
 	{
-		frameTimer.start();
+		wholeFrameTimer.start();
 
 		renderWindow->processEvents();
 
-		onFrameStartNotify(0.0f); //TODO implement timing
+		onFrameStartNotify(frameStartTimer.getElapsedSeconds());
+		frameStartTimer.start();
 
 		renderOneFrame();
 
-		onFrameEndNotify(0.0f); //TODO implement timing
+		onFrameRenderingQueuedNotify(frameQueuedTimer.getElapsedSeconds());
+		frameQueuedTimer.start();
 
-		float elapsed = frameTimer.getElapsedSeconds();
-		//logManager->log(CONSOLE, NORMAL, DEBUG, "elapsed", std::to_string(elapsed));
+		//*At the moment* the render window is the only render target with double buffering.
+		renderWindow->swapBuffers();
+
+		onFrameEndNotify(frameEndTimer.getElapsedSeconds());
+		frameEndTimer.start();
+
+		elapsed = wholeFrameTimer.getElapsedSeconds();
 		if (elapsed < minFrameTime)
 		{
 			std::chrono::duration<float> dur(minFrameTime - elapsed);
 			std::this_thread::sleep_for(dur);
-			//logManager->log(CONSOLE, NORMAL, DEBUG, "slept for", std::to_string(dur.count()));
 		}
 	}
 }
@@ -231,7 +239,6 @@ void Root::renderOneFrame()
 {
 	renderer->renderAllRenderTargets();
 }
-
 
 void Root::KeyboardListener::onKeyPress(int key, int modifier)
 {
@@ -250,7 +257,7 @@ void Root::KeyboardListener::onKeyPress(int key, int modifier)
 	}
 }
 
-void Root::WindowListener::onClose()
+void Root::WindowListener::onClose(RenderWindow &notifier)
 {
 	Root::getInstance().stopRenderingLoop();
 }

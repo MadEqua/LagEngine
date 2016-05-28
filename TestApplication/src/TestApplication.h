@@ -39,7 +39,6 @@ private:
 	void createScene();
 	void createSceneAux(Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth);
 
-
 	Lag::RenderWindow *renderWindow;
 	Lag::SceneManager *sceneManager;
 	Lag::Root *root;

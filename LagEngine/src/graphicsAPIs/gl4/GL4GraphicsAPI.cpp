@@ -25,6 +25,36 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 			"GL4GraphicsAPI", "OpenGL 4.5 is supported!");
 	}
 
+	GLint res;
+	GL_ERROR_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0))
+	GL_ERROR_CHECK(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, 
+		GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &res))
+
+	if (res == GL_LINEAR)
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			"GL4GraphicsAPI", "Linear RGB Default Framebuffer.");
+	else if (res == GL_SRGB) 
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			"GL4GraphicsAPI", "sRGB Default Framebuffer.");
+		
+		//enable auto Linear RGB to sRGB conversion when writing to sRGB framebuffers
+		GL_ERROR_CHECK(glEnable(GL_FRAMEBUFFER_SRGB)) 
+	}
+
+	GL_ERROR_CHECK(glGetIntegerv(GL_SAMPLES, &res))
+	if (res > 0) 
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			"GL4GraphicsAPI", "Multisampled Default Framebuffer. Samples: " + res);
+		GL_ERROR_CHECK(glEnable(GL_MULTISAMPLE))
+	}
+	else 
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			"GL4GraphicsAPI", "Non-Multisampled Default Framebuffer.");
+	}
+
 	GL_ERROR_CHECK(glEnable(GL_DEPTH_TEST))
 	GL_ERROR_CHECK(glDepthFunc(GL_LESS))
 
@@ -69,7 +99,7 @@ void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType inde
 	GL_ERROR_CHECK(glDrawElementsBaseVertex(convertRenderModeToGLenum(mode), count, type, reinterpret_cast<void*>(offset), baseVertex))
 }
 
-void GL4GraphicsAPI::clearColorBuffer(float value[4])
+void GL4GraphicsAPI::clearColorBuffer(const float value[4])
 {
 	GL_ERROR_CHECK(glClearBufferfv(GL_COLOR, 0, value))
 }

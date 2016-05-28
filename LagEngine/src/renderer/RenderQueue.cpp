@@ -3,6 +3,7 @@
 #include "../io/log/LogManager.h"
 #include "IRenderable.h"
 #include "Renderer.h"
+#include "../IFrameListener.h"
 
 using namespace Lag;
 
@@ -51,7 +52,7 @@ void RenderQueue::sort()
 
 void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 {
-	for (int i = 0; i < actualSlot; ++i)
+	for (uint32 i = 0; i < actualSlot; ++i)
 	{
 		RenderOperation &ro = queue[i];
 		IRenderable *renderable = ro.renderable;

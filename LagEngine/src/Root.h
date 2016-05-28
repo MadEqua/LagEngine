@@ -81,7 +81,11 @@ namespace Lag
 		InitializationParameters initializationParameters;
 
 		//Frame Timing
-		Timer frameTimer;
+		Timer wholeFrameTimer;
+		Timer frameStartTimer;
+		Timer frameEndTimer;
+		Timer frameQueuedTimer;
+
 		float minFrameTime; //min frame time to respect the max FPS
 
 		bool shouldLoop;
@@ -107,12 +111,12 @@ namespace Lag
 		class WindowListener : public IWindowListener
 		{
 		public:
-			virtual void onPreRender() {}
-			virtual void onPostRender() {}
-			virtual void onResize(int width, int height) {}
-			virtual void onMove(int x, int y) {}
-			virtual void onFocusChange(bool focused) {}
-			virtual void onClose();
+			virtual void onPreRender(RenderTarget &notifier) {}
+			virtual void onPostRender(RenderTarget &notifier) {}
+			virtual void onResize(RenderTarget &notifier, int width, int height) {}
+			virtual void onMove(RenderWindow &notifier, int x, int y) {}
+			virtual void onFocusChange(RenderWindow &notifier, bool focused) {}
+			virtual void onClose(RenderWindow &notifier);
 		};
 
 		WindowListener *windowListener;

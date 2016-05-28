@@ -17,6 +17,7 @@ namespace Lag
 		uint32 getElapsedMilis() const;
 
 	private:
+		bool started;
 		std::chrono::time_point<std::chrono::high_resolution_clock> startPoint;
 	};
 }

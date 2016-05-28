@@ -1,5 +1,7 @@
 #include "VertexDescription.h"
 
+#include <algorithm>
+
 using namespace Lag;
 
 VertexAttribute::VertexAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length,
@@ -11,6 +13,8 @@ VertexAttribute::VertexAttribute(VertexAttributeSemantic semantic, uint32 offset
 	index(index),
 	isNormalized(isNormalized)
 {
+	uint8 sem = static_cast<uint8>(semantic);
+	sortKey = (semantic << 4) | index;
 }
 
 VertexAttribute::~VertexAttribute()
@@ -63,6 +67,11 @@ VertexAttribute::operator std::size_t() const
 		static_cast<uint32>(isNormalized);
 }
 
+bool VertexAttribute::operator<(const VertexAttribute &other) const
+{
+	return sortKey < other.sortKey;
+}
+
 ///////////////////////////////////////
 ///////////////////////////////////////
 
@@ -76,9 +85,19 @@ VertexDescription::~VertexDescription()
 
 void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index, bool isNormalized)
 {
-	uint32 offset = getByteSize(); //offset is what's already before of this attribute
-	VertexAttribute attr(semantic, offset, length, type, index, isNormalized);
+	//Offset computation is below, after sorting
+	VertexAttribute attr(semantic, -1, length, type, index, isNormalized);
 	attributes.push_back(attr);
+	
+	std::sort(attributes.begin(), attributes.end());
+
+	int32 sum = 0;
+	for (int i = 0; i < attributes.size(); ++i)
+	{
+		VertexAttribute &atr = attributes[i];
+		attr.offset = sum;
+		sum += attr.getByteSize();
+	}
 }
 
 uint32 VertexDescription::getByteSize() const

@@ -10,7 +10,7 @@ GLFWRenderWindow *glfwRenderWindow;
 
 void Lag::windowCloseCallback(GLFWwindow * window)
 {
-	glfwRenderWindow->onCloseNotify();
+	glfwRenderWindow->onCloseNotify(*glfwRenderWindow);
 }
 
 void Lag::windowSizeCallback(GLFWwindow * window, int width, int height)
@@ -20,12 +20,12 @@ void Lag::windowSizeCallback(GLFWwindow * window, int width, int height)
 
 void Lag::windowPosCallback(GLFWwindow * window, int xpos, int ypos)
 {
-	glfwRenderWindow->onMoveNotify(xpos, ypos);
+	glfwRenderWindow->onMoveNotify(*glfwRenderWindow, xpos, ypos);
 }
 
 void Lag::windowFocusCallback(GLFWwindow * window, int focused)
 {
-	glfwRenderWindow->onFocusChangeNotify(focused == GLFW_FOCUSED ? true : false);
+	glfwRenderWindow->onFocusChangeNotify(*glfwRenderWindow, focused == GLFW_FOCUSED ? true : false);
 }
 
 

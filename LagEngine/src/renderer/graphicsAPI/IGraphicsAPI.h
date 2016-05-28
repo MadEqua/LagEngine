@@ -31,7 +31,7 @@ namespace Lag
 		virtual void renderVerticesInstanced(RenderMode mode, uint32 first, uint32 count, uint32 instanceCount) = 0;
 		virtual void renderIndexedInstanced(RenderMode mode, uint32 first, uint32 count, uint32 instanceCount) = 0;*/
 
-		virtual void clearColorBuffer(float value[4]) = 0;
+		virtual void clearColorBuffer(const float value[4]) = 0;
 		virtual void clearDepthBuffer(float value) = 0;
 		virtual void clearStencilBuffer(int32 value) = 0;
 		virtual void clearDepthAndStencilBuffer(float depth, int32 stencil) = 0;

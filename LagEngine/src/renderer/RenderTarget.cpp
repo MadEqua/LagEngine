@@ -15,9 +15,10 @@ RenderTarget::~RenderTarget()
 		delete pair.second;
 }
 
-Viewport& RenderTarget::createViewport(const std::string &name, Camera &camera, float left, float top, float width, float height)
+Viewport& RenderTarget::createViewport(const std::string &name, Camera &camera, 
+	float left, float top, float width, float height)
 {
-	Viewport *vp = new Viewport(camera, *this, left, top, width, height);
+	Viewport *vp = new Viewport(name, camera, *this, left, top, width, height);
 	viewports[name] = vp;
 	return *vp;
 }
@@ -33,19 +34,19 @@ Viewport* RenderTarget::getViewport(const std::string &name) const
 
 void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
 {
-	onPreRenderNotify();
+	onPreRenderNotify(*this);
 	for (auto &pair : viewports)
 		pair.second->addRenderablesToQueue(renderQueue, sceneManager);
-	onPostRenderNotify();
+	onPostRenderNotify(*this); //TODO wrong
 }
 
 void RenderTarget::resize(int width, int height)
 {
 	this->width = width;
 	this->height = height;
-	onResizeNotify(width, height);
+	onResizeNotify(*this, width, height);
 }
 
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(), LAG_ARGS())
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(int width, int height), LAG_ARGS(width, height))
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier, int width, int height), LAG_ARGS(notifier, width, height))

@@ -14,12 +14,16 @@
 
 #include "../io/log/LogManager.h"
 
+#include "../Root.h"
+
 using namespace Lag;
 
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
-	boundGpuProgram(nullptr), boundViewport(nullptr)
+	boundGpuProgram(nullptr), boundViewport(nullptr),
+	clearColor(0.5f), stencilClearValue(0), depthClearValue(1.0f),
+	renderTargetListener(*this)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
@@ -34,6 +38,7 @@ Renderer::~Renderer()
 void Renderer::addRenderTarget(const std::string &name, RenderTarget &renderTarget)
 {
 	renderTargets[name] = &renderTarget;
+	renderTarget.registerObserver(renderTargetListener);
 }
 
 void Renderer::removeRenderTarget(const std::string &name)
@@ -53,18 +58,10 @@ void Renderer::renderAllRenderTargets()
 
 	renderQueue.sort();
 
-	//TODO: do it right
-	float color[4] = { 0.5f, 0.5f, 0.5f, 1 };
-	clearColorBuffer(color);
-	clearDepthAndStencilBuffer(1.0f, 0);
+	clearColorBuffer();
+	clearDepthAndStencilBuffer();
 
 	renderQueue.dispatchRenderOperations(*this);
-
-	for (auto &rtPair : renderTargets)
-	{
-		RenderTarget &rt = *rtPair.second;
-		rt.swapBuffers();
-	}
 }
 
 void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
@@ -105,8 +102,7 @@ void Renderer::bindInputDescription(const InputDescription &inputDescription)
 
 void Renderer::bindViewport(const Viewport &viewport)
 {
-	//TODO: fix. won't work if the bound viewport was changed (or its rendertarget size)
-	//if (&viewport != boundViewport)
+	if (&viewport != boundViewport)
 	{
 		boundViewport = &viewport;
 		graphicsAPI.setViewport(viewport.getRealLeft(), viewport.getRealBottom(),
@@ -147,22 +143,48 @@ void Renderer::renderIndexedInstanced(const VertexData &vertexData, const IndexD
 	bindInputDescription(*vertexData.inputDescription);
 }*/
 
-void Renderer::clearColorBuffer(float value[4])
+void Renderer::setClearColor(const Color &color)
 {
-	graphicsAPI.clearColorBuffer(value);
+	clearColor = color;
 }
 
-void Renderer::clearDepthBuffer(float value)
+void Renderer::setClearDepthValue(float value)
 {
-	graphicsAPI.clearDepthBuffer(value);
+	depthClearValue = value;
 }
 
-void Renderer::clearStencilBuffer(int32 value)
+void Renderer::setClearStencilValue(int32 value)
 {
-	graphicsAPI.clearStencilBuffer(value);
+	stencilClearValue = value;
 }
 
-void Renderer::clearDepthAndStencilBuffer(float depth, int32 stencil)
+void Renderer::clearColorBuffer()
 {
-	graphicsAPI.clearDepthAndStencilBuffer(depth, stencil);
+	graphicsAPI.clearColorBuffer(clearColor.getRGBAfloat());
+}
+
+void Renderer::clearDepthBuffer()
+{
+	graphicsAPI.clearDepthBuffer(depthClearValue);
+}
+
+void Renderer::clearStencilBuffer()
+{
+	graphicsAPI.clearStencilBuffer(stencilClearValue);
+}
+
+void Renderer::clearDepthAndStencilBuffer()
+{
+	graphicsAPI.clearDepthAndStencilBuffer(depthClearValue, stencilClearValue);
+}
+
+
+void Renderer::RenderTargetListener::onResize(RenderTarget &notifier, int width, int height)
+{
+	if (renderer.boundViewport != nullptr)
+	{
+		const Viewport *vp = notifier.getViewport(renderer.boundViewport->getName());
+		if (renderer.boundViewport == vp)
+			renderer.boundViewport = nullptr;
+	}
 }
