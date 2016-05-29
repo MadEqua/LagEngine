@@ -37,11 +37,13 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 {
 	const GpuProgram &gpuProgram = material.getGpuProgram();
+	renderer.bindGpuProgram(gpuProgram);
+
 	auto uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX);
 	if (uniformList != nullptr)
 	{
 		GpuProgramUniform *modelMatrixUniform = uniformList->at(0);
-		glm::mat4 model = parent.getTransform();
+		const glm::mat4 &model = parent.getTransform();
 		modelMatrixUniform->setValue(&model);
 	}
 
@@ -50,7 +52,7 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 	{
 		GpuProgramUniform *viewMatrixUniform = uniformList->at(0);
 		const Camera &camera = renderOperation.viewport->getCamera();
-		glm::mat4 view = camera.getInverseTransform();
+		const glm::mat4 &view = camera.getInverseTransform();
 		viewMatrixUniform->setValue(&view);
 	}
 
@@ -59,7 +61,7 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 	{
 		GpuProgramUniform *pMatrixUniform = uniformList->at(0);
 		const Camera &camera = renderOperation.viewport->getCamera();
-		glm::mat4 p = camera.getProjectionMatrix();
+		const glm::mat4 &p = camera.getProjectionMatrix();
 		pMatrixUniform->setValue(&p);
 	}
 
@@ -74,6 +76,5 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 		normalMatrixUniform->setValue(&nor);
 	}
 	
-	renderer.bindGpuProgram(gpuProgram);
 	renderer.renderIndexed(subMesh.getVertexData(), subMesh.getIndexData(), subMesh.getVertexData().vertexStart);
 }

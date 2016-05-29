@@ -86,15 +86,15 @@ VertexDescription::~VertexDescription()
 void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index, bool isNormalized)
 {
 	//Offset computation is below, after sorting
-	VertexAttribute attr(semantic, -1, length, type, index, isNormalized);
-	attributes.push_back(attr);
+	VertexAttribute newAttr(semantic, -1, length, type, index, isNormalized);
+	attributes.push_back(newAttr);
 	
 	std::sort(attributes.begin(), attributes.end());
 
-	int32 sum = 0;
+	uint32 sum = 0;
 	for (int i = 0; i < attributes.size(); ++i)
 	{
-		VertexAttribute &atr = attributes[i];
+		VertexAttribute &attr = attributes[i];
 		attr.offset = sum;
 		sum += attr.getByteSize();
 	}
