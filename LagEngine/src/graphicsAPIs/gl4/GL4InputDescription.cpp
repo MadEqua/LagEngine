@@ -16,11 +16,6 @@ GL4InputDescription::~GL4InputDescription()
 	GL_ERROR_CHECK(glDeleteVertexArrays(1, &handle))
 }
 
-void GL4InputDescription::bind() const
-{
-	GL_ERROR_CHECK(glBindVertexArray(handle))
-}
-
 void GL4InputDescription::setupVertexAttributtes() const
 {
 	//Bind the VBO to VBO binding point 0 (of this VAO) and describes how to get vertex data from the VBO

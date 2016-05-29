@@ -69,7 +69,7 @@ void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
 	if (&vertexBuffer != boundVertexBuffer)
 	{
 		boundVertexBuffer = &vertexBuffer;
-		vertexBuffer.bind();
+		graphicsAPI.bindVertexBuffer(vertexBuffer);
 	}
 }
 
@@ -78,7 +78,7 @@ void Renderer::bindIndexBuffer(const GpuBuffer &indexBuffer)
 	if(&indexBuffer != boundIndexBuffer)
 	{
 		boundIndexBuffer = &indexBuffer;
-		indexBuffer.bind();
+		graphicsAPI.bindIndexBuffer(indexBuffer);
 	}
 }
 
@@ -87,7 +87,7 @@ void Renderer::bindGpuProgram(const GpuProgram &gpuProgram)
 	if(&gpuProgram != boundGpuProgram)
 	{
 		boundGpuProgram = &gpuProgram;
-		gpuProgram.bind();
+		graphicsAPI.bindGpuProgram(gpuProgram);
 	}
 }
 
@@ -96,7 +96,7 @@ void Renderer::bindInputDescription(const InputDescription &inputDescription)
 	if (&inputDescription != boundInputDescription)
 	{
 		boundInputDescription = &inputDescription;
-		inputDescription.bind();
+		graphicsAPI.bindInputDescription(inputDescription);
 	}
 }
 
@@ -105,7 +105,7 @@ void Renderer::bindViewport(const Viewport &viewport)
 	if (&viewport != boundViewport)
 	{
 		boundViewport = &viewport;
-		graphicsAPI.setViewport(viewport.getRealLeft(), viewport.getRealBottom(),
+		graphicsAPI.bindViewport(viewport.getRealLeft(), viewport.getRealBottom(),
 			viewport.getRealWidth(), viewport.getRealHeight());
 	}
 }
@@ -160,7 +160,7 @@ void Renderer::setClearStencilValue(int32 value)
 
 void Renderer::clearColorBuffer()
 {
-	graphicsAPI.clearColorBuffer(clearColor.getRGBAfloat());
+	graphicsAPI.clearColorBuffer(clearColor);
 }
 
 void Renderer::clearDepthBuffer()

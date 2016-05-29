@@ -14,8 +14,6 @@ namespace Lag
 
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram) const override;
 
-		virtual void bind() const override;
-
 		inline GLuint getHandle() const { return handle; }
 
 	protected:

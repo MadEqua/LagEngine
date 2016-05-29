@@ -57,25 +57,6 @@ void GL4GpuBuffer::readImplementation(uint32 offset, uint32 length, byte* dst)
 	GL_ERROR_CHECK(glGetNamedBufferSubData(handle, realOffset, length, static_cast<GLvoid*>(dst)));
 }
 
-void GL4GpuBuffer::bind() const
-{
-	switch (contents)
-	{
-	case LAG_GPU_BUFFER_CONTENTS_VERTICES:
-		GL_ERROR_CHECK(glBindBuffer(GL_ARRAY_BUFFER, handle))
-		break;
-	case LAG_GPU_BUFFER_CONTENTS_INDICES:
-		GL_ERROR_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle))
-		break;
-	case LAG_GPU_BUFFER_CONTENTS_UNIFORMS:
-		GL_ERROR_CHECK(glBindBuffer(GL_UNIFORM_BUFFER, handle))
-		break;
-	case LAG_GPU_BUFFER_CONTENTS_OTHER:
-	default:
-		return;
-	}
-}
-
 GLbitfield GL4GpuBuffer::convertFlagsToGL(uint32 flags)
 {
 	GLbitfield res = 0;

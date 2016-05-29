@@ -15,12 +15,16 @@ namespace Lag
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) override;
 		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) override;
 
-		virtual void clearColorBuffer(const float value[4]) override;
+		virtual void clearColorBuffer(const Color &color) override;
 		virtual void clearDepthBuffer(float value) override;
 		virtual void clearStencilBuffer(int32 value) override;
 		virtual void clearDepthAndStencilBuffer(float depth, int32 stencil) override;
 
-		virtual void setViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
+		virtual void bindVertexBuffer(const GpuBuffer &vertexBuffer) override;
+		virtual void bindIndexBuffer(const GpuBuffer &indexBuffer) override;
+		virtual void bindGpuProgram(const GpuProgram &gpuProgram) override;
+		virtual void bindInputDescription(const InputDescription &inputDescription) override;
+		virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
 
 		/*virtual void setTexture(uint32 unit, Texture & texture) override;
 		virtual void setTexture(uint32 unit, const std::string & textureName) override;

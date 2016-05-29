@@ -67,8 +67,3 @@ GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescripti
 {
 	return new GL4GpuProgramUniform(description, gpuProgram);
 }
-
-void GL4GpuProgram::bind() const
-{
-	GL_ERROR_CHECK(glUseProgram(handle))
-}

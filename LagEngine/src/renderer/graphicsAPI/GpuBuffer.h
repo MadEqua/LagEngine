@@ -46,8 +46,6 @@ namespace Lag
 		virtual void write(uint32 offset, uint32 length, byte* src) override;
 		virtual void read(uint32 offset, uint32 length, byte* dst) override;
 
-		virtual void bind() const = 0;
-
 		bool checkForFlag(GpuBufferUsage flagToCheck);
 
 	protected:

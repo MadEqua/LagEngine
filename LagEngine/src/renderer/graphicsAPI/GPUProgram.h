@@ -32,8 +32,6 @@ namespace Lag
 		const GpuProgramUniform* getUniformByName(const std::string &name) const;
 		const std::vector<GpuProgramUniform*>* getUniformBySemantic(GpuProgramUniformSemantic semantic) const;
 
-		virtual void bind() const = 0;
-
 		//Generates a name for the program, combining the names of the stages on a predefined order
 		static void generateName(std::vector<std::string> &stageNames, std::string &out);
 

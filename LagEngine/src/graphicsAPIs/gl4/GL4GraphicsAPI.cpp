@@ -3,6 +3,11 @@
 #include "../../io/log/LogManager.h"
 #include "../../renderer/Renderer.h"
 #include "../../renderer/IndexData.h"
+#include "../../renderer/Color.h"
+
+#include "GL4InputDescription.h"
+#include "GL4GpuProgram.h"
+#include "GL4GpuBuffer.h"
 
 #include "GL4Error.h"
 
@@ -99,9 +104,9 @@ void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType inde
 	GL_ERROR_CHECK(glDrawElementsBaseVertex(convertRenderModeToGLenum(mode), count, type, reinterpret_cast<void*>(offset), baseVertex))
 }
 
-void GL4GraphicsAPI::clearColorBuffer(const float value[4])
+void GL4GraphicsAPI::clearColorBuffer(const Color &color)
 {
-	GL_ERROR_CHECK(glClearBufferfv(GL_COLOR, 0, value))
+	GL_ERROR_CHECK(glClearBufferfv(GL_COLOR, 0, color.getRGBAfloat()))
 }
 
 void GL4GraphicsAPI::clearDepthBuffer(float value)
@@ -119,7 +124,31 @@ void GL4GraphicsAPI::clearDepthAndStencilBuffer(float depth, int32 stencil)
 	GL_ERROR_CHECK(glClearBufferfi(GL_DEPTH_STENCIL, 0, depth, stencil))
 }
 
-void GL4GraphicsAPI::setViewport(uint32 x, uint32 y, uint32 width, uint32 height)
+void GL4GraphicsAPI::bindVertexBuffer(const GpuBuffer &vertexBuffer)
+{
+	GLuint handle = static_cast<const GL4GpuBuffer&>(vertexBuffer).getHandle();
+	GL_ERROR_CHECK(glBindBuffer(GL_ARRAY_BUFFER, handle))
+}
+
+void GL4GraphicsAPI::bindIndexBuffer(const GpuBuffer &indexBuffer)
+{
+	GLuint handle = static_cast<const GL4GpuBuffer&>(indexBuffer).getHandle();
+	GL_ERROR_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle))
+}
+
+void GL4GraphicsAPI::bindGpuProgram(const GpuProgram &gpuProgram)
+{
+	GLuint handle = static_cast<const GL4GpuProgram&>(gpuProgram).getHandle();
+	GL_ERROR_CHECK(glUseProgram(handle))
+}
+
+void GL4GraphicsAPI::bindInputDescription(const InputDescription &inputDescription)
+{
+	GLuint handle = static_cast<const GL4InputDescription&>(inputDescription).getHandle();
+	GL_ERROR_CHECK(glBindVertexArray(handle))
+}
+
+void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 height)
 {
 	GL_ERROR_CHECK(glViewport(x, y, width, height))
 }

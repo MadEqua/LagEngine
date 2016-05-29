@@ -13,8 +13,8 @@ namespace Lag
 		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
 		virtual ~GL4InputDescription();
 
-		virtual void bind() const override;
-	
+		inline GLuint getHandle() const { return handle; }
+
 	private:
 		void setupVertexAttributtes() const;
 		GLuint handle;
