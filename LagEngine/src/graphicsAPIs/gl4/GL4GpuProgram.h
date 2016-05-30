@@ -12,7 +12,7 @@ namespace Lag
 		GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 		virtual ~GL4GpuProgram();
 
-		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram) const override;
+		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description) const override;
 
 		inline GLuint getHandle() const { return handle; }
 

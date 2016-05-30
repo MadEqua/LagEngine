@@ -127,6 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\renderer\GpuProgramUniformFiller.cpp" />
+    <ClCompile Include="src\scene\PointLight.cpp" />
+    <ClCompile Include="src\scene\Light.cpp" />
     <ClCompile Include="src\renderer\Color.cpp" />
     <ClCompile Include="src\scene\FreeCamera.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp" />
@@ -187,12 +190,17 @@
     <ClCompile Include="src\renderer\Technique.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\Texture.cpp" />
     <ClCompile Include="src\renderer\Viewport.cpp" />
+    <ClCompile Include="src\scene\DirectionalLight.cpp" />
     <ClCompile Include="src\scene\Transform.cpp" />
     <ClCompile Include="src\renderer\VertexDescription.cpp" />
     <ClCompile Include="src\renderer\SubMesh.cpp" />
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\renderer\GpuProgramUniformFiller.h" />
+    <ClInclude Include="src\scene\DirectionalLight.h" />
+    <ClInclude Include="src\scene\PointLight.h" />
+    <ClInclude Include="src\scene\Light.h" />
     <ClInclude Include="src\renderer\Color.h" />
     <ClInclude Include="src\scene\FreeCamera.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBuffer.h" />

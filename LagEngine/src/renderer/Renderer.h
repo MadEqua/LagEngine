@@ -7,6 +7,7 @@
 #include "RenderQueue.h"
 #include "Color.h"
 #include "IRenderTargetListener.h"
+#include "GpuProgramUniformFiller.h"
 
 namespace Lag
 {
@@ -85,12 +86,18 @@ namespace Lag
 		/** Reports the number of vertices passed to the renderer since the last _beginGeometryCount call. */
 		//uint32 getVertexCount(void) const;
 
+		static const uint8 MAX_POINT_LIGHTS = 8;
+		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
+
 	private:
 		std::unordered_map<std::string, RenderTarget*> renderTargets;
+
+		uint64 frameNumber;
 
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
 
+		GpuProgramUniformFiller uniformFiller;
 		RenderQueue renderQueue;
 
 		Color clearColor;
@@ -107,7 +114,6 @@ namespace Lag
 		const InputDescription *boundInputDescription;
 		const Viewport *boundViewport;
 
-
 		//Listening to resizes. A resize may invalidate the current bound Viewport.
 		class RenderTargetListener : public IRenderTargetListener
 		{
@@ -115,8 +121,8 @@ namespace Lag
 			RenderTargetListener(Renderer &renderer) :
 				renderer(renderer) {}
 
-			virtual void onPreRender(RenderTarget &notifier) {};
-			virtual void onPostRender(RenderTarget &notifier) {};
+			virtual void onPreRender(RenderTarget &notifier) override {};
+			virtual void onPostRender(RenderTarget &notifier) override {};
 			virtual void onResize(RenderTarget &notifier, int width, int height) override;
 
 		private:

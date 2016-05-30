@@ -8,6 +8,9 @@
 #include "scene/SceneNode.h"
 #include "scene/Entity.h"
 #include "io/log/LogManager.h"
+#include "scene/PointLight.h"
+#include "scene/DirectionalLIght.h"
+#include "renderer/Color.h"
 
 TestApplication::TestApplication()
 {
@@ -22,7 +25,7 @@ bool TestApplication::start()
 {
 	root = &Lag::Root::getInstance();
 
-	Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
+	//Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_IDE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_CONSOLE);
@@ -48,6 +51,14 @@ bool TestApplication::start()
 	secondaryCameraNode.rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f), Lag::WORLD);
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
 	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);
+
+	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(1.0f, 0.0f, 0.0f));
+	Lag::SceneNode &pl1SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl1SceneNode");
+	pl1SceneNode.setPosition(glm::vec3(1000.0f, 0.0f, 0.0f));
+	pl.attachToSceneNode(pl1SceneNode);
+	
+	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(-1.0f, -1.0f, 0.0f));
+	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
 	createScene();
 

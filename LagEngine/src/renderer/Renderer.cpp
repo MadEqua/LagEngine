@@ -23,7 +23,8 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(0.5f), stencilClearValue(0), depthClearValue(1.0f),
-	renderTargetListener(*this)
+	renderTargetListener(*this),
+	frameNumber(0)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
@@ -61,7 +62,11 @@ void Renderer::renderAllRenderTargets()
 	clearColorBuffer();
 	clearDepthAndStencilBuffer();
 
+	uniformFiller.onFrameStart(boundGpuProgram, frameNumber, boundViewport);
+
 	renderQueue.dispatchRenderOperations(*this);
+
+	frameNumber++;
 }
 
 void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
@@ -88,6 +93,7 @@ void Renderer::bindGpuProgram(const GpuProgram &gpuProgram)
 	{
 		boundGpuProgram = &gpuProgram;
 		graphicsAPI.bindGpuProgram(gpuProgram);
+		uniformFiller.onGpuProgramBind(boundGpuProgram, frameNumber, boundViewport);
 	}
 }
 
@@ -107,6 +113,7 @@ void Renderer::bindViewport(const Viewport &viewport)
 		boundViewport = &viewport;
 		graphicsAPI.bindViewport(viewport.getRealLeft(), viewport.getRealBottom(),
 			viewport.getRealWidth(), viewport.getRealHeight());
+		uniformFiller.onViewportBind(boundGpuProgram, boundViewport);
 	}
 }
 

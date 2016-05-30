@@ -19,7 +19,7 @@ namespace Lag
 		virtual ~GpuProgramUniform();
 
 		//The implementation can deduce what to send based on the GpuProgramUniformDescription
-		virtual void setValue(const void* value) const = 0;
+		virtual void setValue(const void* value, uint32 arraySize = 1) const = 0;
 
 		const GpuProgramUniformDescription& getGpuProgramUniformDescription() const { return description; }
 

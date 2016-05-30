@@ -20,7 +20,7 @@ GL4GpuProgramUniform::~GL4GpuProgramUniform()
 {
 }
 
-void GL4GpuProgramUniform::setValue(const void* value) const
+void GL4GpuProgramUniform::setValue(const void* value, uint32 arraySize) const
 {
 	switch (description.type)
 	{
@@ -28,107 +28,107 @@ void GL4GpuProgramUniform::setValue(const void* value) const
 			switch (description.size)
 			{
 			case LAG_GPU_PROG_UNIFORM_SIZE_1:
-				GL_ERROR_CHECK(glUniform1i(location, *(static_cast<const GLint*>(value))));
-				break;
+				GL_ERROR_CHECK(glUniform1iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_2:
-				GL_ERROR_CHECK(glUniform2iv(location, 2, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform2iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_3:
-				GL_ERROR_CHECK(glUniform3iv(location, 3, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform3iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_4:
-				GL_ERROR_CHECK(glUniform4iv(location, 4, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform4iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN:
 			default:
-				break;
+				return;
 			}
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_FLOAT:
 			switch (description.size)
 			{
 			case LAG_GPU_PROG_UNIFORM_SIZE_1:
-				GL_ERROR_CHECK(glUniform1f(location, *(static_cast<const GLfloat*>(value))));
-				break;
+				GL_ERROR_CHECK(glUniform1fv(location, arraySize, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_2:
-				GL_ERROR_CHECK(glUniform2fv(location, 2, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform2fv(location, arraySize, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_3:
-				GL_ERROR_CHECK(glUniform3fv(location, 3, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform3fv(location, arraySize, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_4:
-				GL_ERROR_CHECK(glUniform4fv(location, 4, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform4fv(location, arraySize, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN:
 			default:
-				break;
+				return;
 			}
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_INT32:
 			switch (description.size)
 			{
 			case LAG_GPU_PROG_UNIFORM_SIZE_1:
-				GL_ERROR_CHECK(glUniform1i(location, *(static_cast<const GLint*>(value))));
-				break;
+				GL_ERROR_CHECK(glUniform1iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_2:
-				GL_ERROR_CHECK(glUniform2iv(location, 2, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform2iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_3:
-				GL_ERROR_CHECK(glUniform3iv(location, 3, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform3iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_4:
-				GL_ERROR_CHECK(glUniform4iv(location, 4, static_cast<const GLint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform4iv(location, arraySize, static_cast<const GLint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN:
 			default:
-				break;
+				return;
 			}
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_UINT32:
 			switch (description.size)
 			{
 			case LAG_GPU_PROG_UNIFORM_SIZE_1:
-				GL_ERROR_CHECK(glUniform1ui(location, *(static_cast<const GLuint*>(value))));
-				break;
+				GL_ERROR_CHECK(glUniform1uiv(location, arraySize, static_cast<const GLuint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_2:
-				GL_ERROR_CHECK(glUniform2uiv(location, 2, static_cast<const GLuint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform2uiv(location, arraySize, static_cast<const GLuint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_3:
-				GL_ERROR_CHECK(glUniform3uiv(location, 3, static_cast<const GLuint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform3uiv(location, arraySize, static_cast<const GLuint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_4:
-				GL_ERROR_CHECK(glUniform4uiv(location, 4, static_cast<const GLuint*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniform4uiv(location, arraySize, static_cast<const GLuint*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN:
 			default:
-				break;
+				return;
 			}
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_SAMPLER:
 			//TODO
-			break;
+			return;
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_MATRIX:
 			switch (description.size)
 			{
 			case LAG_GPU_PROG_UNIFORM_SIZE_1:
-				break;
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_2:
-				GL_ERROR_CHECK(glUniformMatrix2fv(location, 1, GL_FALSE, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniformMatrix2fv(location, arraySize, GL_FALSE, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_3:
-				GL_ERROR_CHECK(glUniformMatrix3fv(location, 1, GL_FALSE, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniformMatrix3fv(location, arraySize, GL_FALSE, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_4:
-				GL_ERROR_CHECK(glUniformMatrix4fv(location, 1, GL_FALSE, static_cast<const GLfloat*>(value)));
-				break;
+				GL_ERROR_CHECK(glUniformMatrix4fv(location, arraySize, GL_FALSE, static_cast<const GLfloat*>(value)));
+				return;
 			case LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN:
 			default:
-				break;
+				return;
 			}
 
 		case LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN:
 		default:
-			break;
+			return;
 	}
 }

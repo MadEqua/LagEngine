@@ -51,7 +51,7 @@ bool GL4GpuProgram::checkLinking() const
 		GLchar *log = new GLchar[logLength];
 		GL_ERROR_CHECK(glGetProgramInfoLog(handle, logLength, 0, log))
 
-		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgram", std::string("Linking Log:\n") + log);
 
 		delete[] log;
@@ -63,7 +63,7 @@ bool GL4GpuProgram::checkLinking() const
 	return true;
 }
 
-GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram) const
+GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description) const
 {
-	return new GL4GpuProgramUniform(description, gpuProgram);
+	return new GL4GpuProgramUniform(description, *this);
 }

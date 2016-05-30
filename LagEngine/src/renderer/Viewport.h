@@ -25,7 +25,7 @@ namespace Lag
 
 		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
 
-		inline const Camera& getCamera() { return camera;}
+		inline const Camera& getCamera() const { return camera;}
 		inline const std::string& getName() const { return name; }
 
 		uint32 getRealLeft() const;

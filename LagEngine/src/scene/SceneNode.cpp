@@ -179,6 +179,7 @@ void SceneNode::localChangeOccured()
 {
 	transform.finalTransformOutOfDate = true;
 	transform.finalInverseTransformOutOfDate = true;
+	transform.normalTransformOutOfDate = true;
 	notifyChildrenOfDataChange();
 }
 
@@ -246,6 +247,24 @@ const glm::mat4& SceneNode::getFinalInverseTransform()
 		transform.finalInverseTransformOutOfDate = false;
 	}
 	return transform.finalInverseTransform;
+}
+
+const glm::mat3& SceneNode::getNormalTransform()
+{
+	if (transform.normalTransformOutOfDate)
+	{
+		if (transform.scale.x == transform.scale.y &&
+			transform.scale.x == transform.scale.z)
+		{
+			transform.normalTransform = glm::mat3(getFinalTransform());
+		}
+		else
+		{
+			transform.normalTransform = glm::transpose(glm::mat3(getFinalTransform()));
+		}
+		transform.normalTransformOutOfDate = false;
+	}
+	return transform.normalTransform;
 }
 
 const glm::vec3& SceneNode::getWorldPosition() 

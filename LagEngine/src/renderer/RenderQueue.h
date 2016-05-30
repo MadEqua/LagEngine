@@ -12,7 +12,10 @@ namespace Lag
 	class IRenderable;
 	class Renderer;
 	class IFrameListener;
-	
+
+	/*
+	* Renderer helper class.
+	*/
 	class RenderQueue
 	{
 	public:
@@ -32,7 +35,6 @@ namespace Lag
 		void sort();
 
 	private:
-
 		uint32 actualSlot;
 
 		//TODO: find out what's better: vector of pointers or actual Values.

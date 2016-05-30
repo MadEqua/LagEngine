@@ -41,7 +41,7 @@ bool GL4GpuProgramStage::checkCompilation() const
 		GLchar *log = new GLchar[logLength];
 		GL_ERROR_CHECK(glGetShaderInfoLog(handle, logLength, 0, log))
 
-		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgramStage", std::string("Compilation Log:\n") + log);
 
 		delete[] log;

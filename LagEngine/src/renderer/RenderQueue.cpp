@@ -4,7 +4,7 @@
 #include "IRenderable.h"
 #include "Renderer.h"
 #include "../IFrameListener.h"
-
+#include "Material.h"
 using namespace Lag;
 
 RenderQueue::RenderQueue() :
@@ -57,7 +57,6 @@ void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 		RenderOperation &ro = queue[i];
 		IRenderable *renderable = ro.renderable;
 
-		//TODO: render target?
 		renderer.bindViewport(*ro.viewport);
 		renderable->render(renderer, ro);
 	}

@@ -1,10 +1,8 @@
 Short Term
 
-improve uniform sending
+what happens when many stages declare equally named (or same semantic) uniforms?
 camera/scenenode look at
-disallow bind methods. only allowed through renderer
 adjust vertex attributes format on the mesh class
-uniform update hints (per object, per frame, once...)
 allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...
 
 implement techniques, passes, textures...

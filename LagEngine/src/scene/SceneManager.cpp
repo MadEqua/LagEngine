@@ -8,6 +8,8 @@
 
 #include "Entity.h"
 #include "Camera.h"
+#include "PointLight.h"
+#include "DirectionalLight.h"
 #include "../renderer/IRenderable.h"
 
 using namespace Lag;
@@ -58,6 +60,23 @@ Camera& SceneManager::createCamera(const std::string &name, float fovy, float ne
 	return *cam;
 }
 
+PointLight& SceneManager::createPointLight(const std::string &name, const Color& color)
+{
+	PointLight *pl = new PointLight(color);
+	sceneObjectMap[name] = pl;
+	pointLightVector.push_back(pl);
+	return *pl;
+}
+
+DirectionalLight& SceneManager::createDirectionalLight(const std::string &name, 
+	const Color& color, const glm::vec3& direction)
+{
+	DirectionalLight *dl = new DirectionalLight(direction, color);
+	sceneObjectMap[name] = dl;
+	directionalLightVector.push_back(dl);
+	return *dl;
+}
+
 SceneObject* SceneManager::getSceneObject(const std::string &name) const
 {
 	auto it = sceneObjectMap.find(name);
@@ -67,7 +86,7 @@ SceneObject* SceneManager::getSceneObject(const std::string &name) const
 		return nullptr;
 }
 
-void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport)
+void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport) const
 {
 	//TODO: perform frustum culling with camera
 

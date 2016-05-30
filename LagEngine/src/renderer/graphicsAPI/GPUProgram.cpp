@@ -70,10 +70,13 @@ bool GpuProgram::loadImplementation()
 
 	for (GpuProgramStage *stage : stages)
 	{
-		for (int i = 0; i < stage->getUniformDescriptionCount(); ++i)
+		for (uint32 i = 0; i < stage->getUniformDescriptionCount(); ++i)
 		{
 			const GpuProgramUniformDescription &desc = stage->getUniformDescription(i);
-			GpuProgramUniform *uniform = createUniform(desc, *this);
+			
+			//TODO: what to do in case of name/semantics collisions?			
+			
+			GpuProgramUniform *uniform = createUniform(desc);
 			if (uniform != nullptr)
 			{
 				uniformsByName[desc.name] = uniform;

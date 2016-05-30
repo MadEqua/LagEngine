@@ -50,6 +50,6 @@ namespace Lag
 		virtual void unloadImplementation() override;
 
 		virtual bool link() = 0;
-		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description, const GpuProgram &program) const = 0;
+		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description) const = 0;
 	};
 }

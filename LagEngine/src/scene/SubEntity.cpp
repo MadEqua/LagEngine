@@ -47,34 +47,15 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 		modelMatrixUniform->setValue(&model);
 	}
 
-	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX);
-	if (uniformList != nullptr)
-	{
-		GpuProgramUniform *viewMatrixUniform = uniformList->at(0);
-		const Camera &camera = renderOperation.viewport->getCamera();
-		const glm::mat4 &view = camera.getInverseTransform();
-		viewMatrixUniform->setValue(&view);
-	}
-
-	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX);
-	if (uniformList != nullptr)
-	{
-		GpuProgramUniform *pMatrixUniform = uniformList->at(0);
-		const Camera &camera = renderOperation.viewport->getCamera();
-		const glm::mat4 &p = camera.getProjectionMatrix();
-		pMatrixUniform->setValue(&p);
-	}
-
-	//TODO: take out the normal calculation from here
-	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_NORMAL_MATRIX);
+	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX);
 	if (uniformList != nullptr)
 	{
 		GpuProgramUniform *normalMatrixUniform = uniformList->at(0);
 		const Camera &camera = renderOperation.viewport->getCamera();
-		glm::mat3 nor = glm::mat3(camera.getInverseTransform())
-			* glm::transpose(glm::mat3(parent.getInverseTransform()));
+		glm::mat3 nor = glm::mat3(camera.getInverseTransform()) * 
+			parent.getNormalTransform();
 		normalMatrixUniform->setValue(&nor);
 	}
-	
+
 	renderer.renderIndexed(subMesh.getVertexData(), subMesh.getIndexData(), subMesh.getVertexData().vertexStart);
 }

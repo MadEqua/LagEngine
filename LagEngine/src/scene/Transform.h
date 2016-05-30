@@ -33,6 +33,11 @@ namespace Lag
 		glm::mat4 finalInverseTransform;
 		bool finalInverseTransformOutOfDate;
 
+		//Appropriate matrix to transform normals 
+		//(equals finalTransform if the scale is uniform)
+		glm::mat3 normalTransform;
+		bool normalTransformOutOfDate;
+
 		//for returning
 		glm::vec3 tempVec3;
 		glm::quat tempQuat;
