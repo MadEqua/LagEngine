@@ -54,8 +54,12 @@ bool Mesh::loadImplementation()
 	//Create a VertexDescription
 	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3, LAG_VX_ATTR_TYPE_FLOAT);
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 3, LAG_VX_ATTR_TYPE_FLOAT);
+	
+	if (scene->mMeshes[0]->HasNormals())
+		vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3, LAG_VX_ATTR_TYPE_FLOAT);
+
+	if (scene->mMeshes[0]->HasTangentsAndBitangents())
+		vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 3, LAG_VX_ATTR_TYPE_FLOAT);
 
 	//Make some space calculations
 	uint32 vxCount = 0, idxCount = 0;
@@ -97,8 +101,13 @@ bool Mesh::loadImplementation()
 		
 		//Fill vertex buffer with the respective submesh part (interleaved)
 		uint32 posSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_POSITION)->getByteSize();
-		uint32 norSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL)->getByteSize();
-		uint32 tanSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT)->getByteSize();
+		uint32 norSize = 0;
+		uint32 tanSize = 0;
+
+		if (mesh->HasNormals())
+			norSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL)->getByteSize();
+		if (mesh->HasTangentsAndBitangents())
+			tanSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT)->getByteSize();
 
 		vb->lock(vxBufferOffset, vxSize * subMeshVxCount);
 		uint32 offset = 0;
@@ -107,11 +116,17 @@ bool Mesh::loadImplementation()
 			vb->write(offset, posSize, reinterpret_cast<byte*>(&mesh->mVertices[vx]));
 			offset += posSize;
 
-			vb->write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
-			offset += norSize;
+			if (mesh->HasNormals())
+			{
+				vb->write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
+				offset += norSize;
+			}
 
-			vb->write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
-			offset += tanSize;
+			if (mesh->HasTangentsAndBitangents())
+			{
+				vb->write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
+				offset += tanSize;
+			}
 
 			for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
 			{

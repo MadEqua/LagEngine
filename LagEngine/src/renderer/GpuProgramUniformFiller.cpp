@@ -90,6 +90,7 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 	{
 		glm::vec3 ppos[Renderer::MAX_POINT_LIGHTS];
 		glm::vec3 pcols[Renderer::MAX_POINT_LIGHTS];
+		glm::vec3 patten[Renderer::MAX_POINT_LIGHTS];
 		for (uint32 i = 0; i < Renderer::MAX_POINT_LIGHTS && i < pointLightCount; ++i)
 		{
 			ppos[i] = pointLights[i]->getWorldPosition();
@@ -97,9 +98,14 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 			pcols[i].r = floatColors[0];
 			pcols[i].g = floatColors[1];
 			pcols[i].b = floatColors[2];
+			const float *floatAttenuation = pointLights[i]->getAttenuation();
+			patten[i].x = floatAttenuation[0];
+			patten[i].y = floatAttenuation[1];
+			patten[i].z = floatAttenuation[2];
 		}
 		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS, ppos, pointLightCount);
 		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS, pcols, pointLightCount);
+		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS, patten, pointLightCount);
 	}
 
 	//DirectionalLights

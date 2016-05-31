@@ -33,7 +33,7 @@ namespace Lag
 
 		Entity* createEntity(const std::string &name, const std::string &meshName, const std::string &materialName);
 		Camera& createCamera(const std::string &name, float fovy, float nearPlane, float farPlane);	
-		PointLight& createPointLight(const std::string &name, const Color& color);//, Attenuation &attenuation); TODO
+		PointLight& createPointLight(const std::string &name, const Color& color, const glm::vec3 &attenuation);
 		DirectionalLight& createDirectionalLight(const std::string &name, const Color& color, const glm::vec3& direction);
 
 		SceneObject* getSceneObject(const std::string &name) const;

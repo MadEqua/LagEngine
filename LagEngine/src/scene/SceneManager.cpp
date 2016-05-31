@@ -60,9 +60,9 @@ Camera& SceneManager::createCamera(const std::string &name, float fovy, float ne
 	return *cam;
 }
 
-PointLight& SceneManager::createPointLight(const std::string &name, const Color& color)
+PointLight& SceneManager::createPointLight(const std::string &name, const Color& color, const glm::vec3 &attenuation)
 {
-	PointLight *pl = new PointLight(color);
+	PointLight *pl = new PointLight(color, attenuation);
 	sceneObjectMap[name] = pl;
 	pointLightVector.push_back(pl);
 	return *pl;

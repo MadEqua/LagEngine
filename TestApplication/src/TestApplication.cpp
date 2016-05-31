@@ -12,7 +12,10 @@
 #include "scene/DirectionalLIght.h"
 #include "renderer/Color.h"
 
-TestApplication::TestApplication()
+#include <iostream>
+
+TestApplication::TestApplication() :
+	time(0.0f)
 {
 }
 
@@ -41,24 +44,33 @@ bool TestApplication::start()
 	root->getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root->getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
 
-	camera = new Lag::FreeCamera(45.0f, 0.1f, 100.0f, 0.3f);
+	camera = new Lag::FreeCamera(45.0f, 0.1f, 100.0f, 10.0f);
 	camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 0, 20));
 	renderWindow->createViewport("default", camera->getCamera());
 
-	Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
+	/*Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
 	Lag::SceneNode &secondaryCameraNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("secondaryCamera");
 	secondaryCameraNode.setPosition(glm::vec3(0.0f, 30.0f, 0.0f));
 	secondaryCameraNode.rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f), Lag::WORLD);
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
-	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);
+	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);*/
 
-	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(1.0f, 0.0f, 0.0f));
+	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.01f));
 	Lag::SceneNode &pl1SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl1SceneNode");
-	pl1SceneNode.setPosition(glm::vec3(1000.0f, 0.0f, 0.0f));
+	sceneManager->createEntity("sphere", "sphere", "testMaterial")->attachToSceneNode(pl1SceneNode);
+	pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	pl1SceneNode.setScale(glm::vec3(0.1f));
 	pl.attachToSceneNode(pl1SceneNode);
+
+	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.01f));
+	Lag::SceneNode &pl2SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl2SceneNode");
+	sceneManager->createEntity("sphere", "sphere", "testMaterial")->attachToSceneNode(pl2SceneNode);
+	pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
+	pl2SceneNode.setScale(glm::vec3(0.1f));
+	pl2.attachToSceneNode(pl2SceneNode);
 	
-	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(-1.0f, -1.0f, 0.0f));
-	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
+	//Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+	//dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
 	createScene();
 
@@ -70,10 +82,11 @@ bool TestApplication::start()
 void TestApplication::createScene()
 {
 	Lag::SceneNode &mainNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("main");
-	Lag::Entity *ent = sceneManager->createEntity("sphere", "sphere", "testMaterial");
+	mainNode.setScale(glm::vec3(10.0f));
+	Lag::Entity *ent = sceneManager->createEntity("bunny", "bunny", "testMaterial");
 	ent->attachToSceneNode(mainNode);
 
-	createSceneAux(mainNode, 20.0f, 8, 0, 3);
+	createSceneAux(mainNode, 10.0f, 8, 0, 3);
 }
 
 void TestApplication::createSceneAux(Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth)
@@ -82,16 +95,38 @@ void TestApplication::createSceneAux(Lag::SceneNode &center, float size, int cou
 
 	for (int i = 0; i < count; ++i)
 	{
-		Lag::SceneNode &periferyNode = center.createChildSceneNode("perifery" + actualdepth + i);
-		periferyNode.scale(center.getLocalScale() * 0.7f);
+		Lag::SceneNode &periferyNode = center.createChildSceneNode("perifery" + 
+			std::to_string(actualdepth) + std::to_string(i));
+
+		periferyNode.scale(glm::vec3(0.6f));
 
 		periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::PARENT);
 		periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::LOCAL);
 
-		Lag::Entity *periferyEnt = sceneManager->createEntity("perifery" + actualdepth + i, "sphere", "testMaterial");
+		Lag::Entity *periferyEnt = sceneManager->createEntity("perifery" + 
+			std::to_string(actualdepth) + std::to_string(i), "bunny", "testMaterial");
+
 		periferyEnt->attachToSceneNode(periferyNode);
 
 		createSceneAux(periferyNode, size * 0.3f, count, actualdepth + 1, maxdepth);
+	}
+}
+
+void TestApplication::updateSceneAux(int count, int actualdepth, int maxdepth)
+{
+	if (actualdepth >= maxdepth) return;
+
+	for (int i = 0; i < count; ++i)
+	{
+		Lag::SceneNode *periferyNode = sceneManager->getSceneGraph().
+			getSceneNode("perifery" + std::to_string(actualdepth) + std::to_string(i));
+
+		//std::cout << "perifery" + std::to_string(actualdepth) + std::to_string(i) << std::endl;
+
+		float s = glm::sin(time) / 100.0f;
+		periferyNode->translate(glm::vec3(s, 0, 0.0f), Lag::LOCAL);
+
+		updateSceneAux(count, actualdepth + 1, maxdepth);
 	}
 }
 
@@ -101,6 +136,28 @@ void TestApplication::onFrameStart(float timePassed)
 
 void TestApplication::onFrameRenderingQueued(float timePassed)
 {
+	Lag::SceneNode *pl1SceneNode = sceneManager->getSceneGraph().getSceneNode("pl1SceneNode");
+	float cycle = glm::sin(time * glm::pi<float>() / 10.0f);
+	glm::vec3 posCpy = pl1SceneNode->getWorldPosition();
+	posCpy.x = cycle * 15.0f;
+	pl1SceneNode->setPosition(posCpy);
+
+	Lag::SceneNode *pl2SceneNode = sceneManager->getSceneGraph().getSceneNode("pl2SceneNode");
+	cycle = glm::sin(time * glm::pi<float>() / 11.0f);
+	posCpy = pl2SceneNode->getWorldPosition();
+	posCpy.z = cycle * 11.0f;
+	pl2SceneNode->setPosition(posCpy);
+
+	Lag::SceneNode *mainNode = sceneManager->getSceneGraph().getSceneNode("main");
+	cycle = glm::sin(time * glm::pi<float>() / 15.0f);
+	posCpy = mainNode->getWorldPosition();
+	posCpy.y = cycle * 1.0f;
+	mainNode->setPosition(posCpy);
+	mainNode->yaw(timePassed * 30.0f, Lag::LOCAL);
+	
+	//updateSceneAux(8, 0, 3);
+
+	time += timePassed;
 }
 
 void TestApplication::onFrameEnd(float timePassed)

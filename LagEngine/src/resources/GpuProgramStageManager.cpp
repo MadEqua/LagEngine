@@ -83,6 +83,7 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS:
 	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS: //TODO: colors need to be floats??
 	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS:
+	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS:
 		size = LAG_GPU_PROG_UNIFORM_SIZE_3;
 		type = LAG_GPU_PROG_UNIFORM_TYPE_FLOAT;
 		break;
@@ -151,6 +152,7 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 	else if (semantic == "PointLightCount") return LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT;
 	else if (semantic == "PointLightPositions") return LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS;
 	else if (semantic == "PointLightColors") return LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS;
+	else if (semantic == "PointLightAttenuations") return LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS;
 
 	else if (semantic == "DirectionalLightCount") return LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT;
 	else if (semantic == "DirectionalLightDirections") return LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS;

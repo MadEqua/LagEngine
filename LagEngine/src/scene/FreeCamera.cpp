@@ -109,21 +109,19 @@ void FreeCamera::onButtonReleased(int x, int y, int button, int modifiers)
 
 void FreeCamera::onFrameStart(float timePassed)
 {
-	//TODO: use timePassed
-	
-	if (keyVector[0])
-		cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed), PARENT);
-	else if (keyVector[2])
-		cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed), PARENT);
-
-	if (keyVector[1])
-		cameraTranslationNode->translate(glm::vec3(-moveSpeed, 0.0f, 0.0f), PARENT);
-	else if (keyVector[3])
-		cameraTranslationNode->translate(glm::vec3(moveSpeed, 0.0f, 0.0f), PARENT);
 }
 
 void FreeCamera::onFrameRenderingQueued(float timePassed)
 {
+	if (keyVector[0])
+		cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed), PARENT);
+	else if (keyVector[2])
+		cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed * timePassed), PARENT);
+
+	if (keyVector[1])
+		cameraTranslationNode->translate(glm::vec3(-moveSpeed * timePassed, 0.0f, 0.0f), PARENT);
+	else if (keyVector[3])
+		cameraTranslationNode->translate(glm::vec3(moveSpeed * timePassed, 0.0f, 0.0f), PARENT);
 }
 
 void FreeCamera::onFrameEnd(float timePassed)
