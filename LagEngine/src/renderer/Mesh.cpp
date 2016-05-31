@@ -69,19 +69,16 @@ bool Mesh::loadImplementation()
 		for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
 		{
 			if (mesh->HasTextureCoords(i))
-			{
-				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 3, LAG_VX_ATTR_TYPE_FLOAT, i);
-			}
-			else
-				break;
+				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 2, LAG_VX_ATTR_TYPE_UINT16, i, true);
+			else break;
 		}
 	}
 
 	vxSize = vxDesc.getByteSize();
 
 	if (idxCount == 0) idxSize = 0;
-	else if (idxCount < 256) idxSize = 1;
-	else if (idxCount < 65536) idxSize = 2;
+	else if (idxCount <= MAX_UINT8) idxSize = 1;
+	else if (idxCount <= MAX_UINT16) idxSize = 2;
 	else idxSize = 4;
 
 	//create buffers
@@ -98,32 +95,46 @@ bool Mesh::loadImplementation()
 		uint32 subMeshVxCount = mesh->mNumVertices;
 		uint32 subMeshIdxCount = mesh->mNumFaces * mesh->mFaces->mNumIndices;
 		
-		//Fill buffers with the respective submesh part
+		//Fill vertex buffer with the respective submesh part (interleaved)
+		uint32 posSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_POSITION)->getByteSize();
+		uint32 norSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL)->getByteSize();
+		uint32 tanSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT)->getByteSize();
+
 		vb->lock(vxBufferOffset, vxSize * subMeshVxCount);
 		uint32 offset = 0;
 		for (uint32 vx = 0; vx < mesh->mNumVertices; ++vx)
 		{
-			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mVertices[vx]));
-			offset += 3 * sizeof(float);
+			vb->write(offset, posSize, reinterpret_cast<byte*>(&mesh->mVertices[vx]));
+			offset += posSize;
 
-			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mNormals[vx]));
-			offset += 3 * sizeof(float);
+			vb->write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
+			offset += norSize;
 
-			vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mTangents[vx]));
-			offset += 3 * sizeof(float);
+			vb->write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
+			offset += tanSize;
 
 			for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
 			{
 				if (mesh->HasTextureCoords(i))
 				{
-					vb->write(offset, 3 * sizeof(float), reinterpret_cast<byte*>(&mesh->mTextureCoords[vx]));
-					offset += 3 * sizeof(float);
+					uint32 texCoordSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, i)->getByteSize();
+					
+					//Float [0.0, 1.0] to uint16 [0, MAX_UINT16]
+					uint16 texCoord[2];
+					texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] * static_cast<float>(MAX_UINT16));
+					texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] * static_cast<float>(MAX_UINT16));
+
+					//vb->write(offset, texCoordSize, reinterpret_cast<byte*>(&mesh->mTextureCoords[i][vx]));
+					vb->write(offset, texCoordSize, reinterpret_cast<byte*>(texCoord));
+
+					offset += texCoordSize;
 				}
 				else break;
 			}
 		}
 		vb->unlock();
 
+		//fill index buffer
 		if (idxCount > 0)
 		{
 			ib->lock(idxBufferOffset, subMeshIdxCount * idxSize);

@@ -1,7 +1,6 @@
 Short Term
 
 camera/scenenode look at
-adjust vertex attributes format on the mesh class
 allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...
 
 implement techniques, passes, textures...

@@ -11,11 +11,11 @@ namespace Lag
 	enum VertexAttributeSemantic
 	{
 		LAG_VX_ATTR_SEMANTIC_POSITION,
-		LAG_VX_ATTR_SEMANTIC_COLOR,
-		LAG_VX_ATTR_SEMANTIC_TEX_COORD,
 		LAG_VX_ATTR_SEMANTIC_NORMAL,
+		LAG_VX_ATTR_SEMANTIC_TANGENT,
 		LAG_VX_ATTR_SEMANTIC_BINORMAL,
-		LAG_VX_ATTR_SEMANTIC_TANGENT
+		LAG_VX_ATTR_SEMANTIC_TEX_COORD,
+		LAG_VX_ATTR_SEMANTIC_COLOR
 	};
 
 	enum VertexAttributeType
@@ -80,6 +80,7 @@ namespace Lag
 	public:
 		inline uint32 getAttributeCount() const { return attributes.size(); }
 		inline const VertexAttribute& getAttribute(uint32 index) const { return attributes[index]; }
+		const VertexAttribute* getAttribute(VertexAttributeSemantic semantic, uint8 index = 0) const;
 		//inline const std::vector<VertexAttribute>& getAttributes() const { return attributes; }
 
 		//The size of a full vertex

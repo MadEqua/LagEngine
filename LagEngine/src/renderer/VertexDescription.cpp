@@ -100,6 +100,16 @@ void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 len
 	}
 }
 
+const VertexAttribute* VertexDescription::getAttribute(VertexAttributeSemantic semantic, uint8 index) const
+{
+	for (const VertexAttribute &va : attributes)
+		if (va.getSemantic() == semantic && 
+			va.getIndex() == index)
+			return &va;
+	
+	return nullptr;
+}
+
 uint32 VertexDescription::getByteSize() const
 {
 	uint32 size = 0;
