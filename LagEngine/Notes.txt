@@ -1,6 +1,5 @@
 Short Term
 
-what happens when many stages declare equally named (or same semantic) uniforms?
 camera/scenenode look at
 adjust vertex attributes format on the mesh class
 allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...

@@ -74,7 +74,38 @@ bool GpuProgram::loadImplementation()
 		{
 			const GpuProgramUniformDescription &desc = stage->getUniformDescription(i);
 			
-			//TODO: what to do in case of name/semantics collisions?			
+			//Check for name/semantics collisions
+			if (!uniformsByName.empty())
+			{
+				auto nameIt = uniformsByName.find(desc.name);
+				if (nameIt != uniformsByName.end())
+				{
+					if (desc.semantic ==
+						nameIt->second->getGpuProgramUniformDescription().semantic)
+					{
+						LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+							"GpuProgram: " + name, "Ignoring one of the Uniforms: " + desc.name +
+							". It's declared with the same semantic on more than one Stage.");
+						continue;
+					}
+					else
+					{
+						LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+							"GpuProgram: " + name, "More than one Uniform with name: " + desc.name +
+							"are declared with different semantics on more than one Stage.");
+						return false;
+					}
+				}
+				else
+				{
+					auto semIt = uniformsBySemantic.find(desc.semantic);
+					if (semIt != uniformsBySemantic.end())
+					{
+						LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+							"GpuProgram: " + name, "Declared Uniforms with different names but similar semantics.");
+					}
+				}
+			}
 			
 			GpuProgramUniform *uniform = createUniform(desc);
 			if (uniform != nullptr)
