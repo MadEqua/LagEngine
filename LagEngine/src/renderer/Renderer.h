@@ -30,6 +30,7 @@ namespace Lag
 	class GpuBuffer;
 	class InputDescription;
 	class Viewport;
+	class Texture;
 
 	/*
 	* Top level renderer. All the rendering process starts here culminating on concrete calls to a IGraphicsAPI.
@@ -56,6 +57,8 @@ namespace Lag
 		void bindGpuProgram(const GpuProgram &gpuProgram);
 		void bindInputDescription(const InputDescription &inputDescription);
 		void bindViewport(const Viewport &viewport);
+		void bindTexture(const Texture &texture);
+
 
 		//High-level render calls
 		void renderVertices(const VertexData &vertexData);
@@ -113,6 +116,7 @@ namespace Lag
 		const GpuProgram *boundGpuProgram;
 		const InputDescription *boundInputDescription;
 		const Viewport *boundViewport;
+		const Texture *boundTexture;
 
 		//Listening to resizes. A resize may invalidate the current bound Viewport.
 		class RenderTargetListener : public IRenderTargetListener

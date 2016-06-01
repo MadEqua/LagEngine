@@ -1,6 +1,8 @@
 #include "Material.h"
 
 #include "../Root.h"
+#include "../resources/TextureManager.h"
+#include "../renderer/graphicsAPI/Texture.h"
 #include "../renderer/graphicsAPI/GpuProgramManager.h"
 #include "../renderer/graphicsAPI/GpuProgram.h"
 #include "../io/log/LogManager.h"
@@ -78,6 +80,18 @@ bool Material::parse()
 			const char* name = child->Attribute("name");
 			if (name)
 				shaderStageNames.push_back(name);
+		}
+
+		if (child->ValueStr() == "texture")
+		{
+			const char* name = child->Attribute("name");
+			if (name)
+			{
+				TextureManager &texMan = Root::getInstance().getTextureManager();
+				Texture *tex = static_cast<Texture*>(texMan.get(name));
+				if (tex != nullptr)
+					textures.push_back(tex);
+			}
 		}
 	}
 	return true;

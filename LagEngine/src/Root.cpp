@@ -18,6 +18,7 @@
 
 #include "resources/MaterialManager.h"
 #include "resources/MeshManager.h"
+#include "graphicsAPIs/gl4/GL4TextureManager.h"
 #include "graphicsAPIs/gl4/GL4GpuBufferManager.h"
 
 #include "graphicsAPIs/gl4/GL4GraphicsAPI.h"
@@ -42,6 +43,7 @@ Root::Root() :
 	gpuProgramManager(nullptr),
 	materialManager(nullptr),
 	meshManager(nullptr),
+	textureManager(nullptr),
 	gpuBufferManager(nullptr),
 	windowListener(nullptr),
 	keyboardListener(nullptr),
@@ -67,6 +69,8 @@ void Root::destroy()
 		delete materialManager;
 	if (meshManager != nullptr)
 		delete meshManager;
+	if (textureManager != nullptr)
+		delete textureManager;
 
 	if (gpuBufferManager != nullptr)
 		delete gpuBufferManager;
@@ -130,6 +134,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
+		textureManager = new GL4TextureManager();
 		gpuBufferManager = new GL4GpuBufferManager();
 		gpuProgramManager = new GL4GpuProgramManager();
 		inputDescriptionManager = new GL4InputDescriptionManager();
@@ -144,9 +149,10 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	inputManager->registerObserver(*keyboardListener);
 
 	//Load the declared resources
+	textureManager->loadAll();
 	meshManager->loadAll();
-	materialManager->loadAll();
 	gpuProgramStageManager->loadAll();
+	materialManager->loadAll();
 	gpuProgramManager->loadAll();
 
 	return true;
@@ -182,6 +188,8 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	}
 
 	//Initialize all ResourceManagers here
+	textureManager->parseResourceFile(*resourcesElement);
+
 	meshManager = new MeshManager();
 	meshManager->parseResourceFile(*resourcesElement);
 

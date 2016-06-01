@@ -69,11 +69,11 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\debug;$(ProjectDir)dependencies\assimp-1.3.0\lib\debug;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\debug</LibraryPath>
+    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies\freeimage-3.17.0\include\;$(IncludePath)</IncludePath>
+    <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\debug;$(ProjectDir)dependencies\assimp-1.3.0\lib\debug;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\debug;$(ProjectDir)dependencies\freeimage-3.17.0\lib</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies\freeimage-3.17.0\include\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\release;$(ProjectDir)dependencies\assimp-1.3.0\lib\release;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\release</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
@@ -86,7 +86,7 @@
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc130-mtd.lib;glew32sd.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc130-mtd.lib;glew32sd.lib;OpenGL32.lib;%(AdditionalDependencies);FreeImage.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
@@ -110,7 +110,7 @@
       <AdditionalDependencies>glfw3.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
     <Lib>
-      <AdditionalDependencies>glfw3.lib;assimp-vc130-mt.lib;%(AdditionalDependencies);glew32s.lib;OpenGL32.lib</AdditionalDependencies>
+      <AdditionalDependencies>glfw3.lib;assimp-vc130-mt.lib;%(AdditionalDependencies);glew32s.lib;OpenGL32.lib;FreeImage.lib</AdditionalDependencies>
     </Lib>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -127,7 +127,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4Texture.cpp" />
     <ClCompile Include="src\renderer\GpuProgramUniformFiller.cpp" />
+    <ClCompile Include="src\resources\TextureManager.cpp" />
     <ClCompile Include="src\scene\PointLight.cpp" />
     <ClCompile Include="src\scene\Light.cpp" />
     <ClCompile Include="src\renderer\Color.cpp" />
@@ -197,7 +199,10 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4Texture.h" />
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4TextureManager.h" />
     <ClInclude Include="src\renderer\GpuProgramUniformFiller.h" />
+    <ClInclude Include="src\resources\TextureManager.h" />
     <ClInclude Include="src\scene\DirectionalLight.h" />
     <ClInclude Include="src\scene\PointLight.h" />
     <ClInclude Include="src\scene\Light.h" />

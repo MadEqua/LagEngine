@@ -8,6 +8,7 @@
 #include "GL4InputDescription.h"
 #include "GL4GpuProgram.h"
 #include "GL4GpuBuffer.h"
+#include "GL4Texture.h"
 
 #include "GL4Error.h"
 
@@ -151,6 +152,12 @@ void GL4GraphicsAPI::bindInputDescription(const InputDescription &inputDescripti
 void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 height)
 {
 	GL_ERROR_CHECK(glViewport(x, y, width, height))
+}
+
+void GL4GraphicsAPI::bindTexture(const Texture &texture)
+{
+	const GL4Texture& GL4Tex = static_cast<const GL4Texture&>(texture);
+	GL_ERROR_CHECK(glBindTexture(GL4Tex.getGLType(), GL4Tex.getHandle()))
 }
 
 GLenum GL4GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode)

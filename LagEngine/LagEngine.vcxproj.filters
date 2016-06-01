@@ -210,6 +210,12 @@
     <ClCompile Include="src\scene\DirectionalLight.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\resources\TextureManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4Texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -456,6 +462,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\DirectionalLight.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4Texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

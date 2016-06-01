@@ -8,7 +8,7 @@ namespace Lag
 	{
 	public:
 		MeshManager();
-		~MeshManager();
+		virtual ~MeshManager();
 
 		bool create(const std::string &name, const std::string &file);
 

@@ -8,6 +8,7 @@
 #include "VertexData.h"
 #include "IndexData.h"
 #include "Viewport.h"
+#include "graphicsAPI/Texture.h"
 #include "graphicsAPI/InputDescription.h"
 
 #include "graphicsAPI/IGraphicsAPI.h"
@@ -114,6 +115,15 @@ void Renderer::bindViewport(const Viewport &viewport)
 		graphicsAPI.bindViewport(viewport.getRealLeft(), viewport.getRealBottom(),
 			viewport.getRealWidth(), viewport.getRealHeight());
 		uniformFiller.onViewportBind(boundGpuProgram, boundViewport);
+	}
+}
+
+void Renderer::bindTexture(const Texture &texture)
+{
+	if (&texture != boundTexture)
+	{
+		boundTexture = &texture;
+		graphicsAPI.bindTexture(texture);
 	}
 }
 

@@ -25,6 +25,7 @@ namespace Lag
 		virtual void bindGpuProgram(const GpuProgram &gpuProgram) override;
 		virtual void bindInputDescription(const InputDescription &inputDescription) override;
 		virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
+		virtual void bindTexture(const Texture &texture) override;
 
 		/*virtual void setTexture(uint32 unit, Texture & texture) override;
 		virtual void setTexture(uint32 unit, const std::string & textureName) override;

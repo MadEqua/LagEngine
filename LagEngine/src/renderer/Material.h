@@ -8,6 +8,7 @@
 namespace Lag
 {
 	class GpuProgram;
+	class Texture;
 	
 	/*
 	* A Material contains all the details for rendering an entity, except the geometry.
@@ -29,6 +30,8 @@ namespace Lag
 
 		std::vector<std::string> shaderStageNames;
 		GpuProgram *gpuProgram;
+		
+		std::vector<Texture*> textures;
 
 		bool parse();
 	};
