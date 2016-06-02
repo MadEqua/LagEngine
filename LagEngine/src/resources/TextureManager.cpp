@@ -39,20 +39,23 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 		const char* normalizedStr = element.Attribute("normalized");
 		const char* sRgbStr = element.Attribute("sRGB");
 		const char* mipMapsStr = element.Attribute("mipmaps");
+		const char* semanticStr = element.Attribute("semantic");
 
-		TextureData format;
+		TextureData data;
 		if (componentsStr != nullptr)
-			format.components = parseComponents(componentsStr);
+			data.components = parseComponents(componentsStr);
 		if (componentTypeStr != nullptr)
-			format.componentType = parseComponentType(componentTypeStr);
+			data.componentType = parseComponentType(componentTypeStr);
 		if (normalizedStr != nullptr)
-			format.normalized = parseBool(normalizedStr);
+			data.normalized = parseBool(normalizedStr);
 		if (sRgbStr != nullptr)
-			format.sRGB = parseBool(sRgbStr);
+			data.sRGB = parseBool(sRgbStr);
 		if (mipMapsStr != nullptr)
-			format.mipmaps = parseInt(mipMapsStr);
+			data.mipmaps = parseInt(mipMapsStr);
+		if (semanticStr != nullptr)
+			data.semantic = parseSemantic(semanticStr);
 
-		create(name, file, type, format);
+		create(name, file, type, data);
 	}
 }
 
@@ -87,6 +90,13 @@ TextureComponentType TextureManager::parseComponentType(const std::string &type)
 	else if (type == "UINT32") return LAG_TEXTURE_COMPONENT_TYPE_UINT32;
 
 	else return LAG_TEXTURE_COMPONENT_TYPE_UINT8;
+}
+
+TextureSemantic TextureManager::parseSemantic(const std::string &sem) const
+{
+	if (sem == "Diffuse" || sem == "DiffuseColor") return LAG_TEXTURE_SEMANTIC_DIFFUSE;
+	else if (sem == "Normal")return LAG_TEXTURE_SEMANTIC_NORMAL;
+	else return LAG_TEXTURE_SEMANTIC_CUSTOM;
 }
 
 bool TextureManager::parseBool(const std::string &str) const

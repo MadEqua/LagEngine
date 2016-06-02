@@ -33,8 +33,6 @@ uint8 GpuProgramUniformDescription::getSizeBytes() const
 		return sizeof(int32) * size;
 	case LAG_GPU_PROG_UNIFORM_TYPE_UINT32:
 		return sizeof(uint32) * size;
-		//case LAG_GPU_PROG_UNIFORM_TYPE_SAMPLER:
-		//return sizeof(?);
 	case LAG_GPU_PROG_UNIFORM_TYPE_MATRIX:
 		return sizeof(float) * size * size;
 	default:

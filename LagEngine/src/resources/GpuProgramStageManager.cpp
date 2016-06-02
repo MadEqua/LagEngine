@@ -75,8 +75,15 @@ void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, con
 
 	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT:
 	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT:
+	case LAG_GPU_PROG_UNI_SEM_TEXTURE_CUSTOM:
 		size = LAG_GPU_PROG_UNIFORM_SIZE_1;
 		type = LAG_GPU_PROG_UNIFORM_TYPE_UINT32;
+		break;
+
+	case LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE:
+	case LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL:
+		size = LAG_GPU_PROG_UNIFORM_SIZE_1;
+		type = LAG_GPU_PROG_UNIFORM_TYPE_INT32;
 		break;
 
 	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS:
@@ -124,7 +131,6 @@ GpuProgramUniformType GpuProgramStageManager::parseUniformTypeFromString(const s
 	if (type == "bool") return LAG_GPU_PROG_UNIFORM_TYPE_BOOL;
 	else if(type == "float") return LAG_GPU_PROG_UNIFORM_TYPE_FLOAT;
 	else if (type == "int32") return LAG_GPU_PROG_UNIFORM_TYPE_INT32;
-	else if (type == "sampler") return LAG_GPU_PROG_UNIFORM_TYPE_SAMPLER;
 	else if (type == "matrix") return LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
 	else return LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN;
 }
@@ -157,6 +163,9 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 	else if (semantic == "DirectionalLightCount") return LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT;
 	else if (semantic == "DirectionalLightDirections") return LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS;
 	else if (semantic == "DirectionalLightColors") return LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS;
+
+	else if (semantic == "TextureDiffuse") return LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE;
+	else if (semantic == "TextureNormal") return LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL;
 
 	else if (semantic == "Custom") return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 	else return LAG_GPU_PROG_UNI_SEM_CUSTOM;

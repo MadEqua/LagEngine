@@ -32,6 +32,9 @@ bool GL4Texture::loadImplementation()
 		return false;
 	}
 
+	if (data.mipmaps > 1)
+		GL_ERROR_CHECK(glGenerateTextureMipmap(handle))
+
 	return true;
 }
 
@@ -56,10 +59,11 @@ GLenum GL4Texture::getPixelDataFormatGL() const
 {
 	switch (data.components)
 	{
+	//TODO: BGRA and BGR because of FreeImage
 	case LAG_TEXTURE_COMPONENTS_RGBA:
-		return GL_RGBA;
+		return GL_BGRA;
 	case LAG_TEXTURE_COMPONENTS_RGB:
-		return GL_RGB;
+		return GL_BGR;
 	case LAG_TEXTURE_COMPONENTS_RG:
 		return GL_RG;
 	case LAG_TEXTURE_COMPONENTS_R:

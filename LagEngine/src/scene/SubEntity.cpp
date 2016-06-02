@@ -12,6 +12,7 @@
 #include "../scene/SceneNode.h"
 #include "../renderer/Viewport.h"
 #include "Camera.h"
+#include "../renderer/graphicsAPI/Texture.h"
 
 using namespace Lag;
 
@@ -37,7 +38,6 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 {
 	const GpuProgram &gpuProgram = material.getGpuProgram();
-	renderer.bindGpuProgram(gpuProgram);
 
 	auto uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX);
 	if (uniformList != nullptr)
@@ -55,6 +55,16 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 		glm::mat3 nor = glm::mat3(camera.getInverseTransform()) * 
 			parent.getNormalTransform();
 		normalMatrixUniform->setValue(&nor);
+	}
+
+	uniformList = gpuProgram.getUniformBySemantic(LAG_GPU_PROG_UNI_SEM_MVP_MATRIX);
+	if (uniformList != nullptr)
+	{
+		GpuProgramUniform *mvpUniform = uniformList->at(0);
+		const Camera &camera = renderOperation.viewport->getCamera();
+		glm::mat4 mvp = camera.getProjectionMatrix() * camera.getInverseTransform() *
+			parent.getTransform();
+		mvpUniform->setValue(&mvp);
 	}
 
 	renderer.renderIndexed(subMesh.getVertexData(), subMesh.getIndexData(), subMesh.getVertexData().vertexStart);

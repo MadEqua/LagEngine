@@ -55,22 +55,22 @@ bool TestApplication::start()
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
 	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);*/
 
-	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.01f));
+	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.05f));
 	Lag::SceneNode &pl1SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl1SceneNode");
-	sceneManager->createEntity("sphere", "sphere", "testMaterial")->attachToSceneNode(pl1SceneNode);
+	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl1SceneNode);
 	pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl1SceneNode.setScale(glm::vec3(0.1f));
 	pl.attachToSceneNode(pl1SceneNode);
 
-	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(0.0f, 0.0f, 1.0f), glm::vec3(0.1f, 0.1f, 0.01f));
+	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(1.0f, 0.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.05f));
 	Lag::SceneNode &pl2SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl2SceneNode");
-	sceneManager->createEntity("sphere", "sphere", "testMaterial")->attachToSceneNode(pl2SceneNode);
+	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl2SceneNode);
 	pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl2SceneNode.setScale(glm::vec3(0.1f));
 	pl2.attachToSceneNode(pl2SceneNode);
 	
-	//Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
-	//dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
+	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
 	createScene();
 
@@ -82,7 +82,7 @@ bool TestApplication::start()
 void TestApplication::createScene()
 {
 	Lag::SceneNode &mainNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("main");
-	mainNode.setScale(glm::vec3(10.0f));
+	mainNode.setScale(glm::vec3(0.01f));
 	Lag::Entity *ent = sceneManager->createEntity("bunny", "bunny", "testMaterial");
 	ent->attachToSceneNode(mainNode);
 

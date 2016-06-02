@@ -104,10 +104,6 @@ void GL4GpuProgramUniform::setValue(const void* value, uint32 arraySize) const
 				return;
 			}
 
-		case LAG_GPU_PROG_UNIFORM_TYPE_SAMPLER:
-			//TODO
-			return;
-
 		case LAG_GPU_PROG_UNIFORM_TYPE_MATRIX:
 			switch (description.size)
 			{

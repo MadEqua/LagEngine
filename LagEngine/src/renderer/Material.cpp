@@ -7,16 +7,35 @@
 #include "../renderer/graphicsAPI/GpuProgram.h"
 #include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
+#include "../Root.h"
+#include "Renderer.h"
 
 using namespace Lag;
 
 Material::Material(const std::string &filePath) :
-	Resource(filePath)
+	Resource(filePath), renderer(Root::getInstance().getRenderer())
 {
 }
 
 Material::~Material()
 {
+}
+
+void Material::bind() const
+{
+	renderer.bindGpuProgram(*gpuProgram);
+	uint32 i = 0;
+	for (auto tex : textures)
+		renderer.bindTexture(*tex, i++);
+}
+
+const std::vector<Texture*>* Material::getTexturesBySemantic(TextureSemantic semantic) const
+{ 
+	auto it = texturesBySemantic.find(semantic);
+	if (it != texturesBySemantic.end())
+		return &it->second;
+	else
+		return nullptr;
 }
 
 bool Material::loadImplementation()
@@ -85,12 +104,16 @@ bool Material::parse()
 		if (child->ValueStr() == "texture")
 		{
 			const char* name = child->Attribute("name");
+
 			if (name)
 			{
 				TextureManager &texMan = Root::getInstance().getTextureManager();
 				Texture *tex = static_cast<Texture*>(texMan.get(name));
 				if (tex != nullptr)
+				{
 					textures.push_back(tex);
+					texturesBySemantic[tex->getData().semantic].push_back(tex);
+				}
 			}
 		}
 	}

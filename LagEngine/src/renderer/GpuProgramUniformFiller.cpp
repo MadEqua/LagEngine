@@ -10,9 +10,7 @@
 #include "graphicsAPI/GpuProgram.h"
 #include "graphicsAPI/GpuProgramUniform.h"
 #include "Viewport.h"
-
-#include <glm/vec3.hpp>
-#include <algorithm>
+#include "graphicsAPI/Texture.h"
 
 using namespace Lag;
 
@@ -26,58 +24,31 @@ GpuProgramUniformFiller::~GpuProgramUniformFiller()
 {
 }
 
-GpuProgramUniformFiller::GpuProgramData& GpuProgramUniformFiller::getGpuProgramData(const GpuProgram* gpuProgram)
+void GpuProgramUniformFiller::onFrameStart(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings)
 {
-	comparator.program = gpuProgram;
-	auto it = std::find_if(gpuPrograms.begin(), gpuPrograms.end(), comparator);
-	
-	if (gpuPrograms.empty() || it == gpuPrograms.end())
-	{
-		gpuPrograms.push_back(std::make_pair(gpuProgram, GpuProgramData()));
-		return gpuPrograms[gpuPrograms.size() - 1].second;
-	}
-	else
-	{
-		return it->second;
-	}
+	onGpuProgramBind(gpuProgram, viewport, textureBindings);
 }
 
-void GpuProgramUniformFiller::onFrameStart(const GpuProgram *gpuProgram, uint64 frameNumber, const Viewport *viewport)
+void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings)
 {
 	if (!gpuProgram || !viewport) return;
 	updateLightUniforms(*gpuProgram);
 	updateViewportUniforms(*gpuProgram, *viewport);
-}
 
-void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, uint64 frameNumber, const Viewport *viewport)
-{
-	if (!gpuProgram || !viewport) return;
-	
-	GpuProgramData &data = getGpuProgramData(gpuProgram);
-
-	if (data.lastUpdatedFrame < frameNumber || frameNumber == 0)
-	{
-		updateLightUniforms(*gpuProgram);
-		data.lastUpdatedFrame = frameNumber;
-	}
-	if (data.lastUpdatedViewport != viewport)
-	{
-		updateViewportUniforms(*gpuProgram, *viewport);
-		data.lastUpdatedViewport = viewport;
-	}
+	for (auto binding : textureBindings.bindings)
+		updateTextureUniforms(*gpuProgram, *binding.second, binding.first.unit);
 }
 
 void GpuProgramUniformFiller::onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport)
 {
 	if (!gpuProgram || !viewport) return;
-	
-	GpuProgramData &data = getGpuProgramData(gpuProgram);
-	
-	if (data.lastUpdatedViewport != viewport)
-	{
-		updateViewportUniforms(*gpuProgram, *viewport);
-		data.lastUpdatedViewport = viewport;
-	}
+	updateViewportUniforms(*gpuProgram, *viewport);
+}
+
+void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const Texture* texture, uint8 unit)
+{
+	if (!gpuProgram || !texture) return;
+	updateTextureUniforms(*gpuProgram, *texture, unit);
 }
 
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
@@ -143,6 +114,27 @@ void GpuProgramUniformFiller::updateViewportUniforms(const GpuProgram &gpuProgra
 		glm::mat4 viewProj = proj * view;
 		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX, &viewProj);
 	}
+}
+
+void GpuProgramUniformFiller::updateTextureUniforms(const GpuProgram &gpuProgram, const Texture &texture, uint8 unit)
+{
+	GpuProgramUniformSemantic uniformSemantic;
+	switch (texture.getData().semantic)
+	{
+	case LAG_TEXTURE_SEMANTIC_DIFFUSE:
+		uniformSemantic = LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE;
+		break;
+	case LAG_TEXTURE_SEMANTIC_NORMAL:
+		uniformSemantic = LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL;
+		break;
+	default:
+		uniformSemantic = LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE;
+		break;
+	}
+
+	auto uniformList = gpuProgram.getUniformBySemantic(uniformSemantic);
+	if (uniformList != nullptr && unit < uniformList->size())
+		uniformList->at(unit)->setValue(&unit);
 }
 
 bool GpuProgramUniformFiller::programContainsUniform(const GpuProgram &gpuProgram,

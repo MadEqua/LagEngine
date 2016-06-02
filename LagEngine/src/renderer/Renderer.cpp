@@ -19,13 +19,40 @@
 
 using namespace Lag;
 
+bool TextureBindings::MapKey::operator==(const MapKey &other) const
+{
+	return type == other.type && unit == other.unit;
+}
+
+std::size_t TextureBindings::MapKey::MapKeyHasher::operator()(const MapKey& k) const
+{
+	return std::hash<TextureType>()(k.type) ^ std::hash<uint8>()(k.unit);
+}
+
+void TextureBindings::setAsBound(const Texture &tex, uint8 unit)
+{
+	MapKey key(tex.getType(), unit);
+	bindings[key] = &tex;
+}
+
+const Texture* TextureBindings::getBinding(TextureType type, uint8 unit) const
+{
+	MapKey key(type, unit);
+	auto it = bindings.find(key);
+	if (it != bindings.end())
+		return it->second;
+	else
+		return nullptr;
+}
+
+
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(0.5f), stencilClearValue(0), depthClearValue(1.0f),
 	renderTargetListener(*this),
-	frameNumber(0)
+	actualFrame(0)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
@@ -63,11 +90,11 @@ void Renderer::renderAllRenderTargets()
 	clearColorBuffer();
 	clearDepthAndStencilBuffer();
 
-	uniformFiller.onFrameStart(boundGpuProgram, frameNumber, boundViewport);
+	uniformFiller.onFrameStart(boundGpuProgram, boundViewport, boundTextures);
 
 	renderQueue.dispatchRenderOperations(*this);
 
-	frameNumber++;
+	actualFrame++;
 }
 
 void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
@@ -94,7 +121,7 @@ void Renderer::bindGpuProgram(const GpuProgram &gpuProgram)
 	{
 		boundGpuProgram = &gpuProgram;
 		graphicsAPI.bindGpuProgram(gpuProgram);
-		uniformFiller.onGpuProgramBind(boundGpuProgram, frameNumber, boundViewport);
+		uniformFiller.onGpuProgramBind(boundGpuProgram, boundViewport, boundTextures);
 	}
 }
 
@@ -118,12 +145,15 @@ void Renderer::bindViewport(const Viewport &viewport)
 	}
 }
 
-void Renderer::bindTexture(const Texture &texture)
+void Renderer::bindTexture(const Texture &texture, uint8 unit)
 {
-	if (&texture != boundTexture)
+	const Texture *actualBound = boundTextures.getBinding(texture.getType(), unit);
+	
+	if (&texture != actualBound)
 	{
-		boundTexture = &texture;
-		graphicsAPI.bindTexture(texture);
+		boundTextures.setAsBound(texture, unit);
+		graphicsAPI.bindTexture(texture, unit);
+		uniformFiller.onTextureBind(boundGpuProgram, &texture, unit);
 	}
 }
 

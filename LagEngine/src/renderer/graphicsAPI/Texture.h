@@ -7,6 +7,13 @@
 
 namespace Lag
 {
+	enum TextureSemantic
+	{
+		LAG_TEXTURE_SEMANTIC_DIFFUSE,
+		LAG_TEXTURE_SEMANTIC_NORMAL,
+		LAG_TEXTURE_SEMANTIC_CUSTOM
+	};
+	
 	enum TextureType
 	{
 		LAG_TEXTURE_TYPE_1D,
@@ -39,12 +46,14 @@ namespace Lag
 	{
 		TextureData() : components(LAG_TEXTURE_COMPONENTS_RGB),
 			componentType(LAG_TEXTURE_COMPONENT_TYPE_UINT8),
+			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
 			normalized(true),
 			sRGB(true),
 			mipmaps(8) {}
 		
 		TextureComponents components;
 		TextureComponentType componentType;
+		TextureSemantic semantic;
 		bool normalized;
 		bool sRGB; //is the texture in non-linar format?
 		
@@ -57,6 +66,9 @@ namespace Lag
 	public:
 		Texture(const std::string &path, TextureType type, const TextureData &data);
 		virtual ~Texture();
+
+		inline const TextureData& getData() const { return data; }
+		inline TextureType getType() const { return type; }
 
 		//virtual void setTextureWrap() = 0;
 

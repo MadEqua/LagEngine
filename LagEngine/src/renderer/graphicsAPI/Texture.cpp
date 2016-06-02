@@ -7,6 +7,7 @@ using namespace Lag;
 
 Texture::Texture(const std::string &path, TextureType type, const TextureData &data) :
 	Resource(path),
+	data(data),
 	type(type),
 	dataPtr(nullptr)
 {
@@ -51,7 +52,6 @@ bool Texture::loadFromFile()
 
 	width = FreeImage_GetWidth(dib);
 	height = FreeImage_GetHeight(dib);
-
 
 	uint32 size = (FreeImage_GetBPP(dib) / 8) * width * height;
 	dataPtr = new byte[size];

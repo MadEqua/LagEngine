@@ -44,7 +44,7 @@ namespace Lag
 		virtual void bindGpuProgram(const GpuProgram &gpuProgram) = 0;
 		virtual void bindInputDescription(const InputDescription &inputDescription) = 0;
 		virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
-		virtual void bindTexture(const Texture &texture) = 0;
+		virtual void bindTexture(const Texture &texture, uint8 unit = 0) = 0;
 
 
 		//virtual void setTexture(uint32 unit, Texture &texture) = 0;
