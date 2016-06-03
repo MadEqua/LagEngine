@@ -3,6 +3,7 @@
 #include "RenderTarget.h"
 #include "../scene/SceneManager.h"
 #include "graphicsAPI/GpuProgram.h"
+#include "Material.h"
 
 #include "graphicsAPI/GpuBuffer.h"
 #include "VertexData.h"
@@ -52,7 +53,8 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(0.5f), stencilClearValue(0), depthClearValue(1.0f),
 	renderTargetListener(*this),
-	actualFrame(0)
+	actualFrame(0),
+	lastUsedGpuProgramOnFrame(nullptr)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
@@ -90,9 +92,13 @@ void Renderer::renderAllRenderTargets()
 	clearColorBuffer();
 	clearDepthAndStencilBuffer();
 
-	uniformFiller.onFrameStart(boundGpuProgram, boundViewport, boundTextures);
+
+	if (&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
+		uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
 
 	renderQueue.dispatchRenderOperations(*this);
+
+	lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.actualSlot-1].material->getGpuProgram();
 
 	actualFrame++;
 }

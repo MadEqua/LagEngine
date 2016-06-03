@@ -3,6 +3,7 @@
 #include <vector>
 #include <unordered_map>
 #include "../Types.h"
+#include <glm/mat4x4.hpp>
 
 namespace Lag
 {
@@ -15,8 +16,9 @@ namespace Lag
 	class TextureBindings;
 	
 	/*
-	* This class fills the uniforms with Engine-defined semantics. (Lights and Camera/Viewport related data)
+	* This class fills the uniforms with Engine-defined semantics.
 	* The Renderer calls the appropriate methods to only send new data when it's actually needed.
+	* A Renderable can also rely on this class to quickly fill all the needed Uniforms.
 	*/
 	class GpuProgramUniformFiller
 	{
@@ -24,13 +26,12 @@ namespace Lag
 		GpuProgramUniformFiller();
 		~GpuProgramUniformFiller();
 
-		//This exists for the case where a frame finishes with the same GpuProgram than the next one will start
-		//onGpuProgramBind will not be called in that case, but some uniforms may need to be updated.
-		void onFrameStart(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings);
-		
 		void onGpuProgramBind(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings);
 		void onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport);
 		void onTextureBind(const GpuProgram *gpuProgram, const Texture* texture, uint8 unit);
+
+		void onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix, 
+			const glm::mat3 &normalMatrix, const Viewport &viewport);
 
 	private:
 		void updateLightUniforms(const GpuProgram &gpuProgram);
@@ -40,11 +41,13 @@ namespace Lag
 		bool programContainsUniform(const GpuProgram &gpuProgram,
 			GpuProgramUniformSemantic semantic);
 
-		void setUniform(const GpuProgram &gpuProgram,
+		void setUniformIfPresent(const GpuProgram &gpuProgram,
 			GpuProgramUniformSemantic semantic, const void* value, uint32 arraySize = 1);
 
 		//References to useful data to fill Uniforms
 		const std::vector<PointLight*> &pointLights;
 		const std::vector<DirectionalLight*> &directionalLights;
+
+		const GpuProgram *frameEndGpuProgram;
 	};
 }

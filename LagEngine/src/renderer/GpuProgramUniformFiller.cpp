@@ -16,17 +16,13 @@ using namespace Lag;
 
 GpuProgramUniformFiller::GpuProgramUniformFiller() :
 	pointLights(Root::getInstance().getSceneManager().getPointLights()),
-	directionalLights(Root::getInstance().getSceneManager().getDirectionalLights())
+	directionalLights(Root::getInstance().getSceneManager().getDirectionalLights()),
+	frameEndGpuProgram(nullptr)
 {
 }
 
 GpuProgramUniformFiller::~GpuProgramUniformFiller()
 {
-}
-
-void GpuProgramUniformFiller::onFrameStart(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings)
-{
-	onGpuProgramBind(gpuProgram, viewport, textureBindings);
 }
 
 void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings)
@@ -51,11 +47,47 @@ void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const 
 	updateTextureUniforms(*gpuProgram, *texture, unit);
 }
 
+void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix, 
+	const glm::mat3 &normalMatrix, const Viewport &viewport)
+{
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX, &modelMatrix);
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX, &viewport.getCamera().getInverseTransform());
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX, &viewport.getCamera().getProjectionMatrix());
+	
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_NORMAL_WORLD_MATRIX, &normalMatrix);
+
+	if (programContainsUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX))
+	{
+		glm::mat3 n = glm::mat3(viewport.getCamera().getInverseTransform()) * normalMatrix;
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX, &n);
+	}
+
+	if (programContainsUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX))
+	{
+		glm::mat4 mv = viewport.getCamera().getInverseTransform() * modelMatrix;
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX, &mv);
+	}
+	if (programContainsUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX))
+	{
+		const Camera &cam = viewport.getCamera();
+		glm::mat4 vp = cam.getProjectionMatrix() * cam.getInverseTransform();
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX, &vp);
+	}	
+	if (programContainsUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_MVP_MATRIX))
+	{
+		const Camera &camera = viewport.getCamera();
+		glm::mat4 mvp = camera.getProjectionMatrix() * 
+			camera.getInverseTransform() *
+			modelMatrix;
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_MVP_MATRIX, &mvp);
+	}
+}
+
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 {
 	//PointLights
 	uint32 pointLightCount = pointLights.size();
-	setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT, &pointLightCount);
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT, &pointLightCount);
 
 	if (pointLightCount > 0)
 	{
@@ -74,14 +106,14 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 			patten[i].y = floatAttenuation[1];
 			patten[i].z = floatAttenuation[2];
 		}
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS, ppos, pointLightCount);
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS, pcols, pointLightCount);
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS, patten, pointLightCount);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS, ppos, pointLightCount);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS, pcols, pointLightCount);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS, patten, pointLightCount);
 	}
 
 	//DirectionalLights
 	uint32 dirLightCount = directionalLights.size();
-	setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT, &dirLightCount);
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT, &dirLightCount);
 
 	if (dirLightCount > 0)
 	{
@@ -95,8 +127,8 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 			dcols[i].g = floatColors[1];
 			dcols[i].b = floatColors[2];
 		}
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS, ddir, dirLightCount);
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS, dcols, dirLightCount);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS, ddir, dirLightCount);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS, dcols, dirLightCount);
 	}
 }
 
@@ -106,13 +138,13 @@ void GpuProgramUniformFiller::updateViewportUniforms(const GpuProgram &gpuProgra
 	const glm::mat4 &view = viewport.getCamera().getInverseTransform();
 	const glm::mat4 &proj = viewport.getCamera().getProjectionMatrix();
 
-	setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX, static_cast<const void*>(&view));
-	setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX, static_cast<const void*>(&proj));
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX, static_cast<const void*>(&view));
+	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX, static_cast<const void*>(&proj));
 
 	if (programContainsUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX))
 	{
 		glm::mat4 viewProj = proj * view;
-		setUniform(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX, &viewProj);
+		setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX, &viewProj);
 	}
 }
 
@@ -144,7 +176,7 @@ bool GpuProgramUniformFiller::programContainsUniform(const GpuProgram &gpuProgra
 	return uniformList != nullptr;
 }
 
-void GpuProgramUniformFiller::setUniform(const GpuProgram &gpuProgram, 
+void GpuProgramUniformFiller::setUniformIfPresent(const GpuProgram &gpuProgram, 
 	GpuProgramUniformSemantic semantic, const void* value, uint32 arraySize)
 {
 	auto uniformList = gpuProgram.getUniformBySemantic(semantic);

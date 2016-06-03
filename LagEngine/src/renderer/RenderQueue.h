@@ -18,6 +18,8 @@ namespace Lag
 	*/
 	class RenderQueue
 	{
+		friend class Renderer;
+
 	public:
 		RenderQueue();
 		~RenderQueue();

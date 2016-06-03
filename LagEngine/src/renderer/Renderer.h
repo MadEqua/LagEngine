@@ -121,6 +121,8 @@ namespace Lag
 		/** Reports the number of vertices passed to the renderer since the last _beginGeometryCount call. */
 		//uint32 getVertexCount(void) const;
 
+		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
+
 		static const uint8 MAX_POINT_LIGHTS = 8;
 		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
 
@@ -149,6 +151,10 @@ namespace Lag
 		const InputDescription *boundInputDescription;
 		const Viewport *boundViewport;
 		TextureBindings boundTextures;
+
+		//This exists for the case where a frame finishes with the same GpuProgram than the next one will start
+		//onGpuProgramBind will not be called in that case, but some uniforms may need to be updated.
+		const GpuProgram* lastUsedGpuProgramOnFrame;
 
 		//Listening to resizes. A resize may invalidate the current bound Viewport.
 		class RenderTargetListener : public IRenderTargetListener
