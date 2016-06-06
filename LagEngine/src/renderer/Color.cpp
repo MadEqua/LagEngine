@@ -11,7 +11,7 @@ Color::Color()
 	channels[3] = 1.0f;
 }
 
-Color::Color(uint8 v)
+Color::Color(int v)
 {
 	channels[0] = static_cast<float>(v) / 255.0f;
 	channels[1] = static_cast<float>(v) / 255.0f;
@@ -19,7 +19,7 @@ Color::Color(uint8 v)
 	channels[3] = 1.0f;
 }
 
-Color::Color(uint8 r, uint8 g, uint8 b)
+Color::Color(int r, int g, int b)
 {
 	channels[0] = static_cast<float>(r) / 255.0f;
 	channels[1] = static_cast<float>(g) / 255.0f;
@@ -27,7 +27,7 @@ Color::Color(uint8 r, uint8 g, uint8 b)
 	channels[3] = 1.0f;
 }
 
-Color::Color(uint8 r, uint8 g, uint8 b, uint8 a)
+Color::Color(int r, int g, int b, int a)
 {
 	channels[0] = static_cast<float>(r) / 255.0f;
 	channels[1] = static_cast<float>(g) / 255.0f;

@@ -20,6 +20,7 @@ namespace Lag
 		virtual ~Manager();
 
 		ManagedObject* get(const K &name) const;
+		bool contains(const K &name) const;
 		
 		virtual bool add(const K &name, ManagedObject *obj);
 		void remove(const K &name);
@@ -113,6 +114,13 @@ namespace Lag
 		}
 
 		return it->second;
+	}
+
+	template<class K>
+	bool Manager<K>::contains(const K &name) const
+	{
+		auto it = objects.find(name);
+		return it != objects.end();
 	}
 
 	template<class K>

@@ -10,6 +10,8 @@ namespace Lag
 	enum TextureComponentType;
 	struct TextureData;
 	enum TextureSemantic;
+	enum TextureFilteringMode;
+	enum TexturewWrappingMode;
 	
 	class TextureManager : public ResourceManager
 	{
@@ -27,6 +29,8 @@ namespace Lag
 		TextureComponents parseComponents(const std::string &c) const;
 		TextureComponentType parseComponentType(const std::string &type) const;
 		TextureSemantic parseSemantic(const std::string &sem) const;
+		TextureFilteringMode parseFilteringMode(const std::string &mode) const;
+		TexturewWrappingMode parseWrappingMode(const std::string &mode) const;
 		bool parseBool(const std::string &str) const;
 		int parseInt(const std::string &str) const;
 	};

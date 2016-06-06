@@ -39,7 +39,27 @@ namespace Lag
 
 		LAG_TEXTURE_COMPONENT_TYPE_UINT8,
 		LAG_TEXTURE_COMPONENT_TYPE_UINT16,
-		LAG_TEXTURE_COMPONENT_TYPE_UINT32,
+		LAG_TEXTURE_COMPONENT_TYPE_UINT32
+	};
+
+	enum TextureFilteringMode
+	{
+		LAG_TEXTURE_FILTERING_MODE_NEAREST,
+		LAG_TEXTURE_FILTERING_MODE_LINEAR,
+
+		//[inside the mipmap]_MIPMAP_[between mipmaps]
+		LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST,
+		LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR,
+		LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST,
+		LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR
+	};
+
+	enum TexturewWrappingMode
+	{
+		LAG_TEXTURE_WRAPPING_MODE_REPEAT,
+		LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT,
+		LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE,
+		LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER
 	};
 
 	struct TextureData
@@ -47,6 +67,9 @@ namespace Lag
 		TextureData() : components(LAG_TEXTURE_COMPONENTS_RGB),
 			componentType(LAG_TEXTURE_COMPONENT_TYPE_UINT8),
 			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
+			minificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR),
+			magnificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR),
+			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT ,LAG_TEXTURE_WRAPPING_MODE_REPEAT },
 			normalized(true),
 			sRGB(true),
 			mipmaps(8) {}
@@ -54,6 +77,9 @@ namespace Lag
 		TextureComponents components;
 		TextureComponentType componentType;
 		TextureSemantic semantic;
+		TextureFilteringMode minificationFilteringMode;
+		TextureFilteringMode magnificationFilteringMode;
+		TexturewWrappingMode wrappingMode[3];
 		bool normalized;
 		bool sRGB; //is the texture in non-linar format?
 		

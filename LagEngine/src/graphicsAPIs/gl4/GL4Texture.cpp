@@ -27,6 +27,7 @@ bool GL4Texture::loadImplementation()
 	case LAG_TEXTURE_TYPE_2D:
 		GL_ERROR_CHECK(glTextureStorage2D(handle, data.mipmaps, getPixelDataSizedFormatGL(), width, height))
 		GL_ERROR_CHECK(glTextureSubImage2D(handle, 0, 0, 0, width, height, getPixelDataFormatGL(), getPixelDataTypeGL(), dataPtr))
+		GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_T, getWrappingModeGL(data.wrappingMode[1])))
 		break;
 	default:
 		return false;
@@ -34,6 +35,11 @@ bool GL4Texture::loadImplementation()
 
 	if (data.mipmaps > 1)
 		GL_ERROR_CHECK(glGenerateTextureMipmap(handle))
+
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_S, getWrappingModeGL(data.wrappingMode[0])))
+
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MIN_FILTER, getFilteringModeGL(data.minificationFilteringMode)))
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MAG_FILTER, getFilteringModeGL(data.magnificationFilteringMode)))
 
 	return true;
 }
@@ -228,5 +234,44 @@ GLenum GL4Texture::getPixelDataSizedFormatGL() const
 
 	default:
 		return -1;
+	}
+
+}
+
+GLint GL4Texture::getFilteringModeGL(TextureFilteringMode mode) const
+{
+	switch (mode)
+	{
+	case LAG_TEXTURE_FILTERING_MODE_NEAREST:
+		return GL_NEAREST;
+	case LAG_TEXTURE_FILTERING_MODE_LINEAR:
+		return GL_LINEAR;
+	case LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST:
+		return GL_NEAREST_MIPMAP_NEAREST;
+	case LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR:
+		return GL_NEAREST_MIPMAP_LINEAR;
+	case LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST:
+		return GL_LINEAR_MIPMAP_NEAREST;
+	case LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR:
+		return GL_LINEAR_MIPMAP_LINEAR;
+	default:
+		return GL_NEAREST;
+	}
+}
+
+GLint GL4Texture::getWrappingModeGL(TexturewWrappingMode mode) const
+{
+	switch (mode)
+	{
+	case LAG_TEXTURE_WRAPPING_MODE_REPEAT:
+		return GL_REPEAT;
+	case LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT:
+		return GL_MIRRORED_REPEAT;
+	case LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE:
+		return GL_CLAMP_TO_EDGE;
+	case LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER:
+		return GL_CLAMP_TO_BORDER;
+	default:
+		return GL_REPEAT;
 	}
 }

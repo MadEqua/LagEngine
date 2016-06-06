@@ -23,10 +23,11 @@ namespace Lag
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
-
 		
 		GLenum getPixelDataFormatGL() const;
 		GLenum getPixelDataTypeGL() const;
 		GLenum getPixelDataSizedFormatGL() const;
+		GLint getFilteringModeGL(TextureFilteringMode mode) const;
+		GLint getWrappingModeGL(TexturewWrappingMode mode) const;
 	};
 }

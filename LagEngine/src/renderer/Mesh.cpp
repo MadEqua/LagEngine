@@ -190,7 +190,7 @@ bool Mesh::loadImplementation()
 
 		//Create Data objects, will be managed by the SubMesh
 		VertexData *vd = new VertexData();
-		vd->inputDescription = inputDescriptionManager.getInputDescription(vxDesc, *vb);
+ 		vd->inputDescription = inputDescriptionManager.getInputDescription(vxDesc, *vb);
 		vd->vertexCount = mesh->mNumVertices;
 		vd->vertexStart = vxBufferOffset;
 

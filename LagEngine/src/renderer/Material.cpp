@@ -49,9 +49,12 @@ bool Material::loadImplementation()
 	GpuProgram::generateName(shaderStageNames, gpuProgramName);
 
 	GpuProgramManager &manager = root.getGpuProgramManager();
-	if (!manager.create(gpuProgramName, shaderStageNames))
-		return false;
 
+	if (!manager.contains(gpuProgramName))
+	{
+		if (!manager.create(gpuProgramName, shaderStageNames))
+			return false;
+	}
 	gpuProgram = static_cast<GpuProgram*>(manager.get(gpuProgramName));
 
 	return true;

@@ -92,7 +92,7 @@ void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 len
 	std::sort(attributes.begin(), attributes.end());
 
 	uint32 sum = 0;
-	for (int i = 0; i < attributes.size(); ++i)
+	for (uint32 i = 0; i < attributes.size(); ++i)
 	{
 		VertexAttribute &attr = attributes[i];
 		attr.offset = sum;

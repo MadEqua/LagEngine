@@ -1,6 +1,5 @@
 Short Term
 
-texture parameters and settings
 add uniform value cache on cpu side to avoid sending the same values
 camera/scenenode look at
 allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...

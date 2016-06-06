@@ -40,6 +40,14 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 		const char* sRgbStr = element.Attribute("sRGB");
 		const char* mipMapsStr = element.Attribute("mipmaps");
 		const char* semanticStr = element.Attribute("semantic");
+		const char* minStr = element.Attribute("minFilter");
+		const char* magStr = element.Attribute("magFilter");
+
+		const char* wrappingAllStr = element.Attribute("wrappingAll");
+		const char* wrappingSStr = element.Attribute("wrappingS");
+		const char* wrappingTStr = element.Attribute("wrappingT");
+		const char* wrappingRStr = element.Attribute("wrappingR");
+
 
 		TextureData data;
 		if (componentsStr != nullptr)
@@ -54,6 +62,25 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 			data.mipmaps = parseInt(mipMapsStr);
 		if (semanticStr != nullptr)
 			data.semantic = parseSemantic(semanticStr);
+		if (minStr != nullptr)
+			data.minificationFilteringMode = parseFilteringMode(minStr);
+		if (magStr != nullptr)
+			data.magnificationFilteringMode = parseFilteringMode(magStr);
+
+		if (wrappingAllStr != nullptr)
+		{
+			data.wrappingMode[0] = data.wrappingMode[1] = data.wrappingMode[2] =
+				parseWrappingMode(wrappingAllStr);
+		}
+		else
+		{
+			if (wrappingSStr != nullptr)
+				data.wrappingMode[0] = parseWrappingMode(wrappingSStr);
+			if (wrappingTStr != nullptr)
+				data.wrappingMode[1] = parseWrappingMode(wrappingTStr);
+			if (wrappingRStr != nullptr)
+				data.wrappingMode[2] = parseWrappingMode(wrappingRStr);
+		}
 
 		create(name, file, type, data);
 	}
@@ -108,4 +135,24 @@ bool TextureManager::parseBool(const std::string &str) const
 int TextureManager::parseInt(const std::string &str) const
 {
 	return std::stoi(str);
+}
+
+TextureFilteringMode TextureManager::parseFilteringMode(const std::string &mode) const
+{
+	if (mode == "Nearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST;
+	else if (mode == "Linear") return LAG_TEXTURE_FILTERING_MODE_LINEAR;
+	else if (mode == "NearestMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST;
+	else if (mode == "NearestMipmapLinear")return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR;
+	else if (mode == "LinearMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST;
+	else if (mode == "LinearMipmapLinear" || mode == "TriLinear") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR;
+	else return LAG_TEXTURE_FILTERING_MODE_LINEAR;
+}
+
+TexturewWrappingMode TextureManager::parseWrappingMode(const std::string &mode) const
+{
+	if (mode == "Repeat") return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
+	else if (mode == "MirroredRepeat") return LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT;
+	else if (mode == "ClampEdge") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE;
+	else if (mode == "ClampBorder")return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
+	else return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
 }

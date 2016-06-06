@@ -44,8 +44,8 @@ bool TestApplication::start()
 	root->getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root->getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
 
-	camera = new Lag::FreeCamera(45.0f, 0.1f, 100.0f, 10.0f);
-	camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 0, 20));
+	camera = new Lag::FreeCamera(45.0f, 0.1f, 1000.0f, 10.0f);
+	camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
 	renderWindow->createViewport("default", camera->getCamera());
 
 	/*Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
@@ -55,24 +55,32 @@ bool TestApplication::start()
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
 	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);*/
 
-	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.05f));
+	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl1SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl1SceneNode");
 	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl1SceneNode);
 	pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl1SceneNode.setScale(glm::vec3(0.1f));
 	pl.attachToSceneNode(pl1SceneNode);
 
-	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(1.0f, 0.0f, 0.0f), glm::vec3(0.1f, 0.1f, 0.05f));
+	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(1.0f, 0.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl2SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl2SceneNode");
 	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl2SceneNode);
 	pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl2SceneNode.setScale(glm::vec3(0.1f));
 	pl2.attachToSceneNode(pl2SceneNode);
-	
-	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(0.0f, -1.0f, 0.0f));
+
+	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(0.3f), glm::vec3(1.0f, -1.0f, 0.0f));
 	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
+	/*Lag::DirectionalLight& dir2 = sceneManager->createDirectionalLight("dir2", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -1.0f, 0.0f));
+	dir2.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());*/
+
 	createScene();
+
+	/*Lag::SceneNode &mainNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("main");
+	mainNode.scale(glm::vec3(0.07f));
+	Lag::Entity *ent = sceneManager->createEntity("sponza", "sponza", "testMaterial");
+	ent->attachToSceneNode(mainNode);*/
 
 	root->startRenderingLoop();
 
@@ -85,6 +93,11 @@ void TestApplication::createScene()
 	mainNode.setScale(glm::vec3(0.01f));
 	Lag::Entity *ent = sceneManager->createEntity("bunny", "bunny", "testMaterial");
 	ent->attachToSceneNode(mainNode);
+
+	Lag::SceneNode &baseNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("base");
+	baseNode.setScale(glm::vec3(20.0f, 0.1f, 20.0f));
+	Lag::Entity *base = sceneManager->createEntity("cube", "cube", "testMaterial2");
+	base->attachToSceneNode(baseNode);
 
 	createSceneAux(mainNode, 10.0f, 8, 0, 3);
 }

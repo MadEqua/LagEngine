@@ -9,9 +9,9 @@ namespace Lag
 	public:
 		Color();
 
-		Color(uint8 v);
-		Color(uint8 r, uint8 g, uint8 b);
-		Color(uint8 r, uint8 g, uint8 b, uint8 a);
+		Color(int v);
+		Color(int r, int g, int b);
+		Color(int r, int g, int b, int a);
 
 		Color(float v);
 		Color(float r, float g, float b);

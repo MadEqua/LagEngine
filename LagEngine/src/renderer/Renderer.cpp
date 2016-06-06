@@ -51,7 +51,7 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
-	clearColor(0.5f), stencilClearValue(0), depthClearValue(1.0f),
+	clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
 	renderTargetListener(*this),
 	actualFrame(0),
 	lastUsedGpuProgramOnFrame(nullptr)
