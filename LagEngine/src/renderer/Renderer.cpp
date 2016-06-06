@@ -20,7 +20,7 @@
 
 using namespace Lag;
 
-bool TextureBindings::MapKey::operator==(const MapKey &other) const
+/*bool TextureBindings::MapKey::operator==(const MapKey &other) const
 {
 	return type == other.type && unit == other.unit;
 }
@@ -28,18 +28,18 @@ bool TextureBindings::MapKey::operator==(const MapKey &other) const
 std::size_t TextureBindings::MapKey::MapKeyHasher::operator()(const MapKey& k) const
 {
 	return std::hash<TextureType>()(k.type) ^ std::hash<uint8>()(k.unit);
-}
+}*/
 
 void TextureBindings::setAsBound(const Texture &tex, uint8 unit)
 {
-	MapKey key(tex.getType(), unit);
-	bindings[key] = &tex;
+	//MapKey key(tex.getData().type, unit);
+	bindings[unit] = &tex;
 }
 
 const Texture* TextureBindings::getBinding(TextureType type, uint8 unit) const
 {
-	MapKey key(type, unit);
-	auto it = bindings.find(key);
+	//MapKey key(type, unit);
+	auto it = bindings.find(unit);
 	if (it != bindings.end())
 		return it->second;
 	else
@@ -153,7 +153,7 @@ void Renderer::bindViewport(const Viewport &viewport)
 
 void Renderer::bindTexture(const Texture &texture, uint8 unit)
 {
-	const Texture *actualBound = boundTextures.getBinding(texture.getType(), unit);
+	const Texture *actualBound = boundTextures.getBinding(texture.getData().type, unit);
 	
 	if (&texture != actualBound)
 	{

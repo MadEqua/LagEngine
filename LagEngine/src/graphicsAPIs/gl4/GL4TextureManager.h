@@ -12,10 +12,14 @@ namespace Lag
 		GL4TextureManager() {}
 		virtual ~GL4TextureManager() {}
 
-		virtual bool create(const std::string &name, const std::string &file,
-			TextureType type, const TextureData &data) override
+		virtual bool create(const std::string &name, const std::string &imageName, const TextureData &data) override
 		{
-			return add(name, new GL4Texture(file, type, data));
+			return add(name, new GL4Texture(imageName, data));
+		}
+
+		virtual bool create(const std::string &name, const std::vector<std::string> &imageNames, const TextureData &data) override
+		{
+			return add(name, new GL4Texture(imageNames, data));
 		}
 	};
 }

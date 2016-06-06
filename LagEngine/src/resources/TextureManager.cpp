@@ -19,25 +19,53 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 	if (element.ValueStr() == "texture")
 	{
 		const char* name = element.Attribute("name");
-		const char* file = element.Attribute("file");
-
-		if (!name || !file)
+		const char* typeStr = element.Attribute("type");
+		if (!name || !typeStr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureManager",
-				"A <texture> element on the Resources file does not contain all required elements: <name> and <file>");
+				"A <texture> element on the Resources file does not contain all required elements: <name> and <type>");
 			return;
 		}
 
-		const char* typeStr = element.Attribute("type");
-		TextureType type = LAG_TEXTURE_TYPE_2D;
+		TextureData data;
+		data.type = parseTextureType(typeStr);
+		std::vector<std::string> imageNames;
 
-		if (typeStr != nullptr)
-			type = parseTextureType(typeStr);
+		if (data.type != LAG_TEXTURE_TYPE_CUBE)
+		{
+			const char* image = element.Attribute("image");
+			if (!image)
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureManager",
+					"A <texture> element on the Resources file does not contain all required elements: <image>");
+				return;
+			}
+			imageNames.push_back(image);
+		}
+		else
+		{
+			const char* imageX = element.Attribute("imageX");
+			const char* imageNegX = element.Attribute("image-X");
+			const char* imageY = element.Attribute("imageY");
+			const char* imageNegY = element.Attribute("image-Y");
+			const char* imageZ = element.Attribute("imageZ");
+			const char* imageNegZ = element.Attribute("image-Z");
 
-		const char* componentsStr = element.Attribute("components");
-		const char* componentTypeStr = element.Attribute("componentType");
-		const char* normalizedStr = element.Attribute("normalized");
-		const char* sRgbStr = element.Attribute("sRGB");
+			if (!imageX || !imageNegX || !imageY || !imageNegY || !imageZ || !imageNegZ)
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureManager",
+					"A <texture> element on the Resources file does not contain all required elements: <image[+-XYZ]>");
+				return;
+			}
+
+			imageNames.push_back(imageX);
+			imageNames.push_back(imageNegX);
+			imageNames.push_back(imageY);
+			imageNames.push_back(imageNegY);
+			imageNames.push_back(imageZ);
+			imageNames.push_back(imageNegZ);
+		}
+
 		const char* mipMapsStr = element.Attribute("mipmaps");
 		const char* semanticStr = element.Attribute("semantic");
 		const char* minStr = element.Attribute("minFilter");
@@ -48,16 +76,6 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 		const char* wrappingTStr = element.Attribute("wrappingT");
 		const char* wrappingRStr = element.Attribute("wrappingR");
 
-
-		TextureData data;
-		if (componentsStr != nullptr)
-			data.components = parseComponents(componentsStr);
-		if (componentTypeStr != nullptr)
-			data.componentType = parseComponentType(componentTypeStr);
-		if (normalizedStr != nullptr)
-			data.normalized = parseBool(normalizedStr);
-		if (sRgbStr != nullptr)
-			data.sRGB = parseBool(sRgbStr);
 		if (mipMapsStr != nullptr)
 			data.mipmaps = parseInt(mipMapsStr);
 		if (semanticStr != nullptr)
@@ -82,7 +100,7 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 				data.wrappingMode[2] = parseWrappingMode(wrappingRStr);
 		}
 
-		create(name, file, type, data);
+		create(name, imageNames, data);
 	}
 }
 
@@ -90,33 +108,9 @@ TextureType TextureManager::parseTextureType(const std::string &type) const
 {
 	if (type == "1D") return LAG_TEXTURE_TYPE_1D;
 	else if (type == "2D") return LAG_TEXTURE_TYPE_2D;
+	else if (type == "Cube") return LAG_TEXTURE_TYPE_CUBE;
 	//else if (type == "3D") return LAG_TEXTURE_TYPE_3D;
 	else return LAG_TEXTURE_TYPE_2D;
-}
-
-TextureComponents TextureManager::parseComponents(const std::string &c) const
-{
-	if(c == "R") return LAG_TEXTURE_COMPONENTS_R;
-	else if (c == "RG") return LAG_TEXTURE_COMPONENTS_RG;
-	else if (c == "RGB") return LAG_TEXTURE_COMPONENTS_RGB;
-	else if (c == "RGBA") return LAG_TEXTURE_COMPONENTS_RGBA;
-	else return LAG_TEXTURE_COMPONENTS_RGB;
-}
-
-TextureComponentType TextureManager::parseComponentType(const std::string &type) const
-{
-	if(type == "FLOAT16" || type == "HALF_FLOAT") return LAG_TEXTURE_COMPONENT_TYPE_FLOAT16;
-	else if (type == "FLOAT32" || type == "FLOAT") return LAG_TEXTURE_COMPONENT_TYPE_FLOAT32;
-	
-	else if (type == "INT8") return LAG_TEXTURE_COMPONENT_TYPE_INT8;
-	else if (type == "INT16")return LAG_TEXTURE_COMPONENT_TYPE_INT16;
-	else if (type == "INT32") return LAG_TEXTURE_COMPONENT_TYPE_INT32;
-
-	else if (type == "UINT8") return LAG_TEXTURE_COMPONENT_TYPE_UINT8;
-	else if (type == "UINT16")return LAG_TEXTURE_COMPONENT_TYPE_UINT16;
-	else if (type == "UINT32") return LAG_TEXTURE_COMPONENT_TYPE_UINT32;
-
-	else return LAG_TEXTURE_COMPONENT_TYPE_UINT8;
 }
 
 TextureSemantic TextureManager::parseSemantic(const std::string &sem) const
@@ -124,17 +118,6 @@ TextureSemantic TextureManager::parseSemantic(const std::string &sem) const
 	if (sem == "Diffuse" || sem == "DiffuseColor") return LAG_TEXTURE_SEMANTIC_DIFFUSE;
 	else if (sem == "Normal")return LAG_TEXTURE_SEMANTIC_NORMAL;
 	else return LAG_TEXTURE_SEMANTIC_CUSTOM;
-}
-
-bool TextureManager::parseBool(const std::string &str) const
-{
-	if (str == "true" || str == "TRUE" || str == "1") return true;
-	else return false;
-}
-
-int TextureManager::parseInt(const std::string &str) const
-{
-	return std::stoi(str);
 }
 
 TextureFilteringMode TextureManager::parseFilteringMode(const std::string &mode) const
@@ -152,7 +135,12 @@ TexturewWrappingMode TextureManager::parseWrappingMode(const std::string &mode) 
 {
 	if (mode == "Repeat") return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
 	else if (mode == "MirroredRepeat") return LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT;
-	else if (mode == "ClampEdge") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE;
-	else if (mode == "ClampBorder")return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
+	else if (mode == "ClampEdge" || mode == "ClampToEdge") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE;
+	else if (mode == "ClampBorder" || mode == "ClampToBorder")return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
 	else return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
+}
+
+int TextureManager::parseInt(const std::string &str) const
+{
+	return std::stoi(str);
 }

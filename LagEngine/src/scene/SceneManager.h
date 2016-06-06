@@ -20,6 +20,7 @@ namespace Lag
 	class DirectionalLight;
 	class Color;
 	class GpuProgram;
+	class Sky;
 	
 	/*
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
@@ -35,6 +36,10 @@ namespace Lag
 		Camera& createCamera(const std::string &name, float fovy, float nearPlane, float farPlane);	
 		PointLight& createPointLight(const std::string &name, const Color& color, const glm::vec3 &attenuation);
 		DirectionalLight& createDirectionalLight(const std::string &name, const Color& color, const glm::vec3& direction);
+
+		//TODO: texture instead of material?
+		void enableSky(const std::string &materialName);
+		void disableSky();
 
 		SceneObject* getSceneObject(const std::string &name) const;
 
@@ -56,6 +61,8 @@ namespace Lag
 	private:
 		SceneGraph sceneGraph;
 
+		Sky *sky;
+
 		//All SceneObjects organized by name. Main repository.
 		std::unordered_map<std::string, SceneObject*> sceneObjectMap;
 
@@ -64,7 +71,6 @@ namespace Lag
 		std::vector<Camera*> cameraVector;
 		std::vector<PointLight*> pointLightVector;
 		std::vector<DirectionalLight*> directionalLightVector;
-
 
 		//IRenderable SceneObjects
 		std::vector<IRenderable*> renderableVector;

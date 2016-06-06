@@ -14,7 +14,7 @@ namespace Lag
 	{
 	public:
 		VertexData() {}
-		~VertexData() {};
+		~VertexData() {}
 
 		//InputDescription object that describes the vertex data. (Format and source)
 		//Used to feed the pipeline entry-point.

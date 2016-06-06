@@ -10,7 +10,8 @@ namespace Lag
 	class GL4Texture : public Texture
 	{
 	public:
-		GL4Texture(const std::string &path, TextureType type, const TextureData &data);
+		GL4Texture(const std::string &imageName, const TextureData &data);
+		GL4Texture(const std::vector<std::string> &imageNames, const TextureData &data);
 		virtual ~GL4Texture();
 
 		inline GLuint getHandle() const { return handle; }

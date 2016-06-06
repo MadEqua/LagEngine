@@ -9,6 +9,7 @@ namespace Lag
 	class Resource : public ManagedObject
 	{
 	public:
+		Resource();
 		Resource(const std::string &path);
 		virtual ~Resource();
 

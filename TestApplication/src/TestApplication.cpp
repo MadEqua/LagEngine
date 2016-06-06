@@ -72,7 +72,7 @@ bool TestApplication::start()
 	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(0.3f), glm::vec3(1.0f, -1.0f, 0.0f));
 	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
-	/*Lag::DirectionalLight& dir2 = sceneManager->createDirectionalLight("dir2", Lag::Color(1.0f, 1.0f, 1.0f), glm::vec3(-1.0f, -1.0f, 0.0f));
+	/*Lag::DirectionalLight& dir2 = sceneManager->createDirectionalLight("dir2", Lag::Color(0.3f), glm::vec3(-1.0f, -1.0f, 0.0f));
 	dir2.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());*/
 
 	createScene();
@@ -81,6 +81,8 @@ bool TestApplication::start()
 	mainNode.scale(glm::vec3(0.07f));
 	Lag::Entity *ent = sceneManager->createEntity("sponza", "sponza", "testMaterial");
 	ent->attachToSceneNode(mainNode);*/
+
+	sceneManager->enableSky("skyMaterial");
 
 	root->startRenderingLoop();
 
@@ -95,6 +97,7 @@ void TestApplication::createScene()
 	ent->attachToSceneNode(mainNode);
 
 	Lag::SceneNode &baseNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("base");
+	//baseNode.translate(glm::vec3(0.0f, 10.1f, 0.0f), Lag::WORLD);
 	baseNode.setScale(glm::vec3(20.0f, 0.1f, 20.0f));
 	Lag::Entity *base = sceneManager->createEntity("cube", "cube", "testMaterial2");
 	base->attachToSceneNode(baseNode);

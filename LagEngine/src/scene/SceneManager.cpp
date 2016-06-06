@@ -11,10 +11,11 @@
 #include "PointLight.h"
 #include "DirectionalLight.h"
 #include "../renderer/IRenderable.h"
+#include "Sky.h"
 
 using namespace Lag;
 
-SceneManager::SceneManager()
+SceneManager::SceneManager() : sky(nullptr)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Initialized successfully.");
@@ -25,6 +26,9 @@ SceneManager::~SceneManager()
 {
 	for (auto &pair : sceneObjectMap)
 		delete pair.second;
+
+	if (sky)
+		delete sky;
 
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Destroyed successfully.");
@@ -75,6 +79,19 @@ DirectionalLight& SceneManager::createDirectionalLight(const std::string &name,
 	sceneObjectMap[name] = dl;
 	directionalLightVector.push_back(dl);
 	return *dl;
+}
+
+void SceneManager::enableSky(const std::string &materialName)
+{
+	if (!sky)
+		sky = new Sky(materialName);
+
+	renderableVector.push_back(sky);
+}
+
+void SceneManager::disableSky()
+{
+	renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
 }
 
 SceneObject* SceneManager::getSceneObject(const std::string &name) const

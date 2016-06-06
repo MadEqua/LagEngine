@@ -42,9 +42,10 @@ namespace Lag
 
 		static const int PROGRAM_STAGE_COUNT = 5;
 		bool presentStages[PROGRAM_STAGE_COUNT];
+		std::vector<std::string> stagesNames;
 		std::vector<GpuProgramStage*> stages;
 		
-		void initStages(const std::vector<GpuProgramStage*> &stages);
+		bool checkStages();
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;

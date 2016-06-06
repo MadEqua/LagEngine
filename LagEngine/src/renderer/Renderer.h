@@ -39,7 +39,7 @@ namespace Lag
 	class TextureBindings
 	{
 	private:
-		class MapKey
+		/*class MapKey
 		{
 		public:
 			MapKey(TextureType type, uint8 unit) :
@@ -55,13 +55,13 @@ namespace Lag
 
 			TextureType type;
 			uint8 unit;
-		};
+		};*/
 
 	public:
 		void setAsBound(const Texture &tex, uint8 unit);
 		const Texture* getBinding(TextureType type, uint8 unit) const;
 
-		std::unordered_map<MapKey, const Texture*, MapKey::MapKeyHasher> bindings;
+		std::unordered_map<uint8, const Texture*> bindings;
 	};
 
 	/*

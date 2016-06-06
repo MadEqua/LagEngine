@@ -23,6 +23,7 @@ namespace Lag
 	class GpuProgramManager;
 	class MaterialManager;
 	class MeshManager;
+	class ImageManager;
 	class TextureManager;
 
 	class GpuBufferManager;
@@ -54,6 +55,7 @@ namespace Lag
 		inline GpuProgramManager& getGpuProgramManager() const { return *gpuProgramManager; }
 		inline MaterialManager& getMaterialManager() const { return *materialManager; }
 		inline MeshManager& getMeshManager() const { return *meshManager; }
+		inline ImageManager& getImageManager() const { return *imageManager; }
 		inline TextureManager& getTextureManager() const { return *textureManager; }
 
 
@@ -75,6 +77,7 @@ namespace Lag
 		GpuProgramManager *gpuProgramManager;
 		MaterialManager *materialManager;
 		MeshManager *meshManager;
+		ImageManager *imageManager;
 		TextureManager *textureManager;
 
 		GpuBufferManager *gpuBufferManager;

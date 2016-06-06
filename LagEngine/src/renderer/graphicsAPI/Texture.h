@@ -4,6 +4,7 @@
 #include "../../Types.h"
 
 #include <string>
+#include <vector>
 
 namespace Lag
 {
@@ -18,28 +19,7 @@ namespace Lag
 	{
 		LAG_TEXTURE_TYPE_1D,
 		LAG_TEXTURE_TYPE_2D,
-	};
-
-	enum TextureComponents
-	{
-		LAG_TEXTURE_COMPONENTS_RGBA,
-		LAG_TEXTURE_COMPONENTS_RGB,
-		LAG_TEXTURE_COMPONENTS_RG,
-		LAG_TEXTURE_COMPONENTS_R
-	};
-
-	enum TextureComponentType
-	{
-		LAG_TEXTURE_COMPONENT_TYPE_FLOAT16,
-		LAG_TEXTURE_COMPONENT_TYPE_FLOAT32,
-		
-		LAG_TEXTURE_COMPONENT_TYPE_INT8,
-		LAG_TEXTURE_COMPONENT_TYPE_INT16,
-		LAG_TEXTURE_COMPONENT_TYPE_INT32,
-
-		LAG_TEXTURE_COMPONENT_TYPE_UINT8,
-		LAG_TEXTURE_COMPONENT_TYPE_UINT16,
-		LAG_TEXTURE_COMPONENT_TYPE_UINT32
+		LAG_TEXTURE_TYPE_CUBE
 	};
 
 	enum TextureFilteringMode
@@ -64,47 +44,42 @@ namespace Lag
 
 	struct TextureData
 	{
-		TextureData() : components(LAG_TEXTURE_COMPONENTS_RGB),
-			componentType(LAG_TEXTURE_COMPONENT_TYPE_UINT8),
+		TextureData() : 
+			type(LAG_TEXTURE_TYPE_2D),
 			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
 			minificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR),
 			magnificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR),
 			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT ,LAG_TEXTURE_WRAPPING_MODE_REPEAT },
-			normalized(true),
-			sRGB(true),
 			mipmaps(8) {}
 		
-		TextureComponents components;
-		TextureComponentType componentType;
+		TextureType type;
 		TextureSemantic semantic;
 		TextureFilteringMode minificationFilteringMode;
 		TextureFilteringMode magnificationFilteringMode;
 		TexturewWrappingMode wrappingMode[3];
-		bool normalized;
-		bool sRGB; //is the texture in non-linar format?
-		
 		uint32 mipmaps;
 	};
+
+	class Image;
 	
-	//TODO: delete cpu data when sent to gpu?
 	class Texture : public Resource
 	{
 	public:
-		Texture(const std::string &path, TextureType type, const TextureData &data);
+		Texture(const std::string &imageName, const TextureData &data);
+		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
 		virtual ~Texture();
 
-		inline const TextureData& getData() const { return data; }
-		inline TextureType getType() const { return type; }
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 
-		//virtual void setTextureWrap() = 0;
+		inline const TextureData& getData() const { return data; }
+
+		//TODO: set texture parameter methods
 
 	protected:
-		TextureType type;
 		TextureData data;
 
-		uint32 width, height, depth;
-		byte *dataPtr;
-
-		bool loadFromFile();
+		std::vector<std::string> imageNames;
+		std::vector<Image*> images;
 	};
 }

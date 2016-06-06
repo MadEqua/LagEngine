@@ -157,6 +157,7 @@ void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 heigh
 void GL4GraphicsAPI::bindTexture(const Texture &texture, uint8 unit)
 {
 	const GL4Texture& GL4Tex = static_cast<const GL4Texture&>(texture);
+
 	GL_ERROR_CHECK(glBindTextureUnit(unit, GL4Tex.getHandle()))
 }
 

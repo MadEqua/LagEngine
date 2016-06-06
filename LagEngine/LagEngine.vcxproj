@@ -127,8 +127,11 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\scene\Sky.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Texture.cpp" />
     <ClCompile Include="src\renderer\GpuProgramUniformFiller.cpp" />
+    <ClCompile Include="src\resources\Image.cpp" />
+    <ClCompile Include="src\resources\ImageManager.cpp" />
     <ClCompile Include="src\resources\TextureManager.cpp" />
     <ClCompile Include="src\scene\PointLight.cpp" />
     <ClCompile Include="src\scene\Light.cpp" />
@@ -199,9 +202,12 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\scene\Sky.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4Texture.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4TextureManager.h" />
     <ClInclude Include="src\renderer\GpuProgramUniformFiller.h" />
+    <ClInclude Include="src\resources\Image.h" />
+    <ClInclude Include="src\resources\ImageManager.h" />
     <ClInclude Include="src\resources\TextureManager.h" />
     <ClInclude Include="src\scene\DirectionalLight.h" />
     <ClInclude Include="src\scene\PointLight.h" />

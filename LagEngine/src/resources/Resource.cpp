@@ -2,6 +2,10 @@
 
 using namespace Lag;
 
+Resource::Resource()
+{
+}
+
 Resource::Resource(const std::string &path) :
 	path(path)
 {

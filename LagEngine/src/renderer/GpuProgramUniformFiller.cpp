@@ -32,7 +32,7 @@ void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, con
 	updateViewportUniforms(*gpuProgram, *viewport);
 
 	for (auto binding : textureBindings.bindings)
-		updateTextureUniforms(*gpuProgram, *binding.second, binding.first.unit);
+		updateTextureUniforms(*gpuProgram, *binding.second, binding.first);
 }
 
 void GpuProgramUniformFiller::onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport)
