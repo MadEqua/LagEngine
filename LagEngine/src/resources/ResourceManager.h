@@ -18,6 +18,7 @@ namespace Lag
 	{
 	public:
 		//TODO: pass some nicer structure instead of the XML file root?
+		ResourceManager(const std::string &name, const std::string &folder);
 		ResourceManager(const std::string &name);
 		virtual ~ResourceManager();
 
@@ -25,6 +26,8 @@ namespace Lag
 		void parseResourceFile(const TiXmlElement &resourceFileRoot);
 
 	protected:
+
+		std::string folder;
 
 		//Handle a specific resource description
 		virtual void parseResourceDescription(const TiXmlElement &elem) = 0;

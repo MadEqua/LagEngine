@@ -12,6 +12,11 @@ InitializationParameters::InitializationParameters() :
 	vsync(true),
 	maxFPS(60),
 	resourcesFile("resources.xml"),
+	resourcesFolder("resources"),
+	imagesFolder("images"),
+	materialsFolder("materials"),
+	meshesFolder("meshes"),
+	shadersFolder("shaders"),
 
 	MSSAsamples(0),
 	sRGB(true),
@@ -31,8 +36,14 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		fullScreen = iniSettings.getFieldAsBasicType<bool>("fullScreen", fullScreen);
 		vsync = iniSettings.getFieldAsBasicType<bool>("vsync", vsync);
 		maxFPS = iniSettings.getFieldAsBasicType<int>("maxFPS", maxFPS);
+
 		resourcesFile = iniSettings.getFieldAsString("resourcesFile", resourcesFile);
-		
+		resourcesFolder = iniSettings.getFieldAsString("resourcesFolder", resourcesFolder);
+		imagesFolder = iniSettings.getFieldAsString("imagesFolder", imagesFolder);
+		materialsFolder = iniSettings.getFieldAsString("materialsFolder", materialsFolder);
+		meshesFolder = iniSettings.getFieldAsString("meshesFolder", meshesFolder);
+		shadersFolder = iniSettings.getFieldAsString("shadersFolder", shadersFolder);
+
 		MSSAsamples = iniSettings.getFieldAsBasicType<int>("MSSAsamples", MSSAsamples);
 		sRGB = iniSettings.getFieldAsBasicType<bool>("sRGB", sRGB);
 

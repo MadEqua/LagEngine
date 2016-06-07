@@ -7,7 +7,7 @@ namespace Lag
 	class MaterialManager : public ResourceManager
 	{
 	public:
-		MaterialManager();
+		MaterialManager(const std::string &folder);
 		virtual ~MaterialManager();
 
 		bool create(const std::string &name, const std::string &file);

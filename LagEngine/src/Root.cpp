@@ -135,7 +135,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	renderer->addRenderTarget("renderWindow", *renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
-	imageManager = new ImageManager();
+	imageManager = new ImageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder);
 
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
@@ -145,7 +145,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 		inputDescriptionManager = new GL4InputDescriptionManager();
 	}
 
-	if (!initResources(parameters.resourcesFile))
+	if (!initResources(parameters.resourcesFolder + '/' + parameters.resourcesFile))
 		return false;
 
 	windowListener = new WindowListener();
@@ -197,15 +197,15 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	imageManager->parseResourceFile(*resourcesElement);
 	textureManager->parseResourceFile(*resourcesElement);
 
-	meshManager = new MeshManager();
+	meshManager = new MeshManager(initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder);
 	meshManager->parseResourceFile(*resourcesElement);
 
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
-		gpuProgramStageManager = new GL4GpuProgramStageManager();
+		gpuProgramStageManager = new GL4GpuProgramStageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder);
 
 	gpuProgramStageManager->parseResourceFile(*resourcesElement);
 
-	materialManager = new MaterialManager();
+	materialManager = new MaterialManager(initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder);
 	materialManager->parseResourceFile(*resourcesElement);
 
 	return true;

@@ -1,13 +1,18 @@
 #include "ResourceManager.h"
 
-#include "Resource.h"
-#include "../io/log/LogManager.h"
 #include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
+ResourceManager::ResourceManager(const std::string &name, const std::string &folder) :
+	Manager(name),
+	folder(folder)
+{
+}
+
 ResourceManager::ResourceManager(const std::string &name) :
-	Manager(name)
+	Manager(name),
+	folder("")
 {
 }
 

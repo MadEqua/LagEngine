@@ -6,8 +6,8 @@
 
 using namespace Lag;
 
-MaterialManager::MaterialManager() :
-	ResourceManager("MaterialManager")
+MaterialManager::MaterialManager(const std::string &folder) :
+	ResourceManager("MaterialManager", folder)
 {
 }
 
@@ -17,7 +17,7 @@ MaterialManager::~MaterialManager()
 
 bool MaterialManager::create(const std::string &name, const std::string &file)
 {
-	return add(name, new Material(file));
+	return add(name, new Material(folder + '/' + file));
 }
 
 void MaterialManager::parseResourceDescription(const TiXmlElement &element)

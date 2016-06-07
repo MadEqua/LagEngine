@@ -18,6 +18,12 @@ namespace Lag
 		uint32 maxFPS;
 
 		std::string resourcesFile;
+		std::string resourcesFolder;
+		std::string imagesFolder;
+		std::string materialsFolder;
+		std::string meshesFolder;
+		std::string shadersFolder;
+
 
 		//Hints
 		uint32 MSSAsamples;

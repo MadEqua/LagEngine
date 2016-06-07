@@ -58,9 +58,10 @@ namespace Lag
 		inline ImageManager& getImageManager() const { return *imageManager; }
 		inline TextureManager& getTextureManager() const { return *textureManager; }
 
-
 		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
 		inline InputDescriptionManager& getInputDescriptionManager() const { return *inputDescriptionManager; }
+
+		inline const std::string& getResourcesFolder() { return  initializationParameters.resourcesFolder; }
 
 		void startRenderingLoop();
 		void stopRenderingLoop();

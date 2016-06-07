@@ -6,8 +6,8 @@
 
 using namespace Lag;
 
-MeshManager::MeshManager() :
-	ResourceManager("MeshManager")
+MeshManager::MeshManager(const std::string &folder) :
+	ResourceManager("MeshManager", folder)
 {
 }
 
@@ -17,7 +17,7 @@ MeshManager::~MeshManager()
 
 bool MeshManager::create(const std::string &name, const std::string &file)
 {
-	return add(name, new Mesh(file));
+	return add(name, new Mesh(folder + '/' + file));
 }
 
 void MeshManager::parseResourceDescription(const TiXmlElement &element)

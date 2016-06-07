@@ -7,8 +7,8 @@
 
 using namespace Lag;
 
-GpuProgramStageManager::GpuProgramStageManager() :
-	ResourceManager("GpuProgramStageManager")
+GpuProgramStageManager::GpuProgramStageManager(const std::string &folder) :
+	ResourceManager("GpuProgramStageManager", folder)
 {
 }
 

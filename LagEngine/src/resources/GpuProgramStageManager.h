@@ -14,7 +14,7 @@ namespace Lag
 	class GpuProgramStageManager : public ResourceManager
 	{
 	public:
-		GpuProgramStageManager();
+		GpuProgramStageManager(const std::string &folder);
 		~GpuProgramStageManager();
 
 		virtual bool create(const std::string &name, const std::string &file, GpuProgramStageType type) = 0;
