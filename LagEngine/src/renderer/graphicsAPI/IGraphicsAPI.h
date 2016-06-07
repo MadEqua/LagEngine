@@ -46,6 +46,9 @@ namespace Lag
 		virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
 		virtual void bindTexture(const Texture &texture, uint8 unit = 0) = 0;
 
+		virtual void setDepthTestEnabled(bool enabled) = 0;
+		virtual void setDepthWritingEnabled(bool enabled) = 0;
+
 
 		//virtual void setTexture(uint32 unit, Texture &texture) = 0;
 		//virtual void setTexture(uint32 unit, const std::string &textureName) = 0;

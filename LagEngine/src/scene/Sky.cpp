@@ -27,7 +27,7 @@ Sky::Sky(const std::string &materialName)
 
 	const int VERTEX_COUNT = 8;
 	const int INDEX_COUNT = 12 * 3;
-	const float v = 20.8f;
+	const float v = 1.0f;
 	float vertices[] =
 	{
 		-v, v, v,
@@ -84,5 +84,7 @@ void Sky::render(Renderer &renderer, RenderOperation &renderOperation)
 	renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
 		model, nor, *renderOperation.viewport);
 	
+	renderer.setDepthWritingEnabled(false);
 	renderer.renderIndexed(vertexData, indexData, 0);
+	renderer.setDepthWritingEnabled(true);
 }

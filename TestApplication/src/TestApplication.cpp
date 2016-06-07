@@ -98,7 +98,7 @@ void TestApplication::createScene()
 
 	Lag::SceneNode &baseNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("base");
 	//baseNode.translate(glm::vec3(0.0f, 10.1f, 0.0f), Lag::WORLD);
-	baseNode.setScale(glm::vec3(20.0f, 0.1f, 20.0f));
+	baseNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
 	Lag::Entity *base = sceneManager->createEntity("cube", "cube", "testMaterial2");
 	base->attachToSceneNode(baseNode);
 

@@ -58,7 +58,10 @@ bool GLFWRenderWindow::initialize()
 	else
 	{
 		glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSSAsamples);
-		glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? GL_TRUE : GL_FALSE);
+		glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? 1 : 0);
+		glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
+		glfwWindowHint(GLFW_AUX_BUFFERS, 0);
+
 		glfwSwapInterval(initializationParameters.vsync ? 1 : 0);
 
 		window = glfwCreateWindow(initializationParameters.width, 

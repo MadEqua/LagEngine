@@ -231,6 +231,16 @@ void Renderer::clearDepthAndStencilBuffer()
 	graphicsAPI.clearDepthAndStencilBuffer(depthClearValue, stencilClearValue);
 }
 
+void Renderer::setDepthTestEnabled(bool enabled)
+{
+	graphicsAPI.setDepthTestEnabled(enabled);
+}
+
+void Renderer::setDepthWritingEnabled(bool enabled)
+{
+	graphicsAPI.setDepthWritingEnabled(enabled);
+}
+
 
 void Renderer::RenderTargetListener::onResize(RenderTarget &notifier, int width, int height)
 {

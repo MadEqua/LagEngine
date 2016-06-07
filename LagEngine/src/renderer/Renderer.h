@@ -111,6 +111,9 @@ namespace Lag
 		void clearStencilBuffer();
 		void clearDepthAndStencilBuffer();
 
+		void setDepthTestEnabled(bool enabled);
+		void setDepthWritingEnabled(bool enabled);
+
 		//TODO
 		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
 		//void beginGeometryCount();

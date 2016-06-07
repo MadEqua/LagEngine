@@ -161,6 +161,23 @@ void GL4GraphicsAPI::bindTexture(const Texture &texture, uint8 unit)
 	GL_ERROR_CHECK(glBindTextureUnit(unit, GL4Tex.getHandle()))
 }
 
+void GL4GraphicsAPI::setDepthTestEnabled(bool enabled)
+{
+	if (enabled)
+	{
+		GL_ERROR_CHECK(glEnable(GL_DEPTH_TEST))
+	}
+	else
+	{
+		GL_ERROR_CHECK(glDisable(GL_DEPTH_TEST))
+	}
+}
+
+void GL4GraphicsAPI::setDepthWritingEnabled(bool enabled)
+{
+	GL_ERROR_CHECK(glDepthMask(enabled ? GL_TRUE : GL_FALSE))
+}
+
 GLenum GL4GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode)
 {
 	switch (renderMode)
