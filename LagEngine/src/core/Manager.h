@@ -9,7 +9,7 @@
 namespace Lag
 {
 	/*
-	* Generic class for managers that store a objects mapped by a name.
+	* Generic class for managers that store ManagedObjects mapped by a name.
 	* Loads and unloads can be decoupled from adds.
 	*/
 	template<class K>

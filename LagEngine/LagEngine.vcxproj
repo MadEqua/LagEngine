@@ -127,6 +127,10 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp" />
+    <ClCompile Include="src\renderer\graphicsAPI\RenderToTexture.cpp" />
+    <ClCompile Include="src\scene\OrthographicCamera.cpp" />
+    <ClCompile Include="src\scene\PerspectiveCamera.cpp" />
     <ClCompile Include="src\scene\Sky.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Texture.cpp" />
     <ClCompile Include="src\renderer\GpuProgramUniformFiller.cpp" />
@@ -202,6 +206,11 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\NamedContainer.h" />
+    <ClInclude Include="src\scene\OrthographicCamera.h" />
+    <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderToTexture.h" />
+    <ClInclude Include="src\renderer\graphicsAPI\RenderToTexture.h" />
+    <ClInclude Include="src\scene\PerspectiveCamera.h" />
     <ClInclude Include="src\scene\Sky.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4Texture.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4TextureManager.h" />

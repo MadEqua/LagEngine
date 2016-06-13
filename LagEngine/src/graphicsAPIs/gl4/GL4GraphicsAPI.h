@@ -12,6 +12,8 @@ namespace Lag
 		GL4GraphicsAPI();
 		~GL4GraphicsAPI();
 
+		virtual RenderToTexture* createRenderToTexture(uint32 width, uint32 height) override;
+
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) override;
 		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) override;
 

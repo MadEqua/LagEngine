@@ -9,6 +9,7 @@
 #include "GL4GpuProgram.h"
 #include "GL4GpuBuffer.h"
 #include "GL4Texture.h"
+#include "GL4RenderToTexture.h"
 
 #include "GL4Error.h"
 
@@ -23,6 +24,7 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 		std::string errorString = reinterpret_cast<const char*>(glewGetErrorString(err));
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Failed to initialize GLEW: " + errorString);
+		return;
 	}
 
 	if (GLEW_VERSION_4_5)
@@ -70,6 +72,11 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 
 GL4GraphicsAPI::~GL4GraphicsAPI()
 {
+}
+
+RenderToTexture* GL4GraphicsAPI::createRenderToTexture(uint32 width, uint32 height)
+{
+	return new GL4RenderToTexture(width, height);
 }
 
 void GL4GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 count)

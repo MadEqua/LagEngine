@@ -6,7 +6,7 @@
 
 using namespace Lag;
 
-Viewport::Viewport(const std::string &name, Camera &camera, RenderTarget &renderTarget,
+Viewport::Viewport(uint16 name, Camera &camera, RenderTarget &renderTarget,
 	float left, float bottom, float width, float height) :
 	name(name),
 	camera(camera),

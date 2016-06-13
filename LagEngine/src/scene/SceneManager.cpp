@@ -7,7 +7,8 @@
 #include "../resources/MaterialManager.h"
 
 #include "Entity.h"
-#include "Camera.h"
+#include "PerspectiveCamera.h"
+#include "OrthographicCamera.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
 #include "../renderer/IRenderable.h"
@@ -24,9 +25,6 @@ SceneManager::SceneManager() : sky(nullptr)
 
 SceneManager::~SceneManager()
 {
-	for (auto &pair : sceneObjectMap)
-		delete pair.second;
-
 	if (sky)
 		delete sky;
 
@@ -35,7 +33,7 @@ SceneManager::~SceneManager()
 }
 
 
-Entity* SceneManager::createEntity(const std::string &name, const std::string &meshName, const std::string &materialName)
+Entity* SceneManager::createEntity(const std::string &meshName, const std::string &materialName)
 {
 	Root &root = Root::getInstance();
 
@@ -49,34 +47,43 @@ Entity* SceneManager::createEntity(const std::string &name, const std::string &m
 		return nullptr;
 	}
 	
-	Entity *e = new Entity(*material, *mesh);
-	sceneObjectMap[name] = e;
+	Entity *e = new Entity(sceneObjectMap.getNextName(), *material, *mesh);
+	sceneObjectMap.add(e);
 	entityVector.push_back(e);
 	renderableVector.push_back(e);
 	return e;
 }
 
-Camera& SceneManager::createCamera(const std::string &name, float fovy, float nearPlane, float farPlane)
+PerspectiveCamera& SceneManager::createPerspectiveCamera(float aspectRatio, 
+	float fovy, float nearPlane, float farPlane)
 {
-	Camera *cam = new Camera(fovy, nearPlane, farPlane);
-	sceneObjectMap[name] = cam;
+	PerspectiveCamera *cam = new PerspectiveCamera(sceneObjectMap.getNextName(), aspectRatio, fovy, nearPlane, farPlane);
+	sceneObjectMap.add(cam);
 	cameraVector.push_back(cam);
 	return *cam;
 }
 
-PointLight& SceneManager::createPointLight(const std::string &name, const Color& color, const glm::vec3 &attenuation)
+OrthographicCamera& SceneManager::createOrthographicCamera(float left, float right, float bottom, float top, 
+	float nearPlane, float farPlane)
 {
-	PointLight *pl = new PointLight(color, attenuation);
-	sceneObjectMap[name] = pl;
+	OrthographicCamera *cam = new OrthographicCamera(sceneObjectMap.getNextName(), left, right, bottom, top, nearPlane, farPlane);
+	sceneObjectMap.add(cam);
+	cameraVector.push_back(cam);
+	return *cam;
+}
+
+PointLight& SceneManager::createPointLight(const Color& color, const glm::vec3 &attenuation, bool castShadow)
+{
+	PointLight *pl = new PointLight(sceneObjectMap.getNextName(), color, attenuation, castShadow);
+	sceneObjectMap.add(pl);
 	pointLightVector.push_back(pl);
 	return *pl;
 }
 
-DirectionalLight& SceneManager::createDirectionalLight(const std::string &name, 
-	const Color& color, const glm::vec3& direction)
+DirectionalLight& SceneManager::createDirectionalLight(const Color& color, const glm::vec3& direction, bool castShadow)
 {
-	DirectionalLight *dl = new DirectionalLight(direction, color);
-	sceneObjectMap[name] = dl;
+	DirectionalLight *dl = new DirectionalLight(sceneObjectMap.getNextName(), direction, color, castShadow);
+	sceneObjectMap.add(dl);
 	directionalLightVector.push_back(dl);
 	return *dl;
 }
@@ -94,13 +101,9 @@ void SceneManager::disableSky()
 	renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
 }
 
-SceneObject* SceneManager::getSceneObject(const std::string &name) const
+SceneObject* SceneManager::getSceneObject(uint32 name) const
 {
-	auto it = sceneObjectMap.find(name);
-	if (it != sceneObjectMap.end())
-		return it->second;
-	else
-		return nullptr;
+	return sceneObjectMap.get(name);
 }
 
 void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport) const

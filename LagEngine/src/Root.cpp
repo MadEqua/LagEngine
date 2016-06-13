@@ -97,8 +97,6 @@ void Root::destroy()
 
 	if (inputManager != nullptr)
 		delete inputManager;
-	if (renderWindow != nullptr)
-		delete renderWindow;
 }
 
 bool Root::initializeLag(const InitializationParameters &parameters)
@@ -115,6 +113,8 @@ bool Root::initializeLag(const std::string &iniFile)
 
 bool Root::internalInit(const InitializationParameters &parameters)
 {
+	initializationParameters = parameters;
+	
 	//in case of reinitialization
 	destroy();
 
@@ -132,7 +132,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	renderer = new Renderer(*graphicsAPI, *sceneManager);
 
-	renderer->addRenderTarget("renderWindow", *renderWindow);
+	renderer->addRenderWindow(*renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
 	imageManager = new ImageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder);

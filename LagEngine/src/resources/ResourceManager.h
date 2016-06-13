@@ -17,11 +17,11 @@ namespace Lag
 	class ResourceManager : public Manager<std::string>
 	{
 	public:
-		//TODO: pass some nicer structure instead of the XML file root?
 		ResourceManager(const std::string &name, const std::string &folder);
 		ResourceManager(const std::string &name);
 		virtual ~ResourceManager();
 
+		//TODO: pass some nicer structure instead of the XML file root?
 		//Parse resource file and check if there is something of interest for the manager
 		void parseResourceFile(const TiXmlElement &resourceFileRoot);
 

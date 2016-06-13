@@ -14,6 +14,9 @@
 
 #include <iostream>
 
+
+#include "scene/OrthographicCamera.h"
+
 TestApplication::TestApplication() :
 	time(0.0f)
 {
@@ -46,7 +49,7 @@ bool TestApplication::start()
 
 	camera = new Lag::FreeCamera(45.0f, 0.1f, 1000.0f, 10.0f);
 	camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
-	renderWindow->createViewport("default", camera->getCamera());
+	renderWindow->createViewport(camera->getCamera());
 
 	/*Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
 	Lag::SceneNode &secondaryCameraNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("secondaryCamera");
@@ -55,22 +58,22 @@ bool TestApplication::start()
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
 	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);*/
 
-	Lag::PointLight& pl = sceneManager->createPointLight("pl1", Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+	Lag::PointLight& pl = sceneManager->createPointLight(Lag::Color(0.0f, 1.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl1SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl1SceneNode");
-	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl1SceneNode);
+	sceneManager->createEntity("sphere", "testMaterial2")->attachToSceneNode(pl1SceneNode);
 	pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl1SceneNode.setScale(glm::vec3(0.1f));
 	pl.attachToSceneNode(pl1SceneNode);
 
-	Lag::PointLight& pl2 = sceneManager->createPointLight("pl2", Lag::Color(1.0f, 0.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
+	Lag::PointLight& pl2 = sceneManager->createPointLight(Lag::Color(1.0f, 0.0f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl2SceneNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("pl2SceneNode");
-	sceneManager->createEntity("sphere", "sphere", "testMaterial2")->attachToSceneNode(pl2SceneNode);
+	sceneManager->createEntity("sphere", "testMaterial2")->attachToSceneNode(pl2SceneNode);
 	pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl2SceneNode.setScale(glm::vec3(0.1f));
 	pl2.attachToSceneNode(pl2SceneNode);
 
-	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight("dir1", Lag::Color(0.3f), glm::vec3(1.0f, -1.0f, 0.0f));
-	dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
+	Lag::DirectionalLight& dir1 = sceneManager->createDirectionalLight(Lag::Color(0.3f), glm::vec3(1.0f, -1.0f, 0.0f));
+	//dir1.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());
 
 	/*Lag::DirectionalLight& dir2 = sceneManager->createDirectionalLight("dir2", Lag::Color(0.3f), glm::vec3(-1.0f, -1.0f, 0.0f));
 	dir2.attachToSceneNode(sceneManager->getSceneGraph().getRootSceneNode());*/
@@ -93,13 +96,13 @@ void TestApplication::createScene()
 {
 	Lag::SceneNode &mainNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("main");
 	mainNode.setScale(glm::vec3(0.01f));
-	Lag::Entity *ent = sceneManager->createEntity("bunny", "bunny", "testMaterial");
+	Lag::Entity *ent = sceneManager->createEntity("bunny", "testMaterial");
 	ent->attachToSceneNode(mainNode);
 
 	Lag::SceneNode &baseNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("base");
 	//baseNode.translate(glm::vec3(0.0f, 10.1f, 0.0f), Lag::WORLD);
 	baseNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
-	Lag::Entity *base = sceneManager->createEntity("cube", "cube", "testMaterial2");
+	Lag::Entity *base = sceneManager->createEntity("cube", "testMaterial2");
 	base->attachToSceneNode(baseNode);
 
 	createSceneAux(mainNode, 10.0f, 8, 0, 3);
@@ -119,8 +122,7 @@ void TestApplication::createSceneAux(Lag::SceneNode &center, float size, int cou
 		periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::PARENT);
 		periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::LOCAL);
 
-		Lag::Entity *periferyEnt = sceneManager->createEntity("perifery" + 
-			std::to_string(actualdepth) + std::to_string(i), "bunny", "testMaterial");
+		Lag::Entity *periferyEnt = sceneManager->createEntity("bunny", "testMaterial");
 
 		periferyEnt->attachToSceneNode(periferyNode);
 

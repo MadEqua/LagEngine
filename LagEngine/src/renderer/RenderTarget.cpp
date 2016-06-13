@@ -11,32 +11,31 @@ RenderTarget::RenderTarget(uint32 width, uint32 height, bool isMainWindow) :
 
 RenderTarget::~RenderTarget()
 {
-	for (auto &pair : viewports)
-		delete pair.second;
 }
 
-Viewport& RenderTarget::createViewport(const std::string &name, Camera &camera, 
+Viewport& RenderTarget::createViewport(Camera &camera, 
 	float left, float top, float width, float height)
 {
-	Viewport *vp = new Viewport(name, camera, *this, left, top, width, height);
-	viewports[name] = vp;
+	Viewport *vp = new Viewport(viewports.getNextName(), camera, *this, left, top, width, height);
+	viewports.add(vp);
 	return *vp;
 }
 
-Viewport* RenderTarget::getViewport(const std::string &name) const
+Viewport* RenderTarget::getViewport(uint16 name) const
 {
-	auto it = viewports.find(name);
-	if (it != viewports.end())
-		return it->second;
-	else
-		return nullptr;
+	return viewports.get(name);
 }
 
 void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
 {
 	onPreRenderNotify(*this);
-	for (auto &pair : viewports)
-		pair.second->addRenderablesToQueue(renderQueue, sceneManager);
+	for (uint32 i = 0; i < viewports.getSize(); ++i)
+	{
+		//TODO: add proper iterator
+		Viewport *v = viewports.get(i);
+		if (v != nullptr)
+			v->addRenderablesToQueue(renderQueue, sceneManager);
+	}
 	onPostRenderNotify(*this); //TODO wrong
 }
 

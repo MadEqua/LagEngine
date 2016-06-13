@@ -22,7 +22,7 @@ namespace Lag
 	public:
 
 		//defaultMaterial will be used if the meshes contain no material information
-		Entity(Material &defaultMaterial, Mesh &mesh);
+		Entity(uint32 name, Material &defaultMaterial, Mesh &mesh);
 		virtual ~Entity();
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport) override;

@@ -76,7 +76,8 @@ Sky::~Sky()
 
 void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 {
-	renderQueue.addRenderOperation(*this, 0, vertexData, &indexData, *material, viewport);
+	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_OPAQUE, 0, 
+		vertexData, &indexData, *material, viewport);
 }
 
 void Sky::render(Renderer &renderer, RenderOperation &renderOperation)

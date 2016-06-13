@@ -5,3 +5,6 @@
 dependencies/
 Debug/
 Release/
+
+resources/images/
+resources/meshes/

@@ -115,7 +115,7 @@ bool Material::parse()
 				if (tex != nullptr)
 				{
 					textures.push_back(tex);
-					texturesBySemantic[tex->getData().semantic].push_back(tex);
+					texturesBySemantic[tex->getTextureData().semantic].push_back(tex);
 				}
 			}
 		}

@@ -12,6 +12,7 @@ namespace Lag
 	class IRenderable;
 	class Renderer;
 	class IFrameListener;
+	enum RenderPhase;
 
 	/*
 	* Renderer helper class.
@@ -24,7 +25,7 @@ namespace Lag
 		RenderQueue();
 		~RenderQueue();
 
-		void addRenderOperation(IRenderable &renderable, uint32 passId,
+		void addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
 			VertexData &vertexData, IndexData *indexData, Material &material,
 			Viewport &viewport);
 		

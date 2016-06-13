@@ -151,7 +151,7 @@ void GpuProgramUniformFiller::updateViewportUniforms(const GpuProgram &gpuProgra
 void GpuProgramUniformFiller::updateTextureUniforms(const GpuProgram &gpuProgram, const Texture &texture, uint8 unit)
 {
 	GpuProgramUniformSemantic uniformSemantic;
-	switch (texture.getData().semantic)
+	switch (texture.getTextureData().semantic)
 	{
 	case LAG_TEXTURE_SEMANTIC_DIFFUSE:
 		uniformSemantic = LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE;

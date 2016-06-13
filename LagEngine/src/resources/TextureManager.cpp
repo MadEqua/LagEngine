@@ -29,6 +29,7 @@ void TextureManager::parseResourceDescription(const TiXmlElement &element)
 
 		TextureData data;
 		data.type = parseTextureType(typeStr);
+		data.dataType = LAG_TEXTURE_DATA_TYPE_COLOR; //loading depth or stencil from an image makes no sense
 		std::vector<std::string> imageNames;
 
 		if (data.type != LAG_TEXTURE_TYPE_CUBE)

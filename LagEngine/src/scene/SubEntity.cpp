@@ -29,7 +29,14 @@ SubEntity::~SubEntity()
 
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
 {
-	renderQueue.addRenderOperation(*this, 0,
+	//TODO: if castShadow?, correct material...
+	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_DEPTH, 0,
+		const_cast<VertexData&>(subMesh.getVertexData()),
+		const_cast<IndexData*>(&subMesh.getIndexData()),
+		material, viewport);
+	
+	
+	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_OPAQUE, 0,
 		const_cast<VertexData&>(subMesh.getVertexData()), 
 		const_cast<IndexData*>(&subMesh.getIndexData()),
 		material, viewport);

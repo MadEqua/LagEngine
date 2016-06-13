@@ -1,7 +1,10 @@
 #include "Renderer.h"
 
-#include "RenderTarget.h"
+#include "graphicsAPI/RenderToTexture.h"
+#include "RenderWindow.h"
 #include "../scene/SceneManager.h"
+#include "../scene/DirectionalLight.h"
+#include "../scene/OrthographicCamera.h"
 #include "graphicsAPI/GpuProgram.h"
 #include "Material.h"
 
@@ -52,7 +55,7 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
-	renderTargetListener(*this),
+	renderWindowListener(*this),
 	actualFrame(0),
 	lastUsedGpuProgramOnFrame(nullptr)
 {
@@ -66,25 +69,47 @@ Renderer::~Renderer()
 		"Renderer", "Destroyed successfully.");
 }
 
-void Renderer::addRenderTarget(const std::string &name, RenderTarget &renderTarget)
+uint16 Renderer::addRenderWindow(RenderWindow &renderWindow)
 {
-	renderTargets[name] = &renderTarget;
-	renderTarget.registerObserver(renderTargetListener);
+	//Only supporting one render window and it's always the zero indexed RenderTarget
+	if (renderTargets.contains(0))
+	{
+		delete renderTargets.get(0);
+		renderTargets.set(0, &renderWindow);
+	}
+	else
+		renderTargets.add(&renderWindow);
+	
+	static_cast<RenderTarget&>(renderWindow).registerObserver(renderWindowListener);
+	return 0;
 }
 
-void Renderer::removeRenderTarget(const std::string &name)
+uint16 Renderer::createRenderTarget(uint32 width, uint32 height)
 {
-	renderTargets.erase(name);
+	RenderToTexture *rtt = graphicsAPI.createRenderToTexture(width, height);
+	return renderTargets.add(static_cast<RenderTarget*>(rtt));
+}
+
+void Renderer::removeRenderTarget(uint16 name)
+{
+	renderTargets.remove(name);
+}
+
+RenderTarget* Renderer::getRenderTarget(uint16 name)
+{
+	return renderTargets.get(name);
 }
 
 void Renderer::renderAllRenderTargets()
 {
 	renderQueue.clear();
 	
-	for (auto &rtPair : renderTargets)
+	for (uint32 i = 0; i < renderTargets.getSize(); ++i)
 	{
-		RenderTarget &rt = *rtPair.second;
-		rt.addRenderablesToQueue(renderQueue, sceneManager);
+		//TODO: add proper iterator
+		RenderTarget *rt = renderTargets.get(i);
+		if(rt != nullptr)
+			rt->addRenderablesToQueue(renderQueue, sceneManager);
 	}
 
 	renderQueue.sort();
@@ -153,7 +178,7 @@ void Renderer::bindViewport(const Viewport &viewport)
 
 void Renderer::bindTexture(const Texture &texture, uint8 unit)
 {
-	const Texture *actualBound = boundTextures.getBinding(texture.getData().type, unit);
+	const Texture *actualBound = boundTextures.getBinding(texture.getTextureData().type, unit);
 	
 	if (&texture != actualBound)
 	{
@@ -242,7 +267,7 @@ void Renderer::setDepthWritingEnabled(bool enabled)
 }
 
 
-void Renderer::RenderTargetListener::onResize(RenderTarget &notifier, int width, int height)
+void Renderer::RenderWindowListener::onResize(RenderTarget &notifier, int width, int height)
 {
 	if (renderer.boundViewport != nullptr)
 	{

@@ -15,6 +15,11 @@ GL4Texture::GL4Texture(const std::vector<std::string> &imageNames, const Texture
 	GL_ERROR_CHECK(glCreateTextures(getGLType(), 1, &handle))
 }
 
+GL4Texture::GL4Texture(const ImageData &imageData, const TextureData &textureData) :
+	Texture(imageData, textureData)
+{
+}
+
 GL4Texture::~GL4Texture()
 {
 	GL_ERROR_CHECK(glDeleteTextures(1, &handle))
@@ -27,49 +32,49 @@ bool GL4Texture::loadImplementation()
 
 	const Image *image = images[0];
 	
-	switch (data.type)
+	switch (textureData.type)
 	{
 	case LAG_TEXTURE_TYPE_1D:
-		GL_ERROR_CHECK(glTextureStorage1D(handle, data.mipmaps, getPixelDataSizedFormatGL(), image->getData().width))
-		GL_ERROR_CHECK(glTextureSubImage1D(handle, 0, 0, image->getData().width,
+		GL_ERROR_CHECK(glTextureStorage1D(handle, textureData.mipmaps, getPixelDataSizedFormatGL(), imageData.width))
+		GL_ERROR_CHECK(glTextureSubImage1D(handle, 0, 0, imageData.width,
 				getPixelDataFormatGL(), getPixelDataTypeGL(), image->getRawDataPointer()))
 		break;
 
 	case LAG_TEXTURE_TYPE_2D:		
-		GL_ERROR_CHECK(glTextureStorage2D(handle, data.mipmaps, getPixelDataSizedFormatGL(), image->getData().width, image->getData().height))
-		GL_ERROR_CHECK(glTextureSubImage2D(handle, 0, 0, 0, image->getData().width, image->getData().height,
+		GL_ERROR_CHECK(glTextureStorage2D(handle, textureData.mipmaps, getPixelDataSizedFormatGL(), imageData.width, imageData.height))
+		GL_ERROR_CHECK(glTextureSubImage2D(handle, 0, 0, 0, imageData.width, imageData.height,
 				getPixelDataFormatGL(), getPixelDataTypeGL(), image->getRawDataPointer()))
-		GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_T, getWrappingModeGL(data.wrappingMode[1])))
+		GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_T, getWrappingModeGL(textureData.wrappingMode[1])))
 		break;
 
 	case LAG_TEXTURE_TYPE_CUBE:
 		GL_ERROR_CHECK(glBindTexture(GL_TEXTURE_CUBE_MAP, handle)) //bind seems to be required for cube maps
-		GL_ERROR_CHECK(glTexStorage2D(GL_TEXTURE_CUBE_MAP, data.mipmaps, getPixelDataSizedFormatGL(),
-				image->getData().width, image->getData().height));
+		GL_ERROR_CHECK(glTexStorage2D(GL_TEXTURE_CUBE_MAP, textureData.mipmaps, getPixelDataSizedFormatGL(),
+			imageData.width, imageData.height));
 
 		for (int i = 0; i < 6; ++i)
 		{
 			const Image *image = images[i];
 			GL_ERROR_CHECK(glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 				0, 0, 0,
-				image->getData().width, image->getData().height,
+				imageData.width, imageData.height,
 				getPixelDataFormatGL(), getPixelDataTypeGL(), 
 				image->getRawDataPointer()));
 		}
 
-		GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_T, getWrappingModeGL(data.wrappingMode[1])))
+		GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_T, getWrappingModeGL(textureData.wrappingMode[1])))
 		break;
 	default:
 		return false;
 	}
 
-	if (data.mipmaps > 1)
+	if (textureData.mipmaps > 1)
 		GL_ERROR_CHECK(glGenerateTextureMipmap(handle))
 
-	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_S, getWrappingModeGL(data.wrappingMode[0])))
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_WRAP_S, getWrappingModeGL(textureData.wrappingMode[0])))
 
-	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MIN_FILTER, getFilteringModeGL(data.minificationFilteringMode)))
-	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MAG_FILTER, getFilteringModeGL(data.magnificationFilteringMode)))
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MIN_FILTER, getFilteringModeGL(textureData.minificationFilteringMode)))
+	GL_ERROR_CHECK(glTextureParameteri(handle, GL_TEXTURE_MAG_FILTER, getFilteringModeGL(textureData.magnificationFilteringMode)))
 
 	return true;
 }
@@ -80,7 +85,7 @@ void GL4Texture::unloadImplementation()
 
 GLenum GL4Texture::getGLType() const
 {
-	switch (data.type)
+	switch (textureData.type)
 	{
 	case LAG_TEXTURE_TYPE_1D:
 		return GL_TEXTURE_1D;

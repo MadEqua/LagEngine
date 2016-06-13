@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Types.h"
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
 #include <glm/vec3.hpp>
@@ -14,14 +15,18 @@ namespace Lag
 	class SceneObject 
 	{
 	public:
-		SceneObject();
+		SceneObject(uint32 name);
 		virtual ~SceneObject();
+
+		inline uint32 getName() const { return name; }
 
 		inline SceneNode* getParentSceneNode() const { return parentSceneNode; }
 		inline bool isAttachedToSceneNode() const { return parentSceneNode != nullptr; }
 
 		inline void attachToSceneNode(SceneNode& node) { parentSceneNode = &node; }
 		inline void detachFromSceneNode() { parentSceneNode = nullptr; }
+
+		inline SceneNode* getParentSceneNode() { return parentSceneNode; }
 
 		//Convenience methods, transforms belong to SceneNodes
 		const glm::vec3& getWorldPosition() const;
@@ -31,6 +36,8 @@ namespace Lag
 		const glm::mat3& getNormalTransform() const;
 		 
 	protected:
+		uint32 name;
+
 		SceneNode *parentSceneNode;
 		glm::mat4 tempMat4;
 		glm::mat3 tempMat3;

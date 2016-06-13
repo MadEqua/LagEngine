@@ -25,7 +25,7 @@ FreeCamera::FreeCamera(float fovy, float nearPlane, float farPlane, float moveSp
 	cameraPitchNode = &cameraYawNode->createChildSceneNode("cameraPitchNode");
 	cameraTranslationNode = &cameraPitchNode->createChildSceneNode("cameraTranslationNode");
 
-	camera = &sm.createCamera("FreeCamera", fovy, nearPlane, farPlane);
+	camera = &sm.createPerspectiveCamera(1.0f, fovy, nearPlane, farPlane);
 	camera->attachToSceneNode(*cameraTranslationNode);
 
 	root.registerObserver(*this);

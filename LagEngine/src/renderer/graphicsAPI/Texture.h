@@ -2,12 +2,14 @@
 
 #include "../../resources/Resource.h"
 #include "../../Types.h"
+#include "../../resources/Image.h"
 
 #include <string>
 #include <vector>
 
 namespace Lag
 {
+	//For shader uniform matching
 	enum TextureSemantic
 	{
 		LAG_TEXTURE_SEMANTIC_DIFFUSE,
@@ -19,7 +21,15 @@ namespace Lag
 	{
 		LAG_TEXTURE_TYPE_1D,
 		LAG_TEXTURE_TYPE_2D,
-		LAG_TEXTURE_TYPE_CUBE
+		LAG_TEXTURE_TYPE_CUBE,
+	};
+
+	enum TextureDataType
+	{
+		LAG_TEXTURE_DATA_TYPE_COLOR,
+		LAG_TEXTURE_DATA_TYPE_DEPTH,
+		LAG_TEXTURE_DATA_TYPE_STENCIL,
+		LAG_TEXTURE_DATA_TYPE_DEPTH_STENCIL
 	};
 
 	enum TextureFilteringMode
@@ -45,6 +55,7 @@ namespace Lag
 	struct TextureData
 	{
 		TextureData() : 
+			dataType(LAG_TEXTURE_DATA_TYPE_COLOR),
 			type(LAG_TEXTURE_TYPE_2D),
 			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
 			minificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR),
@@ -52,6 +63,7 @@ namespace Lag
 			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT ,LAG_TEXTURE_WRAPPING_MODE_REPEAT },
 			mipmaps(8) {}
 		
+		TextureDataType dataType;
 		TextureType type;
 		TextureSemantic semantic;
 		TextureFilteringMode minificationFilteringMode;
@@ -61,23 +73,31 @@ namespace Lag
 	};
 
 	class Image;
+	struct ImageData;
 	
+	/*
+	* Gpu representation of an Image (or a set of images). May contain mipmaps.
+	*/
 	class Texture : public Resource
 	{
 	public:
 		Texture(const std::string &imageName, const TextureData &data);
 		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
+		Texture(const ImageData &imageData, const TextureData &textureData);
+
 		virtual ~Texture();
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
-		inline const TextureData& getData() const { return data; }
+		inline const TextureData& getTextureData() const { return textureData; }
+		inline const ImageData& getImageData() const { return imageData; }
 
 		//TODO: set texture parameter methods
 
 	protected:
-		TextureData data;
+		TextureData textureData;
+		ImageData imageData;
 
 		std::vector<std::string> imageNames;
 		std::vector<Image*> images;

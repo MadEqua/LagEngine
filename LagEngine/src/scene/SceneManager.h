@@ -1,15 +1,17 @@
 #pragma once
 
-#include <unordered_map>
 #include <vector>
 #include <string>
 
+#include "../core/NamedContainer.h"
 #include "../Types.h"
 #include "SceneGraph.h"
 #include <glm/vec3.hpp>
 
 namespace Lag
 {
+	class PerspectiveCamera;
+	class OrthographicCamera;
 	class Camera;
 	class Entity;
 	class RenderQueue;
@@ -32,16 +34,19 @@ namespace Lag
 		SceneManager();
 		~SceneManager();
 
-		Entity* createEntity(const std::string &name, const std::string &meshName, const std::string &materialName);
-		Camera& createCamera(const std::string &name, float fovy, float nearPlane, float farPlane);	
-		PointLight& createPointLight(const std::string &name, const Color& color, const glm::vec3 &attenuation);
-		DirectionalLight& createDirectionalLight(const std::string &name, const Color& color, const glm::vec3& direction);
+		Entity* createEntity(const std::string &meshName, const std::string &materialName);
+		
+		PerspectiveCamera& createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane);
+		OrthographicCamera& createOrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane);
+
+		PointLight& createPointLight(const Color& color, const glm::vec3 &attenuation, bool castShadow = true);
+		DirectionalLight& createDirectionalLight(const Color& color, const glm::vec3& direction, bool castShadow = true);
 
 		//TODO: texture instead of material?
 		void enableSky(const std::string &materialName);
 		void disableSky();
 
-		SceneObject* getSceneObject(const std::string &name) const;
+		SceneObject* getSceneObject(uint32 name) const;
 
 		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
 		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport) const;
@@ -64,7 +69,7 @@ namespace Lag
 		Sky *sky;
 
 		//All SceneObjects organized by name. Main repository.
-		std::unordered_map<std::string, SceneObject*> sceneObjectMap;
+		NamedContainer<SceneObject> sceneObjectMap;
 
 		//SceneObjects organized by specific types
 		std::vector<Entity*> entityVector;

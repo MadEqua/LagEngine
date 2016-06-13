@@ -21,5 +21,9 @@ namespace Lag
 		{
 			return add(name, new GL4Texture(imageNames, data));
 		}
+		virtual bool create(const std::string &name, const ImageData &imageData, const TextureData &textureData) override
+		{
+			return add(name, new GL4Texture(imageData, textureData));
+		}
 	};
 }

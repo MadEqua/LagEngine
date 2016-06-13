@@ -1,10 +1,9 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
+#include "../core/NamedContainer.h"
 #include "../core/ObserverPattern.h"
-#include "IRenderTargetListener.h"
 #include "../Types.h"
 
 namespace Lag
@@ -13,6 +12,7 @@ namespace Lag
 	class Camera;
 	class RenderQueue;
 	class SceneManager;
+	class IRenderTargetListener;
 	
 	class RenderTarget
 	{
@@ -27,7 +27,7 @@ namespace Lag
 
 		virtual bool initialize() = 0;
 		virtual void destroy() = 0;
-		
+
 		virtual void resize(int width, int height);
 
 		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
@@ -35,10 +35,10 @@ namespace Lag
 		//For double-buffered targets
 		virtual void swapBuffers() {}
 
-		Viewport& createViewport(const std::string &name, Camera &camera, 
+		Viewport& createViewport(Camera &camera, 
 			float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
 
-		Viewport* getViewport(const std::string &name) const;
+		Viewport* getViewport(uint16 name) const;
 
 		inline uint32 getWidth() const { return width;}
 		inline uint32 getHeight() const { return height; }
@@ -48,7 +48,7 @@ namespace Lag
 		//FrameMetrics frameMetrics;
 
 	protected:
-		std::unordered_map<std::string, Viewport*> viewports;
+		NamedContainer<Viewport> viewports;
 
 		uint32 width, height;
 		bool mainWindow;

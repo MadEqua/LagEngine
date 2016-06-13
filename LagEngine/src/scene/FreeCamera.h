@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Camera.h"
+#include "PerspectiveCamera.h"
 #include "../io/IKeyboardListener.h"
 #include "../io/ICursorListener.h"
 #include "../IFrameListener.h"
@@ -38,7 +38,7 @@ namespace Lag
 		bool keyVector[4]; //wasd
 		int lastCursor[2]; //xy
 
-		Camera *camera;
+		PerspectiveCamera *camera;
 		SceneNode *cameraYawNode;
 		SceneNode *cameraPitchNode;
 		SceneNode *cameraTranslationNode;

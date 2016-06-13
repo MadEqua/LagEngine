@@ -1,9 +1,12 @@
 #include "PointLight.h"
 
+#include "SceneManager.h"
+#include "../Root.h"
+
 using namespace Lag;
 
-PointLight::PointLight(const Color &color, const glm::vec3 &attenuation) :
-	Light(color), 
+PointLight::PointLight(uint32 name, const Color &color, const glm::vec3 &attenuation, bool castShadow) :
+	Light(name, color, castShadow), 
 	attenuation(attenuation)
 {
 }

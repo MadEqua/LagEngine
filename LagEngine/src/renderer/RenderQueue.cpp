@@ -18,7 +18,7 @@ RenderQueue::~RenderQueue()
 {
 }
 
-void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
+void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
 	VertexData &vertexData, IndexData *indexData, Material &material,
 	Viewport &viewport)
 {
@@ -31,6 +31,7 @@ void RenderQueue::addRenderOperation(IRenderable &renderable, uint32 passId,
 	
 	RenderOperation &renderOperation = queue[actualSlot];
 	renderOperation.renderable = &renderable;
+	renderOperation.renderPhase = renderPhase;
 	renderOperation.passId = passId;
 	renderOperation.vertexData = &vertexData;
 	renderOperation.indexData = indexData;

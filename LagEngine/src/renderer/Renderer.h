@@ -1,8 +1,8 @@
 #pragma once
 
 #include <string>
-#include <unordered_map>
 
+#include "../core/NamedContainer.h"
 #include "../Types.h"
 #include "RenderQueue.h"
 #include "Color.h"
@@ -23,7 +23,15 @@ namespace Lag
 		LAG_RENDER_MODE_PATCHES
 	};
 
+	enum RenderPhase
+	{
+		LAG_RENDER_PHASE_DEPTH,
+		LAG_RENDER_PHASE_TRANSPARENCY,
+		LAG_RENDER_PHASE_OPAQUE
+	};
+
 	class RenderTarget;
+	class RenderWindow;
 	class IGraphicsAPI;
 	class SceneManager;
 	class GpuProgram;
@@ -75,9 +83,11 @@ namespace Lag
 		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager);
 		~Renderer();
 
-		//TODO: find a way for creating all the RenderTargets within the renderer.
-		void addRenderTarget(const std::string &name, RenderTarget &renderTarget);
-		void removeRenderTarget(const std::string &name);
+		//TODO: should render windows be created here instead of added? (problem: they are platform specific)
+		uint16 addRenderWindow(RenderWindow &renderWindow);
+		uint16 createRenderTarget(uint32 width, uint32 height);
+		void removeRenderTarget(uint16 name);
+		RenderTarget* getRenderTarget(uint16 name);
 
 		//Main entry point for rendering
 		void renderAllRenderTargets();
@@ -130,7 +140,7 @@ namespace Lag
 		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
 
 	private:
-		std::unordered_map<std::string, RenderTarget*> renderTargets;
+		NamedContainer<RenderTarget> renderTargets;
 
 		uint64 actualFrame;
 
@@ -156,14 +166,14 @@ namespace Lag
 		TextureBindings boundTextures;
 
 		//This exists for the case where a frame finishes with the same GpuProgram than the next one will start
-		//onGpuProgramBind will not be called in that case, but some uniforms may need to be updated.
+		//Force uniformFiller.onGpuProgramBind() to be called in that case, some uniforms may need to be updated.
 		const GpuProgram* lastUsedGpuProgramOnFrame;
 
 		//Listening to resizes. A resize may invalidate the current bound Viewport.
-		class RenderTargetListener : public IRenderTargetListener
+		class RenderWindowListener : public IRenderTargetListener
 		{
 		public:
-			RenderTargetListener(Renderer &renderer) :
+			RenderWindowListener(Renderer &renderer) :
 				renderer(renderer) {}
 
 			virtual void onPreRender(RenderTarget &notifier) override {};
@@ -173,6 +183,6 @@ namespace Lag
 		private:
 			Renderer &renderer;
 		};
-		RenderTargetListener renderTargetListener;
+		RenderWindowListener renderWindowListener;
 	};
 }

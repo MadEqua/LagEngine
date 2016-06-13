@@ -4,7 +4,8 @@
 
 using namespace Lag;
 
-SceneObject::SceneObject() :
+SceneObject::SceneObject(uint32 name) :
+	name(name),
 	parentSceneNode(nullptr)
 {
 }

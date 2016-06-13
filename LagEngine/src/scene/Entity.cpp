@@ -5,7 +5,8 @@
 
 using namespace Lag;
 
-Entity::Entity(Material &defaultMaterial, Mesh &mesh) :
+Entity::Entity(uint32 name, Material &defaultMaterial, Mesh &mesh) :
+	SceneObject(name),
 	defaultMaterial(defaultMaterial),
 	mesh(mesh)
 {

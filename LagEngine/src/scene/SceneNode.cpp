@@ -175,6 +175,20 @@ void SceneNode::setPosition(const glm::vec3 &pos)
 	localChangeOccured();
 }
 
+void SceneNode::lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm::vec3 &up)
+{
+	transform.position = pos;
+
+	glm::vec3 dir = glm::normalize(pos - center);
+	glm::vec3 side = glm::normalize(glm::cross(up, dir));
+	glm::vec3 newUp = glm::normalize(glm::cross(dir, side));
+
+	glm::mat3 rot(side, newUp, dir);
+
+	transform.orientation = glm::quat(rot);
+	localChangeOccured();
+}
+
 void SceneNode::localChangeOccured()
 {
 	transform.finalTransformOutOfDate = true;

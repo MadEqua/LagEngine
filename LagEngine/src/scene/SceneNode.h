@@ -61,6 +61,8 @@ namespace Lag
 
 		void setPosition(const glm::vec3 &pos);
 
+		void lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm::vec3 &up);
+
 		//In relation to parent SceneNode
 		inline const glm::vec3& getLocalPosition() const { return transform.position; }
 		inline const glm::quat& getLocalOrientation() const { return transform.orientation; }
