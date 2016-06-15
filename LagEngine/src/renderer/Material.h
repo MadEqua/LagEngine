@@ -25,6 +25,7 @@ namespace Lag
 	{
 	public:
 		Material(const std::string &filePath);
+		Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> texureNames);
 		virtual ~Material();
 	
 		inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
@@ -36,10 +37,14 @@ namespace Lag
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
-		std::vector<std::string> shaderStageNames;
-		GpuProgram *gpuProgram;
+		bool initialize();
 
+		std::vector<std::string> shaderStageNames;
+		std::vector<std::string> textureNames;
+		
 		Renderer &renderer;
+		
+		GpuProgram *gpuProgram;
 		
 		//Textures by associated semantic
 		std::unordered_map<TextureSemantic, std::vector<Texture*>> texturesBySemantic;

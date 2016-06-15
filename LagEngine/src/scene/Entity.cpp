@@ -23,10 +23,10 @@ Entity::~Entity()
 		delete se;
 }
 
-void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
+void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
 	for (SubEntity *se : subEntities)
-		se->addToRenderQueue(renderQueue, viewport);
+		se->addToRenderQueue(renderQueue, viewport, renderTarget);
 }
 
 void Entity::render(Renderer &renderer, RenderOperation &renderOperation)

@@ -8,6 +8,7 @@
 #include "../renderer/graphicsAPI/InputDescriptionManager.h"
 #include "../resources/MaterialManager.h"
 #include "../Types.h"
+#include "../renderer/RenderTarget.h"
 
 using namespace Lag;
 
@@ -74,10 +75,19 @@ Sky::~Sky()
 {
 }
 
-void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
+void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
-	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_OPAQUE, 0, 
-		vertexData, &indexData, *material, viewport);
+	if (renderTarget.getRenderPhase() == LAG_RENDER_PHASE_COLOR)
+	{
+		RenderOperation &ro = renderQueue.addRenderOperation();
+		ro.renderTarget = &renderTarget;
+		ro.vertexData = &vertexData;
+		ro.indexData = &indexData;
+		ro.material = material;
+		ro.renderable = this;
+		ro.viewport = &viewport;
+		ro.passId = 0;
+	}
 }
 
 void Sky::render(Renderer &renderer, RenderOperation &renderOperation)
@@ -86,6 +96,6 @@ void Sky::render(Renderer &renderer, RenderOperation &renderOperation)
 		model, nor, *renderOperation.viewport);
 	
 	renderer.setDepthWritingEnabled(false);
-	renderer.renderIndexed(vertexData, indexData, 0);
+	renderer.renderIndexed(*renderOperation.vertexData, *renderOperation.indexData, 0);
 	renderer.setDepthWritingEnabled(true);
 }

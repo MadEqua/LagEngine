@@ -17,6 +17,16 @@ Material::Material(const std::string &filePath) :
 {
 }
 
+Material::Material(const std::vector<std::string> shaderStageNames,
+	const std::vector<std::string> texureNames) :
+	renderer(Root::getInstance().getRenderer()),
+	shaderStageNames(shaderStageNames),
+	textureNames(texureNames)
+
+{
+	initialize();
+}
+
 Material::~Material()
 {
 }
@@ -40,10 +50,15 @@ const std::vector<Texture*>* Material::getTexturesBySemantic(TextureSemantic sem
 
 bool Material::loadImplementation()
 {
-	Root &root = Root::getInstance();
-	
 	if (!parse())
 		return false;
+
+	return initialize();
+}
+
+bool Material::initialize()
+{
+	Root &root = Root::getInstance();
 
 	std::string gpuProgramName;
 	GpuProgram::generateName(shaderStageNames, gpuProgramName);
@@ -56,6 +71,17 @@ bool Material::loadImplementation()
 			return false;
 	}
 	gpuProgram = static_cast<GpuProgram*>(manager.get(gpuProgramName));
+
+	TextureManager &texMan = Root::getInstance().getTextureManager();
+	for (std::string name : textureNames)
+	{
+		Texture *tex = static_cast<Texture*>(texMan.get(name));
+		if (tex != nullptr)
+		{
+			textures.push_back(tex);
+			texturesBySemantic[tex->getTextureData().semantic].push_back(tex);
+		}
+	}
 
 	return true;
 }
@@ -107,17 +133,8 @@ bool Material::parse()
 		if (child->ValueStr() == "texture")
 		{
 			const char* name = child->Attribute("name");
-
 			if (name)
-			{
-				TextureManager &texMan = Root::getInstance().getTextureManager();
-				Texture *tex = static_cast<Texture*>(texMan.get(name));
-				if (tex != nullptr)
-				{
-					textures.push_back(tex);
-					texturesBySemantic[tex->getTextureData().semantic].push_back(tex);
-				}
-			}
+				textureNames.push_back(name);
 		}
 	}
 	return true;

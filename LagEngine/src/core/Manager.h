@@ -23,6 +23,7 @@ namespace Lag
 		bool contains(const K &name) const;
 		
 		virtual bool add(const K &name, ManagedObject *obj);
+		bool addAndLoad(const K &name, ManagedObject *obj);
 		void remove(const K &name);
 
 		void loadAll();
@@ -82,6 +83,27 @@ namespace Lag
 			objects[name] = obj;
 			return true;
 		}
+	}
+
+	template<class K>
+	virtual bool Manager<K>::addAndLoad(const K &name, ManagedObject *obj)
+	{
+		if (add(name, obj))
+		{
+			if (obj->load())
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+					logTag, "Loaded Resource: " + pair.first);
+				return true;
+			}
+			else
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+					logTag, "Failed to load Resource: " + pair.first);
+				return false;
+			}
+		}
+		return false;
 	}
 
 	template<class K>

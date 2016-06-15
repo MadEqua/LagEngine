@@ -10,6 +10,7 @@ namespace Lag
 	class IRenderable;
 	class Viewport;
 	enum RenderPhase;
+	class RenderTarget;
 	
 	/*
 	* A RenderOperation represents a single render call to the graphics API. 
@@ -21,8 +22,8 @@ namespace Lag
 	public:
 		RenderOperation() {}
 		~RenderOperation() {}
-
-		RenderPhase renderPhase;
+		
+		RenderTarget *renderTarget;
 		VertexData *vertexData;
 		IndexData *indexData;
 		Material *material;

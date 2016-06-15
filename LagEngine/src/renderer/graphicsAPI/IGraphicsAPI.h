@@ -15,6 +15,7 @@ namespace Lag
 	class Color;
 	class RenderToTexture;
 	struct ImageData;
+	class RenderTarget;
 	
 	/*
 	* Abstracting the calls of a Graphics API. A class implementing this interface is used
@@ -46,6 +47,7 @@ namespace Lag
 		virtual void bindIndexBuffer(const GpuBuffer &indexBuffer) = 0;
 		virtual void bindGpuProgram(const GpuProgram &gpuProgram) = 0;
 		virtual void bindInputDescription(const InputDescription &inputDescription) = 0;
+		virtual void bindRenderTarget(const RenderTarget &renderTarget) = 0;
 		virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
 		virtual void bindTexture(const Texture &texture, uint8 unit = 0) = 0;
 

@@ -1,10 +1,22 @@
 <resources>
 
+	<!-- Engine Fixed stuff -->
+	<shader name="depthPassVertex" file="depthPass.vs" type="Vertex">
+		<uniform name="mvpMatrix" semantic="MvpMatrix"/>
+	</shader>
+
+	<shader name="depthPassFragment" file="depthPass.fs" type="Fragment">
+	</shader>
+	
+	<material name="depthPassMaterial" file="depthPassMaterial.xml"/>
+	<!-- End Engine Fixed stuff -->
+	
+	
 	<shader name="testVertex" file="test.vert" type="Vertex">
 		<uniform name="projectionMatrix" semantic="ProjectionMatrix"/>
-    <uniform name="modelMatrix" semantic="ModelMatrix"/>
-    <uniform name="viewMatrix" semantic="ViewMatrix"/>
-    <uniform name="normalMatrix" semantic="NormalViewMatrix"/>
+		<uniform name="modelMatrix" semantic="ModelMatrix"/>
+		<uniform name="viewMatrix" semantic="ViewMatrix"/>
+		<uniform name="normalMatrix" semantic="NormalViewMatrix"/>
 	</shader>
 
   <shader name="testFragment" file="test.frag" type="Fragment">
@@ -40,7 +52,7 @@
 	
 	<material name="testMaterial" file="testMaterial.xml"/>
 	<material name="testMaterial2" file="testMaterial2.xml"/>
-  <material name="skyMaterial" file="skyMaterial.xml"/>
+	<material name="skyMaterial" file="skyMaterial.xml"/>
 
   <mesh name="sphere" file="sphere2.obj"/>
 	<mesh name="bunny" file="spider.obj"/>

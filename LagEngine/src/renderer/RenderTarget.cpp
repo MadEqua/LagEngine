@@ -3,9 +3,10 @@
 
 using namespace Lag;
 
-RenderTarget::RenderTarget(uint32 width, uint32 height, bool isMainWindow) :
+RenderTarget::RenderTarget(uint32 width, uint32 height, RenderPhase renderPhase, bool isMainWindow) :
 	width(width), height(height), 
-	mainWindow(isMainWindow)
+	mainWindow(isMainWindow),
+	renderPhase(renderPhase)
 {
 }
 
@@ -34,7 +35,7 @@ void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager 
 		//TODO: add proper iterator
 		Viewport *v = viewports.get(i);
 		if (v != nullptr)
-			v->addRenderablesToQueue(renderQueue, sceneManager);
+			v->addRenderablesToQueue(renderQueue, sceneManager, *this);
 	}
 	onPostRenderNotify(*this); //TODO wrong
 }

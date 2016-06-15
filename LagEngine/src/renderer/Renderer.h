@@ -26,11 +26,12 @@ namespace Lag
 	enum RenderPhase
 	{
 		LAG_RENDER_PHASE_DEPTH,
-		LAG_RENDER_PHASE_TRANSPARENCY,
-		LAG_RENDER_PHASE_OPAQUE
+		LAG_RENDER_PHASE_COLOR
 	};
 
 	class RenderTarget;
+	class RenderWindow;
+	class RenderToTexture;
 	class RenderWindow;
 	class IGraphicsAPI;
 	class SceneManager;
@@ -46,25 +47,6 @@ namespace Lag
 	*/
 	class TextureBindings
 	{
-	private:
-		/*class MapKey
-		{
-		public:
-			MapKey(TextureType type, uint8 unit) :
-				type(type), unit(unit) {}
-			~MapKey() {}
-
-			bool operator==(const MapKey &other) const;
-
-			struct MapKeyHasher
-			{
-				std::size_t operator()(const MapKey& k) const;
-			};
-
-			TextureType type;
-			uint8 unit;
-		};*/
-
 	public:
 		void setAsBound(const Texture &tex, uint8 unit);
 		const Texture* getBinding(TextureType type, uint8 unit) const;
@@ -85,9 +67,9 @@ namespace Lag
 
 		//TODO: should render windows be created here instead of added? (problem: they are platform specific)
 		uint16 addRenderWindow(RenderWindow &renderWindow);
-		uint16 createRenderTarget(uint32 width, uint32 height);
-		void removeRenderTarget(uint16 name);
-		RenderTarget* getRenderTarget(uint16 name);
+		uint16 createRenderToTexture(uint32 width, uint32 height);
+		void removeRenderToTexture(uint16 name);
+		RenderToTexture* getRenderToTexture(uint16 name);
 
 		//Main entry point for rendering
 		void renderAllRenderTargets();
@@ -98,6 +80,7 @@ namespace Lag
 		void bindIndexBuffer(const GpuBuffer &indexBuffer);
 		void bindGpuProgram(const GpuProgram &gpuProgram);
 		void bindInputDescription(const InputDescription &inputDescription);
+		void bindRenderTarget(const RenderTarget &renderTarget);
 		void bindViewport(const Viewport &viewport);
 		void bindTexture(const Texture &texture, uint8 unit = 0);
 
@@ -140,7 +123,8 @@ namespace Lag
 		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
 
 	private:
-		NamedContainer<RenderTarget> renderTargets;
+		NamedContainer<RenderTarget> *renderTargets;
+		RenderWindow *renderWindow;
 
 		uint64 actualFrame;
 
@@ -162,6 +146,7 @@ namespace Lag
 		const GpuBuffer *boundIndexBuffer;
 		const GpuProgram *boundGpuProgram;
 		const InputDescription *boundInputDescription;
+		const RenderTarget *boundRenderTarget;
 		const Viewport *boundViewport;
 		TextureBindings boundTextures;
 

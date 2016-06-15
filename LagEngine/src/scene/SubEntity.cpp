@@ -13,6 +13,9 @@
 #include "../renderer/Viewport.h"
 #include "Camera.h"
 #include "../renderer/graphicsAPI/Texture.h"
+#include "../Root.h"
+#include "../resources/MaterialManager.h"
+#include "../renderer/RenderTarget.h"
 
 using namespace Lag;
 
@@ -27,19 +30,29 @@ SubEntity::~SubEntity()
 {
 }
 
-void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport)
+void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
-	//TODO: if castShadow?, correct material...
-	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_DEPTH, 0,
-		const_cast<VertexData&>(subMesh.getVertexData()),
-		const_cast<IndexData*>(&subMesh.getIndexData()),
-		material, viewport);
+	RenderOperation &ro = renderQueue.addRenderOperation();
+	ro.renderTarget = &renderTarget;
+	ro.vertexData = const_cast<VertexData*>(&subMesh.getVertexData());
+	ro.indexData = const_cast<IndexData*>(&subMesh.getIndexData());
+	ro.renderable = this;
+	ro.viewport = &viewport;
+	ro.passId = 0;
 	
 	
-	renderQueue.addRenderOperation(*this, LAG_RENDER_PHASE_OPAQUE, 0,
-		const_cast<VertexData&>(subMesh.getVertexData()), 
-		const_cast<IndexData*>(&subMesh.getIndexData()),
-		material, viewport);
+	if (renderTarget.getRenderPhase() == LAG_RENDER_PHASE_DEPTH)
+	{
+		//TODO out of here
+		Material *depthPassMaterial =
+			static_cast<Material*>(Root::getInstance().getMaterialManager().get("depthPassMaterial"));
+
+		ro.material = depthPassMaterial;
+	}
+	else
+	{
+		ro.material = &material;
+	}
 }
 
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
@@ -49,5 +62,6 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 		parent.getNormalTransform(),
 		*renderOperation.viewport);
 
-	renderer.renderIndexed(subMesh.getVertexData(), subMesh.getIndexData(), subMesh.getVertexData().vertexStart);
+	renderer.renderIndexed(*renderOperation.vertexData, *renderOperation.indexData,
+		renderOperation.vertexData->vertexStart);
 }

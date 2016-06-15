@@ -87,9 +87,6 @@ namespace Lag
 
 		virtual ~Texture();
 
-		virtual bool loadImplementation() override;
-		virtual void unloadImplementation() override;
-
 		inline const TextureData& getTextureData() const { return textureData; }
 		inline const ImageData& getImageData() const { return imageData; }
 
@@ -101,5 +98,8 @@ namespace Lag
 
 		std::vector<std::string> imageNames;
 		std::vector<Image*> images;
+
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 	};
 }

@@ -25,7 +25,7 @@ namespace Lag
 		Entity(uint32 name, Material &defaultMaterial, Mesh &mesh);
 		virtual ~Entity();
 
-		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport) override;
+		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
 	private:

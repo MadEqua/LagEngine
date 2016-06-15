@@ -19,13 +19,15 @@ namespace Lag
 		inline GLuint getHandle() const { return handle; }
 		GLenum getGLType() const;
 
-		//virtual void setTextureWrap() = 0;
-
 	private:
 		GLuint handle;
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
+
+		void initStorage() const;
+		void sendData() const;
+		void setParameters() const;
 		
 		GLenum getPixelDataFormatGL() const;
 		GLenum getPixelDataTypeGL() const;

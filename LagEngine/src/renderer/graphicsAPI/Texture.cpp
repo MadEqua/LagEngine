@@ -31,29 +31,29 @@ Texture::~Texture()
 
 bool Texture::loadImplementation()
 {
-	if (imageNames.empty())
-		return false;
-
-	int i = 0;
-	ImageManager &imageManager = Root::getInstance().getImageManager();
-	for (auto name : imageNames)
+	if (!imageNames.empty())
 	{
-		Image *image = static_cast<Image*>(imageManager.get(name));
-		
-		if (image != nullptr)
+		int i = 0;
+		ImageManager &imageManager = Root::getInstance().getImageManager();
+		for (auto name : imageNames)
 		{
-			if(i == 0)
-				imageData = image->getData();
+			Image *image = static_cast<Image*>(imageManager.get(name));
 
-			images.push_back(image);
+			if (image != nullptr)
+			{
+				if (i == 0)
+					imageData = image->getData();
+
+				images.push_back(image);
+			}
+			else
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+					"Texture", "Trying to use load using a non-declared Image: " + name);
+				return false;
+			}
+			i++;
 		}
-		else
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"Texture", "Trying to use load using a non-declared Image: " + name);
-			return false;
-		}
-		i++;
 	}
 	return true;
 }

@@ -23,25 +23,13 @@
 
 using namespace Lag;
 
-/*bool TextureBindings::MapKey::operator==(const MapKey &other) const
-{
-	return type == other.type && unit == other.unit;
-}
-
-std::size_t TextureBindings::MapKey::MapKeyHasher::operator()(const MapKey& k) const
-{
-	return std::hash<TextureType>()(k.type) ^ std::hash<uint8>()(k.unit);
-}*/
-
 void TextureBindings::setAsBound(const Texture &tex, uint8 unit)
 {
-	//MapKey key(tex.getData().type, unit);
 	bindings[unit] = &tex;
 }
 
 const Texture* TextureBindings::getBinding(TextureType type, uint8 unit) const
 {
-	//MapKey key(type, unit);
 	auto it = bindings.find(unit);
 	if (it != bindings.end())
 		return it->second;
@@ -56,61 +44,66 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
 	renderWindowListener(*this),
-	actualFrame(0),
+	actualFrame(0), renderWindow(nullptr),
 	lastUsedGpuProgramOnFrame(nullptr)
 {
+	renderTargets = new NamedContainer<RenderTarget>();
+	
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
 }
 
 Renderer::~Renderer()
 {
+	delete renderTargets;
+	delete renderWindow; //must be the last to be deleted
+	
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Destroyed successfully.");
 }
 
 uint16 Renderer::addRenderWindow(RenderWindow &renderWindow)
 {
-	//Only supporting one render window and it's always the zero indexed RenderTarget
-	if (renderTargets.contains(0))
-	{
-		delete renderTargets.get(0);
-		renderTargets.set(0, &renderWindow);
-	}
-	else
-		renderTargets.add(&renderWindow);
-	
+	//Only supporting one render window
+	if (this->renderWindow != nullptr)
+		delete this->renderWindow;
+
+	this->renderWindow = &renderWindow;
 	static_cast<RenderTarget&>(renderWindow).registerObserver(renderWindowListener);
+
 	return 0;
 }
 
-uint16 Renderer::createRenderTarget(uint32 width, uint32 height)
+uint16 Renderer::createRenderToTexture(uint32 width, uint32 height)
 {
 	RenderToTexture *rtt = graphicsAPI.createRenderToTexture(width, height);
-	return renderTargets.add(static_cast<RenderTarget*>(rtt));
+	return renderTargets->add(static_cast<RenderTarget*>(rtt));
 }
 
-void Renderer::removeRenderTarget(uint16 name)
+void Renderer::removeRenderToTexture(uint16 name)
 {
-	renderTargets.remove(name);
+	renderTargets->remove(name);
 }
 
-RenderTarget* Renderer::getRenderTarget(uint16 name)
+RenderToTexture* Renderer::getRenderToTexture(uint16 name)
 {
-	return renderTargets.get(name);
+	//TODO: this cast...	
+	return static_cast<RenderToTexture*>(renderTargets->get(name));
 }
 
 void Renderer::renderAllRenderTargets()
 {
 	renderQueue.clear();
 	
-	for (uint32 i = 0; i < renderTargets.getSize(); ++i)
+	for (uint32 i = 0; i < renderTargets->getSize(); ++i)
 	{
 		//TODO: add proper iterator
-		RenderTarget *rt = renderTargets.get(i);
+		RenderTarget *rt = renderTargets->get(i);
 		if(rt != nullptr)
 			rt->addRenderablesToQueue(renderQueue, sceneManager);
 	}
+
+	renderWindow->addRenderablesToQueue(renderQueue, sceneManager);
 
 	renderQueue.sort();
 
@@ -173,6 +166,15 @@ void Renderer::bindViewport(const Viewport &viewport)
 		graphicsAPI.bindViewport(viewport.getRealLeft(), viewport.getRealBottom(),
 			viewport.getRealWidth(), viewport.getRealHeight());
 		uniformFiller.onViewportBind(boundGpuProgram, boundViewport);
+	}
+}
+
+void Renderer::bindRenderTarget(const RenderTarget &renderTarget)
+{
+	if (&renderTarget != boundRenderTarget)
+	{
+		boundRenderTarget = &renderTarget;
+		graphicsAPI.bindRenderTarget(renderTarget);
 	}
 }
 

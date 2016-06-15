@@ -18,7 +18,7 @@ namespace Lag
 		SubEntity(Entity &parent, Material &material, SubMesh &subMesh);
 		~SubEntity();
 
-		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport) override;
+		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
 	private:

@@ -5,6 +5,7 @@
 #include "../core/NamedContainer.h"
 #include "../core/ObserverPattern.h"
 #include "../Types.h"
+#include "Renderer.h"
 
 namespace Lag
 {
@@ -22,7 +23,7 @@ namespace Lag
 		LAG_DECLARE_NOTIFY_METHOD(onResize, LAG_ARGS(RenderTarget &notifier, int width, int height))
 
 	public:
-		RenderTarget(uint32 width, uint32 height, bool isMainWindow = false);
+		RenderTarget(uint32 width, uint32 height, RenderPhase renderPhase = LAG_RENDER_PHASE_COLOR, bool isMainWindow = false);
 		virtual ~RenderTarget();
 
 		virtual bool initialize() = 0;
@@ -43,6 +44,7 @@ namespace Lag
 		inline uint32 getWidth() const { return width;}
 		inline uint32 getHeight() const { return height; }
 		inline bool isMainWindow() const { return mainWindow; }
+		inline RenderPhase getRenderPhase() const { return renderPhase; }
 
 		//TODO (fps, frametimes...)
 		//FrameMetrics frameMetrics;
@@ -52,5 +54,7 @@ namespace Lag
 
 		uint32 width, height;
 		bool mainWindow;
+
+		RenderPhase renderPhase;
 	};
 }

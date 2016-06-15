@@ -156,6 +156,14 @@ void GL4GraphicsAPI::bindInputDescription(const InputDescription &inputDescripti
 	GL_ERROR_CHECK(glBindVertexArray(handle))
 }
 
+void GL4GraphicsAPI::bindRenderTarget(const RenderTarget &renderTarget)
+{
+	GLuint handle = 0;
+	if(!renderTarget.isMainWindow())
+		handle = static_cast<const GL4RenderToTexture&>(renderTarget).getHandle();
+	GL_ERROR_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, handle))
+}
+
 void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 height)
 {
 	GL_ERROR_CHECK(glViewport(x, y, width, height))

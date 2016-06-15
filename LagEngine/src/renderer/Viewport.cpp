@@ -23,9 +23,9 @@ Viewport::~Viewport()
 {
 }
 
-void Viewport::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
+void Viewport::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager, RenderTarget &renderTarget)
 {
-	sceneManager.addRenderablesToQueue(renderQueue, *this);
+	sceneManager.addRenderablesToQueue(renderQueue, *this, renderTarget);
 }
 
 uint32 Viewport::getRealLeft() const

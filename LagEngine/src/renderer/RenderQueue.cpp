@@ -5,6 +5,7 @@
 #include "Renderer.h"
 #include "../IFrameListener.h"
 #include "Material.h"
+
 using namespace Lag;
 
 RenderQueue::RenderQueue() :
@@ -18,7 +19,19 @@ RenderQueue::~RenderQueue()
 {
 }
 
-void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
+RenderOperation& RenderQueue::addRenderOperation()
+{
+	if (actualSlot >= queue.size())
+	{
+		queue.resize(queue.size() * 2);
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+			"RenderQueue", "Queue just got resized. Bad Bad!");
+	}
+
+	return queue[actualSlot++];
+}
+
+/*void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
 	VertexData &vertexData, IndexData *indexData, Material &material,
 	Viewport &viewport)
 {
@@ -39,7 +52,7 @@ void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase render
 	renderOperation.viewport = &viewport;
 	
 	++actualSlot;
-}
+}*/
 
 void RenderQueue::clear()
 {
@@ -60,6 +73,7 @@ void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 
 		//Bind GpuProgram and then the Textures
 		ro.material->bind();
+		renderer.bindRenderTarget(*ro.renderTarget);
 		renderer.bindViewport(*ro.viewport);
 		renderable->render(renderer, ro);
 	}

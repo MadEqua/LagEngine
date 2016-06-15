@@ -23,6 +23,7 @@ namespace Lag
 	class Color;
 	class GpuProgram;
 	class Sky;
+	class RenderTarget;
 	
 	/*
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
@@ -49,7 +50,7 @@ namespace Lag
 		SceneObject* getSceneObject(uint32 name) const;
 
 		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
-		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport) const;
+		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const;
 
 		//TODO: remove scene objects
 

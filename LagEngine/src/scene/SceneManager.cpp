@@ -106,10 +106,10 @@ SceneObject* SceneManager::getSceneObject(uint32 name) const
 	return sceneObjectMap.get(name);
 }
 
-void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport) const
+void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const
 {
 	//TODO: perform frustum culling with camera
 
 	for (IRenderable *renderable : renderableVector)
-		renderable->addToRenderQueue(renderQueue, viewport);
+		renderable->addToRenderQueue(renderQueue, viewport, renderTarget);
 }

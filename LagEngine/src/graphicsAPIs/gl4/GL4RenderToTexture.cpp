@@ -14,53 +14,66 @@ GL4RenderToTexture::~GL4RenderToTexture()
 	GL_ERROR_CHECK(glDeleteFramebuffers(1, &handle))
 }
 
-bool GL4RenderToTexture::initialize()
+void GL4RenderToTexture::attachColorTexture(const ImageData &imageData, const TextureData &textureData,
+	uint8 layer, uint8 attachment, uint8 mipmapLevel)
 {
-	return true;
-}
-
-void GL4RenderToTexture::destroy()
-{
-}
-
-void GL4RenderToTexture::attachColorTexture(const Texture &texture, uint8 attachment, uint8 mipmapLevel)
-{
-	colorTextures[attachment] = &texture;
+	const GL4Texture *gl4texture = 
+		static_cast<const GL4Texture*>(createAndLoadTexture(generateTextureName("Color", layer, attachment),
+			imageData, textureData));
 	
-	const GL4Texture &gl4texture = static_cast<const GL4Texture&>(texture);
+	colorTextures[layer][attachment] = gl4texture;
+	
 	GL_ERROR_CHECK(glNamedFramebufferTexture(handle, 
-		GL_COLOR_ATTACHMENT0 + attachment, gl4texture.getHandle(), mipmapLevel))
+		GL_COLOR_ATTACHMENT0 + attachment, gl4texture->getHandle(), mipmapLevel))
 }
 
-void GL4RenderToTexture::attachDepthStencilTexture(const Texture &texture, uint8 mipmapLevel)
+void GL4RenderToTexture::attachDepthStencilTexture(const ImageData &imageData, const TextureData &textureData,
+	uint8 layer, uint8 mipmapLevel)
 {
-	depthStencilTextures.push_back(&texture);
+	const GL4Texture *gl4texture =
+		static_cast<const GL4Texture*>(createAndLoadTexture(generateTextureName("DepthStencil", layer, 0), 
+			imageData, textureData));
 
-	const GL4Texture &gl4texture = static_cast<const GL4Texture&>(texture);
+	depthStencilTextures[layer] = gl4texture;
+
 	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
-		GL_DEPTH_STENCIL_ATTACHMENT, gl4texture.getHandle(), mipmapLevel))
+		GL_DEPTH_STENCIL_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
 }
 
-void GL4RenderToTexture::attachDepthTexture(const Texture &texture, uint8 mipmapLevel)
+void GL4RenderToTexture::attachDepthTexture(const ImageData &imageData, const TextureData &textureData,
+	uint8 layer, uint8 mipmapLevel)
 {
-	depthTextures.push_back(&texture);
+	const GL4Texture *gl4texture =
+		static_cast<const GL4Texture*>(createAndLoadTexture(generateTextureName("Depth", layer, 0),
+			imageData, textureData));
+
+	depthTextures[layer] = gl4texture;
 	
-	const GL4Texture &gl4texture = static_cast<const GL4Texture&>(texture);
 	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
-		GL_DEPTH_ATTACHMENT, gl4texture.getHandle(), mipmapLevel))
+		GL_DEPTH_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
 }
 
-void GL4RenderToTexture::attachStencilTexture(const Texture &texture, uint8 mipmapLevel)
+void GL4RenderToTexture::attachStencilTexture(const ImageData &imageData, const TextureData &textureData,
+	uint8 layer, uint8 mipmapLevel)
 {
-	stencilTextures.push_back(&texture);
+	const GL4Texture *gl4texture =
+		static_cast<const GL4Texture*>(createAndLoadTexture(generateTextureName("Stencil", layer, 0),
+			imageData, textureData));
+
+	stencilTextures[layer] = gl4texture;
 	
-	const GL4Texture &gl4texture = static_cast<const GL4Texture&>(texture);
 	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
-		GL_STENCIL_ATTACHMENT, gl4texture.getHandle(), mipmapLevel))
+		GL_STENCIL_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
+}
+
+std::string GL4RenderToTexture::generateTextureName(const char* type, uint8 layer, uint8 attachment)
+{
+	return std::string(type) + std::to_string(handle) +
+		std::to_string(layer) + std::to_string(attachment);
 }
 
 //TODO: better checks
-bool GL4RenderToTexture::checkFboCompleteness() const
+bool GL4RenderToTexture::checkCompleteness() const
 {
 	if (depthTextures.empty() && depthStencilTextures.empty())
 		return false;

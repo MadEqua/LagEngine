@@ -9,6 +9,7 @@ namespace Lag
 	class Material;
 	class Viewport;
 	class RenderOperation;
+	class RenderTarget;
 	
 	/*
 	* A Renderable should be able to add itself to a RenderQueue and
@@ -21,7 +22,7 @@ namespace Lag
 		virtual ~IRenderable() {}
 
 		//The Viewport is passed to the Renderable and should be placed on the RenderOperation added to the queue
-		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport) = 0;
+		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) = 0;
 		
 		//Called when its time for the Renderable to render itself. 
 		//The RenderOperation passed is the one added to the RenderQueue by this Renderable 

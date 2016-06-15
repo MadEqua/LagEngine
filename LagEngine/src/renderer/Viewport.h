@@ -23,7 +23,7 @@ namespace Lag
 			float left = 0.0f, float bottom = 0.0f, float width = 1.0f, float height = 1.0f);
 		~Viewport();
 
-		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager);
+		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager, RenderTarget &renderTarget);
 
 		inline const Camera& getCamera() const { return camera;}
 		inline const uint16 getName() const { return name; }

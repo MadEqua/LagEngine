@@ -25,9 +25,12 @@ namespace Lag
 		RenderQueue();
 		~RenderQueue();
 
-		void addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
+		//Returns a RenderOperation to be filled by a Renderable
+		RenderOperation& addRenderOperation();
+
+		/*void addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
 			VertexData &vertexData, IndexData *indexData, Material &material,
-			Viewport &viewport);
+			Viewport &viewport);*/
 		
 		//which one??
 		//void addItem(RenderOperation &renderOperation);
