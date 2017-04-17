@@ -5,8 +5,7 @@ While it tries to expose a friendly programming interface, it is not meant to ha
 
 This is not a finished engine (not even close).
 
-
-#Current features:
+# Current features:
 - Forward rendering based on simple per-pixel lighting, supporting directional and point lights.
 - Supports meshes (loaded with Assimp library), XML material definition defining textures and shaders.
 - Support render targets and various render passes. (WIP)
@@ -18,5 +17,5 @@ This is not a finished engine (not even close).
 - XML based ResourceManager for assets like meshes, image textures, shader code.
 
 
-#License
+# License
 Licensed under the MIT license, see [LICENSE](https://github.com/MadEqua/LagEngine/blob/master/LICENSE) for details.
