@@ -12,8 +12,7 @@ namespace Lag
 	class ImageManager : public ResourceManager
 	{
 	public:
-		ImageManager(const std::string &folder);
-		~ImageManager();
+		explicit ImageManager(const std::string &folder);
 
 		bool create(const std::string &name, const std::string &file, const ImageData &data);
 

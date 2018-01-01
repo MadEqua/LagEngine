@@ -8,8 +8,7 @@ namespace Lag
 	class MeshManager : public ResourceManager
 	{
 	public:
-		MeshManager(const std::string &folder);
-		virtual ~MeshManager();
+		explicit MeshManager(const std::string &folder);
 
 		bool create(const std::string &name, const std::string &file);
 

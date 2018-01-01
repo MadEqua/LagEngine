@@ -11,10 +11,6 @@ MeshManager::MeshManager(const std::string &folder) :
 {
 }
 
-MeshManager::~MeshManager()
-{
-}
-
 bool MeshManager::create(const std::string &name, const std::string &file)
 {
 	return add(name, new Mesh(folder + '/' + file));

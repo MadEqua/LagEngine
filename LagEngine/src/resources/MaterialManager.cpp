@@ -11,10 +11,6 @@ MaterialManager::MaterialManager(const std::string &folder) :
 {
 }
 
-MaterialManager::~MaterialManager()
-{
-}
-
 bool MaterialManager::create(const std::string &name, const std::string &file)
 {
 	return add(name, new Material(folder + '/' + file));
