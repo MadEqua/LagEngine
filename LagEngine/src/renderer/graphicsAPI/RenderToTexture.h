@@ -2,7 +2,6 @@
 
 #include "../RenderTarget.h"
 #include <unordered_map>
-#include <vector>
 #include <string>
 
 namespace Lag
@@ -15,7 +14,6 @@ namespace Lag
 	{
 	public:
 		RenderToTexture(uint32 width, uint32 height);
-		virtual ~RenderToTexture();
 
 		virtual void attachColorTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 attachment = 0, uint8 mipmapLevel = 0) = 0;
 		virtual void attachDepthStencilTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) = 0;

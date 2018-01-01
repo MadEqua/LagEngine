@@ -11,7 +11,7 @@ namespace Lag
 		GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
 		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 
-		virtual ~GL4GpuBuffer();
+		virtual ~GL4GpuBuffer() override;
 
 		virtual void lockImplementation(uint32 offset, uint32 length) override;
 		virtual void unlockImplementation() override;

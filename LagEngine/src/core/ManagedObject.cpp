@@ -7,10 +7,6 @@ ManagedObject::ManagedObject() :
 {
 }
 
-ManagedObject::~ManagedObject()
-{
-}
-
 bool ManagedObject::load()
 {
 	if (!loaded)

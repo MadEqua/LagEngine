@@ -5,13 +5,9 @@ using namespace Lag;
 
 OrthographicCamera::OrthographicCamera(uint32 name, float left, float right, float bottom, float top, float nearPlane, float farPlane) :
 	left(left), right(right), bottom(bottom), top(top),
-	Camera(name, (abs(right-left))/(abs(top-bottom)), nearPlane, farPlane)
+	Camera(name, (abs(right - left)) / (abs(top - bottom)), nearPlane, farPlane)
 {
 	OrthographicCamera::computeProjectionMatrix();
-}
-
-OrthographicCamera::~OrthographicCamera()
-{
 }
 
 void OrthographicCamera::computeProjectionMatrix()

@@ -3,7 +3,6 @@
 #include "../io/log/LogManager.h"
 #include "IRenderable.h"
 #include "Renderer.h"
-#include "../IFrameListener.h"
 #include "Material.h"
 
 using namespace Lag;
@@ -13,10 +12,6 @@ RenderQueue::RenderQueue() :
 {
 	//TODO: something smarter
 	queue.resize(50);
-}
-
-RenderQueue::~RenderQueue()
-{
 }
 
 RenderOperation& RenderQueue::addRenderOperation()

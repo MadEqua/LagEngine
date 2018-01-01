@@ -58,7 +58,3 @@ Color::Color(float r, float g, float b, float a)
 	channels[2] = b;
 	channels[3] = a;
 }
-
-Color::~Color()
-{
-}

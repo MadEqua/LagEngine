@@ -2,14 +2,12 @@
 
 #include <string>
 
-#include "core/Timer.h"
 #include "InitializationParameters.h"
 
-#include "renderer/IWindowListener.h"
 #include "io/IKeyboardListener.h"
+#include "renderer/IWindowListener.h"
 
 #include "core/SingletonPattern.h"
-#include "core/ObserverPattern.h"
 
 namespace Lag
 {
@@ -35,15 +33,13 @@ namespace Lag
 	{
 		LAG_GENERATE_SINGLETON(Root)
 
-		LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
-		LAG_DECLARE_NOTIFY_METHOD(onFrameStart, LAG_ARGS(float timePassed))
-		LAG_DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, LAG_ARGS(float timePassed))
-		LAG_DECLARE_NOTIFY_METHOD(onFrameEnd, LAG_ARGS(float timePassed))
-
-
 	public:
 		bool initializeLag(const InitializationParameters &parameters);
 		bool initializeLag(const std::string &iniFile);
+
+		void startRenderingLoop();
+		void stopRenderingLoop();
+		void renderOneFrame();
 		
 		inline RenderWindow& getRenderWindow() const { return *renderWindow; }
 		inline InputManager& getInputManager() const { return *inputManager; }
@@ -61,12 +57,7 @@ namespace Lag
 		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
 		inline InputDescriptionManager& getInputDescriptionManager() const { return *inputDescriptionManager; }
 
-		inline const std::string& getResourcesFolder() { return  initializationParameters.resourcesFolder; }
-
-		void startRenderingLoop();
-		void stopRenderingLoop();
-
-		void onRenderWindowResize(int width, int height);
+		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
 
 	private:
 		RenderWindow *renderWindow;
@@ -88,17 +79,6 @@ namespace Lag
 
 		InitializationParameters initializationParameters;
 
-		//Frame Timing
-		Timer wholeFrameTimer;
-		Timer frameStartTimer;
-		Timer frameEndTimer;
-		Timer frameQueuedTimer;
-
-		float minFrameTime; //min frame time to respect the max FPS
-
-		bool shouldLoop;
-
-		void renderOneFrame();
 		void destroy();
 		bool internalInit(const InitializationParameters &parameters);
 		bool initResources(const std::string &resourcesFilePath);
@@ -121,8 +101,8 @@ namespace Lag
 		public:
 			virtual void onPreRender(RenderTarget &notifier) {}
 			virtual void onPostRender(RenderTarget &notifier) {}
-			virtual void onResize(RenderTarget &notifier, int width, int height) {}
-			virtual void onMove(RenderWindow &notifier, int x, int y) {}
+			virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) {}
+			virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) {}
 			virtual void onFocusChange(RenderWindow &notifier, bool focused) {}
 			virtual void onClose(RenderWindow &notifier);
 		};

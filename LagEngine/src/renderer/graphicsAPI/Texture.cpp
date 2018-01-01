@@ -25,10 +25,6 @@ Texture::Texture(const ImageData &imageData, const TextureData &textureData) :
 {
 }
 
-Texture::~Texture()
-{
-}
-
 bool Texture::loadImplementation()
 {
 	if (!imageNames.empty())

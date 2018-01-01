@@ -7,7 +7,9 @@
 #include "RenderQueue.h"
 #include "Color.h"
 #include "IRenderTargetListener.h"
+#include "../core/ObserverPattern.h"
 #include "GpuProgramUniformFiller.h"
+#include "../core/Timer.h"
 
 namespace Lag
 {
@@ -40,6 +42,7 @@ namespace Lag
 	class InputDescription;
 	class Viewport;
 	class Texture;
+	class IFrameListener;
 	enum TextureType;
 
 	/*
@@ -49,7 +52,7 @@ namespace Lag
 	{
 	public:
 		void setAsBound(const Texture &tex, uint8 unit);
-		const Texture* getBinding(TextureType type, uint8 unit) const;
+		const Texture* getBinding(uint8 unit) const;
 
 		std::unordered_map<uint8, const Texture*> bindings;
 	};
@@ -61,18 +64,28 @@ namespace Lag
 	*/
 	class Renderer
 	{
+		LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
+		LAG_DECLARE_NOTIFY_METHOD(onFrameStart, LAG_ARGS(float timePassed))
+		LAG_DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, LAG_ARGS(float timePassed))
+		LAG_DECLARE_NOTIFY_METHOD(onFrameEnd, LAG_ARGS(float timePassed))
+
 	public:
 		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager);
 		~Renderer();
+
+		static const uint8 MAX_POINT_LIGHTS = 8;
+		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
+
+		//Entry points for rendering
+		void startRenderingLoop(uint32 maxFps);
+		void stopRenderingLoop();
+		void renderOneFrame();
 
 		//TODO: should render windows be created here instead of added? (problem: they are platform specific)
 		uint16 addRenderWindow(RenderWindow &renderWindow);
 		uint16 createRenderToTexture(uint32 width, uint32 height);
 		void removeRenderToTexture(uint16 name);
-		RenderToTexture* getRenderToTexture(uint16 name);
-
-		//Main entry point for rendering
-		void renderAllRenderTargets();
+		RenderToTexture* getRenderToTexture(uint16 name) const;
 
 		//Bind objects and settings
 		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
@@ -119,15 +132,19 @@ namespace Lag
 
 		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
 
-		static const uint8 MAX_POINT_LIGHTS = 8;
-		static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
-
 	private:
 		NamedContainer<RenderTarget> *renderTargets;
 		RenderWindow *renderWindow;
 
+		bool shouldLoop;
 		uint64 actualFrame;
 
+		//Frame Timing
+		Timer wholeFrameTimer;
+		Timer frameStartTimer;
+		Timer frameEndTimer;
+		Timer frameQueuedTimer;
+		
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
 
@@ -158,12 +175,11 @@ namespace Lag
 		class RenderWindowListener : public IRenderTargetListener
 		{
 		public:
-			RenderWindowListener(Renderer &renderer) :
-				renderer(renderer) {}
+			RenderWindowListener(Renderer &renderer) : renderer(renderer) {}
 
 			virtual void onPreRender(RenderTarget &notifier) override {};
 			virtual void onPostRender(RenderTarget &notifier) override {};
-			virtual void onResize(RenderTarget &notifier, int width, int height) override;
+			virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) override;
 
 		private:
 			Renderer &renderer;

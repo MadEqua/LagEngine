@@ -6,7 +6,6 @@
 
 #include "../resources/Resource.h"
 #include "../Types.h"
-#include "GpuProgramUniformDescription.h"
 
 namespace Lag
 {
@@ -24,9 +23,8 @@ namespace Lag
 	class Material : public Resource
 	{
 	public:
-		Material(const std::string &filePath);
+		explicit Material(const std::string &filePath);
 		Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> texureNames);
-		virtual ~Material();
 	
 		inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
 		const std::vector<Texture*>* getTexturesBySemantic(TextureSemantic semantic) const;

@@ -1,5 +1,8 @@
 #include "Renderer.h"
 
+#include <thread>
+#include <chrono>
+
 #include "graphicsAPI/RenderToTexture.h"
 #include "RenderWindow.h"
 #include "../scene/SceneManager.h"
@@ -16,6 +19,7 @@
 #include "graphicsAPI/InputDescription.h"
 
 #include "graphicsAPI/IGraphicsAPI.h"
+#include "IFrameListener.h"
 
 #include "../io/log/LogManager.h"
 
@@ -28,7 +32,7 @@ void TextureBindings::setAsBound(const Texture &tex, uint8 unit)
 	bindings[unit] = &tex;
 }
 
-const Texture* TextureBindings::getBinding(TextureType type, uint8 unit) const
+const Texture* TextureBindings::getBinding(uint8 unit) const
 {
 	auto it = bindings.find(unit);
 	if (it != bindings.end())
@@ -37,6 +41,9 @@ const Texture* TextureBindings::getBinding(TextureType type, uint8 unit) const
 		return nullptr;
 }
 
+LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
@@ -62,6 +69,78 @@ Renderer::~Renderer()
 		"Renderer", "Destroyed successfully.");
 }
 
+void Renderer::startRenderingLoop(uint32 maxFps)
+{
+	//Min frame time to respect the max FPS
+	float minFrameTime = maxFps > 0 ? 1.0f / maxFps : 0.0f;
+	
+	shouldLoop = true;
+	float elapsed = 0.0f;
+
+	while (shouldLoop)
+	{
+		wholeFrameTimer.start();
+
+		renderWindow->processEvents();
+
+		onFrameStartNotify(frameStartTimer.getElapsedSeconds());
+		frameStartTimer.start();
+
+		renderOneFrame();
+
+		onFrameRenderingQueuedNotify(frameQueuedTimer.getElapsedSeconds());
+		frameQueuedTimer.start();
+
+		//*At the moment* the render window is the only render target with double buffering.
+		renderWindow->swapBuffers();
+
+		onFrameEndNotify(frameEndTimer.getElapsedSeconds());
+		frameEndTimer.start();
+
+		elapsed = wholeFrameTimer.getElapsedSeconds();
+		if (elapsed < minFrameTime)
+		{
+			std::chrono::duration<float> dur(minFrameTime - elapsed);
+			std::this_thread::sleep_for(dur);
+		}
+	}
+}
+
+void Renderer::stopRenderingLoop()
+{
+	shouldLoop = false;
+}
+
+void Renderer::renderOneFrame()
+{
+	renderQueue.clear();
+
+	for (uint32 i = 0; i < renderTargets->getSize(); ++i)
+	{
+		//TODO: add proper iterator
+		RenderTarget *rt = renderTargets->get(i);
+		if (rt != nullptr)
+			rt->addRenderablesToQueue(renderQueue, sceneManager);
+	}
+
+	renderWindow->addRenderablesToQueue(renderQueue, sceneManager);
+
+	renderQueue.sort();
+
+	clearColorBuffer();
+	clearDepthAndStencilBuffer();
+
+
+	if (&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
+		uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
+
+	renderQueue.dispatchRenderOperations(*this);
+
+	lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.actualSlot - 1].material->getGpuProgram();
+
+	actualFrame++;
+}
+
 uint16 Renderer::addRenderWindow(RenderWindow &renderWindow)
 {
 	//Only supporting one render window
@@ -85,40 +164,10 @@ void Renderer::removeRenderToTexture(uint16 name)
 	renderTargets->remove(name);
 }
 
-RenderToTexture* Renderer::getRenderToTexture(uint16 name)
+RenderToTexture* Renderer::getRenderToTexture(uint16 name) const
 {
 	//TODO: this cast...	
 	return static_cast<RenderToTexture*>(renderTargets->get(name));
-}
-
-void Renderer::renderAllRenderTargets()
-{
-	renderQueue.clear();
-	
-	for (uint32 i = 0; i < renderTargets->getSize(); ++i)
-	{
-		//TODO: add proper iterator
-		RenderTarget *rt = renderTargets->get(i);
-		if(rt != nullptr)
-			rt->addRenderablesToQueue(renderQueue, sceneManager);
-	}
-
-	renderWindow->addRenderablesToQueue(renderQueue, sceneManager);
-
-	renderQueue.sort();
-
-	clearColorBuffer();
-	clearDepthAndStencilBuffer();
-
-
-	if (&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
-		uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
-
-	renderQueue.dispatchRenderOperations(*this);
-
-	lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.actualSlot-1].material->getGpuProgram();
-
-	actualFrame++;
 }
 
 void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
@@ -180,7 +229,7 @@ void Renderer::bindRenderTarget(const RenderTarget &renderTarget)
 
 void Renderer::bindTexture(const Texture &texture, uint8 unit)
 {
-	const Texture *actualBound = boundTextures.getBinding(texture.getTextureData().type, unit);
+	const Texture *actualBound = boundTextures.getBinding(unit);
 	
 	if (&texture != actualBound)
 	{
@@ -269,7 +318,7 @@ void Renderer::setDepthWritingEnabled(bool enabled)
 }
 
 
-void Renderer::RenderWindowListener::onResize(RenderTarget &notifier, int width, int height)
+void Renderer::RenderWindowListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
 {
 	if (renderer.boundViewport != nullptr)
 	{

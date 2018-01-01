@@ -86,10 +86,10 @@ bool Mesh::loadImplementation()
 	else idxSize = 4;
 
 	//create buffers
-	GpuBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+	GpuBuffer &vb = bufferManager.createVertexBuffer(vxCount, vxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
 	GpuBuffer *ib = nullptr;
 	if(idxCount > 0)
-		ib = bufferManager.createIndexBuffer(idxCount, idxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC | LAG_GPU_BUFFER_USAGE_MAP_WRITE, false);
+		ib = &bufferManager.createIndexBuffer(idxCount, idxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC | LAG_GPU_BUFFER_USAGE_MAP_WRITE, false);
 
 	//for each submesh
 	uint32 vxBufferOffset = 0, idxBufferOffset = 0;
@@ -109,22 +109,22 @@ bool Mesh::loadImplementation()
 		if (mesh->HasTangentsAndBitangents())
 			tanSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT)->getByteSize();
 
-		vb->lock(vxBufferOffset, vxSize * subMeshVxCount);
+		vb.lock(vxBufferOffset, vxSize * subMeshVxCount);
 		uint32 offset = 0;
 		for (uint32 vx = 0; vx < mesh->mNumVertices; ++vx)
 		{
-			vb->write(offset, posSize, reinterpret_cast<byte*>(&mesh->mVertices[vx]));
+			vb.write(offset, posSize, reinterpret_cast<byte*>(&mesh->mVertices[vx]));
 			offset += posSize;
 
 			if (mesh->HasNormals())
 			{
-				vb->write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
+				vb.write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
 				offset += norSize;
 			}
 
 			if (mesh->HasTangentsAndBitangents())
 			{
-				vb->write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
+				vb.write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
 				offset += tanSize;
 			}
 
@@ -139,15 +139,13 @@ bool Mesh::loadImplementation()
 					texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] * static_cast<float>(MAX_UINT16));
 					texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] * static_cast<float>(MAX_UINT16));
 
-					//vb->write(offset, texCoordSize, reinterpret_cast<byte*>(&mesh->mTextureCoords[i][vx]));
-					vb->write(offset, texCoordSize, reinterpret_cast<byte*>(texCoord));
-
+					vb.write(offset, texCoordSize, reinterpret_cast<byte*>(texCoord));
 					offset += texCoordSize;
 				}
 				else break;
 			}
 		}
-		vb->unlock();
+		vb.unlock();
 
 		//fill index buffer
 		if (idxCount > 0)
@@ -190,7 +188,7 @@ bool Mesh::loadImplementation()
 
 		//Create Data objects, will be managed by the SubMesh
 		VertexData *vd = new VertexData();
- 		vd->inputDescription = inputDescriptionManager.getInputDescription(vxDesc, *vb);
+ 		vd->inputDescription = inputDescriptionManager.getInputDescription(vxDesc, vb);
 		vd->vertexCount = mesh->mNumVertices;
 		vd->vertexStart = vxBufferOffset;
 

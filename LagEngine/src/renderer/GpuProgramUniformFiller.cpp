@@ -21,10 +21,6 @@ GpuProgramUniformFiller::GpuProgramUniformFiller() :
 {
 }
 
-GpuProgramUniformFiller::~GpuProgramUniformFiller()
-{
-}
-
 void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings)
 {
 	if (!gpuProgram || !viewport) return;
@@ -172,8 +168,7 @@ void GpuProgramUniformFiller::updateTextureUniforms(const GpuProgram &gpuProgram
 bool GpuProgramUniformFiller::programContainsUniform(const GpuProgram &gpuProgram,
 	GpuProgramUniformSemantic semantic)
 {
-	auto uniformList = gpuProgram.getUniformBySemantic(semantic);
-	return uniformList != nullptr;
+	return gpuProgram.getUniformBySemantic(semantic) != nullptr;
 }
 
 void GpuProgramUniformFiller::setUniformIfPresent(const GpuProgram &gpuProgram, 

@@ -70,10 +70,6 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 	GL_ERROR_CHECK(glCullFace(GL_BACK))
 }
 
-GL4GraphicsAPI::~GL4GraphicsAPI()
-{
-}
-
 RenderToTexture* GL4GraphicsAPI::createRenderToTexture(uint32 width, uint32 height)
 {
 	return new GL4RenderToTexture(width, height);
@@ -172,20 +168,15 @@ void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 heigh
 void GL4GraphicsAPI::bindTexture(const Texture &texture, uint8 unit)
 {
 	const GL4Texture& GL4Tex = static_cast<const GL4Texture&>(texture);
-
 	GL_ERROR_CHECK(glBindTextureUnit(unit, GL4Tex.getHandle()))
 }
 
 void GL4GraphicsAPI::setDepthTestEnabled(bool enabled)
 {
 	if (enabled)
-	{
-		GL_ERROR_CHECK(glEnable(GL_DEPTH_TEST))
-	}
+		GL_ERROR_CHECK_BLOCK(glEnable(GL_DEPTH_TEST))
 	else
-	{
-		GL_ERROR_CHECK(glDisable(GL_DEPTH_TEST))
-	}
+		GL_ERROR_CHECK_BLOCK(glDisable(GL_DEPTH_TEST))
 }
 
 void GL4GraphicsAPI::setDepthWritingEnabled(bool enabled)

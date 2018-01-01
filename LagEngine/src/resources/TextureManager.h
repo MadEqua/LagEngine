@@ -16,12 +16,10 @@ namespace Lag
 	{
 	public:
 		TextureManager();
-		~TextureManager();
 
 		virtual bool create(const std::string &name, const std::string &imageName, const TextureData &data) = 0;
 		virtual bool create(const std::string &name, const std::vector<std::string> &imageNames, const TextureData &data) = 0;
 		virtual bool create(const std::string &name, const ImageData &imageData, const TextureData &textureData) = 0;
-
 
 	protected:
 		virtual void parseResourceDescription(const TiXmlElement &element) override;

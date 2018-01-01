@@ -10,7 +10,3 @@ Transform::Transform() :
 	inheritedScale(1.0f)
 {
 }
-
-Transform::~Transform()
-{
-}

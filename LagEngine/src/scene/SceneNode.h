@@ -27,7 +27,6 @@ namespace Lag
 	class SceneNode
 	{
 	public:
-
 		SceneNode& createChildSceneNode(const std::string &name);
 		void addChildSceneNode(const std::string &name);
 		void addChildSceneNode(SceneNode &node);
@@ -74,16 +73,14 @@ namespace Lag
 
 		const glm::mat4& getFinalTransform(); //Full transform, traversing the graph world coordinates
 		const glm::mat4& getFinalInverseTransform();
-		const glm::mat3& getNormalTransform(); //Transform appropriate for transforming normals
+		const glm::mat3& getNormalTransform(); //Appropriate transform for transforming normals
 
 		inline void setInheritOrientation(bool b) { inheritOrientation = b; }
 		inline void setInheritScale(bool b) { inheritScale = b; }
 
-
 	private:
 		friend class SceneGraph;
-		SceneNode(SceneGraph &sceneGraph);
-		~SceneNode();
+		explicit SceneNode(SceneGraph &sceneGraph);
 
 		Transform transform;
 		SceneGraph &sceneGraph;

@@ -14,7 +14,7 @@ namespace Lag
 	struct GpuProgramUniformDescription;
 	
 	/*
-	* Abstract a program meant to be run on the GPU. 
+	* Abstraction of a program meant to be run on the GPU. 
 	* Contains a set of GpuProgramStages, only the vertex stage is mandatory.
 	* Also creates and maintains Uniforms declared on its Stages.
 	*
@@ -25,7 +25,7 @@ namespace Lag
 	public:
 		GpuProgram(const std::string &name, const std::vector<std::string> &names);
 		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
-		virtual ~GpuProgram();
+		virtual ~GpuProgram() override;
 		
 		inline bool hasStage(GpuProgramStageType stageType) const { return presentStages[stageType]; }
 		

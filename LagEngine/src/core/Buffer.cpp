@@ -10,10 +10,6 @@ Buffer::Buffer(uint32 sizeBytes) :
 {
 }
 
-Buffer::~Buffer()
-{
-}
-
 void Buffer::lock(uint32 offset, uint32 length)
 {
 	if (isLocked)

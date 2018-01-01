@@ -11,7 +11,7 @@ namespace Lag
 	{
 	public:
 		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-		virtual ~GL4InputDescription();
+		virtual ~GL4InputDescription() override;
 
 		inline GLuint getHandle() const { return handle; }
 

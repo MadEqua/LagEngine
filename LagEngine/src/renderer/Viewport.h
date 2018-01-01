@@ -21,7 +21,6 @@ namespace Lag
 		//left, bottom, width and height are relative (0.0 to 1.0)
 		Viewport(uint16 name, Camera &camera, RenderTarget &renderTarget, 
 			float left = 0.0f, float bottom = 0.0f, float width = 1.0f, float height = 1.0f);
-		~Viewport();
 
 		void addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager, RenderTarget &renderTarget);
 
@@ -51,7 +50,7 @@ namespace Lag
 			
 			virtual void onPreRender(RenderTarget &notifier) override;
 			virtual void onPostRender(RenderTarget &notifier) override;
-			virtual void onResize(RenderTarget &notifier, int width, int height) override;
+			virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) override;
 
 		private:
 			const Viewport &viewport;

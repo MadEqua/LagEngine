@@ -20,6 +20,12 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStag
 {
 }
 
+GpuProgram::~GpuProgram()
+{
+	for (auto &un : uniformsByName)
+		delete un.second;
+}
+
 bool GpuProgram::checkStages()
 {
 	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
@@ -45,12 +51,6 @@ bool GpuProgram::checkStages()
 		return false;
 	}
 	return true;
-}
-
-GpuProgram::~GpuProgram()
-{
-	for (auto &un : uniformsByName)
-		delete un.second;
 }
 
 bool GpuProgram::loadImplementation()
@@ -86,8 +86,7 @@ bool GpuProgram::loadImplementation()
 				auto nameIt = uniformsByName.find(desc.name);
 				if (nameIt != uniformsByName.end())
 				{
-					if (desc.semantic ==
-						nameIt->second->getGpuProgramUniformDescription().semantic)
+					if (desc.semantic == nameIt->second->getGpuProgramUniformDescription().semantic)
 					{
 						LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 							"GpuProgram: " + name, "Ignoring one of the Uniforms: " + desc.name +
@@ -145,7 +144,6 @@ const std::vector<GpuProgramUniform*>* GpuProgram::getUniformBySemantic(GpuProgr
 	else
 		return nullptr;
 }
-
 
 void GpuProgram::generateName(std::vector<std::string> &stageNames, std::string &out)
 {

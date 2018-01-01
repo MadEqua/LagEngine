@@ -28,13 +28,9 @@ FreeCamera::FreeCamera(float fovy, float nearPlane, float farPlane, float moveSp
 	camera = &sm.createPerspectiveCamera(1.0f, fovy, nearPlane, farPlane);
 	camera->attachToSceneNode(*cameraTranslationNode);
 
-	root.registerObserver(*this);
+	root.getRenderer().registerObserver(*this);
 	root.getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root.getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
-}
-
-FreeCamera::~FreeCamera()
-{
 }
 
 void FreeCamera::onKeyPress(int key, int modifier)

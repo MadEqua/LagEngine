@@ -13,16 +13,6 @@ namespace Lag
 		LAG_IDX_TYPE_UINT32
 	};
 
-	/*class IndexDescription
-	{
-	public:
-		IndexDescription(IndexType type);
-		~IndexDescription();
-
-	private:
-		IndexType type;
-	};*/
-
 	/*
 	* Collects together all the index-related information used to render geometry.
 	* Allows the same IndexBuffer to contain many different objects data (and/or formats) at different points.
@@ -30,9 +20,6 @@ namespace Lag
 	class IndexData
 	{
 	public:
-		IndexData();
-		~IndexData();
-
 		//How to interpret the indexes
 		IndexType indexType;
 

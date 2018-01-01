@@ -10,8 +10,8 @@ namespace Lag
 	class Buffer
 	{
 	public:
-		Buffer(uint32 sizeBytes);
-		virtual ~Buffer();
+		explicit Buffer(uint32 sizeBytes);
+		virtual ~Buffer() = default;
 
 		//Lock a buffer to enable reads/writes. Unlock after changes are done.
 		virtual void lock(uint32 offset, uint32 length);

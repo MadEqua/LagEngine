@@ -10,12 +10,7 @@ RenderTarget::RenderTarget(uint32 width, uint32 height, RenderPhase renderPhase,
 {
 }
 
-RenderTarget::~RenderTarget()
-{
-}
-
-Viewport& RenderTarget::createViewport(Camera &camera, 
-	float left, float top, float width, float height)
+Viewport& RenderTarget::createViewport(Camera &camera, float left, float top, float width, float height)
 {
 	Viewport *vp = new Viewport(viewports.getNextName(), camera, *this, left, top, width, height);
 	viewports.add(vp);
@@ -34,13 +29,12 @@ void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager 
 	{
 		//TODO: add proper iterator
 		Viewport *v = viewports.get(i);
-		if (v != nullptr)
-			v->addRenderablesToQueue(renderQueue, sceneManager, *this);
+		v->addRenderablesToQueue(renderQueue, sceneManager, *this);
 	}
-	onPostRenderNotify(*this); //TODO wrong
+	onPostRenderNotify(*this); //TODO fix. this is not post render.
 }
 
-void RenderTarget::resize(int width, int height)
+void RenderTarget::resize(uint32 width, uint32 height)
 {
 	this->width = width;
 	this->height = height;
@@ -49,4 +43,4 @@ void RenderTarget::resize(int width, int height)
 
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
 LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier, int width, int height), LAG_ARGS(notifier, width, height))
+LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier, uint32 width, uint32 height), LAG_ARGS(notifier, width, height))

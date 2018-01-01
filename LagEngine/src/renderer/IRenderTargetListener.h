@@ -7,10 +7,10 @@ namespace Lag
 	class IRenderTargetListener
 	{
 	public:
-		virtual ~IRenderTargetListener() {}
+		virtual ~IRenderTargetListener() = default;
 
 		virtual void onPreRender(RenderTarget &notifier) = 0;
 		virtual void onPostRender(RenderTarget &notifier) = 0;
-		virtual void onResize(RenderTarget &notifier, int width, int height) = 0;
+		virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) = 0;
 	};
 }

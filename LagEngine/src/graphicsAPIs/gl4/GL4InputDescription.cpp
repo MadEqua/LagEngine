@@ -33,7 +33,7 @@ void GL4InputDescription::setupVertexAttributtes() const
 	{
 		const VertexAttribute &vxAttr = vertexDescription.getAttribute(i);
 
-		//Associate the attribute i the the VBO binding point 0
+		//Associate the attribute i to VBO binding point 0
 		//(All attributes from the same VBO)
 		GL_ERROR_CHECK(glVertexArrayAttribBinding(handle, i, 0))
 

@@ -1,4 +1,4 @@
-	#include "GpuBuffer.h"
+#include "GpuBuffer.h"
 #include "../../core/MemoryBuffer.h"
 #include "../../io/log/LogManager.h"
 
@@ -11,7 +11,7 @@ GpuBuffer::GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferConten
 	flags(flags),
 	contents(contents)
 {
-	if (useMirror)
+	if (useMirror) 
 		mirrorBuffer = new MemoryBuffer(sizeBytes, data);
 }
 
@@ -48,9 +48,7 @@ void GpuBuffer::lock(uint32 offset, uint32 length)
 		return mirrorBuffer->lock(offset, length);
 	}
 	else
-	{
 		return this->Buffer::lock(offset, length);
-	}
 }
 
 void GpuBuffer::lock()
@@ -68,15 +66,13 @@ void GpuBuffer::unlock()
 			updateFromMirror();
 	}
 	else
-	{
 		this->Buffer::unlock();
-	}
 }
 
 byte* GpuBuffer::map()
 {
 	if (!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_WRITE) &&
-		!!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_READ))
+		!checkForFlag(LAG_GPU_BUFFER_USAGE_MAP_READ))
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GpuBuffer", "Trying to map non-mappable GpuBuffer.");
@@ -84,33 +80,23 @@ byte* GpuBuffer::map()
 	}
 	
 	if (useMirror)
-	{
 		return mirrorBuffer->map();
-	}
 	else
-	{
 		return this->Buffer::map();
-	}
 }
 
 void GpuBuffer::unmap()
 {
 	if (useMirror)
-	{
 		mirrorBuffer->unmap();
-	}
 	else
-	{
 		this->Buffer::unmap();
-	}
 }
 
 void GpuBuffer::write(uint32 offset, uint32 length, byte* src)
 {
 	if (useMirror)
-	{
 		mirrorBuffer->write(offset, length, src);
-	}
 	else
 		this->Buffer::write(offset, length, src);
 }
@@ -118,13 +104,10 @@ void GpuBuffer::write(uint32 offset, uint32 length, byte* src)
 void GpuBuffer::read(uint32 offset, uint32 length, byte* dst)
 {
 	if (useMirror)
-	{
 		mirrorBuffer->read(offset, length, dst);
-	}
 	else
 		this->Buffer::read(offset, length, dst);
 }
-
 
 void GpuBuffer::updateFromMirror()
 {

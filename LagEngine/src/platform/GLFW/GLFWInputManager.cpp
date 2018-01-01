@@ -32,7 +32,8 @@ void Lag::cursorPositionCallback(GLFWwindow* window, double xpos, double ypos)
 {
 	int x = static_cast<int>(xpos);
 	int y = static_cast<int>(ypos);
-	inputManager->updateCursorCoords(x, y);
+	inputManager->cursorX = x;
+	inputManager->cursorY = y;
 	inputManager->onCursorMoveNotify(x, y);
 }
 
@@ -41,10 +42,10 @@ void Lag::mouseButtonCallback(GLFWwindow* window, int button, int action, int mo
 	switch (action)
 	{
 	case GLFW_PRESS:
-		inputManager->onButtonPressedNotify(inputManager->getCursorX(), inputManager->getCursorY(), button, mods);
+		inputManager->onButtonPressedNotify(inputManager->cursorX, inputManager->cursorY, button, mods);
 		break;
 	case GLFW_RELEASE:
-		inputManager->onButtonReleasedNotify(inputManager->getCursorX(), inputManager->getCursorY(), button, mods);
+		inputManager->onButtonReleasedNotify(inputManager->cursorX, inputManager->cursorY, button, mods);
 		break;
 	default:
 		break;

@@ -13,7 +13,7 @@ namespace Lag
 
 	public:
 		GpuProgramManager();
-		virtual ~GpuProgramManager();
+		virtual ~GpuProgramManager() override;
 
 		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
 		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;

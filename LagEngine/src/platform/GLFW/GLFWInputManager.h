@@ -27,9 +27,5 @@ namespace Lag
 	private:
 		GLFWwindow *window;
 		int cursorX, cursorY;
-
-		inline void updateCursorCoords(int x, int y) {cursorX = x; cursorY = y; }
-		inline int getCursorX() const { return cursorX; }
-		inline int getCursorY() const { return cursorY; }
 	};
 }

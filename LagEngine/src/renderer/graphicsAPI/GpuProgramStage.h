@@ -27,7 +27,6 @@ namespace Lag
 	{
 	public:
 		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);
-		virtual ~GpuProgramStage();
 
 		void addUniformDescription(const std::string &name, GpuProgramUniformSemantic semantic,
 			GpuProgramUniformSize size = LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN, 

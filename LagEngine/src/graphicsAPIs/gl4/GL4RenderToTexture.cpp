@@ -68,8 +68,7 @@ void GL4RenderToTexture::attachStencilTexture(const ImageData &imageData, const 
 
 std::string GL4RenderToTexture::generateTextureName(const char* type, uint8 layer, uint8 attachment)
 {
-	return std::string(type) + std::to_string(handle) +
-		std::to_string(layer) + std::to_string(attachment);
+	return std::string(type) + std::to_string(handle) + std::to_string(layer) + std::to_string(attachment);
 }
 
 //TODO: better checks

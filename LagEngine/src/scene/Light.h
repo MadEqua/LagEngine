@@ -11,7 +11,6 @@ namespace Lag
 	{
 	public:
 		Light(uint32 name, const Color &color, bool castShadow = true);
-		virtual ~Light();
 
 		inline const Color& getColor() const { return color; }
 		inline bool getCastShadow() const { return castShadow; }

@@ -15,8 +15,8 @@ namespace Lag
 	class SceneObject 
 	{
 	public:
-		SceneObject(uint32 name);
-		virtual ~SceneObject();
+		explicit SceneObject(uint32 name);
+		virtual ~SceneObject() = default;
 
 		inline uint32 getName() const { return name; }
 

@@ -51,8 +51,6 @@ namespace Lag
 		operator std::size_t() const;
 		bool operator<(const VertexAttribute &other) const;
 
-		~VertexAttribute();
-
 	private:
 		//Only VertexDescriptions can construct VertexAttributes
 		friend class VertexDescription;
@@ -81,7 +79,6 @@ namespace Lag
 		inline uint32 getAttributeCount() const { return attributes.size(); }
 		inline const VertexAttribute& getAttribute(uint32 index) const { return attributes[index]; }
 		const VertexAttribute* getAttribute(VertexAttributeSemantic semantic, uint8 index = 0) const;
-		//inline const std::vector<VertexAttribute>& getAttributes() const { return attributes; }
 
 		//The size of a full vertex
 		uint32 getByteSize() const;
@@ -96,7 +93,5 @@ namespace Lag
 
 		//Only InputDescriptionManager can construct VertexDescriptions
 		friend class InputDescriptionManager;
-		VertexDescription();
-		~VertexDescription();
 	};
 }

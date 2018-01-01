@@ -18,8 +18,8 @@ namespace Lag
 	class Mesh : public Resource
 	{
 	public:
-		Mesh(const std::string &file);
-		~Mesh();
+		explicit Mesh(const std::string &file);
+		virtual ~Mesh() override;
 
 		inline const std::vector<SubMesh*>& getSubMeshes() const { return subMeshes; }
 

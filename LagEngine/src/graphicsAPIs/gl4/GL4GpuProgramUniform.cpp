@@ -16,10 +16,6 @@ GL4GpuProgramUniform::GL4GpuProgramUniform(const GpuProgramUniformDescription &d
 			"GL4GpuProgramUniform", "Could not locate an Uniform with name:" + description.name);
 }
 
-GL4GpuProgramUniform::~GL4GpuProgramUniform()
-{
-}
-
 void GL4GpuProgramUniform::setValue(const void* value, uint32 arraySize) const
 {
 	switch (description.type)

@@ -11,10 +11,6 @@ GpuProgramStage::GpuProgramStage(const std::string &filePath, GpuProgramStageTyp
 {
 }
 
-GpuProgramStage::~GpuProgramStage()
-{
-}
-
 void GpuProgramStage::addUniformDescription(const std::string &name, GpuProgramUniformSemantic semantic,
 	GpuProgramUniformSize size, GpuProgramUniformType type)
 {

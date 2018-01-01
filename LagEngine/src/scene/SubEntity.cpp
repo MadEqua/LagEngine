@@ -26,10 +26,6 @@ SubEntity::SubEntity(Entity &parent, Material &material, SubMesh &subMesh) :
 {
 }
 
-SubEntity::~SubEntity()
-{
-}
-
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
 	RenderOperation &ro = renderQueue.addRenderOperation();
@@ -58,9 +54,7 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 {
 	renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
-		parent.getTransform(),
-		parent.getNormalTransform(),
-		*renderOperation.viewport);
+		parent.getTransform(), parent.getNormalTransform(), *renderOperation.viewport);
 
 	renderer.renderIndexed(*renderOperation.vertexData, *renderOperation.indexData,
 		renderOperation.vertexData->vertexStart);

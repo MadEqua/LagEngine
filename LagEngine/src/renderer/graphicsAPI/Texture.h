@@ -60,7 +60,7 @@ namespace Lag
 			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
 			minificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR),
 			magnificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR),
-			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT ,LAG_TEXTURE_WRAPPING_MODE_REPEAT },
+			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT },
 			mipmaps(8) {}
 		
 		TextureDataType dataType;
@@ -85,7 +85,7 @@ namespace Lag
 		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
 		Texture(const ImageData &imageData, const TextureData &textureData);
 
-		virtual ~Texture();
+		virtual ~Texture() = default;
 
 		inline const TextureData& getTextureData() const { return textureData; }
 		inline const ImageData& getImageData() const { return imageData; }

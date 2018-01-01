@@ -16,7 +16,7 @@ namespace Lag
 	{
 	public:
 		GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
-		virtual ~GpuProgramUniform();
+		virtual ~GpuProgramUniform() = default;
 
 		//The implementation can deduce what to send based on the GpuProgramUniformDescription
 		virtual void setValue(const void* value, uint32 arraySize = 1) const = 0;

@@ -9,7 +9,6 @@ namespace Lag
 	{
 	public:
 		PointLight(uint32 name, const Color &color, const glm::vec3 &attenuation, bool castShadow = true);
-		virtual ~PointLight();
 
 		void setAttenuation(float constant, float linear, float quadratic);
 		inline const float* getAttenuation() const { return reinterpret_cast<const float*>(&attenuation); }

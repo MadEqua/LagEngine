@@ -16,7 +16,7 @@ namespace Lag
 	class Manager
 	{
 	public:
-		Manager(const std::string &logTag);
+		explicit Manager(const std::string &logTag);
 		virtual ~Manager();
 
 		ManagedObject* get(const K &name) const;

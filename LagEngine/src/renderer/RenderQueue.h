@@ -23,7 +23,6 @@ namespace Lag
 
 	public:
 		RenderQueue();
-		~RenderQueue();
 
 		//Returns a RenderOperation to be filled by a Renderable
 		RenderOperation& addRenderOperation();

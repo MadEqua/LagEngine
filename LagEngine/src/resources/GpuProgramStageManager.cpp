@@ -12,10 +12,6 @@ GpuProgramStageManager::GpuProgramStageManager(const std::string &folder) :
 {
 }
 
-GpuProgramStageManager::~GpuProgramStageManager()
-{
-}
-
 void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &element)
 {
 	if (element.ValueStr() == "shader")
@@ -174,7 +170,7 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 GpuProgramStageType GpuProgramStageManager::parseStageTypeFromString(const std::string &type)
 {
 	if (type == "Vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
-	else if (type == "TtesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
+	else if (type == "TesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
 	else if (type == "TesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
 	else if (type == "Geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
 	else if (type == "Fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;

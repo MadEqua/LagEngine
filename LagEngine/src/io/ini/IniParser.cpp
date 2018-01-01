@@ -5,14 +5,6 @@
 
 using namespace Lag;
 
-IniParser::IniParser()
-{
-}
-
-IniParser::~IniParser()
-{
-}
-
 bool IniParser::parse(const std::string &filePath)
 {	
 	std::ifstream inFile(filePath, std::ios::in);

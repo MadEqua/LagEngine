@@ -81,6 +81,6 @@ namespace Lag
 		//IRenderable SceneObjects
 		std::vector<IRenderable*> renderableVector;
 
-		//TODO spatial graph
+		//TODO spatial graph for culling
 	};
 }

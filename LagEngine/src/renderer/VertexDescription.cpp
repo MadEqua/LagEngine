@@ -17,10 +17,6 @@ VertexAttribute::VertexAttribute(VertexAttributeSemantic semantic, uint32 offset
 	sortKey = (semantic << 4) | index;
 }
 
-VertexAttribute::~VertexAttribute()
-{
-}
-
 uint16 VertexAttribute::getByteSize() const
 {
 	return getTypeByteSize() * length;
@@ -75,14 +71,6 @@ bool VertexAttribute::operator<(const VertexAttribute &other) const
 ///////////////////////////////////////
 ///////////////////////////////////////
 
-VertexDescription::VertexDescription() 
-{
-}
-
-VertexDescription::~VertexDescription()
-{
-}
-
 void VertexDescription::addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index, bool isNormalized)
 {
 	//Offset computation is below, after sorting
@@ -135,8 +123,6 @@ VertexDescription::operator std::size_t() const
 {
 	std::size_t ret = 0;
 	for (const VertexAttribute &attr : attributes)
-	{
-		ret ^= attr;
-	}
+		ret ^= static_cast<std::size_t>(attr);
 	return ret;
 }

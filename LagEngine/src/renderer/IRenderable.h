@@ -8,7 +8,7 @@ namespace Lag
 	class Renderer;
 	class Material;
 	class Viewport;
-	class RenderOperation;
+	struct RenderOperation;
 	class RenderTarget;
 	
 	/*
@@ -18,8 +18,7 @@ namespace Lag
 	class IRenderable
 	{
 	public:
-		IRenderable() {}
-		virtual ~IRenderable() {}
+		virtual ~IRenderable() = default;
 
 		//The Viewport is passed to the Renderable and should be placed on the RenderOperation added to the queue
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) = 0;

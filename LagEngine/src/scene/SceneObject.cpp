@@ -10,10 +10,6 @@ SceneObject::SceneObject(uint32 name) :
 {
 }
 
-SceneObject::~SceneObject()
-{
-}
-
 const glm::vec3& SceneObject::getWorldPosition() const
 {
 	return parentSceneNode != nullptr ?

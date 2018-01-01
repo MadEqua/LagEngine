@@ -25,13 +25,12 @@ SceneManager::SceneManager() : sky(nullptr)
 
 SceneManager::~SceneManager()
 {
-	if (sky)
+	if (sky != nullptr)
 		delete sky;
 
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Destroyed successfully.");
 }
-
 
 Entity* SceneManager::createEntity(const std::string &meshName, const std::string &materialName)
 {
@@ -54,8 +53,7 @@ Entity* SceneManager::createEntity(const std::string &meshName, const std::strin
 	return e;
 }
 
-PerspectiveCamera& SceneManager::createPerspectiveCamera(float aspectRatio, 
-	float fovy, float nearPlane, float farPlane)
+PerspectiveCamera& SceneManager::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane)
 {
 	PerspectiveCamera *cam = new PerspectiveCamera(sceneObjectMap.getNextName(), aspectRatio, fovy, nearPlane, farPlane);
 	sceneObjectMap.add(cam);
@@ -90,15 +88,21 @@ DirectionalLight& SceneManager::createDirectionalLight(const Color& color, const
 
 void SceneManager::enableSky(const std::string &materialName)
 {
-	if (!sky)
-		sky = new Sky(materialName);
+	if (sky != nullptr) 
+		disableSky();
 
+	sky = new Sky(materialName);
 	renderableVector.push_back(sky);
 }
 
 void SceneManager::disableSky()
 {
-	renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
+	if (sky != nullptr)
+	{
+		renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
+		delete sky;
+		sky = nullptr;
+	}
 }
 
 SceneObject* SceneManager::getSceneObject(uint32 name) const

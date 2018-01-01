@@ -27,10 +27,6 @@ Material::Material(const std::vector<std::string> shaderStageNames,
 	initialize();
 }
 
-Material::~Material()
-{
-}
-
 void Material::bind() const
 {
 	renderer.bindGpuProgram(*gpuProgram);
@@ -66,14 +62,13 @@ bool Material::initialize()
 	GpuProgramManager &manager = root.getGpuProgramManager();
 
 	if (!manager.contains(gpuProgramName))
-	{
 		if (!manager.create(gpuProgramName, shaderStageNames))
 			return false;
-	}
+
 	gpuProgram = static_cast<GpuProgram*>(manager.get(gpuProgramName));
 
 	TextureManager &texMan = Root::getInstance().getTextureManager();
-	for (std::string name : textureNames)
+	for (std::string &name : textureNames)
 	{
 		Texture *tex = static_cast<Texture*>(texMan.get(name));
 		if (tex != nullptr)

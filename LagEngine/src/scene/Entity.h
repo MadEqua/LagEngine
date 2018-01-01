@@ -9,7 +9,7 @@ namespace Lag
 	class SubEntity;
 	class Material;
 	class Mesh;
-	class RenderOperation;
+	struct RenderOperation;
 	
 	/*
 	* Object represented by a Mesh (divided on SubMeshes) and a Material.

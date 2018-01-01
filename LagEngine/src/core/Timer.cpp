@@ -7,10 +7,6 @@ Timer::Timer() :
 {
 }
 
-Timer::~Timer()
-{
-}
-
 void Timer::start()
 {
 	startPoint = std::chrono::high_resolution_clock::now();

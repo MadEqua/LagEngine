@@ -2,14 +2,6 @@
 
 using namespace Lag;
 
-IndexData::IndexData()
-{
-}
-
-IndexData::~IndexData()
-{
-}
-
 uint8 IndexData::getTypeByteSize() const
 {
 	switch (indexType)

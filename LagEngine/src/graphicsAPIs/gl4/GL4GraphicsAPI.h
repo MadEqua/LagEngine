@@ -10,7 +10,6 @@ namespace Lag
 	{
 	public:
 		GL4GraphicsAPI();
-		~GL4GraphicsAPI();
 
 		virtual RenderToTexture* createRenderToTexture(uint32 width, uint32 height) override;
 
@@ -32,10 +31,6 @@ namespace Lag
 
 		virtual void setDepthTestEnabled(bool enabled) override;
 		virtual void setDepthWritingEnabled(bool enabled) override;
-
-		/*virtual void setTexture(uint32 unit, Texture & texture) override;
-		virtual void setTexture(uint32 unit, const std::string & textureName) override;
-		virtual void setStencilCheckEnabled(bool enabled) override;*/
 
 	private:
 		static GLenum convertRenderModeToGLenum(RenderMode renderMode);

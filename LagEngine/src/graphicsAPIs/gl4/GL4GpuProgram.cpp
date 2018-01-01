@@ -27,8 +27,7 @@ bool GL4GpuProgram::link()
 {
 	for (GpuProgramStage *stage : stages)
 	{
-		GL_ERROR_CHECK(glAttachShader(handle,
-			static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
+		GL_ERROR_CHECK(glAttachShader(handle, static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
 	}
 	
 	GL_ERROR_CHECK(glLinkProgram(handle))

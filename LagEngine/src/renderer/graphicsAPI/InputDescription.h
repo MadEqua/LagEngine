@@ -18,8 +18,7 @@ namespace Lag
 		//Can only be created by InputDescriptionManager
 		friend class InputDescriptionManager;
 		InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-		virtual ~InputDescription();
-
+		virtual ~InputDescription() = default;
 
 		//How to interpret the vertices
 		const VertexDescription &vertexDescription;

@@ -15,10 +15,6 @@ SceneNode::SceneNode(SceneGraph &sceneGraph) :
 {
 }
 
-SceneNode::~SceneNode()
-{
-}
-
 SceneNode& SceneNode::createChildSceneNode(const std::string &name)
 {
 	SceneNode &newNode = sceneGraph.createSceneNode(name);
@@ -267,15 +263,11 @@ const glm::mat3& SceneNode::getNormalTransform()
 {
 	if (transform.normalTransformOutOfDate)
 	{
-		if (transform.scale.x == transform.scale.y &&
-			transform.scale.x == transform.scale.z)
-		{
+		if (transform.scale.x == transform.scale.y && transform.scale.x == transform.scale.z)
 			transform.normalTransform = glm::mat3(getFinalTransform());
-		}
 		else
-		{
-			transform.normalTransform = glm::transpose(glm::mat3(getFinalTransform()));
-		}
+			transform.normalTransform = glm::transpose(glm::mat3(getFinalInverseTransform()));
+		
 		transform.normalTransformOutOfDate = false;
 	}
 	return transform.normalTransform;

@@ -33,6 +33,5 @@ namespace Lag
 
 		InitializationParameters();
 		explicit InitializationParameters(const std::string &iniFilePath);
-		~InitializationParameters();
 	};
 }

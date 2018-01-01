@@ -10,10 +10,6 @@ PerspectiveCamera::PerspectiveCamera(uint32 name, float aspectRatio, float field
 	PerspectiveCamera::computeProjectionMatrix();
 }
 
-PerspectiveCamera::~PerspectiveCamera()
-{
-}
-
 void PerspectiveCamera::computeProjectionMatrix()
 {
 	projectionMatrix = glm::perspective(fieldOfViewY, aspectRatio, nearPlane, farPlane);

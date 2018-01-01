@@ -24,7 +24,6 @@ namespace Lag
 	{
 	public:
 		GpuProgramUniformFiller();
-		~GpuProgramUniformFiller();
 
 		void onGpuProgramBind(const GpuProgram *gpuProgram, const Viewport *viewport, const TextureBindings &textureBindings);
 		void onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport);

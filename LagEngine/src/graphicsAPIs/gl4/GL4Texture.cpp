@@ -47,8 +47,7 @@ void GL4Texture::initStorage() const
 	switch (textureData.type)
 	{
 	case LAG_TEXTURE_TYPE_1D:
-		GL_ERROR_CHECK(glTextureStorage1D(handle, textureData.mipmaps, getPixelDataSizedFormatGL(), 
-			imageData.width))
+		GL_ERROR_CHECK(glTextureStorage1D(handle, textureData.mipmaps, getPixelDataSizedFormatGL(), imageData.width))
 		break;
 
 	case LAG_TEXTURE_TYPE_2D:

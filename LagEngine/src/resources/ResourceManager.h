@@ -18,8 +18,7 @@ namespace Lag
 	{
 	public:
 		ResourceManager(const std::string &name, const std::string &folder);
-		ResourceManager(const std::string &name);
-		virtual ~ResourceManager();
+		explicit ResourceManager(const std::string &name);
 
 		//TODO: pass some nicer structure instead of the XML file root?
 		//Parse resource file and check if there is something of interest for the manager

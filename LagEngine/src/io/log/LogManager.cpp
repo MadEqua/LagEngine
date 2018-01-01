@@ -52,7 +52,7 @@ void LogManager::initLogFile()
 	}
 	else
 	{
-		log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, LOG_FILE_NAME, "Failed to open log file.");
+		std::cout << "Failed to open log file: " << LOG_FILE_NAME;
 	}
 }
 

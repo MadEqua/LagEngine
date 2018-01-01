@@ -10,10 +10,6 @@ TextureManager::TextureManager() :
 {
 }
 
-TextureManager::~TextureManager() 
-{
-}
-
 void TextureManager::parseResourceDescription(const TiXmlElement &element)
 {
 	if (element.ValueStr() == "texture")
@@ -126,7 +122,7 @@ TextureFilteringMode TextureManager::parseFilteringMode(const std::string &mode)
 	if (mode == "Nearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST;
 	else if (mode == "Linear") return LAG_TEXTURE_FILTERING_MODE_LINEAR;
 	else if (mode == "NearestMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST;
-	else if (mode == "NearestMipmapLinear")return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR;
+	else if (mode == "NearestMipmapLinear") return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR;
 	else if (mode == "LinearMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST;
 	else if (mode == "LinearMipmapLinear" || mode == "TriLinear") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR;
 	else return LAG_TEXTURE_FILTERING_MODE_LINEAR;
@@ -137,7 +133,7 @@ TexturewWrappingMode TextureManager::parseWrappingMode(const std::string &mode) 
 	if (mode == "Repeat") return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
 	else if (mode == "MirroredRepeat") return LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT;
 	else if (mode == "ClampEdge" || mode == "ClampToEdge") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE;
-	else if (mode == "ClampBorder" || mode == "ClampToBorder")return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
+	else if (mode == "ClampBorder" || mode == "ClampToBorder") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
 	else return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
 }
 

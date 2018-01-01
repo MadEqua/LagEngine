@@ -10,10 +10,8 @@ GL4GpuBuffer::GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBuffer
 }
 
 GL4GpuBuffer::GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror) :
-	GpuBuffer(sizeBytes, flags, contents, useMirror)
+	GL4GpuBuffer(sizeBytes, 0, flags, contents, useMirror)
 {
-	GL_ERROR_CHECK(glCreateBuffers(1, &handle))
-	GL_ERROR_CHECK(glNamedBufferStorage(handle, sizeBytes, 0, convertFlagsToGL(flags)))
 }
 
 GL4GpuBuffer::~GL4GpuBuffer()

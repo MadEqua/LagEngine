@@ -10,7 +10,6 @@ namespace Lag
 	{
 	public:
 		Timer();
-		~Timer();
 
 		void start();
 		float getElapsedSeconds() const;

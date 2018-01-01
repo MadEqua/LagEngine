@@ -10,7 +10,7 @@ namespace Lag
 	public:
 		GL4GpuProgram(const std::string &name, const std::vector<std::string> &names);
 		GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
-		virtual ~GL4GpuProgram();
+		virtual ~GL4GpuProgram() override;
 
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description) const override;
 

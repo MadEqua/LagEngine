@@ -17,12 +17,8 @@ namespace Lag
 	* Renderables provide this data to the RenderQueue, 
 	* which it uses for sorting and posterior render call dispatching.
 	*/
-	class RenderOperation
+	struct RenderOperation
 	{
-	public:
-		RenderOperation() {}
-		~RenderOperation() {}
-		
 		RenderTarget *renderTarget;
 		VertexData *vertexData;
 		IndexData *indexData;

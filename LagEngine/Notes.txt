@@ -9,7 +9,11 @@ Check and apply copy constructors good practices
 Rethink folder structure and VS filters
 coherency between tinyxml and ini parsers
 check main loop and callbacks to the application. facilitate app development using the engine
-
+fix lifecycles. resources should be selectively loaded and unloaded as needed. (per scene?)
+shadow mapping
+factory for generating renderApis and platforms specifics.
+get rid of ManagedObject get casts.
+logs are not very user friendly
 
 Long Term
 

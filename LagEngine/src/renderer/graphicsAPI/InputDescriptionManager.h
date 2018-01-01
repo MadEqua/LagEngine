@@ -25,17 +25,13 @@ namespace Lag
 
 		//Create or get an already suitable InputDescription
 		//A suitable InputDescription is one that describes correctly the input VertexData
-		InputDescription* getInputDescription(const VertexDescription &vertexDescription,
-			const GpuBuffer &vertexBuffer);
+		InputDescription* getInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
 
 		VertexDescription& createVertexDescription();
 
 	protected:
-
-		virtual InputDescription* createInputDescription(const VertexDescription &vertexDescription, 
-			const GpuBuffer &vertexBuffer) = 0;
-
-		
+		virtual InputDescription* createInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer) = 0;
+				
 		//We should return the same InputDescription if VertexData refers
 		//the same VertexBuffer, with a similar VertexDescription.
 		//(Basically ignore the offsets from a VertexData)
@@ -43,7 +39,6 @@ namespace Lag
 		{
 		public:
 			MapKey(const VertexDescription *vd, const GpuBuffer *vb);
-			~MapKey();
 
 			bool operator==(const MapKey &other) const;
 

@@ -10,7 +10,7 @@ namespace Lag
 	{
 	public:
 		GL4RenderToTexture(uint32 width, uint32 height);
-		virtual ~GL4RenderToTexture();
+		virtual ~GL4RenderToTexture() override;
 
 		virtual void attachColorTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 attachment = 0, uint8 mipmapLevel = 0) override;
 		virtual void attachDepthStencilTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) override;

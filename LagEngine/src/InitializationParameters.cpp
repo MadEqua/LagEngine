@@ -51,7 +51,3 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		if (gpuInterfaceStr == "OPENGL_4") graphicsApiType = LAG_GRAPHICS_API_TYPE_OPENGL_4;
 	}
 }
-
-InitializationParameters::~InitializationParameters()
-{
-}

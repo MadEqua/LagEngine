@@ -1,17 +1,11 @@
 #include "Root.h"
 
-#include <thread>
-#include <chrono>
-
-#include "renderer/RenderWindow.h"
 #include "InitializationParameters.h"
-#include "io/InputManager.h"
 #include "io/log/LogManager.h"
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
 #include "renderer/Renderer.h"
 #include "scene/SceneManager.h"
-#include "IFrameListener.h"
 
 #include "graphicsAPIs/gl4/GL4GpuProgramStageManager.h"
 #include "graphicsAPIs/gl4/GL4GpuProgramManager.h"
@@ -30,10 +24,6 @@
 #include "io/tinyxml/tinyxml.h"
 
 using namespace Lag;
-
-LAG_DEFINE_NOTIFY_METHOD(Root, onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-LAG_DEFINE_NOTIFY_METHOD(Root, onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-LAG_DEFINE_NOTIFY_METHOD(Root, onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
 Root::Root() :
 	renderWindow(nullptr),
@@ -101,7 +91,6 @@ void Root::destroy()
 
 bool Root::initializeLag(const InitializationParameters &parameters)
 {
-	initializationParameters = parameters;
 	return internalInit(parameters);
 }
 
@@ -118,11 +107,9 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	//in case of reinitialization
 	destroy();
 
-	minFrameTime = parameters.maxFPS > 0 ? 1.0f / parameters.maxFPS : 0.0f;
-
 	sceneManager = new SceneManager();
 
-	//TODO auto detect platform and refactor this code
+	//TODO Use a factory to initialize render window and graphics api?
 	renderWindow = new GLFWRenderWindow(parameters);
 	if (!renderWindow->initialize())
 		return false;
@@ -213,46 +200,17 @@ bool Root::initResources(const std::string &resourcesFilePath)
 
 void Root::startRenderingLoop()
 {
-	shouldLoop = true;
-	float elapsed = 0.0f;
-
-	while (shouldLoop)
-	{
-		wholeFrameTimer.start();
-
-		renderWindow->processEvents();
-
-		onFrameStartNotify(frameStartTimer.getElapsedSeconds());
-		frameStartTimer.start();
-
-		renderOneFrame();
-
-		onFrameRenderingQueuedNotify(frameQueuedTimer.getElapsedSeconds());
-		frameQueuedTimer.start();
-
-		//*At the moment* the render window is the only render target with double buffering.
-		renderWindow->swapBuffers();
-
-		onFrameEndNotify(frameEndTimer.getElapsedSeconds());
-		frameEndTimer.start();
-
-		elapsed = wholeFrameTimer.getElapsedSeconds();
-		if (elapsed < minFrameTime)
-		{
-			std::chrono::duration<float> dur(minFrameTime - elapsed);
-			std::this_thread::sleep_for(dur);
-		}
-	}
+	renderer->startRenderingLoop(initializationParameters.maxFPS);
 }
 
 void Root::stopRenderingLoop()
 {
-	shouldLoop = false;
+	renderer->stopRenderingLoop();
 }
 
 void Root::renderOneFrame()
 {
-	renderer->renderAllRenderTargets();
+	renderer->renderOneFrame();
 }
 
 void Root::KeyboardListener::onKeyPress(int key, int modifier)

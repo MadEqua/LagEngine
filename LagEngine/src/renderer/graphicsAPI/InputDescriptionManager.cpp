@@ -60,10 +60,6 @@ InputDescriptionManager::MapKey::MapKey(const VertexDescription *vd, const GpuBu
 {
 }
 
-InputDescriptionManager::MapKey::~MapKey()
-{
-}
-
 bool InputDescriptionManager::MapKey::operator==(const MapKey &other) const
 {
 	return vertexBuffer == other.vertexBuffer &&

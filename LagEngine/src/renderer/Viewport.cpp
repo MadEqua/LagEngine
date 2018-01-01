@@ -19,10 +19,6 @@ Viewport::Viewport(uint16 name, Camera &camera, RenderTarget &renderTarget,
 	renderTarget.registerObserver(renderTargetListener);
 }
 
-Viewport::~Viewport()
-{
-}
-
 void Viewport::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager, RenderTarget &renderTarget)
 {
 	sceneManager.addRenderablesToQueue(renderQueue, *this, renderTarget);
@@ -68,7 +64,7 @@ void Viewport::RenderTargetListener::onPostRender(RenderTarget &notifier)
 {
 }
 
-void Viewport::RenderTargetListener::onResize(RenderTarget &notifier, int width, int height)
+void Viewport::RenderTargetListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
 {
 	viewport.computeCameraAspectRatio();
 }

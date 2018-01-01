@@ -12,7 +12,8 @@
 using namespace Lag;
 
 DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, const Color &color, bool castShadow) :
-	 Light(name, color, castShadow), direction(direction)
+	Light(name, color, castShadow),
+	direction(direction)
 {
 	if (castShadow)
 	{
@@ -48,8 +49,4 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 		camera.attachToSceneNode(sn);
 		rt->createViewport(camera);
 	}
-}
-
-DirectionalLight::~DirectionalLight()
-{
 }

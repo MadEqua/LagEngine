@@ -8,14 +8,6 @@ template bool IniSettings::getFieldAsBasicType<bool>(const std::string &fieldNam
 template int IniSettings::getFieldAsBasicType<int>(const std::string &fieldName, int defaultValue) const;
 template float IniSettings::getFieldAsBasicType<float>(const std::string &fieldName, float defaultValue) const;
 
-IniSettings::IniSettings()
-{
-}
-
-IniSettings::~IniSettings()
-{
-}
-
 bool IniSettings::containsField(const std::string &name) const
 {
 	return fields.find(name) != fields.end();

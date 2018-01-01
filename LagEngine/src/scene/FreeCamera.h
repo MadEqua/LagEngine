@@ -3,7 +3,7 @@
 #include "PerspectiveCamera.h"
 #include "../io/IKeyboardListener.h"
 #include "../io/ICursorListener.h"
-#include "../IFrameListener.h"
+#include "../renderer/IFrameListener.h"
 
 namespace Lag
 {
@@ -17,7 +17,6 @@ namespace Lag
 	{
 	public:
 		FreeCamera(float fovy, float nearPlane, float farPlane, float moveSpeed);
-		virtual ~FreeCamera();
 
 		virtual void onKeyPress(int key, int modifier) override;
 		virtual void onKeyRelease(int key, int modifier) override;

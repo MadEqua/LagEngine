@@ -9,9 +9,6 @@ namespace Lag
 	class GL4TextureManager : public TextureManager
 	{
 	public:
-		GL4TextureManager() {}
-		virtual ~GL4TextureManager() {}
-
 		virtual bool create(const std::string &name, const std::string &imageName, const TextureData &data) override
 		{
 			return add(name, new GL4Texture(imageName, data));

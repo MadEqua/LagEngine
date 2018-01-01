@@ -6,7 +6,7 @@ namespace Lag
 	{
 	public:
 		ManagedObject();
-		virtual ~ManagedObject();
+		virtual ~ManagedObject() = default;
 		
 		bool load();
 		void unload();

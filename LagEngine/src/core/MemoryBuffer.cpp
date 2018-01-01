@@ -1,5 +1,4 @@
 #include "MemoryBuffer.h"
-#include "../io/log/LogManager.h"
 #include <iostream>
 
 using namespace Lag;

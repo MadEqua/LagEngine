@@ -11,5 +11,5 @@ static Type& getInstance() {\
 private:\
 Type();\
 ~Type();\
-Type(Type const& copy);\
-Type& operator=(Type const& copy);
+Type(const Type &copy) = delete;\
+Type& operator=(const Type &copy) = delete;

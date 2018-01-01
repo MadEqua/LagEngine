@@ -11,8 +11,8 @@ namespace Lag
 	{
 	public:
 		MemoryBuffer(uint32 sizeBytes, byte* data);
-		MemoryBuffer(uint32 sizeBytes);
-		virtual ~MemoryBuffer();
+		explicit MemoryBuffer(uint32 sizeBytes);
+		virtual ~MemoryBuffer() override;
 
 	protected:
 		virtual void lockImplementation(uint32 offset, uint32 length) override;

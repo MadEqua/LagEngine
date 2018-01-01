@@ -14,13 +14,12 @@ using namespace Lag;
 
 Sky::Sky(const std::string &materialName)
 {
-	Material *mat = static_cast<Material*>(Root::getInstance().getMaterialManager().get(materialName));
+	material = static_cast<Material*>(Root::getInstance().getMaterialManager().get(materialName));
 	
-	if (!mat)
+	if (!material)
 	{
 		//TODO
 	}
-	material = mat;
 
 	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
 	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
@@ -58,21 +57,17 @@ Sky::Sky(const std::string &materialName)
 	};
 
 	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
-	GpuBuffer *vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), reinterpret_cast<byte*>(vertices), 0, false);
-	GpuBuffer *indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), reinterpret_cast<byte*>(indices), 0, false);
+	GpuBuffer &vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), reinterpret_cast<byte*>(vertices), 0, false);
+	GpuBuffer &indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), reinterpret_cast<byte*>(indices), 0, false);
 	
 	vertexData.vertexStart = 0;
 	vertexData.vertexCount = VERTEX_COUNT;
-	vertexData.inputDescription = inputDescriptionManager.getInputDescription(vxDesc, *vertexBuffer);
+	vertexData.inputDescription = inputDescriptionManager.getInputDescription(vxDesc, vertexBuffer);
 
 	indexData.indexStart = 0;
 	indexData.indexCount = INDEX_COUNT;
-	indexData.indexBuffer = indexBuffer;
+	indexData.indexBuffer = &indexBuffer;
 	indexData.indexType = LAG_IDX_TYPE_UINT8;
-}
-
-Sky::~Sky()
-{
 }
 
 void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)

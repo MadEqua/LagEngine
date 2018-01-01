@@ -8,9 +8,6 @@ namespace Lag
 	class IniParser
 	{
 	public:
-		IniParser();
-		~IniParser();
-
 		bool parse(const std::string &filePath);
 
 		inline const IniSettings& getParsedIniSettings() { return out; }

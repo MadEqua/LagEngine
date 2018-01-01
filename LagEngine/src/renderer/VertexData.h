@@ -13,9 +13,6 @@ namespace Lag
 	class VertexData
 	{
 	public:
-		VertexData() {}
-		~VertexData() {}
-
 		//InputDescription object that describes the vertex data. (Format and source)
 		//Used to feed the pipeline entry-point.
 		//May (and should) be reutilized between many VertexDatas

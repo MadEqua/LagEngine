@@ -8,7 +8,6 @@ namespace Lag
 	{
 	public:
 		OrthographicCamera(uint32 name, float left, float right, float bottom, float top, float nearPlane, float farPlane);
-		virtual ~OrthographicCamera();
 
 	protected:
 		float left, right;

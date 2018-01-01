@@ -8,9 +8,6 @@ namespace Lag
 	class IniSettings
 	{
 	public:
-		IniSettings();
-		~IniSettings();
-
 		bool containsField(const std::string &name) const;
 
 		template <class T>

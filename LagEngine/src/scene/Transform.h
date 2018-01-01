@@ -13,14 +13,13 @@ namespace Lag
 	{
 	public:
 		Transform();
-		~Transform();
 
 		//Relative to parent, always up to date.
 		glm::vec3 position;
 		glm::quat orientation;
 		glm::vec3 scale;
 
-		//Values computed from the node hierarchy, always up to date. Accumulate parent data and its parents.
+		//Values computed from the node hierarchy, always up to date. Accumulate parent node data.
 		glm::vec3 inheritedPosition;
 		glm::quat inheritedOrientation;
 		glm::vec3 inheritedScale;

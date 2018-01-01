@@ -11,10 +11,6 @@ RenderToTexture::RenderToTexture(uint32 width, uint32 height) :
 {
 }
 
-RenderToTexture::~RenderToTexture()
-{
-}
-
 bool RenderToTexture::initialize()
 {
 	return checkCompleteness();

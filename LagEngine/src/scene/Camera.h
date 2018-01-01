@@ -13,7 +13,6 @@ namespace Lag
 	{
 	public:
 		Camera(uint32 name, float aspectRatio, float nearPlane, float farPlane);
-		virtual ~Camera();
 
 		void setAspectRatio(float aspectRatio);
 

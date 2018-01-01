@@ -14,14 +14,12 @@ namespace Lag
 	class GpuProgramStageManager : public ResourceManager
 	{
 	public:
-		GpuProgramStageManager(const std::string &folder);
-		~GpuProgramStageManager();
+		explicit GpuProgramStageManager(const std::string &folder);
 
 		virtual bool create(const std::string &name, const std::string &file, GpuProgramStageType type) = 0;
 
 	protected:
-		virtual void parseResourceDescription(const TiXmlElement &element) override;
-		
+		virtual void parseResourceDescription(const TiXmlElement &element) override;	
 		static GpuProgramStageType parseStageTypeFromString(const std::string &type);
 
 		void parseUniformDeclaration(GpuProgramStage &stage, const TiXmlElement &element);

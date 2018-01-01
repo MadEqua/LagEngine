@@ -8,7 +8,3 @@ Light::Light(uint32 name, const Color &color, bool castShadow) :
 	castShadow(castShadow)
 {
 }
-
-Light::~Light()
-{
-}

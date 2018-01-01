@@ -34,7 +34,7 @@ namespace Lag
 	public:
 		GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
 		GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
-		virtual ~GpuBuffer();
+		virtual ~GpuBuffer() override;
 
 		virtual void lock(uint32 offset, uint32 length) override;
 		virtual void lock();

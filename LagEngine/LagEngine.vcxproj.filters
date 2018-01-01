@@ -237,6 +237,9 @@
     <ClCompile Include="src\scene\OrthographicCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -321,9 +324,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\IRenderTargetListener.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\IFrameListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\SceneGraph.h">
@@ -516,6 +516,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\NamedContainer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\renderer\IFrameListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

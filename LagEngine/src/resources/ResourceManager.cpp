@@ -16,11 +16,6 @@ ResourceManager::ResourceManager(const std::string &name) :
 {
 }
 
-ResourceManager::~ResourceManager()
-{
-
-}
-
 void ResourceManager::parseResourceFile(const TiXmlElement &resourceFileRoot)
 {
 	for (const TiXmlElement* elem = resourceFileRoot.FirstChildElement();

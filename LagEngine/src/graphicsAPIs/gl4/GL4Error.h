@@ -9,9 +9,18 @@ namespace Lag
 }
 
 #ifdef _DEBUG
-#define GL_ERROR_CHECK(stmt) \
-			stmt; \
+#define GL_ERROR_CHECK(stmt)\
+			stmt;\
 			Lag::CheckOpenGLError(#stmt, __FILE__, __LINE__);
+#else
+#define GL_CHECK(stmt) stmt
+#endif
+
+#ifdef _DEBUG
+#define GL_ERROR_CHECK_BLOCK(stmt) {\
+			stmt;\
+			Lag::CheckOpenGLError(#stmt, __FILE__, __LINE__);\
+		}
 #else
 #define GL_CHECK(stmt) stmt
 #endif

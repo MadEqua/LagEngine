@@ -9,9 +9,6 @@ namespace Lag
 	{
 
 	public:
-		GL4GpuProgramManager() {}
-		virtual ~GL4GpuProgramManager() {}
-
 		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) override
 		{
 			return add(name, new GL4GpuProgram(name, stagesNames));

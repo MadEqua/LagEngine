@@ -10,8 +10,7 @@ namespace Lag
 	class InputManager
 	{
 	public:
-		InputManager();
-		virtual ~InputManager();
+		virtual ~InputManager() = default;
 
 		//TODO: add poll methods
 		//virtual bool isKeyPressed(Key key) = 0;

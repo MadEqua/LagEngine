@@ -8,7 +8,7 @@ namespace Lag
 	class SubMesh;
 	class RenderQueue;
 	class Entity;
-	class RenderOperation;
+	struct RenderOperation;
 	
 	class SubEntity : public IRenderable
 	{
@@ -16,7 +16,6 @@ namespace Lag
 	
 	private:
 		SubEntity(Entity &parent, Material &material, SubMesh &subMesh);
-		~SubEntity();
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;

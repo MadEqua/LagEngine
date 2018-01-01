@@ -5,7 +5,5 @@ namespace Lag
 	class Technique
 	{
 	public:
-		Technique();
-		~Technique();
 	};
 }

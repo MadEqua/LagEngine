@@ -32,8 +32,15 @@ bool TestApplication::start()
 	root = &Lag::Root::getInstance();
 
 	//Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
+	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_IDE);
+
+	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_IDE);
+
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_IDE);
+
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_IDE);
 
@@ -43,7 +50,7 @@ bool TestApplication::start()
 	renderWindow = &root->getRenderWindow();
 	sceneManager = &root->getSceneManager();
 
-	root->registerObserver(*this);
+	root->getRenderer().registerObserver(*this);
 	root->getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root->getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
 

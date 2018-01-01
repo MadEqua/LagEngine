@@ -8,11 +8,9 @@ namespace Lag
 	{
 	public:
 		PerspectiveCamera(uint32 name, float aspectRatio, float fieldOfViewY, float nearPlane, float farPlane);
-		virtual ~PerspectiveCamera();
 
 	protected:
 		float fieldOfViewY;
 		virtual void computeProjectionMatrix() override;
 	};
 }
-
