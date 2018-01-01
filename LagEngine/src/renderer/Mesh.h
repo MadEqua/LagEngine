@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../resources/Resource.h"
+#include "../resources/XmlResource.h"
 #include <vector>
 #include <string>
 
@@ -15,11 +15,10 @@ namespace Lag
 	*
 	* TODO: Support animations.
 	*/
-	class Mesh : public Resource
+	class Mesh : public XmlResource
 	{
 	public:
 		explicit Mesh(const std::string &file);
-		virtual ~Mesh() override;
 
 		inline const std::vector<SubMesh*>& getSubMeshes() const { return subMeshes; }
 

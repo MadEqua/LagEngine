@@ -6,16 +6,10 @@
 using namespace Lag;
 
 Image::Image(const std::string &path, const ImageData &data) :
-	Resource(path),
+	XmlResource(path),
 	data(data),
 	dataPtr(nullptr)
 {
-}
-
-Image::~Image()
-{
-	if (dataPtr != nullptr)
-		delete[] dataPtr;
 }
 
 bool Image::loadImplementation()
@@ -62,4 +56,6 @@ bool Image::loadImplementation()
 
 void Image::unloadImplementation()
 {
+	if (dataPtr != nullptr)
+		delete[] dataPtr;
 }

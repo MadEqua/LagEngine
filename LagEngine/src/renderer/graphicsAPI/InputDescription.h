@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Types.h"
+#include "../../core/ManagedObject.h"
 
 namespace Lag
 {
@@ -12,13 +13,10 @@ namespace Lag
 	* (VAO on OpenGL, Input-Layout Object on D3D)
 	* Concrete GraphicsAPIs will have concrete implementations.
 	*/
-	class InputDescription
+	class InputDescription : public ManagedObject
 	{
 	protected:
-		//Can only be created by InputDescriptionManager
-		friend class InputDescriptionManager;
 		InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-		virtual ~InputDescription() = default;
 
 		//How to interpret the vertices
 		const VertexDescription &vertexDescription;

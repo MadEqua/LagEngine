@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../resources/Resource.h"
+#include "../../resources/XmlResource.h"
 #include "../../Types.h"
 #include "../../resources/Image.h"
 
@@ -78,7 +78,7 @@ namespace Lag
 	/*
 	* Gpu representation of an Image (or a set of images). May contain mipmaps.
 	*/
-	class Texture : public Resource
+	class Texture : public XmlResource
 	{
 	public:
 		Texture(const std::string &imageName, const TextureData &data);

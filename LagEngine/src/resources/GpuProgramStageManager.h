@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "XmlResourceManager.h"
+#include "../renderer/graphicsAPI/GpuProgramStage.h"
 
 namespace Lag
 {
@@ -11,7 +12,7 @@ namespace Lag
 	enum GpuProgramUniformType;
 	enum GpuProgramUniformSemantic;
 	
-	class GpuProgramStageManager : public ResourceManager
+	class GpuProgramStageManager : public XmlResourceManager<GpuProgramStage>
 	{
 	public:
 		explicit GpuProgramStageManager(const std::string &folder);

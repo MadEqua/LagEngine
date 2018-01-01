@@ -4,7 +4,7 @@
 #include <unordered_map>
 #include <string>
 
-#include "../resources/Resource.h"
+#include "../resources/XmlResource.h"
 #include "../Types.h"
 
 namespace Lag
@@ -20,7 +20,7 @@ namespace Lag
 	* TODO: list of techniques. each technique with a list of passes, each pass with shader and textures...
 	* add methods to create materials by hand (no file)
 	*/
-	class Material : public Resource
+	class Material : public XmlResource
 	{
 	public:
 		explicit Material(const std::string &filePath);

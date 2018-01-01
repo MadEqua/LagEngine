@@ -13,18 +13,16 @@
 using namespace Lag;
 
 Material::Material(const std::string &filePath) :
-	Resource(filePath), renderer(Root::getInstance().getRenderer())
+	XmlResource(filePath), renderer(Root::getInstance().getRenderer())
 {
 }
 
-Material::Material(const std::vector<std::string> shaderStageNames,
-	const std::vector<std::string> texureNames) :
+Material::Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> textureNames) :
 	renderer(Root::getInstance().getRenderer()),
 	shaderStageNames(shaderStageNames),
-	textureNames(texureNames)
+	textureNames(textureNames)
 
 {
-	initialize();
 }
 
 void Material::bind() const
@@ -46,7 +44,7 @@ const std::vector<Texture*>* Material::getTexturesBySemantic(TextureSemantic sem
 
 bool Material::loadImplementation()
 {
-	if (!parse())
+	if (!path.empty() && !parse())
 		return false;
 
 	return initialize();
@@ -65,12 +63,12 @@ bool Material::initialize()
 		if (!manager.create(gpuProgramName, shaderStageNames))
 			return false;
 
-	gpuProgram = static_cast<GpuProgram*>(manager.get(gpuProgramName));
+	gpuProgram = manager.get(gpuProgramName);
 
 	TextureManager &texMan = Root::getInstance().getTextureManager();
 	for (std::string &name : textureNames)
 	{
-		Texture *tex = static_cast<Texture*>(texMan.get(name));
+		Texture *tex = texMan.get(name);
 		if (tex != nullptr)
 		{
 			textures.push_back(tex);

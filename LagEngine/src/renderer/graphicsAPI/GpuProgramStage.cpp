@@ -6,7 +6,7 @@
 using namespace Lag;
 
 GpuProgramStage::GpuProgramStage(const std::string &filePath, GpuProgramStageType type) :
-	Resource(filePath),
+	XmlResource(filePath),
 	type(type)
 {
 }

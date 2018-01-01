@@ -9,7 +9,6 @@ namespace Lag
 	{
 	public:
 		GL4GpuProgramStage(const std::string &path, GpuProgramStageType type);
-		virtual ~GL4GpuProgramStage() override;
 
 		virtual bool compile() override;
 
@@ -18,6 +17,9 @@ namespace Lag
 	private:
 		GLuint handle;
 		GLenum convertTypeToGL();
+
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 
 		bool checkCompilation() const;
 	};

@@ -24,7 +24,7 @@ const Texture* RenderToTexture::createAndLoadTexture(const std::string &name, co
 {
 	TextureManager &texMan = Root::getInstance().getTextureManager();
 	texMan.create(name, imageData, textureData);
-	Texture *tex = static_cast<Texture*>(texMan.get(name));
+	Texture *tex = texMan.get(name);
 	tex->load();
 	return tex;
 }

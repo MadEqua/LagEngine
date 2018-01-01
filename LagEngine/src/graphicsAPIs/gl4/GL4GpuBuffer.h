@@ -8,11 +8,6 @@ namespace Lag
 	class GL4GpuBuffer : public GpuBuffer
 	{
 	public:
-		GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
-		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
-
-		virtual ~GL4GpuBuffer() override;
-
 		virtual void lockImplementation(uint32 offset, uint32 length) override;
 		virtual void unlockImplementation() override;
 
@@ -22,9 +17,16 @@ namespace Lag
 		virtual void writeImplementation(uint32 offset, uint32 length, byte* src) override;
 		virtual void readImplementation(uint32 offset, uint32 length, byte* dst) override;
 
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
 		inline GLuint getHandle() const { return handle; }
 
 	private:
+		friend class GL4GpuBufferManager;
+		GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
+
 		GLuint handle;
 		GLbitfield convertFlagsToGL(uint32 flags);
 	};

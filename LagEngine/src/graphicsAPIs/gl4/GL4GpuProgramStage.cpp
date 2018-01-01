@@ -7,20 +7,14 @@ using namespace Lag;
 GL4GpuProgramStage::GL4GpuProgramStage(const std::string &path, GpuProgramStageType type) :
 	GpuProgramStage(path, type)
 {
-	GL_ERROR_CHECK(handle = glCreateShader(convertTypeToGL()))
-}
-
-GL4GpuProgramStage::~GL4GpuProgramStage()
-{
-	GL_ERROR_CHECK(glDeleteShader(handle))
 }
 
 bool GL4GpuProgramStage::compile()
 {
 	const char *c_str = code.c_str();
-	GL_ERROR_CHECK(glShaderSource(handle, 1, &c_str, 0))
+	GL_ERROR_PRINT(glShaderSource(handle, 1, &c_str, 0))
 
-	GL_ERROR_CHECK(glCompileShader(handle))
+	GL_ERROR_PRINT(glCompileShader(handle))
 
 	return checkCompilation();	
 }
@@ -28,7 +22,7 @@ bool GL4GpuProgramStage::compile()
 bool GL4GpuProgramStage::checkCompilation() const
 {
 	GLint result;
-	GL_ERROR_CHECK(glGetShaderiv(handle, GL_COMPILE_STATUS, &result))
+	GL_ERROR_PRINT(glGetShaderiv(handle, GL_COMPILE_STATUS, &result))
 
 	if (!result)
 	{
@@ -36,10 +30,10 @@ bool GL4GpuProgramStage::checkCompilation() const
 			"GL4GpuProgramStage", "Failed to compile shader: " + path);
 
 		GLint logLength;
-		GL_ERROR_CHECK(glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength))
+		GL_ERROR_PRINT(glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength))
 			
 		GLchar *log = new GLchar[logLength];
-		GL_ERROR_CHECK(glGetShaderInfoLog(handle, logLength, 0, log))
+		GL_ERROR_PRINT(glGetShaderInfoLog(handle, logLength, 0, log))
 
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgramStage", std::string("Compilation Log:\n") + log);
@@ -72,4 +66,16 @@ GLenum GL4GpuProgramStage::convertTypeToGL()
 	default:
 		return 0;
 	}
+}
+
+bool Lag::GL4GpuProgramStage::loadImplementation()
+{
+	GL_ERROR_PRINT(handle = glCreateShader(convertTypeToGL()))
+	return GpuProgramStage::loadImplementation();
+}
+
+void Lag::GL4GpuProgramStage::unloadImplementation()
+{
+	GL_ERROR_PRINT(glDeleteShader(handle))
+	GpuProgramStage::unloadImplementation();
 }

@@ -23,10 +23,6 @@ namespace Lag
 	class GpuProgram : public ManagedObject
 	{
 	public:
-		GpuProgram(const std::string &name, const std::vector<std::string> &names);
-		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
-		virtual ~GpuProgram() override;
-		
 		inline bool hasStage(GpuProgramStageType stageType) const { return presentStages[stageType]; }
 		
 		const GpuProgramUniform* getUniformByName(const std::string &name) const;
@@ -36,6 +32,9 @@ namespace Lag
 		static void generateName(std::vector<std::string> &stageNames, std::string &out);
 
 	protected:
+		GpuProgram(const std::string &name, const std::vector<std::string> &names);
+		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
+
 		std::string name;
 		std::unordered_map<std::string, GpuProgramUniform*> uniformsByName;
 		std::unordered_map<GpuProgramUniformSemantic, std::vector<GpuProgramUniform*>> uniformsBySemantic;

@@ -3,7 +3,7 @@
 
 using namespace Lag;
 
-InputDescription* GL4InputDescriptionManager::createInputDescription(const VertexDescription &vertexDescription, 
+InputDescription* GL4InputDescriptionManager::internalCreateInputDescription(const VertexDescription &vertexDescription,
 	const GpuBuffer &vertexBuffer)
 {
 	return new GL4InputDescription(vertexDescription, vertexBuffer);

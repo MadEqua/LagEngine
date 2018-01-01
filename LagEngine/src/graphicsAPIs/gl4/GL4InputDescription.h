@@ -9,16 +9,19 @@ namespace Lag
 	
 	class GL4InputDescription : public InputDescription
 	{
-	public:
-		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-		virtual ~GL4InputDescription() override;
+	public:		
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 
 		inline GLuint getHandle() const { return handle; }
 
 	private:
-		void setupVertexAttributtes() const;
-		GLuint handle;
+		friend class GL4InputDescriptionManager;
+		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
 
+		void setupVertexAttributtes() const;
 		GLenum convertAttributeTypeToGL(VertexAttributeType type) const;
+
+		GLuint handle;
 	};
 }

@@ -7,7 +7,7 @@
 using namespace Lag;
 
 MaterialManager::MaterialManager(const std::string &folder) :
-	ResourceManager("MaterialManager", folder)
+	XmlResourceManager("MaterialManager", folder)
 {
 }
 

@@ -36,8 +36,8 @@ Entity* SceneManager::createEntity(const std::string &meshName, const std::strin
 {
 	Root &root = Root::getInstance();
 
-	Mesh *mesh = reinterpret_cast<Mesh*>(root.getMeshManager().get(meshName));
-	Material *material = reinterpret_cast<Material*>(root.getMaterialManager().get(materialName));
+	Mesh *mesh = root.getMeshManager().get(meshName);
+	Material *material = root.getMaterialManager().get(materialName);
 
 	if (!mesh || !material)
 	{

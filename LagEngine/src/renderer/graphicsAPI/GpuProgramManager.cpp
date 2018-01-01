@@ -6,12 +6,22 @@ using namespace Lag;
 GpuProgramManager::GpuProgramManager() :
 	Manager("GpuProgramManager")
 {
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"GpuProgramManager", "Initialized successfully.");
 }
 
-GpuProgramManager::~GpuProgramManager()
+GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<std::string> &stagesNames)
 {
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"GpuProgramManager", "Destroyed successfully.");
+	GpuProgram *pr = internalCreate(name, stagesNames);
+	if (addAndLoad(name, pr))
+		return pr;
+	else
+		return nullptr;
+}
+
+GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames)
+{
+	GpuProgram *pr = internalCreate(name, stagesNames);
+	if (addAndLoad(name, pr))
+		return pr;
+	else
+		return nullptr;
 }

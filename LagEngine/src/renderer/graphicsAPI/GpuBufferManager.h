@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include "../../core/Manager.h"
+#include "GpuBuffer.h"
 #include "../../Types.h"
 
 namespace Lag
@@ -10,20 +12,25 @@ namespace Lag
 	/*
 	* Creates and manages all GpuBuffers.
 	*/
-	class GpuBufferManager
+	class GpuBufferManager : public Manager<uint32, GpuBuffer>
 	{
 	public:
 		GpuBufferManager();
-		virtual ~GpuBufferManager();
 
-		virtual GpuBuffer& createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
-		virtual GpuBuffer& createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
+		GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer);
+		GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer);
 
-		virtual GpuBuffer& createIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
-		virtual GpuBuffer& createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
+		GpuBuffer* createIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer);
+		GpuBuffer* createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer);
 
 	protected:
-		std::vector<GpuBuffer*> vertexBuffers;
-		std::vector<GpuBuffer*> indexBuffers;
+		uint32 nextName;
+		uint32 getNextName();
+
+		virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
+		virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
+
+		virtual GpuBuffer* internalCreateIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
+		virtual GpuBuffer* internalCreateIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
 	};
 }

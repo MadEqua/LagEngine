@@ -6,12 +6,12 @@ using namespace Lag;
 GL4RenderToTexture::GL4RenderToTexture(uint32 width, uint32 height) :
 	RenderToTexture(width, height)
 {
-	GL_ERROR_CHECK(glCreateFramebuffers(1, &handle))
+	GL_ERROR_PRINT(glCreateFramebuffers(1, &handle))
 }
 
 GL4RenderToTexture::~GL4RenderToTexture()
 {
-	GL_ERROR_CHECK(glDeleteFramebuffers(1, &handle))
+	GL_ERROR_PRINT(glDeleteFramebuffers(1, &handle))
 }
 
 void GL4RenderToTexture::attachColorTexture(const ImageData &imageData, const TextureData &textureData,
@@ -23,7 +23,7 @@ void GL4RenderToTexture::attachColorTexture(const ImageData &imageData, const Te
 	
 	colorTextures[layer][attachment] = gl4texture;
 	
-	GL_ERROR_CHECK(glNamedFramebufferTexture(handle, 
+	GL_ERROR_PRINT(glNamedFramebufferTexture(handle, 
 		GL_COLOR_ATTACHMENT0 + attachment, gl4texture->getHandle(), mipmapLevel))
 }
 
@@ -36,7 +36,7 @@ void GL4RenderToTexture::attachDepthStencilTexture(const ImageData &imageData, c
 
 	depthStencilTextures[layer] = gl4texture;
 
-	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
+	GL_ERROR_PRINT(glNamedFramebufferTexture(handle,
 		GL_DEPTH_STENCIL_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
 }
 
@@ -49,7 +49,7 @@ void GL4RenderToTexture::attachDepthTexture(const ImageData &imageData, const Te
 
 	depthTextures[layer] = gl4texture;
 	
-	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
+	GL_ERROR_PRINT(glNamedFramebufferTexture(handle,
 		GL_DEPTH_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
 }
 
@@ -62,7 +62,7 @@ void GL4RenderToTexture::attachStencilTexture(const ImageData &imageData, const 
 
 	stencilTextures[layer] = gl4texture;
 	
-	GL_ERROR_CHECK(glNamedFramebufferTexture(handle,
+	GL_ERROR_PRINT(glNamedFramebufferTexture(handle,
 		GL_STENCIL_ATTACHMENT, gl4texture->getHandle(), mipmapLevel))
 }
 
@@ -77,7 +77,7 @@ bool GL4RenderToTexture::checkCompleteness() const
 	if (depthTextures.empty() && depthStencilTextures.empty())
 		return false;
 	
-	GLenum status = GL_ERROR_CHECK(glCheckNamedFramebufferStatus(handle, GL_DRAW_FRAMEBUFFER))
+	GLenum status = GL_ERROR_PRINT(glCheckNamedFramebufferStatus(handle, GL_DRAW_FRAMEBUFFER))
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 		return false;
 

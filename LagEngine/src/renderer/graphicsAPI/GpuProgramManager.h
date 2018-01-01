@@ -3,19 +3,23 @@
 #include <string>
 
 #include "../../core/Manager.h"
+#include "GpuProgram.h"
 
 namespace Lag
 {
 	class GpuProgramStage;
 	
-	class GpuProgramManager : public Manager<std::string>
+	class GpuProgramManager : public Manager<std::string, GpuProgram>
 	{
 
 	public:
 		GpuProgramManager();
-		virtual ~GpuProgramManager() override;
 
-		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
-		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;
+		GpuProgram* create(const std::string &name, const std::vector<std::string> &stagesNames);
+		GpuProgram* create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames);
+
+	protected:
+		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<std::string> &stagesNames) = 0;
+		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames) = 0;
 	};
 }

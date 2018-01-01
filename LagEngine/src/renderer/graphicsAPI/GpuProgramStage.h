@@ -3,7 +3,7 @@
 #include <string>
 #include <vector>
 
-#include "../../resources/Resource.h"
+#include "../../resources/XmlResource.h"
 #include "../GpuProgramUniformDescription.h"
 
 namespace Lag
@@ -23,7 +23,7 @@ namespace Lag
 	* Can be compiled independently and used on various GpuPrograms.
 	* Each GraphicsAPI implementation will have its own concrete version.
 	*/
-	class GpuProgramStage : public Resource
+	class GpuProgramStage : public XmlResource
 	{
 	public:
 		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);

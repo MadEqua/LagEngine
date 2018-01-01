@@ -9,14 +9,14 @@ namespace Lag
 	{
 
 	public:
-		virtual bool create(const std::string &name, const std::vector<std::string> &stagesNames) override
+		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<std::string> &stagesNames) override
 		{
-			return add(name, new GL4GpuProgram(name, stagesNames));
+			return new GL4GpuProgram(name, stagesNames);
 		}
 
-		virtual bool create(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
+		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
 		{
-			return add(name, new GL4GpuProgram(name, stages));
+			return new GL4GpuProgram(name, stages);
 		}
 	};
 }

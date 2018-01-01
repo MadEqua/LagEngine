@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../resources/Resource.h"
+#include "../resources/XmlResource.h"
 #include "../Types.h"
 
 #include <string>
@@ -47,11 +47,10 @@ namespace Lag
 		bool sRGB; //is the image in non-linar format?
 	};
 	
-	class Image : public Resource
+	class Image : public XmlResource
 	{
 	public:
 		Image(const std::string &path, const ImageData &data);
-		virtual ~Image();
 
 		inline const ImageData& getData() const { return data; }
 		inline const byte* getRawDataPointer() const { return dataPtr; }

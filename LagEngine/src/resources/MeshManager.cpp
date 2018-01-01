@@ -7,7 +7,7 @@
 using namespace Lag;
 
 MeshManager::MeshManager(const std::string &folder) :
-	ResourceManager("MeshManager", folder)
+	XmlResourceManager("MeshManager", folder)
 {
 }
 

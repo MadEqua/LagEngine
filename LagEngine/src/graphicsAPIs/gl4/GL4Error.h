@@ -5,22 +5,22 @@
 
 namespace Lag
 {
-	void CheckOpenGLError(const char* stmt, const char* fname, int line);
+	void printOpenGLErrors(const char* stmt, const char* fname, int line);
 }
 
 #ifdef _DEBUG
-#define GL_ERROR_CHECK(stmt)\
+#define GL_ERROR_PRINT(stmt)\
 			stmt;\
-			Lag::CheckOpenGLError(#stmt, __FILE__, __LINE__);
+			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);
 #else
-#define GL_CHECK(stmt) stmt
+#define GL_ERROR_PRINT(stmt) stmt
 #endif
 
 #ifdef _DEBUG
-#define GL_ERROR_CHECK_BLOCK(stmt) {\
+#define GL_ERROR_PRINT_BLOCK(stmt) {\
 			stmt;\
-			Lag::CheckOpenGLError(#stmt, __FILE__, __LINE__);\
+			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);\
 		}
 #else
-#define GL_CHECK(stmt) stmt
+#define GL_ERROR_PRINT_BLOCK(stmt) stmt
 #endif

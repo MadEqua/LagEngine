@@ -3,7 +3,7 @@
 #include "../../io/log/LogManager.h"
 #include <sstream>
 
-void Lag::CheckOpenGLError(const char* stmt, const char* fname, int line)
+void Lag::printOpenGLErrors(const char* stmt, const char* fname, int line)
 {
 	GLenum err;
 	while ((err = glGetError()) != GL_NO_ERROR)

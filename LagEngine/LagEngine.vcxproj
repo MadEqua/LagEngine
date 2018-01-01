@@ -169,9 +169,8 @@
     <ClCompile Include="src\io\tinyxml\tinyxml.cpp" />
     <ClCompile Include="src\io\tinyxml\tinyxmlerror.cpp" />
     <ClCompile Include="src\io\tinyxml\tinyxmlparser.cpp" />
-    <ClCompile Include="src\resources\Resource.cpp" />
+    <ClCompile Include="src\resources\XmlResource.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramStage.cpp" />
-    <ClCompile Include="src\resources\ResourceManager.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
     <ClCompile Include="src\scene\Frustum.cpp" />
     <ClCompile Include="src\renderer\RenderTarget.cpp" />
@@ -208,6 +207,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\NamedContainer.h" />
+    <ClInclude Include="src\core\Utils.h" />
     <ClInclude Include="src\scene\OrthographicCamera.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderToTexture.h" />
     <ClInclude Include="src\renderer\graphicsAPI\RenderToTexture.h" />
@@ -255,13 +255,13 @@
     <ClInclude Include="src\resources\GpuProgramStageManager.h" />
     <ClInclude Include="src\io\tinyxml\tinyxml.h" />
     <ClInclude Include="src\resources\MaterialManager.h" />
-    <ClInclude Include="src\resources\Resource.h" />
+    <ClInclude Include="src\resources\XmlResource.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStage.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="src\resources\ResourceManager.h" />
+    <ClInclude Include="src\resources\XmlResourceManager.h" />
     <ClInclude Include="src\scene\SceneManager.h" />
     <ClInclude Include="src\scene\Frustum.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GraphicsAPI.h" />

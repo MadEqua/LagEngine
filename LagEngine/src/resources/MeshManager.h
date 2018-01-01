@@ -1,11 +1,12 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "XmlResourceManager.h"
+#include "../renderer/Mesh.h"
 #include <string>
 
 namespace Lag
 {
-	class MeshManager : public ResourceManager
+	class MeshManager : public XmlResourceManager<Mesh>
 	{
 	public:
 		explicit MeshManager(const std::string &folder);

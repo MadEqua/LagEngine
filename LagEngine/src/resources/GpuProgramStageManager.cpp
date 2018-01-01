@@ -8,7 +8,7 @@
 using namespace Lag;
 
 GpuProgramStageManager::GpuProgramStageManager(const std::string &folder) :
-	ResourceManager("GpuProgramStageManager", folder)
+	XmlResourceManager("GpuProgramStageManager", folder)
 {
 }
 
@@ -30,7 +30,7 @@ void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &elemen
 		if (!create(name, file, parseStageTypeFromString(type)))
 			return;
 
-		GpuProgramStage *stage = static_cast<GpuProgramStage*>(get(name));
+		GpuProgramStage *stage = get(name);
 
 		for (const TiXmlElement* child = element.FirstChildElement();
 			child != NULL;

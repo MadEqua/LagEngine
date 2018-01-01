@@ -34,8 +34,8 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 	}
 
 	GLint res;
-	GL_ERROR_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, 0))
-	GL_ERROR_CHECK(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, 
+	GL_ERROR_PRINT(glBindFramebuffer(GL_FRAMEBUFFER, 0))
+	GL_ERROR_PRINT(glGetFramebufferAttachmentParameteriv(GL_FRAMEBUFFER, 
 		GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &res))
 
 	if (res == GL_LINEAR)
@@ -47,15 +47,15 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 			"GL4GraphicsAPI", "sRGB Default Framebuffer.");
 		
 		//enable auto Linear RGB to sRGB conversion when writing to sRGB framebuffers
-		GL_ERROR_CHECK(glEnable(GL_FRAMEBUFFER_SRGB)) 
+		GL_ERROR_PRINT(glEnable(GL_FRAMEBUFFER_SRGB)) 
 	}
 
-	GL_ERROR_CHECK(glGetIntegerv(GL_SAMPLES, &res))
+	GL_ERROR_PRINT(glGetIntegerv(GL_SAMPLES, &res))
 	if (res > 0) 
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Multisampled Default Framebuffer. Samples: " + res);
-		GL_ERROR_CHECK(glEnable(GL_MULTISAMPLE))
+		GL_ERROR_PRINT(glEnable(GL_MULTISAMPLE))
 	}
 	else 
 	{
@@ -63,11 +63,11 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 			"GL4GraphicsAPI", "Non-Multisampled Default Framebuffer.");
 	}
 
-	GL_ERROR_CHECK(glEnable(GL_DEPTH_TEST))
-	GL_ERROR_CHECK(glDepthFunc(GL_LESS))
+	GL_ERROR_PRINT(glEnable(GL_DEPTH_TEST))
+	GL_ERROR_PRINT(glDepthFunc(GL_LESS))
 
-	GL_ERROR_CHECK(glEnable(GL_CULL_FACE))
-	GL_ERROR_CHECK(glCullFace(GL_BACK))
+	GL_ERROR_PRINT(glEnable(GL_CULL_FACE))
+	GL_ERROR_PRINT(glCullFace(GL_BACK))
 }
 
 RenderToTexture* GL4GraphicsAPI::createRenderToTexture(uint32 width, uint32 height)
@@ -77,7 +77,7 @@ RenderToTexture* GL4GraphicsAPI::createRenderToTexture(uint32 width, uint32 heig
 
 void GL4GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 count)
 {
-	GL_ERROR_CHECK(glDrawArrays(convertRenderModeToGLenum(mode), first, count))
+	GL_ERROR_PRINT(glDrawArrays(convertRenderModeToGLenum(mode), first, count))
 }
 
 void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex)
@@ -105,51 +105,51 @@ void GL4GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType inde
 	}
 	
 	uint32 offset = first * indexByteSize;
-	GL_ERROR_CHECK(glDrawElementsBaseVertex(convertRenderModeToGLenum(mode), count, type, reinterpret_cast<void*>(offset), baseVertex))
+	GL_ERROR_PRINT(glDrawElementsBaseVertex(convertRenderModeToGLenum(mode), count, type, reinterpret_cast<void*>(offset), baseVertex))
 }
 
 void GL4GraphicsAPI::clearColorBuffer(const Color &color)
 {
-	GL_ERROR_CHECK(glClearBufferfv(GL_COLOR, 0, color.getRGBAfloat()))
+	GL_ERROR_PRINT(glClearBufferfv(GL_COLOR, 0, color.getRGBAfloat()))
 }
 
 void GL4GraphicsAPI::clearDepthBuffer(float value)
 {
-	GL_ERROR_CHECK(glClearBufferfv(GL_DEPTH, 0, &value))
+	GL_ERROR_PRINT(glClearBufferfv(GL_DEPTH, 0, &value))
 }
 
 void GL4GraphicsAPI::clearStencilBuffer(int32 value)
 {
-	GL_ERROR_CHECK(glClearBufferiv(GL_STENCIL, 0, &value))
+	GL_ERROR_PRINT(glClearBufferiv(GL_STENCIL, 0, &value))
 }
 
 void GL4GraphicsAPI::clearDepthAndStencilBuffer(float depth, int32 stencil)
 {
-	GL_ERROR_CHECK(glClearBufferfi(GL_DEPTH_STENCIL, 0, depth, stencil))
+	GL_ERROR_PRINT(glClearBufferfi(GL_DEPTH_STENCIL, 0, depth, stencil))
 }
 
 void GL4GraphicsAPI::bindVertexBuffer(const GpuBuffer &vertexBuffer)
 {
 	GLuint handle = static_cast<const GL4GpuBuffer&>(vertexBuffer).getHandle();
-	GL_ERROR_CHECK(glBindBuffer(GL_ARRAY_BUFFER, handle))
+	GL_ERROR_PRINT(glBindBuffer(GL_ARRAY_BUFFER, handle))
 }
 
 void GL4GraphicsAPI::bindIndexBuffer(const GpuBuffer &indexBuffer)
 {
 	GLuint handle = static_cast<const GL4GpuBuffer&>(indexBuffer).getHandle();
-	GL_ERROR_CHECK(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle))
+	GL_ERROR_PRINT(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle))
 }
 
 void GL4GraphicsAPI::bindGpuProgram(const GpuProgram &gpuProgram)
 {
 	GLuint handle = static_cast<const GL4GpuProgram&>(gpuProgram).getHandle();
-	GL_ERROR_CHECK(glUseProgram(handle))
+	GL_ERROR_PRINT(glUseProgram(handle))
 }
 
 void GL4GraphicsAPI::bindInputDescription(const InputDescription &inputDescription)
 {
 	GLuint handle = static_cast<const GL4InputDescription&>(inputDescription).getHandle();
-	GL_ERROR_CHECK(glBindVertexArray(handle))
+	GL_ERROR_PRINT(glBindVertexArray(handle))
 }
 
 void GL4GraphicsAPI::bindRenderTarget(const RenderTarget &renderTarget)
@@ -157,31 +157,31 @@ void GL4GraphicsAPI::bindRenderTarget(const RenderTarget &renderTarget)
 	GLuint handle = 0;
 	if(!renderTarget.isMainWindow())
 		handle = static_cast<const GL4RenderToTexture&>(renderTarget).getHandle();
-	GL_ERROR_CHECK(glBindFramebuffer(GL_FRAMEBUFFER, handle))
+	GL_ERROR_PRINT(glBindFramebuffer(GL_FRAMEBUFFER, handle))
 }
 
 void GL4GraphicsAPI::bindViewport(uint32 x, uint32 y, uint32 width, uint32 height)
 {
-	GL_ERROR_CHECK(glViewport(x, y, width, height))
+	GL_ERROR_PRINT(glViewport(x, y, width, height))
 }
 
 void GL4GraphicsAPI::bindTexture(const Texture &texture, uint8 unit)
 {
 	const GL4Texture& GL4Tex = static_cast<const GL4Texture&>(texture);
-	GL_ERROR_CHECK(glBindTextureUnit(unit, GL4Tex.getHandle()))
+	GL_ERROR_PRINT(glBindTextureUnit(unit, GL4Tex.getHandle()))
 }
 
 void GL4GraphicsAPI::setDepthTestEnabled(bool enabled)
 {
 	if (enabled)
-		GL_ERROR_CHECK_BLOCK(glEnable(GL_DEPTH_TEST))
+		GL_ERROR_PRINT_BLOCK(glEnable(GL_DEPTH_TEST))
 	else
-		GL_ERROR_CHECK_BLOCK(glDisable(GL_DEPTH_TEST))
+		GL_ERROR_PRINT_BLOCK(glDisable(GL_DEPTH_TEST))
 }
 
 void GL4GraphicsAPI::setDepthWritingEnabled(bool enabled)
 {
-	GL_ERROR_CHECK(glDepthMask(enabled ? GL_TRUE : GL_FALSE))
+	GL_ERROR_PRINT(glDepthMask(enabled ? GL_TRUE : GL_FALSE))
 }
 
 GLenum GL4GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode)

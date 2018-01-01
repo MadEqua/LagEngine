@@ -8,12 +8,12 @@ namespace Lag
 	/*
 	* Container for objects (pointers to) with an integer as a name. 
 	* The container generates the names by itself.
+	* Useful for storing objects that need a name, but not an user-friendly one (not exposed to the application).
 	*/
 	template<class T>
 	class NamedContainer
 	{
 	public:
-		NamedContainer();
 		~NamedContainer();
 
 		uint32 add(T *value);
@@ -32,11 +32,6 @@ namespace Lag
 
 
 
-	template<class T>
-	NamedContainer<T>::NamedContainer()
-	{
-	}
-	
 	template<class T>
 	NamedContainer<T>::~NamedContainer()
 	{

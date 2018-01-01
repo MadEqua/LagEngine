@@ -33,7 +33,7 @@ bool Texture::loadImplementation()
 		ImageManager &imageManager = Root::getInstance().getImageManager();
 		for (auto name : imageNames)
 		{
-			Image *image = static_cast<Image*>(imageManager.get(name));
+			Image *image = imageManager.get(name);
 
 			if (image != nullptr)
 			{

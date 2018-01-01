@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../core/Buffer.h"
+#include "../../core/ManagedObject.h"
 
 namespace Lag
 {
@@ -29,13 +30,9 @@ namespace Lag
 	*
 	* Created and managed by GpuBufferManager.
 	*/
-	class GpuBuffer : public Buffer
+	class GpuBuffer : public Buffer, public ManagedObject
 	{
 	public:
-		GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
-		GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
-		virtual ~GpuBuffer() override;
-
 		virtual void lock(uint32 offset, uint32 length) override;
 		virtual void lock();
 		virtual void unlock() override;
@@ -48,7 +45,12 @@ namespace Lag
 
 		bool checkForFlag(GpuBufferUsage flagToCheck);
 
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
+
 	protected:
+		GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 		
 		//Basic implementation provided. Better ones can be made on concrete classes
 		virtual void updateFromMirror();
@@ -59,5 +61,8 @@ namespace Lag
 
 		uint32 flags;
 		GpuBufferContents contents;
+
+		//If data is sent on the constructor, a copy is stored here to be used on load(). After that it's deleted.
+		byte *dataCopy;
 	};
 }

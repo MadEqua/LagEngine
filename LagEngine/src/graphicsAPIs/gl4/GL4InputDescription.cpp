@@ -7,19 +7,24 @@ using namespace Lag;
 GL4InputDescription::GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer) :
 	InputDescription(vertexDescription, vertexBuffer)
 {
-	GL_ERROR_CHECK(glCreateVertexArrays(1, &handle))
-	setupVertexAttributtes();
 }
 
-GL4InputDescription::~GL4InputDescription()
+bool Lag::GL4InputDescription::loadImplementation()
 {
-	GL_ERROR_CHECK(glDeleteVertexArrays(1, &handle))
+	GL_ERROR_PRINT(glCreateVertexArrays(1, &handle))
+	setupVertexAttributtes();
+	return true;
+}
+
+void Lag::GL4InputDescription::unloadImplementation()
+{
+	GL_ERROR_PRINT(glDeleteVertexArrays(1, &handle))
 }
 
 void GL4InputDescription::setupVertexAttributtes() const
 {
 	//Bind the VBO to VBO binding point 0 (of this VAO) and describes how to get vertex data from the VBO
-	GL_ERROR_CHECK(glVertexArrayVertexBuffer(handle, 0,
+	GL_ERROR_PRINT(glVertexArrayVertexBuffer(handle, 0,
 		static_cast<const GL4GpuBuffer&>(vertexBuffer).getHandle(),
 
 		//Not sending an offset within the VBO itself. 
@@ -35,17 +40,17 @@ void GL4InputDescription::setupVertexAttributtes() const
 
 		//Associate the attribute i to VBO binding point 0
 		//(All attributes from the same VBO)
-		GL_ERROR_CHECK(glVertexArrayAttribBinding(handle, i, 0))
+		GL_ERROR_PRINT(glVertexArrayAttribBinding(handle, i, 0))
 
 		//Describes how to interpret each particular vertex attribute
-		GL_ERROR_CHECK(glVertexArrayAttribFormat(handle, i,
+		GL_ERROR_PRINT(glVertexArrayAttribFormat(handle, i,
 			static_cast<GLint>(vxAttr.getLength()),
 			convertAttributeTypeToGL(vxAttr.getType()),
 			vxAttr.getIsNormalized() ? GL_TRUE : GL_FALSE,
 			vxAttr.getOffset()))
 
 		//Enable the attribute
-		GL_ERROR_CHECK(glEnableVertexArrayAttrib(handle, i))
+		GL_ERROR_PRINT(glEnableVertexArrayAttrib(handle, i))
 	}
 }
 

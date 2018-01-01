@@ -6,7 +6,7 @@
 using namespace Lag;
 
 TextureManager::TextureManager() :
-	ResourceManager("TextureManager")
+	XmlResourceManager("TextureManager")
 {
 }
 

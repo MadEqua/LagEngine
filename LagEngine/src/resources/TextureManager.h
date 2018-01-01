@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "XmlResourceManager.h"
+#include "../renderer/graphicsAPI/Texture.h"
 #include <string>
 
 namespace Lag
@@ -12,7 +13,7 @@ namespace Lag
 	enum TexturewWrappingMode;
 	struct ImageData;
 	
-	class TextureManager : public ResourceManager
+	class TextureManager : public XmlResourceManager<Texture>
 	{
 	public:
 		TextureManager();

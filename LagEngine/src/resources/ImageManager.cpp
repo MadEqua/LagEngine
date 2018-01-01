@@ -6,7 +6,7 @@
 using namespace Lag;
 
 ImageManager::ImageManager(const std::string &folder) :
-	ResourceManager("ImageManager", folder)
+	XmlResourceManager("ImageManager", folder)
 {
 }
 

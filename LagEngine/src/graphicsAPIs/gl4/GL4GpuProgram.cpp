@@ -9,35 +9,26 @@ using namespace Lag;
 GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<std::string> &names) :
 	GpuProgram(name, names)
 {
-	GL_ERROR_CHECK(handle = glCreateProgram())
 }
 
 GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages) :
 	GpuProgram(name, stages)
 {
-	GL_ERROR_CHECK(handle = glCreateProgram())
-}
-
-GL4GpuProgram::~GL4GpuProgram()
-{
-	GL_ERROR_CHECK(glDeleteProgram(handle))
 }
 
 bool GL4GpuProgram::link()
 {
 	for (GpuProgramStage *stage : stages)
-	{
-		GL_ERROR_CHECK(glAttachShader(handle, static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
-	}
+		GL_ERROR_PRINT_BLOCK(glAttachShader(handle, static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
 	
-	GL_ERROR_CHECK(glLinkProgram(handle))
+	GL_ERROR_PRINT(glLinkProgram(handle))
 	return checkLinking();
 }
 
 bool GL4GpuProgram::checkLinking() const
 {
 	GLint result;
-	GL_ERROR_CHECK(glGetProgramiv(handle, GL_LINK_STATUS, &result))
+	GL_ERROR_PRINT(glGetProgramiv(handle, GL_LINK_STATUS, &result))
 
 	if (!result)
 	{
@@ -45,10 +36,10 @@ bool GL4GpuProgram::checkLinking() const
 			"GL4GpuProgram", "Failed to link shader: " + name);
 
 		GLint logLength;
-		GL_ERROR_CHECK(glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logLength))
+		GL_ERROR_PRINT(glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logLength))
 
 		GLchar *log = new GLchar[logLength];
-		GL_ERROR_CHECK(glGetProgramInfoLog(handle, logLength, 0, log))
+		GL_ERROR_PRINT(glGetProgramInfoLog(handle, logLength, 0, log))
 
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GpuProgram", std::string("Linking Log:\n") + log);
@@ -60,6 +51,18 @@ bool GL4GpuProgram::checkLinking() const
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"GL4GpuProgram", "Shader linked succesfully: " + name);
 	return true;
+}
+
+bool GL4GpuProgram::loadImplementation()
+{
+	GL_ERROR_PRINT(handle = glCreateProgram())
+	return GpuProgram::loadImplementation();
+}
+
+void GL4GpuProgram::unloadImplementation()
+{
+	GL_ERROR_PRINT(glDeleteProgram(handle))
+	return GpuProgram::unloadImplementation();
 }
 
 GpuProgramUniform* GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description) const

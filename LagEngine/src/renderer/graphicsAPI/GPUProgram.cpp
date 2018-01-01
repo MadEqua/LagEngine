@@ -20,12 +20,6 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStag
 {
 }
 
-GpuProgram::~GpuProgram()
-{
-	for (auto &un : uniformsByName)
-		delete un.second;
-}
-
 bool GpuProgram::checkStages()
 {
 	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
@@ -34,14 +28,10 @@ bool GpuProgram::checkStages()
 	for (GpuProgramStage *stage : stages)
 	{
 		if (presentStages[stage->getType()])
-		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL, "GpuProgram",
 				"Receiving multiple GpuProgramStages for the same stage. Using only the first on list.");
-		}
 		else
-		{
 			presentStages[stage->getType()] = true;
-		}
 	}
 
 	if (!presentStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX])
@@ -60,7 +50,7 @@ bool GpuProgram::loadImplementation()
 		GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
 		for (const std::string &name : stagesNames)
 		{
-			GpuProgramStage *stage = static_cast<GpuProgramStage*>(man.get(name));
+			GpuProgramStage *stage = man.get(name);
 			if (stage == nullptr)
 				LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 					"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
@@ -125,6 +115,11 @@ bool GpuProgram::loadImplementation()
 
 void GpuProgram::unloadImplementation()
 {
+	for (auto &un : uniformsByName)
+		delete un.second;
+
+	uniformsByName.clear();
+	uniformsBySemantic.clear();
 }
 
 const GpuProgramUniform* GpuProgram::getUniformByName(const std::string &name) const
@@ -160,7 +155,7 @@ void GpuProgram::generateName(std::vector<std::string> &stageNames, std::string 
 	{
 		for (std::string &stageName : stageNames)
 		{
-			GpuProgramStage *stage = static_cast<GpuProgramStage*>(man.get(stageName));
+			GpuProgramStage *stage = man.get(stageName);
 			if (stage != nullptr && stage->getType() == stageOrder[i])
 			{
 				out += stageName + '.';

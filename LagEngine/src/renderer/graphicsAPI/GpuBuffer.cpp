@@ -11,8 +11,8 @@ GpuBuffer::GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferConten
 	flags(flags),
 	contents(contents)
 {
-	if (useMirror) 
-		mirrorBuffer = new MemoryBuffer(sizeBytes, data);
+	dataCopy = new byte[sizeBytes];
+	memcpy(dataCopy, data, sizeBytes);
 }
 
 GpuBuffer::GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror) :
@@ -20,16 +20,9 @@ GpuBuffer::GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents,
 	useMirror(useMirror),
 	mirrorBuffer(nullptr),
 	flags(flags),
-	contents(contents)
+	contents(contents),
+	dataCopy(nullptr)
 {
-	if (useMirror)
-		mirrorBuffer = new MemoryBuffer(sizeBytes);
-}
-
-GpuBuffer::~GpuBuffer() 
-{
-	if (useMirror)
-		delete mirrorBuffer;
 }
 
 void GpuBuffer::lock(uint32 offset, uint32 length)
@@ -127,4 +120,24 @@ void GpuBuffer::updateFromMirror()
 bool GpuBuffer::checkForFlag(GpuBufferUsage flagToCheck)
 {
 	return static_cast<bool>(flags & flagToCheck);
+}
+
+bool Lag::GpuBuffer::loadImplementation()
+{	
+	if (useMirror)
+	{
+		if (dataCopy != nullptr)
+			mirrorBuffer = new MemoryBuffer(sizeBytes, dataCopy);
+		else
+			mirrorBuffer = new MemoryBuffer(sizeBytes);
+	}
+
+	delete[] dataCopy;
+	return true;
+}
+
+void Lag::GpuBuffer::unloadImplementation()
+{
+	if (useMirror)
+		delete mirrorBuffer;
 }

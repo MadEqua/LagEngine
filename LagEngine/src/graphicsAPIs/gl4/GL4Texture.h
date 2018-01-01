@@ -14,8 +14,6 @@ namespace Lag
 		GL4Texture(const std::vector<std::string> &imageNames, const TextureData &data);
 		GL4Texture(const ImageData &imageData, const TextureData &textureData);
 
-		virtual ~GL4Texture() override;
-
 		inline GLuint getHandle() const { return handle; }
 		GLenum getGLType() const;
 

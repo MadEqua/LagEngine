@@ -93,16 +93,10 @@
     <ClCompile Include="src\scene\Frustum.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\resources\ResourceManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramStage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\io\ini\IniParser.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\resources\Resource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\io\tinyxml\tinyxml.cpp">
@@ -240,6 +234,9 @@
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\resources\XmlResource.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -350,16 +347,10 @@
     <ClInclude Include="src\scene\Frustum.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\resources\ResourceManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\io\ini\IniParser.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\resources\Resource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\io\tinyxml\tinyxml.h">
@@ -519,6 +510,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\IFrameListener.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\core\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\XmlResource.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\XmlResourceManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -1,6 +1,7 @@
 #pragma once
 
-#include "ResourceManager.h"
+#include "XmlResourceManager.h"
+#include "Image.h"
 #include <string>
 
 namespace Lag
@@ -9,7 +10,7 @@ namespace Lag
 	enum ImageComponentType;
 	struct ImageData;
 	
-	class ImageManager : public ResourceManager
+	class ImageManager : public XmlResourceManager<Image>
 	{
 	public:
 		explicit ImageManager(const std::string &folder);

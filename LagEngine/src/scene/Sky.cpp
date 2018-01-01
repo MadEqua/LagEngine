@@ -14,7 +14,7 @@ using namespace Lag;
 
 Sky::Sky(const std::string &materialName)
 {
-	material = static_cast<Material*>(Root::getInstance().getMaterialManager().get(materialName));
+	material = Root::getInstance().getMaterialManager().get(materialName);
 	
 	if (!material)
 	{
@@ -22,7 +22,7 @@ Sky::Sky(const std::string &materialName)
 	}
 
 	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
-	VertexDescription &vxDesc = inputDescriptionManager.createVertexDescription();
+	VertexDescription vxDesc;
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
 
 	const int VERTEX_COUNT = 8;
@@ -57,16 +57,23 @@ Sky::Sky(const std::string &materialName)
 	};
 
 	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
-	GpuBuffer &vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), reinterpret_cast<byte*>(vertices), 0, false);
-	GpuBuffer &indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), reinterpret_cast<byte*>(indices), 0, false);
+	GpuBuffer *vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), reinterpret_cast<byte*>(vertices), 0, false);
+	GpuBuffer *indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), reinterpret_cast<byte*>(indices), 0, false);
+
+	if (vertexBuffer == nullptr || indexBuffer == nullptr)
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+			"Sky", "Failed to load sky. Failed to create a VertexBuffer or IndexBuffer");
+		return;
+	}
 	
 	vertexData.vertexStart = 0;
 	vertexData.vertexCount = VERTEX_COUNT;
-	vertexData.inputDescription = inputDescriptionManager.getInputDescription(vxDesc, vertexBuffer);
+	vertexData.inputDescription = inputDescriptionManager.createInputDescription(vxDesc, *vertexBuffer);
 
 	indexData.indexStart = 0;
 	indexData.indexCount = INDEX_COUNT;
-	indexData.indexBuffer = &indexBuffer;
+	indexData.indexBuffer = indexBuffer;
 	indexData.indexType = LAG_IDX_TYPE_UINT8;
 }
 
