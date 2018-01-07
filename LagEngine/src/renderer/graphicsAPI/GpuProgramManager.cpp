@@ -11,7 +11,7 @@ GpuProgramManager::GpuProgramManager() :
 GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<std::string> &stagesNames)
 {
 	GpuProgram *pr = internalCreate(name, stagesNames);
-	if (addAndLoad(name, pr))
+	if (add(name, pr))
 		return pr;
 	else
 		return nullptr;
@@ -20,7 +20,7 @@ GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector
 GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames)
 {
 	GpuProgram *pr = internalCreate(name, stagesNames);
-	if (addAndLoad(name, pr))
+	if (add(name, pr))
 		return pr;
 	else
 		return nullptr;

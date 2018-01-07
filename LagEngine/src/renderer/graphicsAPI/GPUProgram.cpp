@@ -20,29 +20,6 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStag
 {
 }
 
-bool GpuProgram::checkStages()
-{
-	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
-		presentStages[i] = false;
-
-	for (GpuProgramStage *stage : stages)
-	{
-		if (presentStages[stage->getType()])
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL, "GpuProgram",
-				"Receiving multiple GpuProgramStages for the same stage. Using only the first on list.");
-		else
-			presentStages[stage->getType()] = true;
-	}
-
-	if (!presentStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX])
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"GpuProgram", "Trying to load without a vertex stage.");
-		return false;
-	}
-	return true;
-}
-
 bool GpuProgram::loadImplementation()
 {
 	if (stages.empty())
@@ -113,11 +90,35 @@ bool GpuProgram::loadImplementation()
 	return true;
 }
 
+bool GpuProgram::checkStages()
+{
+	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
+		presentStages[i] = false;
+
+	for (GpuProgramStage *stage : stages)
+	{
+		if (presentStages[stage->getType()])
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL, "GpuProgram",
+				"Receiving multiple GpuProgramStages for the same stage. Using only the first on list.");
+		else
+			presentStages[stage->getType()] = true;
+	}
+
+	if (!presentStages[LAG_GPU_PROG_STAGE_TYPE_VERTEX])
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+			"GpuProgram", "Trying to load without a vertex stage.");
+		return false;
+	}
+	return true;
+}
+
 void GpuProgram::unloadImplementation()
 {
 	for (auto &un : uniformsByName)
 		delete un.second;
 
+	stages.clear();
 	uniformsByName.clear();
 	uniformsBySemantic.clear();
 }

@@ -16,10 +16,11 @@ namespace Lag
 	{
 	public:
 		explicit GpuProgramStageManager(const std::string &folder);
-
-		virtual bool create(const std::string &name, const std::string &file, GpuProgramStageType type) = 0;
+		bool create(const std::string &name, const std::string &file, GpuProgramStageType type);
 
 	protected:
+		virtual GpuProgramStage* internalCreate(const std::string &file, GpuProgramStageType type) = 0;
+
 		virtual void parseResourceDescription(const TiXmlElement &element) override;	
 		static GpuProgramStageType parseStageTypeFromString(const std::string &type);
 

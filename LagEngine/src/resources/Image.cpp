@@ -58,4 +58,6 @@ void Image::unloadImplementation()
 {
 	if (dataPtr != nullptr)
 		delete[] dataPtr;
+	
+	dataPtr = nullptr;
 }

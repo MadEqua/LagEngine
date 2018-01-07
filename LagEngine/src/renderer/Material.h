@@ -23,15 +23,16 @@ namespace Lag
 	class Material : public XmlResource
 	{
 	public:
-		explicit Material(const std::string &filePath);
-		Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> texureNames);
-	
 		inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
 		const std::vector<Texture*>* getTexturesBySemantic(TextureSemantic semantic) const;
 
 		void bind() const;
 
 	private:
+		friend class MaterialManager;
+		explicit Material(const std::string &filePath);
+		Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> texureNames);
+
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 

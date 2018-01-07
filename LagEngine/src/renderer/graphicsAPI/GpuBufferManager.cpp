@@ -19,14 +19,14 @@ GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 verte
 		return nullptr;
 }
 
-GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
+/*GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
 {
 	GpuBuffer *vb = internalCreateVertexBuffer(vertexCount, vertexSizeBytes, data, flags, useMirrorBuffer);
 	if (addAndLoad(getNextName(), vb))
 		return vb;
 	else
 		return nullptr;
-}
+}*/
 
 GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, uint32 flags, bool useMirrorBuffer)
 {
@@ -37,14 +37,14 @@ GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSi
 		return nullptr;
 }
 
-GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
+/*GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
 {
 	GpuBuffer *ib = internalCreateIndexBuffer(indexCount, indexSizeBytes, data, flags, useMirrorBuffer);
 	if (addAndLoad(getNextName(), ib))
 		return ib;
 	else
 		return nullptr;
-}
+}*/
 
 uint32 GpuBufferManager::getNextName()
 {

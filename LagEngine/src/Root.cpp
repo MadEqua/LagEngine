@@ -68,6 +68,8 @@ void Root::destroy()
 
 	if (gpuBufferManager != nullptr)
 		delete gpuBufferManager;
+	if (inputDescriptionManager != nullptr)
+		delete inputDescriptionManager;
 
 	if (graphicsAPI != nullptr)
 		delete graphicsAPI;
@@ -76,9 +78,6 @@ void Root::destroy()
 		delete renderer;
 	if (sceneManager != nullptr)
 		delete sceneManager;
-
-	if (inputDescriptionManager != nullptr)
-		delete inputDescriptionManager;
 
 	if (windowListener != nullptr)
 		delete windowListener;
@@ -122,7 +121,6 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	renderer->addRenderWindow(*renderWindow);
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
-	imageManager = new ImageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder);
 
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
@@ -179,6 +177,8 @@ bool Root::initResources(const std::string &resourcesFilePath)
 			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
 		return false;
 	}
+
+	imageManager = new ImageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder);
 
 	//Initialize all ResourceManagers here
 	imageManager->parseResourceFile(*resourcesElement);

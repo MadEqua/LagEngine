@@ -9,7 +9,6 @@ namespace Lag
 	{
 	public:
 		explicit MaterialManager(const std::string &folder);
-
 		bool create(const std::string &name, const std::string &file);
 
 	protected:

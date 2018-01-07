@@ -10,6 +10,21 @@ TextureManager::TextureManager() :
 {
 }
 
+bool TextureManager::create(const std::string &name, const std::string &imageName, const TextureData &data)
+{
+	return add(name, internalCreate(imageName, data));
+}
+
+bool TextureManager::create(const std::string &name, const std::vector<std::string> &imageNames, const TextureData &data)
+{
+	return add(name, internalCreate(imageNames, data));
+}
+
+bool TextureManager::create(const std::string &name, const ImageData &imageData, const TextureData &textureData)
+{
+	return add(name, internalCreate(imageData, textureData));
+}
+
 void TextureManager::parseResourceDescription(const TiXmlElement &element)
 {
 	if (element.ValueStr() == "texture")

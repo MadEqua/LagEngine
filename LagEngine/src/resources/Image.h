@@ -50,8 +50,6 @@ namespace Lag
 	class Image : public XmlResource
 	{
 	public:
-		Image(const std::string &path, const ImageData &data);
-
 		inline const ImageData& getData() const { return data; }
 		inline const byte* getRawDataPointer() const { return dataPtr; }
 
@@ -59,6 +57,9 @@ namespace Lag
 		virtual void unloadImplementation() override;
 
 	protected:
+		friend class ImageManager;
+		Image(const std::string &path, const ImageData &data);
+
 		ImageData data;
 		byte *dataPtr;
 	};

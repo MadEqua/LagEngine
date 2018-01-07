@@ -25,6 +25,8 @@ namespace Lag
 		virtual void write(uint32 offset, uint32 length, byte* src);
 		virtual void read(uint32 offset, uint32 length, byte* dst);
 
+		inline uint32 getSize() const { return sizeBytes; }
+
 	protected:
 		virtual void lockImplementation(uint32 offset, uint32 length) = 0;
 		virtual void unlockImplementation() = 0;

@@ -80,17 +80,18 @@ bool Mesh::loadImplementation()
 	else idxSize = 4;
 
 	//create buffers
-	GpuBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+	GpuBuffer *vb = bufferManager.createVertexBuffer(vxCount, vxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, true);
 	if (vb == nullptr)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Mesh", "Failed to load mesh from file: " + path + ". Failed to create a VertexBuffer");
 		return false;
 	}
+
 	GpuBuffer *ib = nullptr;
 	if (idxCount > 0)
 	{
-		ib = bufferManager.createIndexBuffer(idxCount, idxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC | LAG_GPU_BUFFER_USAGE_MAP_WRITE, false);
+		ib = bufferManager.createIndexBuffer(idxCount, idxSize, LAG_GPU_BUFFER_USAGE_DYNAMIC, true);
 		if (ib == nullptr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
@@ -154,46 +155,24 @@ bool Mesh::loadImplementation()
 			}
 		}
 		vb->unlock();
+		vb->setUseMirror(false);
 
-		//fill index buffer
+		//fill index buffer (writes are done to the in-memory mirror buffer)
 		if (idxCount > 0)
 		{
-			ib->lock(idxBufferOffset, subMeshIdxCount * idxSize);
-			byte *ptr = ib->map();
+			ib->lock();
+			offset = 0;
 			for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
-			{
 				for (unsigned int j = 0; j < mesh->mFaces->mNumIndices; ++j)
 				{
-					switch (idxSize)
-					{
-					case 1:
-						*ptr = static_cast<uint8>(mesh->mFaces[i].mIndices[j]);
-						ptr++;
-						break;
-					case 2: 
-					{
-						uint16 *ptr16 = reinterpret_cast<uint16*>(ptr);
-						*ptr16 = static_cast<uint16>(mesh->mFaces[i].mIndices[j]);
-						ptr += 2; 
-					}
-						break;
-					case 4:
-					{
-						uint32 *ptr32 = reinterpret_cast<uint32*>(ptr);
-						*ptr32 = static_cast<uint32>(mesh->mFaces[i].mIndices[j]);
-						ptr += 4;
-					}
-						break;
-					default:
-						break;
-					}
+					ib->write(offset, idxSize, reinterpret_cast<byte*>(mesh->mFaces[i].mIndices + j));
+					offset += idxSize;
 				}
-			}
-			ib->unmap();
 			ib->unlock();
 		}
-	
 
+		ib->setUseMirror(false);
+	
 		//Create Data objects, will be managed by the SubMesh
 		VertexData *vd = new VertexData();
  		vd->inputDescription = inputDescriptionManager.createInputDescription(vxDesc, *vb);

@@ -24,7 +24,7 @@ namespace Lag
 
 	private:
 		friend class GL4GpuBufferManager;
-		GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		//GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
 		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 
 		GLuint handle;

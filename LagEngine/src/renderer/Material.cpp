@@ -135,4 +135,8 @@ bool Material::parse()
 
 void Material::unloadImplementation()
 {
+	shaderStageNames.clear();
+	textureNames.clear();
+	texturesBySemantic.clear();
+	textures.clear();
 }

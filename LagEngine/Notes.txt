@@ -12,7 +12,6 @@ check main loop and callbacks to the application. facilitate app development usi
 fix lifecycles. resources should be selectively loaded and unloaded as needed. (per scene?)
 shadow mapping
 factory for generating renderApis and platforms specifics.
-get rid of ManagedObject get casts.
 logs are not very user friendly
 
 Long Term

@@ -44,11 +44,10 @@ namespace Lag
 		std::vector<std::string> stagesNames;
 		std::vector<GpuProgramStage*> stages;
 		
-		bool checkStages();
-
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
+		bool checkStages();
 		virtual bool link() = 0;
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description) const = 0;
 	};

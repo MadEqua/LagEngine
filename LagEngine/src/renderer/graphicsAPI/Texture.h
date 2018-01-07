@@ -81,18 +81,16 @@ namespace Lag
 	class Texture : public XmlResource
 	{
 	public:
-		Texture(const std::string &imageName, const TextureData &data);
-		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
-		Texture(const ImageData &imageData, const TextureData &textureData);
-
-		virtual ~Texture() = default;
-
 		inline const TextureData& getTextureData() const { return textureData; }
 		inline const ImageData& getImageData() const { return imageData; }
 
 		//TODO: set texture parameter methods
 
 	protected:
+		Texture(const std::string &imageName, const TextureData &data);
+		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
+		Texture(const ImageData &imageData, const TextureData &textureData);
+
 		TextureData textureData;
 		ImageData imageData;
 

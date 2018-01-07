@@ -8,9 +8,7 @@ namespace Lag
 	class GL4GpuProgram : public GpuProgram
 	{
 	public:
-
 		virtual GpuProgramUniform* createUniform(const GpuProgramUniformDescription &description) const override;
-
 		inline GLuint getHandle() const { return handle; }
 
 	protected:

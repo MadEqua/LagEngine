@@ -26,8 +26,6 @@ namespace Lag
 	class GpuProgramStage : public XmlResource
 	{
 	public:
-		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);
-
 		void addUniformDescription(const std::string &name, GpuProgramUniformSemantic semantic,
 			GpuProgramUniformSize size = LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN, 
 			GpuProgramUniformType type = LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN);
@@ -39,6 +37,8 @@ namespace Lag
 		virtual bool compile() = 0;
 
 	protected:
+		GpuProgramStage(const std::string &filePath, GpuProgramStageType type);
+
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 

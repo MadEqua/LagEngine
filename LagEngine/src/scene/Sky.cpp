@@ -57,8 +57,16 @@ Sky::Sky(const std::string &materialName)
 	};
 
 	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
-	GpuBuffer *vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), reinterpret_cast<byte*>(vertices), 0, false);
-	GpuBuffer *indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), reinterpret_cast<byte*>(indices), 0, false);
+	GpuBuffer *vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+	GpuBuffer *indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+
+	vertexBuffer->lock();
+	vertexBuffer->write(0, vertexBuffer->getSize(), reinterpret_cast<byte*>(vertices));
+	vertexBuffer->unlock();
+
+	indexBuffer->lock();
+	indexBuffer->write(0, indexBuffer->getSize(), reinterpret_cast<byte*>(indices));
+	indexBuffer->unlock();
 
 	if (vertexBuffer == nullptr || indexBuffer == nullptr)
 	{

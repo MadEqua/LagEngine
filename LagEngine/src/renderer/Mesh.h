@@ -18,11 +18,12 @@ namespace Lag
 	class Mesh : public XmlResource
 	{
 	public:
-		explicit Mesh(const std::string &file);
-
 		inline const std::vector<SubMesh*>& getSubMeshes() const { return subMeshes; }
 
 	private:
+		friend class MeshManager;
+		explicit Mesh(const std::string &file);
+
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 

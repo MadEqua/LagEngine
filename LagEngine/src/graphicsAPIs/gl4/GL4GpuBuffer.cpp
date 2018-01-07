@@ -2,10 +2,10 @@
 
 using namespace Lag;
 
-GL4GpuBuffer::GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror) :
+/*GL4GpuBuffer::GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror) :
 	GpuBuffer(sizeBytes, data, flags, contents, useMirror)
 {
-}
+}*/
 
 GL4GpuBuffer::GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror) :
 	GpuBuffer(sizeBytes, flags, contents, useMirror)
@@ -51,7 +51,7 @@ void GL4GpuBuffer::readImplementation(uint32 offset, uint32 length, byte* dst)
 bool Lag::GL4GpuBuffer::loadImplementation()
 {
 	GL_ERROR_PRINT(glCreateBuffers(1, &handle))
-	GL_ERROR_PRINT(glNamedBufferStorage(handle, sizeBytes, dataCopy != nullptr ? static_cast<const void*>(dataCopy) : 0, convertFlagsToGL(flags)))
+	GL_ERROR_PRINT(glNamedBufferStorage(handle, sizeBytes, 0, convertFlagsToGL(flags)))
 	return GpuBuffer::loadImplementation();
 }
 

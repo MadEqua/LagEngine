@@ -56,4 +56,6 @@ bool Texture::loadImplementation()
 
 void Texture::unloadImplementation()
 {
+	images.clear();
+	imageNames.clear();
 }

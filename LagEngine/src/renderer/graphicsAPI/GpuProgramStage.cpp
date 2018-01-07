@@ -29,16 +29,14 @@ bool GpuProgramStage::loadImplementation()
 	if (!file.is_open())
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"GpuProgramStage", "Cannot open code file: " + path);
+			"GpuProgramStage", "Cannot open shader file: " + path);
 		return false;
 	}
 
 	code.clear();
 	std::string str;
 	while (std::getline(file, str))
-	{
 		code += str + '\n';
-	}
 	
 	file.close();
 

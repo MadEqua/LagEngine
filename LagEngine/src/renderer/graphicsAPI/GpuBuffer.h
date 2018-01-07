@@ -48,8 +48,10 @@ namespace Lag
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;
 
+		void setUseMirror(bool use);
+
 	protected:
-		GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+		//GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
 		GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 		
 		//Basic implementation provided. Better ones can be made on concrete classes
@@ -61,8 +63,5 @@ namespace Lag
 
 		uint32 flags;
 		GpuBufferContents contents;
-
-		//If data is sent on the constructor, a copy is stored here to be used on load(). After that it's deleted.
-		byte *dataCopy;
 	};
 }

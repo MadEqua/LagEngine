@@ -127,7 +127,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\RenderToTexture.cpp" />
     <ClCompile Include="src\scene\OrthographicCamera.cpp" />
@@ -145,7 +144,6 @@
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescription.cpp" />
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp" />

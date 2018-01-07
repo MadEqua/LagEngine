@@ -13,9 +13,7 @@ bool GL4GpuProgramStage::compile()
 {
 	const char *c_str = code.c_str();
 	GL_ERROR_PRINT(glShaderSource(handle, 1, &c_str, 0))
-
 	GL_ERROR_PRINT(glCompileShader(handle))
-
 	return checkCompilation();	
 }
 
@@ -68,13 +66,13 @@ GLenum GL4GpuProgramStage::convertTypeToGL()
 	}
 }
 
-bool Lag::GL4GpuProgramStage::loadImplementation()
+bool GL4GpuProgramStage::loadImplementation()
 {
 	GL_ERROR_PRINT(handle = glCreateShader(convertTypeToGL()))
 	return GpuProgramStage::loadImplementation();
 }
 
-void Lag::GL4GpuProgramStage::unloadImplementation()
+void GL4GpuProgramStage::unloadImplementation()
 {
 	GL_ERROR_PRINT(glDeleteShader(handle))
 	GpuProgramStage::unloadImplementation();

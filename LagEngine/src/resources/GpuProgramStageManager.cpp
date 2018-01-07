@@ -12,6 +12,11 @@ GpuProgramStageManager::GpuProgramStageManager(const std::string &folder) :
 {
 }
 
+bool GpuProgramStageManager::create(const std::string &name, const std::string &file, GpuProgramStageType type)
+{
+	return add(name, internalCreate(file, type));
+}
+
 void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &element)
 {
 	if (element.ValueStr() == "shader")
