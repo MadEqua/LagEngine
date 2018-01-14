@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 #include "renderer/IFrameListener.h"
 #include "io/IKeyboardListener.h"
 #include "io/ICursorListener.h"
@@ -7,7 +9,7 @@
 namespace Lag 
 {
 	class RenderWindow;
-	class SceneManager;
+	class Scene;
 	class Root;
 	class FreeCamera;
 	class SceneNode;
@@ -36,14 +38,17 @@ public:
 	virtual void onButtonReleased(int x, int y, int button, int modifiers) override;
 
 private:
-	void createScene();
-	void createSceneAux(Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth);
-	void updateSceneAux(int count, int actualdepth, int maxdepth);
+	void createScene(Lag::Scene *scene, bool isOne);
+	void createSceneAux(Lag::Scene *scene, Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth);
+	void updateScene(float timePassed);
+
+	bool changeScene;
+	std::string sceneToChange;
 
 	float time;
 
 	Lag::RenderWindow *renderWindow;
-	Lag::SceneManager *sceneManager;
+	Lag::Scene *scene1, *scene2;
 	Lag::Root *root;
 	Lag::FreeCamera *camera;
 };

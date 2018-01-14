@@ -1,15 +1,11 @@
 #pragma once
 
-#include <vector>
-#include <unordered_map>
-#include "../Types.h"
 #include <glm/mat4x4.hpp>
+#include "../Types.h"
 
 namespace Lag
 {
 	class GpuProgram;
-	class PointLight;
-	class DirectionalLight;
 	class Viewport;
 	class Texture;
 	enum GpuProgramUniformSemantic;
@@ -42,10 +38,6 @@ namespace Lag
 
 		void setUniformIfPresent(const GpuProgram &gpuProgram,
 			GpuProgramUniformSemantic semantic, const void* value, uint32 arraySize = 1);
-
-		//References to useful data to fill Uniforms
-		const std::vector<PointLight*> &pointLights;
-		const std::vector<DirectionalLight*> &directionalLights;
 
 		const GpuProgram *frameEndGpuProgram;
 	};

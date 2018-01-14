@@ -13,7 +13,8 @@ GpuBufferManager::GpuBufferManager() :
 GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer)
 {
 	GpuBuffer *vb = internalCreateVertexBuffer(vertexCount, vertexSizeBytes, flags, useMirrorBuffer);
-	if (addAndLoad(getNextName(), vb))
+	uint32 name = getNextName();
+	if (add(name, vb) && load(name))
 		return vb;
 	else
 		return nullptr;
@@ -31,7 +32,8 @@ GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 verte
 GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, uint32 flags, bool useMirrorBuffer)
 {
 	GpuBuffer *ib = internalCreateIndexBuffer(indexCount, indexSizeBytes, flags, useMirrorBuffer);
-	if (addAndLoad(getNextName(), ib))
+	uint32 name = getNextName();
+	if (add(name, ib) && load(name))
 		return ib;
 	else
 		return nullptr;

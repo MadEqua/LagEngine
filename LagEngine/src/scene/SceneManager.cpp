@@ -1,119 +1,66 @@
 #include "SceneManager.h"
 
+#include "Scene.h"
 #include "../io/log/LogManager.h"
-
-#include "../Root.h"
-#include "../resources/MeshManager.h"
-#include "../resources/MaterialManager.h"
-
-#include "Entity.h"
-#include "PerspectiveCamera.h"
-#include "OrthographicCamera.h"
-#include "PointLight.h"
-#include "DirectionalLight.h"
-#include "../renderer/IRenderable.h"
-#include "Sky.h"
 
 using namespace Lag;
 
-SceneManager::SceneManager() : sky(nullptr)
+SceneManager::SceneManager(const std::string &folder) :
+	XmlResourceManager("SceneManager", folder),
+	currentScene(nullptr)
 {
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"SceneManager", "Initialized successfully.");
-}
-
-
-SceneManager::~SceneManager()
-{
-	if (sky != nullptr)
-		delete sky;
-
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"SceneManager", "Destroyed successfully.");
-}
-
-Entity* SceneManager::createEntity(const std::string &meshName, const std::string &materialName)
-{
-	Root &root = Root::getInstance();
-
-	Mesh *mesh = root.getMeshManager().get(meshName);
-	Material *material = root.getMaterialManager().get(materialName);
-
-	if (!mesh || !material)
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"SceneManager", "Trying to create an Entity with a non-existent Mesh or Material: " + meshName + ", " + materialName);
-		return nullptr;
-	}
-	
-	Entity *e = new Entity(sceneObjectMap.getNextName(), *material, *mesh);
-	sceneObjectMap.add(e);
-	entityVector.push_back(e);
-	renderableVector.push_back(e);
-	return e;
-}
-
-PerspectiveCamera& SceneManager::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane)
-{
-	PerspectiveCamera *cam = new PerspectiveCamera(sceneObjectMap.getNextName(), aspectRatio, fovy, nearPlane, farPlane);
-	sceneObjectMap.add(cam);
-	cameraVector.push_back(cam);
-	return *cam;
-}
-
-OrthographicCamera& SceneManager::createOrthographicCamera(float left, float right, float bottom, float top, 
-	float nearPlane, float farPlane)
-{
-	OrthographicCamera *cam = new OrthographicCamera(sceneObjectMap.getNextName(), left, right, bottom, top, nearPlane, farPlane);
-	sceneObjectMap.add(cam);
-	cameraVector.push_back(cam);
-	return *cam;
-}
-
-PointLight& SceneManager::createPointLight(const Color& color, const glm::vec3 &attenuation, bool castShadow)
-{
-	PointLight *pl = new PointLight(sceneObjectMap.getNextName(), color, attenuation, castShadow);
-	sceneObjectMap.add(pl);
-	pointLightVector.push_back(pl);
-	return *pl;
-}
-
-DirectionalLight& SceneManager::createDirectionalLight(const Color& color, const glm::vec3& direction, bool castShadow)
-{
-	DirectionalLight *dl = new DirectionalLight(sceneObjectMap.getNextName(), direction, color, castShadow);
-	sceneObjectMap.add(dl);
-	directionalLightVector.push_back(dl);
-	return *dl;
-}
-
-void SceneManager::enableSky(const std::string &materialName)
-{
-	if (sky != nullptr) 
-		disableSky();
-
-	sky = new Sky(materialName);
-	renderableVector.push_back(sky);
-}
-
-void SceneManager::disableSky()
-{
-	if (sky != nullptr)
-	{
-		renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
-		delete sky;
-		sky = nullptr;
-	}
-}
-
-SceneObject* SceneManager::getSceneObject(uint32 name) const
-{
-	return sceneObjectMap.get(name);
 }
 
 void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const
 {
-	//TODO: perform frustum culling with camera
+	currentScene->addRenderablesToQueue(renderQueue, viewport, renderTarget);
+}
 
-	for (IRenderable *renderable : renderableVector)
-		renderable->addToRenderQueue(renderQueue, viewport, renderTarget);
+bool SceneManager::create(const std::string &name, const std::string &file)
+{
+	return add(name, new Scene(folder + '/' + file));
+}
+
+void SceneManager::setCurrentScene(const std::string &name)
+{
+	auto &it = objects.find(name);
+
+	if (it == objects.end())
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+			"SceneManager", "There is no scene with the name: " + name);
+	else if (currentScene == it->second)
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+			"SceneManager", "Scene " + name + " is already the current Scene.");
+	else
+	{
+		if (currentScene != nullptr)
+			currentScene->unload(); //TODO: need the name to unload through the manager
+		
+		if(load(name))
+			currentScene = it->second;
+	}
+}
+
+void SceneManager::parseResourceDescription(const TiXmlElement &element)
+{
+	if (element.ValueStr() == "scene")
+	{
+		const char* name = element.Attribute("name");
+		const char* file = element.Attribute("file");
+		
+		if (!name || !file)
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "SceneManager",
+				"A <scene> element on the Resources file does not contain all required elements: <name> and <file>");
+			return;
+		}
+
+		create(name, file);
+
+		/*bool def = false;
+		element.QueryBoolAttribute("default", &def);
+
+		if(def)
+			setCurrentScene(name);*/
+	}
 }

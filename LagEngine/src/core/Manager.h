@@ -23,13 +23,12 @@ namespace Lag
 		bool contains(const K &name) const;
 		
 		bool add(const K &name, V *obj);
-		bool addAndLoad(const K &name, V *obj);
+		//bool addAndLoad(const K &name, V *obj);
 		void remove(const K &name);
 
 		bool load(const K &name) const;
 		void unload(const K &name) const;
 
-		void loadScene(); //TODO add list? argument
 		void loadAll();
 		void unloadAll();
 
@@ -89,14 +88,14 @@ namespace Lag
 		}
 	}
 
-	template<class K, class V>
+	/*template<class K, class V>
 	bool Manager<K, V>::addAndLoad(const K &name, V *obj)
 	{
 		if (add(name, obj))
 			return load(name);
 
 		return false;
-	}
+	}*/
 
 	template<class K, class V>
 	bool Manager<K, V>::load(const K &name) const
@@ -179,12 +178,6 @@ namespace Lag
 	{
 		auto it = objects.find(name);
 		return it != objects.end();
-	}
-
-	template<class K, class V>
-	void Manager<K, V>::loadScene()
-	{
-		//TODO
 	}
 
 	template<class K, class V>

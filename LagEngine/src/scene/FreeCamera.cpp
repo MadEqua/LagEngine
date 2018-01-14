@@ -20,12 +20,12 @@ FreeCamera::FreeCamera(float fovy, float nearPlane, float farPlane, float moveSp
 	Root &root = Root::getInstance();
 	SceneManager &sm = root.getSceneManager();
 
-	SceneNode &rootNode = sm.getSceneGraph().getRootSceneNode();
+	SceneNode &rootNode = sm.getCurrentScene().getSceneGraph().getRootSceneNode();
 	cameraYawNode = &rootNode.createChildSceneNode("cameraYawNode");
 	cameraPitchNode = &cameraYawNode->createChildSceneNode("cameraPitchNode");
 	cameraTranslationNode = &cameraPitchNode->createChildSceneNode("cameraTranslationNode");
 
-	camera = &sm.createPerspectiveCamera(1.0f, fovy, nearPlane, farPlane);
+	camera = &sm.getCurrentScene().createPerspectiveCamera(1.0f, fovy, nearPlane, farPlane);
 	camera->attachToSceneNode(*cameraTranslationNode);
 
 	root.getRenderer().registerObserver(*this);

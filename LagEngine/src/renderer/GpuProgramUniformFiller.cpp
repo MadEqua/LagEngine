@@ -15,8 +15,6 @@
 using namespace Lag;
 
 GpuProgramUniformFiller::GpuProgramUniformFiller() :
-	pointLights(Root::getInstance().getSceneManager().getPointLights()),
-	directionalLights(Root::getInstance().getSceneManager().getDirectionalLights()),
 	frameEndGpuProgram(nullptr)
 {
 }
@@ -82,6 +80,7 @@ void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, c
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 {
 	//PointLights
+	auto &pointLights = Root::getInstance().getSceneManager().getCurrentScene().getPointLights();
 	uint32 pointLightCount = pointLights.size();
 	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT, &pointLightCount);
 
@@ -108,6 +107,7 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram)
 	}
 
 	//DirectionalLights
+	auto &directionalLights = Root::getInstance().getSceneManager().getCurrentScene().getDirectionalLights();
 	uint32 dirLightCount = directionalLights.size();
 	setUniformIfPresent(gpuProgram, LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT, &dirLightCount);
 

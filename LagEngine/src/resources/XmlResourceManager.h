@@ -29,7 +29,7 @@ namespace Lag
 		std::string folder;
 
 		//Handle a specific resource description
-		virtual void parseResourceDescription(const TiXmlElement &elem) = 0;
+		virtual void parseResourceDescription(const TiXmlElement &element) = 0;
 	};
 
 

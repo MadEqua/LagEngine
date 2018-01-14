@@ -127,6 +127,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\RenderToTexture.cpp" />
     <ClCompile Include="src\scene\OrthographicCamera.cpp" />
@@ -204,6 +205,7 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\core\NamedContainer.h" />
     <ClInclude Include="src\core\Utils.h" />
     <ClInclude Include="src\scene\OrthographicCamera.h" />

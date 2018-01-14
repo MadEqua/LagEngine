@@ -1,0 +1,9 @@
+<scene name="TestScene">
+  <material name="testMaterial"/>
+  <material name="testMaterial2"/>
+  <material name="skyMaterial"/>
+
+  <mesh name="sphere"/>
+  <mesh name="bunny"/>
+  <mesh name="cube"/>
+</scene>  

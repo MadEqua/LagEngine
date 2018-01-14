@@ -1,6 +1,6 @@
 <resources>
 
-	<!-- Engine Fixed stuff -->
+	<!-- Engine Fixed stuff TODO: make this hardcoded?-->
 	<shader name="depthPassVertex" file="depthPass.vs" type="Vertex">
 		<uniform name="mvpMatrix" semantic="MvpMatrix"/>
 	</shader>
@@ -43,29 +43,29 @@
 
   <shader name="skyVertex" file="sky.vert" type="Vertex">
     <uniform name="viewMatrix" semantic="ViewMatrix"/>
-	<uniform name="projectionMatrix" semantic="ProjectionMatrix"/>
+    <uniform name="projectionMatrix" semantic="ProjectionMatrix"/>
   </shader>
 
   <shader name="skyFragment" file="sky.frag" type="Fragment">
     <uniform name="cubemap" semantic="TextureDiffuse"/>
   </shader>
-	
-	<material name="testMaterial" file="testMaterial.xml"/>
-	<material name="testMaterial2" file="testMaterial2.xml"/>
-	<material name="skyMaterial" file="skyMaterial.xml"/>
+  
+  <material name="testMaterial" file="testMaterial.xml"/>
+  <material name="testMaterial2" file="testMaterial2.xml"/>
+  <material name="skyMaterial" file="skyMaterial.xml"/>
 
   <mesh name="sphere" file="sphere2.obj"/>
-	<mesh name="bunny" file="spider.obj"/>
+  <mesh name="bunny" file="spider.obj"/>
   <mesh name="cube" file="cube.obj"/>
   <!--<mesh name="sponza" file="sponza.obj"/>-->
 
-  <image name="spider" file="SpiderTex.png" components="RGB" 
+  <image name="spider" file="SpiderTex.png" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
-  <image name="test" file="test.png" components="RGB" 
+  <image name="test" file="test.png" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
-  <image name="flare" file="engineflare1.jpg" components="RGB" 
+  <image name="flare" file="engineflare1.jpg" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
   <image name="sky0" file="PondWinter/0.jpg" components="RGB"
@@ -104,5 +104,8 @@
            type="Cube" mipmaps="8"
            minFilter="Nearest" magFilter="Nearest"
            wrappingAll="ClampEdge"/>
-	
+
+  <scene name="scene1" file="scene1.xml" default="true"/>
+  <scene name="scene2" file="scene2.xml"/>
+  
 </resources>

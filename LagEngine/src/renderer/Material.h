@@ -12,7 +12,6 @@ namespace Lag
 	class GpuProgram;
 	class Texture;
 	enum TextureSemantic;
-	class Renderer;
 
 	/*
 	* A Material contains all the details for rendering an entity, except the geometry.
@@ -40,8 +39,6 @@ namespace Lag
 
 		std::vector<std::string> shaderStageNames;
 		std::vector<std::string> textureNames;
-		
-		Renderer &renderer;
 		
 		GpuProgram *gpuProgram;
 		

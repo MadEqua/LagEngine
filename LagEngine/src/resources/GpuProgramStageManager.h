@@ -21,7 +21,7 @@ namespace Lag
 	protected:
 		virtual GpuProgramStage* internalCreate(const std::string &file, GpuProgramStageType type) = 0;
 
-		virtual void parseResourceDescription(const TiXmlElement &element) override;	
+		virtual void parseResourceDescription(const TiXmlElement &element) override;
 		static GpuProgramStageType parseStageTypeFromString(const std::string &type);
 
 		void parseUniformDeclaration(GpuProgramStage &stage, const TiXmlElement &element);

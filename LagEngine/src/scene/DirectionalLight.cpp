@@ -39,8 +39,8 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 		rt->initialize();
 
 		const float S = 30;
-		Camera &camera = root.getSceneManager().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light
-		SceneNode &sn = root.getSceneManager().getSceneGraph().getRootSceneNode().createChildSceneNode("");
+		Camera &camera = root.getSceneManager().getCurrentScene().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light
+		SceneNode &sn = root.getSceneManager().getCurrentScene().getSceneGraph().getRootSceneNode().createChildSceneNode("");
 			
 		glm::vec3 dir = -direction;
 		glm::vec3 pos = 10.0f * dir;

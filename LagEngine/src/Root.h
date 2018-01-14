@@ -59,6 +59,8 @@ namespace Lag
 
 		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
 
+		void unloadAllResourcesExceptScenes(); //Lazy method for clearing a Scene when it finishes
+
 	private:
 		RenderWindow *renderWindow;
 		InputManager *inputManager;

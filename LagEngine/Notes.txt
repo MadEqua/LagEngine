@@ -13,6 +13,7 @@ fix lifecycles. resources should be selectively loaded and unloaded as needed. (
 shadow mapping
 factory for generating renderApis and platforms specifics.
 logs are not very user friendly
+smart-pointers
 
 Long Term
 

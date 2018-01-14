@@ -39,8 +39,13 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 		GL_BACK_LEFT, GL_FRAMEBUFFER_ATTACHMENT_COLOR_ENCODING, &res))
 
 	if (res == GL_LINEAR)
+	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Linear RGB Default Framebuffer.");
+		
+		//TODO This should be disable. But on nVidia drivers the return value is always GL_LINEAR.
+		GL_ERROR_PRINT(glEnable(GL_FRAMEBUFFER_SRGB))
+	}
 	else if (res == GL_SRGB) 
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,

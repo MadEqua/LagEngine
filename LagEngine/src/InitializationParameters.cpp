@@ -17,6 +17,7 @@ InitializationParameters::InitializationParameters() :
 	materialsFolder("materials"),
 	meshesFolder("meshes"),
 	shadersFolder("shaders"),
+	scenesFolder("scenes"),
 
 	MSSAsamples(0),
 	sRGB(true),
@@ -43,6 +44,7 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		materialsFolder = iniSettings.getFieldAsString("materialsFolder", materialsFolder);
 		meshesFolder = iniSettings.getFieldAsString("meshesFolder", meshesFolder);
 		shadersFolder = iniSettings.getFieldAsString("shadersFolder", shadersFolder);
+		scenesFolder = iniSettings.getFieldAsString("scenesFolder", scenesFolder);
 
 		MSSAsamples = iniSettings.getFieldAsBasicType<int>("MSSAsamples", MSSAsamples);
 		sRGB = iniSettings.getFieldAsBasicType<bool>("sRGB", sRGB);

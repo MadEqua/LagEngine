@@ -231,6 +231,9 @@
     <ClCompile Include="src\resources\XmlResource.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="src\scene\Scene.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\ObserverPattern.h">
@@ -513,6 +516,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\resources\XmlResourceManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\scene\Scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

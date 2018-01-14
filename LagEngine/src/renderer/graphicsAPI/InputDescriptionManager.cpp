@@ -43,6 +43,8 @@ InputDescription* InputDescriptionManager::createInputDescription(const VertexDe
 			"InputDescriptionManager", "Reutilizing InputDescription.");
 	}
 
-	addAndLoad(key, id);
-	return id;
+	if(add(key, id) && load(key))
+		return id;
+	else 
+		return nullptr;
 }

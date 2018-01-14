@@ -23,7 +23,7 @@ namespace Lag
 		std::string materialsFolder;
 		std::string meshesFolder;
 		std::string shadersFolder;
-
+		std::string scenesFolder;
 
 		//Hints
 		uint32 MSSAsamples;

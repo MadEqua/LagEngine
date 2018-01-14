@@ -23,8 +23,8 @@ void RenderToTexture::destroy()
 const Texture* RenderToTexture::createAndLoadTexture(const std::string &name, const ImageData &imageData, const TextureData &textureData)
 {
 	TextureManager &texMan = Root::getInstance().getTextureManager();
-	texMan.create(name, imageData, textureData);
-	Texture *tex = texMan.get(name);
-	tex->load();
-	return tex;
+	if (texMan.create(name, imageData, textureData) && texMan.load(name))
+		return texMan.get(name);
+	else
+		return nullptr;
 }
