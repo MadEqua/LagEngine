@@ -4,49 +4,30 @@
 
 using namespace Lag;
 
-GpuBufferManager::GpuBufferManager() :
-	Manager("GpuBufferManager"),
+GpuBufferBuilder::GpuBufferBuilder() :
+	contents(LAG_GPU_BUFFER_CONTENTS_VERTICES),
+	itemCount(1),
+	itemSizeBytes(1),
+	flags(0),
+	useMirrorBuffer(false)
+{
+}
+
+GpuBufferManager::GpuBufferManager(GpuBufferBuilder* builder) :
+	Manager("GpuBufferManager", builder),
 	nextName(0)
 {
 }
 
-GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer)
+GpuBuffer* GpuBufferManager::get()
 {
-	GpuBuffer *vb = internalCreateVertexBuffer(vertexCount, vertexSizeBytes, flags, useMirrorBuffer);
-	uint32 name = getNextName();
-	if (add(name, vb) && load(name))
-		return vb;
-	else
-		return nullptr;
+	return Manager::get(getNextName());
 }
 
-/*GpuBuffer* GpuBufferManager::createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
+GpuBuffer* GpuBufferManager::get(ManagedObject &parent)
 {
-	GpuBuffer *vb = internalCreateVertexBuffer(vertexCount, vertexSizeBytes, data, flags, useMirrorBuffer);
-	if (addAndLoad(getNextName(), vb))
-		return vb;
-	else
-		return nullptr;
-}*/
-
-GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, uint32 flags, bool useMirrorBuffer)
-{
-	GpuBuffer *ib = internalCreateIndexBuffer(indexCount, indexSizeBytes, flags, useMirrorBuffer);
-	uint32 name = getNextName();
-	if (add(name, ib) && load(name))
-		return ib;
-	else
-		return nullptr;
+	return Manager::get(getNextName(), parent);
 }
-
-/*GpuBuffer* GpuBufferManager::createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer)
-{
-	GpuBuffer *ib = internalCreateIndexBuffer(indexCount, indexSizeBytes, data, flags, useMirrorBuffer);
-	if (addAndLoad(getNextName(), ib))
-		return ib;
-	else
-		return nullptr;
-}*/
 
 uint32 GpuBufferManager::getNextName()
 {

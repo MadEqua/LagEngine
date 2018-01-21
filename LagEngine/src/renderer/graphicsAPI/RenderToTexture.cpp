@@ -1,6 +1,5 @@
 #include "RenderToTexture.h"
-#include "../../resources/Image.h"
-#include "../../renderer/graphicsAPI/Texture.h"
+
 #include "../../Root.h"
 #include "../../resources/TextureManager.h"
 
@@ -11,20 +10,31 @@ RenderToTexture::RenderToTexture(uint32 width, uint32 height) :
 {
 }
 
-bool RenderToTexture::initialize()
-{
-	return checkCompleteness();
-}
-
-void RenderToTexture::destroy()
-{
-}
-
 const Texture* RenderToTexture::createAndLoadTexture(const std::string &name, const ImageData &imageData, const TextureData &textureData)
 {
 	TextureManager &texMan = Root::getInstance().getTextureManager();
-	if (texMan.create(name, imageData, textureData) && texMan.load(name))
-		return texMan.get(name);
-	else
-		return nullptr;
+	TextureBuilder &builder = static_cast<TextureBuilder&>(texMan.getBuilder());
+	builder.setBuildCustom(imageData, textureData);
+	return texMan.get(name);
+}
+
+void RenderToTexture::freeTextures()
+{
+	TextureManager &texMan = Root::getInstance().getTextureManager();
+	for (auto &colorTexList : colorTextures)
+		for (auto &colorTex : colorTexList.second) 
+			texMan.returnObject(const_cast<Texture*>(colorTex.second));
+	colorTextures.clear();
+
+	for (auto &depthTex : depthTextures)
+		texMan.returnObject(const_cast<Texture*>(depthTex.second));
+	depthTextures.clear();
+
+	for (auto &stencilTex : stencilTextures)
+		texMan.returnObject(const_cast<Texture*>(stencilTex.second));
+	stencilTextures.clear();
+
+	for (auto &depthStencilTex : depthStencilTextures)
+		texMan.returnObject(const_cast<Texture*>(depthStencilTex.second));
+	depthStencilTextures.clear();
 }

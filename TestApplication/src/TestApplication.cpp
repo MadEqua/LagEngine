@@ -50,16 +50,17 @@ bool TestApplication::start()
 
 	renderWindow = &root->getRenderWindow();
 
+	scene1 = &root->getSceneManager().createScene("scene1");
 	root->getSceneManager().setCurrentScene("scene1");
-	scene1 = root->getSceneManager().get("scene1");
-	scene2 = root->getSceneManager().get("scene2");
+
+	//scene2 = &root->getSceneManager().createScene("scene2");
 
 	root->getRenderer().registerObserver(*this);
 	root->getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root->getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
 
 	createScene(scene1, true);
-	createScene(scene2, false);
+	//createScene(scene2, false);
 
 	root->startRenderingLoop();
 
@@ -156,7 +157,7 @@ void TestApplication::updateScene(float timePassed)
 	Lag::SceneNode *mainNode = scene->getSceneGraph().getSceneNode("main");
 	cycle = glm::sin(time * glm::pi<float>() / 15.0f);
 	posCpy = mainNode->getWorldPosition();
-	posCpy.y = cycle * 1.0f;
+	posCpy.y = cycle * 0.2f;
 	mainNode->setPosition(posCpy);
 	mainNode->yaw(timePassed * 30.0f, Lag::LOCAL);
 }

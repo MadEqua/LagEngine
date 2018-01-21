@@ -12,7 +12,7 @@ namespace Lag
 		inline GLuint getHandle() const { return handle; }
 
 	protected:
-		friend class GL4GpuProgramManager;
+		friend class GL4GpuProgramBuilder;
 		GL4GpuProgram(const std::string &name, const std::vector<std::string> &names);
 		GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 

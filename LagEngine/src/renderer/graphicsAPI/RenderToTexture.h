@@ -20,9 +20,6 @@ namespace Lag
 		virtual void attachDepthTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) = 0;
 		virtual void attachStencilTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) = 0;
 
-		virtual bool initialize() override;
-		virtual void destroy() override;
-
 	protected:
 		std::unordered_map<uint8, std::unordered_map<uint8, const Texture*>> colorTextures;
 		std::unordered_map<uint8, const Texture*> depthTextures;
@@ -30,6 +27,7 @@ namespace Lag
 		std::unordered_map<uint8, const Texture*> depthStencilTextures;
 
 		const Texture* createAndLoadTexture(const std::string &name, const ImageData &imageData, const TextureData &textureData);
+		void freeTextures();
 
 		virtual bool checkCompleteness() const = 0;
 	};

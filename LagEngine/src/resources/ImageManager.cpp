@@ -5,49 +5,41 @@
 
 using namespace Lag;
 
-ImageManager::ImageManager(const std::string &folder) :
-	XmlResourceManager("ImageManager", folder)
+ImageManager::ImageManager(ImageBuilder* builder) :
+	XmlResourceManager("ImageManager", builder)
 {
 }
 
-bool ImageManager::create(const std::string &name, const std::string &file, const ImageData &data)
+ImageBuilder::ImageBuilder(const TiXmlDocument & resourcesXml, const std::string & resourceFolderPath) :
+	XmlResourceBuilder("image", resourcesXml, resourceFolderPath)
 {
-	return add(name, new Image(folder + '/' + file, data));
 }
 
-void ImageManager::parseResourceDescription(const TiXmlElement &element)
+Image* ImageBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
 {
-	if (element.ValueStr() == "image")
-	{
-		const char* name = element.Attribute("name");
-		const char* file = element.Attribute("file");
-
-		if (!name || !file)
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "ImageManager",
-				"A <image> element on the Resources file does not contain all required elements: <name> and <file>");
-			return;
-		}
-		const char* componentsStr = element.Attribute("components");
-		const char* componentTypeStr = element.Attribute("componentType");
-		const char* normalizedStr = element.Attribute("normalized");
-		const char* sRgbStr = element.Attribute("sRGB");
-
-		ImageData data;
-		if (componentsStr != nullptr)
-			data.components = parseComponents(componentsStr);
-		if (componentTypeStr != nullptr)
-			data.componentType = parseComponentType(componentTypeStr);
-		if (normalizedStr != nullptr)
-			data.normalized = parseBool(normalizedStr);
-		if (sRgbStr != nullptr)
-			data.sRGB = parseBool(sRgbStr);
-
-		create(name, file, data);
-	}
+	return new Image(resourceFolderPath + '/' + parseFileAttribute(element), parseImageData(element));
 }
 
-ImageComponents ImageManager::parseComponents(const std::string &c) const
+ImageData ImageBuilder::parseImageData(const TiXmlElement &element)
+{
+	const char* componentsStr = element.Attribute("components");
+	const char* componentTypeStr = element.Attribute("componentType");
+	const char* normalizedStr = element.Attribute("normalized");
+	const char* sRgbStr = element.Attribute("sRGB");
+
+	ImageData data;
+	if (componentsStr != nullptr)
+		data.components = parseComponents(componentsStr);
+	if (componentTypeStr != nullptr)
+		data.componentType = parseComponentType(componentTypeStr);
+	if (normalizedStr != nullptr)
+		data.normalized = parseBool(normalizedStr);
+	if (sRgbStr != nullptr)
+		data.sRGB = parseBool(sRgbStr);
+	return data;
+}
+
+ImageComponents ImageBuilder::parseComponents(const std::string &c)
 {
 	if(c == "R") return LAG_IMAGE_COMPONENTS_R;
 	else if (c == "RG") return LAG_IMAGE_COMPONENTS_RG;
@@ -56,7 +48,7 @@ ImageComponents ImageManager::parseComponents(const std::string &c) const
 	else return LAG_IMAGE_COMPONENTS_RGB;
 }
 
-ImageComponentType ImageManager::parseComponentType(const std::string &type) const
+ImageComponentType ImageBuilder::parseComponentType(const std::string &type)
 {
 	if(type == "FLOAT16" || type == "HALF_FLOAT") return LAG_IMAGE_COMPONENT_TYPE_FLOAT16;
 	else if (type == "FLOAT32" || type == "FLOAT") return LAG_IMAGE_COMPONENT_TYPE_FLOAT32;
@@ -72,13 +64,13 @@ ImageComponentType ImageManager::parseComponentType(const std::string &type) con
 	else return LAG_IMAGE_COMPONENT_TYPE_UINT8;
 }
 
-bool ImageManager::parseBool(const std::string &str) const
+bool ImageBuilder::parseBool(const std::string &str)
 {
 	if (str == "true" || str == "TRUE" || str == "1") return true;
 	else return false;
 }
 
-int ImageManager::parseInt(const std::string &str) const
+int ImageBuilder::parseInt(const std::string &str)
 {
 	return std::stoi(str);
 }

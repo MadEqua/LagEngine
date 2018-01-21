@@ -14,7 +14,7 @@ namespace Lag
 		GLenum getGLType() const;
 
 	private:
-		friend class GL4TextureManager;
+		friend class GL4TextureBuilder;
 		GL4Texture(const std::string &imageName, const TextureData &data);
 		GL4Texture(const std::vector<std::string> &imageNames, const TextureData &data);
 		GL4Texture(const ImageData &imageData, const TextureData &textureData);

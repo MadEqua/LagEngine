@@ -1,26 +1,28 @@
 #pragma once
 
+#include <unordered_map>
+#include <string>
+
 #include "Scene.h"
-#include "../resources/XmlResourceManager.h"
 
 namespace Lag
 {
-	class SceneManager : public XmlResourceManager<Scene>
+	//TODO: good scene management with multiple scenes
+	class SceneManager
 	{
 	public:
-		explicit SceneManager(const std::string &folder);
+		SceneManager();
 
 		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
 		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const;
 
-		bool create(const std::string &name, const std::string &file);
-
-		inline Scene& getCurrentScene() const { return *currentScene; }
+		Scene& createScene(const std::string &name);
 		void setCurrentScene(const std::string &name);
 
+		inline Scene& getCurrentScene() const { return *currentScene; }
+
 	private:
-		virtual void parseResourceDescription(const TiXmlElement &element);
-		
 		Scene *currentScene;
+		std::unordered_map<std::string, Scene*> sceneMap;
 	};
 }

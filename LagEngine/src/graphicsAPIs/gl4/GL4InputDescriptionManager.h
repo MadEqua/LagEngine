@@ -6,13 +6,21 @@
 namespace Lag
 {
 	class GpuBuffer;
+
+	class GL4InputDescriptionBuilder : public InputDescriptionBuilder
+	{
+	public:
+		virtual GL4InputDescription* build(const InputDescriptionMapKey &name) const override
+		{
+			return new GL4InputDescription(vertexDescription, *vertexBuffer);
+		}
+	};
 	
+
 	class GL4InputDescriptionManager : public InputDescriptionManager
 	{
-	protected:
-		virtual InputDescription* internalCreateInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer)
-		{
-			return new GL4InputDescription(vertexDescription, vertexBuffer);
-		}
+	public:
+		explicit GL4InputDescriptionManager() :
+			InputDescriptionManager(new GL4InputDescriptionBuilder()) {}
 	};
 }

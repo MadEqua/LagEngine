@@ -1,17 +1,25 @@
 #include "GL4RenderToTexture.h"
 #include "GL4Texture.h"
 
+#include "../../resources/Image.h"
+
 using namespace Lag;
 
 GL4RenderToTexture::GL4RenderToTexture(uint32 width, uint32 height) :
 	RenderToTexture(width, height)
 {
-	GL_ERROR_PRINT(glCreateFramebuffers(1, &handle))
 }
 
-GL4RenderToTexture::~GL4RenderToTexture()
+bool GL4RenderToTexture::initialize()
+{
+	GL_ERROR_PRINT(glCreateFramebuffers(1, &handle))
+	return checkCompleteness();
+}
+
+void GL4RenderToTexture::destroy()
 {
 	GL_ERROR_PRINT(glDeleteFramebuffers(1, &handle))
+	freeTextures();
 }
 
 void GL4RenderToTexture::attachColorTexture(const ImageData &imageData, const TextureData &textureData,

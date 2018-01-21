@@ -137,7 +137,7 @@ void Lag::GpuBuffer::unloadImplementation()
 
 void GpuBuffer::setUseMirror(bool use)
 {
-	if (loaded)
+	if (refCount > 0)
 	{
 		if (use && !useMirror)
 			mirrorBuffer = new MemoryBuffer(sizeBytes);

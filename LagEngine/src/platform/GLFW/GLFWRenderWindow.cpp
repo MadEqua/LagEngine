@@ -72,7 +72,7 @@ bool GLFWRenderWindow::initialize()
 		if (window == 0)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"GLFWRenderWindow", "Cannot create GLFW window.");
+				"GLFWRenderWindow", "Cannot build GLFW window.");
 			return false;
 		}
 
@@ -86,7 +86,7 @@ bool GLFWRenderWindow::initialize()
 		if (!glfwGetCurrentContext()) 
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"GLFWRenderWindow", "Cannot create OpenGL context.");
+				"GLFWRenderWindow", "Cannot build OpenGL context.");
 			return false;
 		}
 

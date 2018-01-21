@@ -3,7 +3,6 @@
 #include <vector>
 #include <string>
 
-#include "../resources/XmlResource.h"
 #include "../core/NamedContainer.h"
 #include "../Types.h"
 #include "SceneGraph.h"
@@ -28,13 +27,13 @@ namespace Lag {
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
 	* Can also create and manage Entities, Cameras, Lights, ...
 	*/
-	class Scene : public XmlResource
+	class Scene
 	{
 	public:
-		virtual ~Scene() override;
+		~Scene();
 
-		virtual bool loadImplementation() override;
-		virtual void unloadImplementation() override;
+		virtual void onStart();
+		virtual void onEnd();
 
 		Entity* createEntity(const std::string &meshName, const std::string &materialName);
 
@@ -67,7 +66,7 @@ namespace Lag {
 
 	private:
 		friend class SceneManager;
-		Scene(const std::string &filePath);
+		Scene();
 
 		SceneGraph sceneGraph;
 		Sky *sky;

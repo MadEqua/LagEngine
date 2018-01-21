@@ -12,7 +12,7 @@ namespace Lag
 		inline GLuint getHandle() const { return handle; }
 
 	private:
-		friend class GL4GpuProgramStageManager;
+		friend class GL4GpuProgramStageBuilder;
 		GL4GpuProgramStage(const std::string &path, GpuProgramStageType type);
 
 		GLuint handle;

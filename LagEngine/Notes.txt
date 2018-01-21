@@ -14,6 +14,7 @@ shadow mapping
 factory for generating renderApis and platforms specifics.
 logs are not very user friendly
 smart-pointers
+add name to ManagedObjects
 
 Long Term
 

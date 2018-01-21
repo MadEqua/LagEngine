@@ -7,127 +7,105 @@
 
 using namespace Lag;
 
-GpuProgramStageManager::GpuProgramStageManager(const std::string &folder) :
-	XmlResourceManager("GpuProgramStageManager", folder)
+GpuProgramStageManager::GpuProgramStageManager(GpuProgramStageBuilder *builder) :
+	XmlResourceManager("GpuProgramStageManager", builder)
 {
 }
 
-bool GpuProgramStageManager::create(const std::string &name, const std::string &file, GpuProgramStageType type)
+
+GpuProgramStageBuilder::GpuProgramStageBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
+	XmlResourceBuilder("shader", resourcesXml, resourceFolderPath)
 {
-	return add(name, internalCreate(file, type));
 }
 
-void GpuProgramStageManager::parseResourceDescription(const TiXmlElement &element)
+void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlElement &element) const
 {
-	if (element.ValueStr() == "shader")
+	for (const TiXmlElement* child = element.FirstChildElement();
+		child != NULL;
+		child = child->NextSiblingElement())
 	{
-		const char* name = element.Attribute("name");
-		const char* file = element.Attribute("file");
-		const char* type = element.Attribute("type");
-		
-		if (!name || !file || !type)
+		if (child->ValueStr() == "uniform")
 		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
-				"A <shader> element on the Resources file does not contain all required attributes: <name>, <file> and <type>.");
-			return;
-		}
+			const char* name = child->Attribute("name");
+			const char* semanticString = child->Attribute("semantic");
 
-		if (!create(name, file, parseStageTypeFromString(type)))
-			return;
+			if (!name || !semanticString)
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageBuilder",
+					"An <uniform> element on a shader declaration does not contain all required attributes: <name> and <semantic>.");
+				return;
+			}
 
-		GpuProgramStage *stage = get(name);
+			GpuProgramUniformSize size;
+			GpuProgramUniformType type;
+			GpuProgramUniformSemantic semantic = parseUniformSemanticFromString(semanticString);
+			switch (semantic)
+			{
+			case LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_MVP_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX:
+				size = LAG_GPU_PROG_UNIFORM_SIZE_4;
+				type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
+				break;
 
-		for (const TiXmlElement* child = element.FirstChildElement();
-			child != NULL;
-			child = child->NextSiblingElement())
-		{
-			if (child->ValueStr() == "uniform")
-				parseUniformDeclaration(*stage, *child);
+			case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT:
+			case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT:
+			case LAG_GPU_PROG_UNI_SEM_TEXTURE_CUSTOM:
+				size = LAG_GPU_PROG_UNIFORM_SIZE_1;
+				type = LAG_GPU_PROG_UNIFORM_TYPE_UINT32;
+				break;
+
+			case LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE:
+			case LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL:
+				size = LAG_GPU_PROG_UNIFORM_SIZE_1;
+				type = LAG_GPU_PROG_UNIFORM_TYPE_INT32;
+				break;
+
+			case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS:
+			case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS:
+			case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS: //TODO: colors need to be floats??
+			case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS:
+			case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS:
+				size = LAG_GPU_PROG_UNIFORM_SIZE_3;
+				type = LAG_GPU_PROG_UNIFORM_TYPE_FLOAT;
+				break;
+
+
+			case LAG_GPU_PROG_UNI_SEM_NORMAL_WORLD_MATRIX:
+			case LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX:
+				size = LAG_GPU_PROG_UNIFORM_SIZE_3;
+				type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
+				break;
+
+			case LAG_GPU_PROG_UNI_SEM_CUSTOM:
+			{
+				const char* typeString = element.Attribute("type");
+				const char* sizeString = element.Attribute("size");
+
+				if (!typeString || !sizeString)
+				{
+					LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageBuilder",
+						"An <uniform> declared as custom does not have all required attributes declared (type and size).");
+					return;
+				}
+
+				type = parseUniformTypeFromString(typeString);
+				size = parseUniformSizeFromString(sizeString);
+			}
+			break;
+
+			default:
+				break;
+			}
+			stage.addUniformDescription(name, semantic, size, type);
 		}
 	}
 }
 
-void GpuProgramStageManager::parseUniformDeclaration(GpuProgramStage &stage, const TiXmlElement &element)
-{
-	const char* name = element.Attribute("name");
-	const char* semanticString = element.Attribute("semantic");
-
-	if (!name || !semanticString)
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
-			"An <uniform> element on a shader declaration does not contain all required attributes: <name> and <semantic>.");
-		return;
-	}
-
-	GpuProgramUniformSize size;
-	GpuProgramUniformType type;
-	GpuProgramUniformSemantic semantic = parseUniformSemanticFromString(semanticString);
-	switch (semantic)
-	{
-	case LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_MVP_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX:
-		size = LAG_GPU_PROG_UNIFORM_SIZE_4;
-		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
-		break;
-
-	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT:
-	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT:
-	case LAG_GPU_PROG_UNI_SEM_TEXTURE_CUSTOM:
-		size = LAG_GPU_PROG_UNIFORM_SIZE_1;
-		type = LAG_GPU_PROG_UNIFORM_TYPE_UINT32;
-		break;
-
-	case LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE:
-	case LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL:
-		size = LAG_GPU_PROG_UNIFORM_SIZE_1;
-		type = LAG_GPU_PROG_UNIFORM_TYPE_INT32;
-		break;
-
-	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS:
-	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS:
-	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS: //TODO: colors need to be floats??
-	case LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS:
-	case LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS:
-		size = LAG_GPU_PROG_UNIFORM_SIZE_3;
-		type = LAG_GPU_PROG_UNIFORM_TYPE_FLOAT;
-		break;
-
-
-	case LAG_GPU_PROG_UNI_SEM_NORMAL_WORLD_MATRIX:
-	case LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX:
-		size = LAG_GPU_PROG_UNIFORM_SIZE_3;
-		type = LAG_GPU_PROG_UNIFORM_TYPE_MATRIX;
-		break;
-
-	case LAG_GPU_PROG_UNI_SEM_CUSTOM:
-	{
-		const char* typeString = element.Attribute("type");
-		const char* sizeString = element.Attribute("size");
-
-		if (!typeString || !sizeString)
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageManager",
-				"An <uniform> declared as custom does not have all required attributes declared (type and size).");
-			return;
-		}
-
-		type = parseUniformTypeFromString(typeString);
-		size = parseUniformSizeFromString(sizeString);
-	}
-		break;
-
-	default:
-		return;
-	}
-
-	stage.addUniformDescription(name, semantic, size, type);
-}
-
-GpuProgramUniformType GpuProgramStageManager::parseUniformTypeFromString(const std::string &type)
+GpuProgramUniformType GpuProgramStageBuilder::parseUniformTypeFromString(const std::string &type)
 {
 	if (type == "bool") return LAG_GPU_PROG_UNIFORM_TYPE_BOOL;
 	else if(type == "float") return LAG_GPU_PROG_UNIFORM_TYPE_FLOAT;
@@ -136,7 +114,7 @@ GpuProgramUniformType GpuProgramStageManager::parseUniformTypeFromString(const s
 	else return LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN;
 }
 
-GpuProgramUniformSize GpuProgramStageManager::parseUniformSizeFromString(const std::string &size)
+GpuProgramUniformSize GpuProgramStageBuilder::parseUniformSizeFromString(const std::string &size)
 {
 	if (size == "1") return LAG_GPU_PROG_UNIFORM_SIZE_1;
 	else if (size == "2") return LAG_GPU_PROG_UNIFORM_SIZE_2;
@@ -145,7 +123,7 @@ GpuProgramUniformSize GpuProgramStageManager::parseUniformSizeFromString(const s
 	else return LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN;
 }
 
-GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString(const std::string &semantic)
+GpuProgramUniformSemantic GpuProgramStageBuilder::parseUniformSemanticFromString(const std::string &semantic)
 {
 	if (semantic == "ModelMatrix") return LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX;
 	else if (semantic == "ModelViewMatrix") return LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX;
@@ -172,12 +150,22 @@ GpuProgramUniformSemantic GpuProgramStageManager::parseUniformSemanticFromString
 	else return LAG_GPU_PROG_UNI_SEM_CUSTOM;
 }
 
-GpuProgramStageType GpuProgramStageManager::parseStageTypeFromString(const std::string &type)
+GpuProgramStageType GpuProgramStageBuilder::parseTypeAttribute(const TiXmlElement &element)
 {
-	if (type == "Vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
-	else if (type == "TesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
-	else if (type == "TesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
-	else if (type == "Geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
-	else if (type == "Fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
+	const char* type = element.Attribute("type");
+
+	if (!type)
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "GpuProgramStageBuilder",
+			"A <shader> element on the Resources file does not contain the required attribute: <type>.");
+		return LAG_GPU_PROG_STAGE_TYPE_UNKNOWN;
+	}
+	
+	std::string typeStr(type);
+	if (typeStr == "Vertex") return LAG_GPU_PROG_STAGE_TYPE_VERTEX;
+	else if (typeStr == "TesselationControl") return LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL;
+	else if (typeStr == "TesselationEvaluation") return LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION;
+	else if (typeStr == "Geometry") return LAG_GPU_PROG_STAGE_TYPE_GEOMETRY;
+	else if (typeStr == "Fragment") return LAG_GPU_PROG_STAGE_TYPE_FRAGMENT;
 	else return LAG_GPU_PROG_STAGE_TYPE_UNKNOWN;
 }

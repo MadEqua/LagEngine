@@ -1,27 +1,46 @@
 #include "GpuProgramManager.h"
-#include "../../io/log/LogManager.h"
+
+#include <algorithm>
 
 using namespace Lag;
 
-GpuProgramManager::GpuProgramManager() :
-	Manager("GpuProgramManager")
+GpuProgramManager::GpuProgramManager(GpuProgramBuilder* builder) :
+	Manager("GpuProgramManager", builder)
 {
 }
 
-GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<std::string> &stagesNames)
+GpuProgram* GpuProgramManager::get(std::vector<std::string>& stagesNames)
 {
-	GpuProgram *pr = internalCreate(name, stagesNames);
-	if (add(name, pr))
-		return pr;
-	else
-		return nullptr;
+	GpuProgramBuilder &gpuProgramBuilder = static_cast<GpuProgramBuilder&>(*builder);
+	gpuProgramBuilder.setStagesNames(stagesNames);
+	return Manager::get(generateProgramName(stagesNames));
 }
 
-GpuProgram* GpuProgramManager::create(const std::string &name, const std::vector<GpuProgramStage*> &stagesNames)
+GpuProgram* GpuProgramManager::get(std::vector<std::string> &stagesNames, ManagedObject &parent)
 {
-	GpuProgram *pr = internalCreate(name, stagesNames);
-	if (add(name, pr))
-		return pr;
-	else
-		return nullptr;
+	GpuProgramBuilder &gpuProgramBuilder = static_cast<GpuProgramBuilder&>(*builder);
+	gpuProgramBuilder.setStagesNames(stagesNames);
+	return Manager::get(generateProgramName(stagesNames), parent);
+}
+
+void GpuProgramBuilder::setStagesNames(std::vector<std::string> &names)
+{
+	stagesNames = names;
+	useNames = true;
+}
+
+void GpuProgramBuilder::setStages(std::vector<GpuProgramStage*> &stages)
+{
+	this->stages = stages;
+	useNames = false;
+}
+
+const std::string GpuProgramManager::generateProgramName(std::vector<std::string> &stageNames)
+{
+	std::sort(stageNames.begin(), stageNames.end());
+	std::string out;
+
+	for (std::string &stageName : stageNames)
+		out += stageName + '.';
+	return out;
 }

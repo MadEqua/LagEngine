@@ -5,18 +5,23 @@
 
 namespace Lag
 {
+	class GL4GpuProgramBuilder : public GpuProgramBuilder
+	{
+	public:
+		virtual GpuProgram* build(const std::string &name) const override
+		{
+			if(useNames)
+				return new GL4GpuProgram(name, stagesNames);
+			else
+				return new GL4GpuProgram(name, stages);
+		}
+	};
+	
+	
 	class GL4GpuProgramManager : public GpuProgramManager
 	{
-
 	public:
-		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<std::string> &stagesNames) override
-		{
-			return new GL4GpuProgram(name, stagesNames);
-		}
-
-		virtual GpuProgram* internalCreate(const std::string &name, const std::vector<GpuProgramStage*> &stages) override
-		{
-			return new GL4GpuProgram(name, stages);
-		}
+		explicit GL4GpuProgramManager() :
+			GpuProgramManager(new GL4GpuProgramBuilder()) {}
 	};
 }

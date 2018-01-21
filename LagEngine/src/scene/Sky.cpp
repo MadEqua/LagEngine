@@ -21,7 +21,6 @@ Sky::Sky(const std::string &materialName)
 		//TODO
 	}
 
-	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
 	VertexDescription vxDesc;
 	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
 
@@ -57,8 +56,20 @@ Sky::Sky(const std::string &materialName)
 	};
 
 	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
-	GpuBuffer *vertexBuffer = gpuBufferManager.createVertexBuffer(VERTEX_COUNT, vxDesc.getByteSize(), LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
-	GpuBuffer *indexBuffer = gpuBufferManager.createIndexBuffer(INDEX_COUNT, sizeof(uint8), LAG_GPU_BUFFER_USAGE_DYNAMIC, false);
+	GpuBufferBuilder &bufferBuilder = static_cast<GpuBufferBuilder&>(gpuBufferManager.getBuilder());
+	bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_VERTICES;
+	bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
+	bufferBuilder.itemCount = VERTEX_COUNT;
+	bufferBuilder.itemSizeBytes = vxDesc.getByteSize();
+	bufferBuilder.useMirrorBuffer = false;
+	GpuBuffer *vertexBuffer = gpuBufferManager.get();
+
+	bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_INDICES;
+	bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
+	bufferBuilder.itemCount = INDEX_COUNT;
+	bufferBuilder.itemSizeBytes = sizeof(uint8);
+	bufferBuilder.useMirrorBuffer = false;
+	GpuBuffer *indexBuffer = gpuBufferManager.get();
 
 	vertexBuffer->lock();
 	vertexBuffer->write(0, vertexBuffer->getSize(), reinterpret_cast<byte*>(vertices));
@@ -71,18 +82,32 @@ Sky::Sky(const std::string &materialName)
 	if (vertexBuffer == nullptr || indexBuffer == nullptr)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Sky", "Failed to load sky. Failed to create a VertexBuffer or IndexBuffer");
+			"Sky", "Failed to load sky. Failed to build a VertexBuffer or IndexBuffer");
 		return;
 	}
 	
 	vertexData.vertexStart = 0;
 	vertexData.vertexCount = VERTEX_COUNT;
-	vertexData.inputDescription = inputDescriptionManager.createInputDescription(vxDesc, *vertexBuffer);
+
+	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
+	vertexData.inputDescription = inputDescriptionManager.get(vxDesc, vertexBuffer, *vertexBuffer);
 
 	indexData.indexStart = 0;
 	indexData.indexCount = INDEX_COUNT;
 	indexData.indexBuffer = indexBuffer;
 	indexData.indexType = LAG_IDX_TYPE_UINT8;
+}
+
+Sky::~Sky()
+{
+	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
+	gpuBufferManager.returnObject(&const_cast<GpuBuffer&>(vertexData.inputDescription->vertexBuffer));
+	gpuBufferManager.returnObject(indexData.indexBuffer);
+
+	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
+	inputDescriptionManager.returnObject(vertexData.inputDescription);
+
+	Root::getInstance().getMaterialManager().returnObject(material);
 }
 
 void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)

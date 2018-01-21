@@ -6,29 +6,20 @@
 namespace Lag
 {
 	class GpuBuffer;
+
+	class GL4GpuBufferBuilder : public GpuBufferBuilder
+	{
+	public:
+		virtual GL4GpuBuffer* build(const uint32 &name) const override
+		{
+			return new GL4GpuBuffer(itemCount * itemSizeBytes, flags, contents, useMirrorBuffer);
+		}
+	};
 	
 	class GL4GpuBufferManager : public GpuBufferManager
 	{
 	public:
-		virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) override
-		{
-			return new GL4GpuBuffer(vertexCount * vertexSizeBytes, flags, LAG_GPU_BUFFER_CONTENTS_VERTICES, useMirrorBuffer);
-		}
-
-		/*virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) override
-		{
-			return new GL4GpuBuffer(vertexCount * vertexSizeBytes, data, flags, LAG_GPU_BUFFER_CONTENTS_VERTICES, useMirrorBuffer);
-		}*/
-
-
-		virtual GpuBuffer* internalCreateIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, uint32 flags, bool useMirrorBuffer) override
-		{
-			return new GL4GpuBuffer(indexCount * indexSizeBytes, flags, LAG_GPU_BUFFER_CONTENTS_INDICES, useMirrorBuffer);
-		}
-
-		/*virtual GpuBuffer* internalCreateIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) override
-		{
-			return new GL4GpuBuffer(indexCount * indexSizeBytes, data, flags, LAG_GPU_BUFFER_CONTENTS_INDICES, useMirrorBuffer);
-		}*/
+		explicit GL4GpuBufferManager() :
+			GpuBufferManager(new GL4GpuBufferBuilder()) {}
 	};
 }

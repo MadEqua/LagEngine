@@ -1,5 +1,7 @@
 #include "Root.h"
 
+#include "io/tinyxml/tinyxml.h"
+
 #include "InitializationParameters.h"
 #include "io/log/LogManager.h"
 #include "platform/GLFW/GLFWRenderWindow.h"
@@ -40,7 +42,8 @@ Root::Root() :
 	windowListener(nullptr),
 	keyboardListener(nullptr),
 	graphicsAPI(nullptr),
-	inputDescriptionManager(nullptr)
+	inputDescriptionManager(nullptr),
+	resourcesFile(nullptr)
 {
 	//Initialize other singletons
 	LogManager::getInstance();
@@ -127,6 +130,12 @@ void Root::destroy()
 		delete inputManager;
 		inputManager = nullptr;
 	}
+
+	if (resourcesFile != nullptr)
+	{
+		delete resourcesFile;
+		resourcesFile = nullptr;
+	}
 }
 
 bool Root::initializeLag(const InitializationParameters &parameters)
@@ -154,17 +163,10 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
 
-	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
-	{
-		graphicsAPI = new GL4GraphicsAPI();
-		textureManager = new GL4TextureManager();
-		gpuBufferManager = new GL4GpuBufferManager();
-		gpuProgramManager = new GL4GpuProgramManager();
-		inputDescriptionManager = new GL4InputDescriptionManager();
-	}
-
 	if (!initResources(parameters.resourcesFolder + '/' + parameters.resourcesFile))
 		return false;
+
+	sceneManager = new SceneManager();
 
 	renderer = new Renderer(*graphicsAPI, *sceneManager);
 	renderer->addRenderWindow(*renderWindow);
@@ -179,15 +181,15 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 bool Root::initResources(const std::string &resourcesFilePath)
 {
-	TiXmlDocument doc(resourcesFilePath);
-	if (!doc.LoadFile())
+	resourcesFile = new TiXmlDocument(resourcesFilePath);
+	if (!resourcesFile->LoadFile())
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
 			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
 		return false;
 	}
 
-	const TiXmlElement *resourcesElement = doc.FirstChildElement();
+	const TiXmlElement *resourcesElement = resourcesFile->FirstChildElement();
 	if (!resourcesElement)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
@@ -195,25 +197,20 @@ bool Root::initResources(const std::string &resourcesFilePath)
 		return false;
 	}
 
-	imageManager = new ImageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder);
-
-	//Initialize all ResourceManagers here
-	imageManager->parseResourceFile(*resourcesElement);
-	textureManager->parseResourceFile(*resourcesElement);
-
-	meshManager = new MeshManager(initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder);
-	meshManager->parseResourceFile(*resourcesElement);
-
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
-		gpuProgramStageManager = new GL4GpuProgramStageManager(initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder);
+	{
+		graphicsAPI = new GL4GraphicsAPI();
+		textureManager = new GL4TextureManager(new GL4TextureBuilder(*resourcesFile));
+		gpuBufferManager = new GL4GpuBufferManager();
+		gpuProgramManager = new GL4GpuProgramManager();
+		inputDescriptionManager = new GL4InputDescriptionManager();
+		gpuProgramStageManager = new GL4GpuProgramStageManager(new GL4GpuProgramStageBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder));
+	}
 
-	gpuProgramStageManager->parseResourceFile(*resourcesElement);
+	imageManager = new ImageManager(new ImageBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder));
+	meshManager = new MeshManager(new MeshBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder));
+	materialManager = new MaterialManager(new MaterialBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder));
 
-	materialManager = new MaterialManager(initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder);
-	materialManager->parseResourceFile(*resourcesElement);
-
-	sceneManager = new SceneManager(initializationParameters.resourcesFolder + '/' + initializationParameters.scenesFolder);
-	sceneManager->parseResourceFile(*resourcesElement);
 	return true;
 }
 
@@ -232,27 +229,6 @@ void Root::renderOneFrame()
 	renderer->renderOneFrame();
 }
 
-void Root::unloadAllResourcesExceptScenes()
-{
-	if (gpuProgramStageManager != nullptr)
-		gpuProgramStageManager->unloadAll();
-	if (gpuProgramManager != nullptr)
-		gpuProgramManager->unloadAll();
-	if (materialManager != nullptr)
-		materialManager->unloadAll();
-	if (meshManager != nullptr)
-		meshManager->unloadAll();
-	if (imageManager != nullptr)
-		imageManager->unloadAll();
-	if (textureManager != nullptr)
-		textureManager->unloadAll();
-	if (gpuBufferManager != nullptr)
-		gpuBufferManager->unloadAll();
-	if (inputDescriptionManager != nullptr)
-		inputDescriptionManager->unloadAll();
-
-	//sceneManager->unloadAll();
-}
 
 void Root::KeyboardListener::onKeyPress(int key, int modifier)
 {

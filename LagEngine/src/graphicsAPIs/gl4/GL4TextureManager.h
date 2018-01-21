@@ -6,22 +6,32 @@
 
 namespace Lag
 {
+	class GL4TextureBuilder : public TextureBuilder
+	{
+	public:
+		GL4TextureBuilder::GL4TextureBuilder(const TiXmlDocument &resourcesXml) :
+			TextureBuilder(resourcesXml) {}
+
+		virtual Texture* build(const std::string &name) const override
+		{
+			if (buildingFromXml)
+				return XmlResourceBuilder::build(name);
+			else
+				return new GL4Texture(imageData, textureData);
+		}
+
+		virtual Texture* parseAndCreate(const std::string &name, const TiXmlElement &element) const override
+		{
+			TextureData textureData = parseTextureData(element);
+			return new GL4Texture(parseTextureImages(textureData, element), textureData);
+		}
+	};
+
+
 	class GL4TextureManager : public TextureManager
 	{
 	public:
-		virtual Texture* internalCreate(const std::string &imageName, const TextureData &data) override
-		{
-			return new GL4Texture(imageName, data);
-		}
-
-		virtual Texture* internalCreate(const std::vector<std::string> &imageNames, const TextureData &data) override
-		{
-			return new GL4Texture(imageNames, data);
-		}
-
-		virtual Texture* internalCreate(const ImageData &imageData, const TextureData &textureData) override
-		{
-			return new GL4Texture(imageData, textureData);
-		}
+		explicit GL4TextureManager(TextureBuilder *builder) :
+			TextureManager(builder) {}
 	};
 }

@@ -57,7 +57,7 @@ namespace Lag
 		virtual void unloadImplementation() override;
 
 	protected:
-		friend class ImageManager;
+		friend class ImageBuilder;
 		Image(const std::string &path, const ImageData &data);
 
 		ImageData data;

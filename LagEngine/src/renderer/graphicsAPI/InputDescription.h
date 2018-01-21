@@ -15,14 +15,15 @@ namespace Lag
 	*/
 	class InputDescription : public ManagedObject
 	{
-	protected:
-		InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-
+	public:
 		//How to interpret the vertices
 		const VertexDescription &vertexDescription;
-		
+
 		// Where to get the vertices from
 		//TODO: maybe add a Bindings class (id -> buffer) to allow getting different attributes from different buffers. (add a binding id on VertexAttribute also)
 		const GpuBuffer &vertexBuffer;
+
+	protected:
+		InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
 	};
 }

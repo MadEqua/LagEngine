@@ -9,6 +9,38 @@
 
 namespace Lag
 {
+	template<class K, class V>
+	class IManagedObjectBuilder
+	{
+	public:
+		IManagedObjectBuilder() 
+		{
+			// Compile-time sanity check
+			static_assert(std::is_base_of<ManagedObject, V>::value, "Creating a IManagedObjectBuilder of Vs not derived from ManagedObject");
+		}
+
+		virtual ~IManagedObjectBuilder() = default;
+		virtual V* build(const K &name) const = 0;
+	};
+
+
+	template<class K, class V>
+	class ManagedObjectListener : public IManagedObjectListener
+	{
+	public:
+		ManagedObjectListener(Manager<K, V> &manager) : manager(manager) {}
+		virtual ~ManagedObjectListener() = default;
+
+		virtual void onZeroReferences(ManagedObject &object) const override
+		{
+			manager.remove(static_cast<V*>(&object));
+		}
+
+	private:
+		Manager<K, V> &manager;
+	};
+	
+
 	/*
 	* Generic class for Managers that store ManagedObjects mapped by a name.
 	*/
@@ -16,25 +48,33 @@ namespace Lag
 	class Manager
 	{
 	public:
-		explicit Manager(const std::string &logTag);
+		Manager(const std::string &logTag, IManagedObjectBuilder<K, V> *builder);
 		virtual ~Manager();
 
-		V* get(const K &name) const;
-		bool contains(const K &name) const;
+		V* get(const K &name);
 		
-		bool add(const K &name, V *obj);
-		//bool addAndLoad(const K &name, V *obj);
-		void remove(const K &name);
+		//When the parent is returned so will be the child (Useful for dependencies Ex: Texture->Image)
+		V* get(const K &name, ManagedObject &parent);
+		
+		//Can be used to create Builder copies, in order to send them to the get() methods.
+		inline IManagedObjectBuilder<K, V>& getBuilder() { return *builder; }
 
-		bool load(const K &name) const;
-		void unload(const K &name) const;
+		void returnName(const K &name);
+		void returnObject(V *object);
 
-		void loadAll();
-		void unloadAll();
+		bool contains(const K &name) const;
 
 	protected:
+		bool load(V* object) const;
+		void unload(V* object) const;
+		void unloadAll();
 
-		//Will contain all added objects. At any point in time some will be loaded and some unloaded.
+		void remove(V *object);
+
+		template<class K, class V> friend class ManagedObjectListener;
+		ManagedObjectListener<K, V> listener;
+
+		IManagedObjectBuilder<K, V> *builder;
 		std::unordered_map<K, V*> objects;
 		std::string logTag;
 	};
@@ -45,12 +85,14 @@ namespace Lag
 	* DEFINITION HERE 'CAUSE C++ TEMPLATE COMPILATION...
 	*/
 	template<class K, class V>
-	Manager<K, V>::Manager(const std::string &logTag) :
-		logTag(logTag)
+	Manager<K, V>::Manager(const std::string &logTag, IManagedObjectBuilder<K, V> *builder) :
+		logTag(logTag),
+		builder(builder),
+		listener(*this)
 	{
 		// Compile-time sanity check
 		static_assert(std::is_base_of<ManagedObject, V>::value, "Creating a Manager of Values not derived from ManagedObject");
-		
+
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			logTag, "Initialized successfully.");
 	}
@@ -63,114 +105,115 @@ namespace Lag
 		for (auto &pair : objects)
 			delete pair.second;
 
+		delete builder;
+
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			logTag, "Destroyed successfully.");
 	}
 
 	template<class K, class V>
-	bool Manager<K, V>::add(const K &name, V *obj)
+	V* Manager<K, V>::get(const K &name)
 	{
 		auto it = objects.find(name);
-		if (it != objects.end())
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Trying to add an object with an already existing name: " + toString(name) + ". Only considering the first one added.");
-			delete obj;
-			return false;
-		}
-		else
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Successfully added object: " + toString(name));
+		V* object;
 
-			objects[name] = obj;
-			return true;
-		}
-	}
-
-	/*template<class K, class V>
-	bool Manager<K, V>::addAndLoad(const K &name, V *obj)
-	{
-		if (add(name, obj))
-			return load(name);
-
-		return false;
-	}*/
-
-	template<class K, class V>
-	bool Manager<K, V>::load(const K &name) const
-	{
-		auto it = objects.find(name);
-		if (it != objects.end())
-		{
-			if (it->second->load())
-			{
-				LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-					logTag, "Loaded object: " + toString(name));
-				return true;
-			}
-			else
-			{
-				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-					logTag, "Failed to load object: " + toString(name));
-				return false;
-			}
-		}
-		else
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Trying to load an unknown object: " + toString(name) + ".");
-			return false;
-		}
-	}
-
-	template<class K, class V>
-	void Manager<K, V>::unload(const K &name) const
-	{
-		auto it = objects.find(name);
-		if (it != objects.end())
-		{
-			it->second->unload();
-			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Unloaded object: " + toString(name));
-		}
-		else
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Trying to unload an unknown object: " + toString(name) + ".");
-	}
-
-	template<class K, class V>
-	void Manager<K, V>::remove(const K &name)
-	{
-		auto it = objects.find(name);
-		if (it != objects.end())
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Removing object with name: " + toString(name));
-			
-			it->second->unload();
-			delete it->second;
-			objects.erase(it);
-		}
-		else
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Trying to remove a non-existent object: " + toString(name));
-		}
-	}
-
-	template<class K, class V>
-	V* Manager<K, V>::get(const K &name) const
-	{
-		auto it = objects.find(name);
 		if (it == objects.end())
 		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Trying to get an unknown object: " + toString(name));
-			return nullptr;
+			object = builder->build(name);
+			if (object == nullptr)
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+					logTag, "Error building Object " + toString(name));
+				return nullptr;
+			}
+
+			object->setListener(listener);
+			objects[name] = object;
+
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Creating object with name: " + toString(name));
+		}
+		else
+		{
+			object = it->second;
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Getting already existent object with name: " + toString(name));
 		}
 
-		return it->second;
+		if (load(object))
+			return object;
+		else
+		{
+			unload(object);
+			return nullptr;
+		}
+	}
+
+	template<class K, class V>
+	V* Manager<K, V>::get(const K &name, ManagedObject &parent)
+	{
+		V *object = get(name);
+		if(object != nullptr)
+			parent.addDependency(object);
+		return object;
+	}
+
+	template<class K, class V>
+	void Manager<K, V>::returnName(const K &name)
+	{
+		auto it = objects.find(name);
+		if (it != objects.end())
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Returning object with name: " + toString(name));
+			unload(it->second);
+		}
+		else
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Trying to return an unknown object: " + toString(name));
+		}
+	}
+
+	template<class K, class V>
+	void Manager<K, V>::returnObject(V *object)
+	{
+		if (object != nullptr)
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Returning object.");
+			unload(object);
+		}
+		else
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Trying to return a null object.");
+		}
+	}
+
+	template<class K, class V>
+	void  Manager<K, V>::remove(V *object)
+	{
+		if (object != nullptr)
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Removing object.");
+			
+			delete object;
+
+			//TODO objects should store their own name, and avoid this
+			for (auto it = objects.begin(); it != objects.end(); ++it)
+				if (it->second == object)
+				{
+					objects.erase(it);
+					return;
+				}
+		}
+		else
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Trying to remove a null object.");
+		}
 	}
 
 	template<class K, class V>
@@ -181,16 +224,34 @@ namespace Lag
 	}
 
 	template<class K, class V>
-	void Manager<K, V>::loadAll()
-	{
-		for (auto &pair : objects)
-			load(pair.first);
-	}
-
-	template<class K, class V>
 	void Manager<K, V>::unloadAll()
 	{
 		for (auto &pair : objects)
-			unload(pair.first);
+			unload(pair.second);
+	}
+
+	template<class K, class V>
+	bool Manager<K, V>::load(V* object) const
+	{
+		if (object->load())
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Loaded object.");
+			return true;
+		}
+		else
+		{
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+				logTag, "Failed to load object.");
+			return false;
+		}
+	}
+
+	template<class K, class V>
+	void Manager<K, V>::unload(V* object) const
+	{
+		object->unload();
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			logTag, "Unloaded object.");
 	}
 }

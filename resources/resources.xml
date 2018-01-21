@@ -103,9 +103,6 @@
            semantic="DiffuseColor"
            type="Cube" mipmaps="8"
            minFilter="Nearest" magFilter="Nearest"
-           wrappingAll="ClampEdge"/>
-
-  <scene name="scene1" file="scene1.xml" default="true"/>
-  <scene name="scene2" file="scene2.xml"/>
+           wrappingAll="ClampEdge"/> 
   
 </resources>

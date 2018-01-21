@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 
+#include "graphicsAPI/Texture.h"
 #include "../resources/XmlResource.h"
 #include "../Types.h"
 
@@ -11,7 +12,7 @@ namespace Lag
 {
 	class GpuProgram;
 	class Texture;
-	enum TextureSemantic;
+	//enum TextureSemantic;
 
 	/*
 	* A Material contains all the details for rendering an entity, except the geometry.
@@ -28,7 +29,7 @@ namespace Lag
 		void bind() const;
 
 	private:
-		friend class MaterialManager;
+		friend class MaterialBuilder;
 		explicit Material(const std::string &filePath);
 		Material(const std::vector<std::string> shaderStageNames, const std::vector<std::string> texureNames);
 

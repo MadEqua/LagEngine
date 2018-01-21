@@ -5,13 +5,18 @@
 
 namespace Lag
 {
+	class MaterialBuilder : public XmlResourceBuilder<Material>
+	{
+	public:
+		MaterialBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath);
+
+		virtual Material* parseAndCreate(const std::string &name, const TiXmlElement &element) const override;
+	};
+	
+
 	class MaterialManager : public XmlResourceManager<Material>
 	{
 	public:
-		explicit MaterialManager(const std::string &folder);
-		bool create(const std::string &name, const std::string &file);
-
-	protected:
-		virtual void parseResourceDescription(const TiXmlElement &element) override;
+		explicit MaterialManager(MaterialBuilder *builder);
 	};
 }

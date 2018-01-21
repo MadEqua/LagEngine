@@ -12,27 +12,34 @@ namespace Lag
 	enum TextureFilteringMode;
 	enum TexturewWrappingMode;
 	struct ImageData;
+
+	class TextureBuilder : public XmlResourceBuilder<Texture>
+	{
+	public:
+		TextureBuilder(const TiXmlDocument &resourcesXml);
+
+		inline void setBuildFromXml() { buildingFromXml = true; }
+		void setBuildCustom(const ImageData &imageData, const TextureData &textureData);
+
+	protected:
+		static TextureData parseTextureData(const TiXmlElement &element);
+		static std::vector<std::string> parseTextureImages(const TextureData &texturedata, const TiXmlElement &element);
+
+		static TextureType parseTextureType(const std::string &type);
+		static TextureSemantic parseSemantic(const std::string &sem);
+		static TextureFilteringMode parseFilteringMode(const std::string &mode);
+		static TexturewWrappingMode parseWrappingMode(const std::string &mode);
+		static int parseInt(const std::string &str);
+
+		bool buildingFromXml;
+		ImageData imageData;
+		TextureData textureData;
+	};
+
 	
 	class TextureManager : public XmlResourceManager<Texture>
 	{
 	public:
-		TextureManager();
-
-		bool create(const std::string &name, const std::string &imageName, const TextureData &data);
-		bool create(const std::string &name, const std::vector<std::string> &imageNames, const TextureData &data);
-		bool create(const std::string &name, const ImageData &imageData, const TextureData &textureData);
-
-	protected:
-		virtual Texture* internalCreate(const std::string &imageName, const TextureData &data) = 0;
-		virtual Texture* internalCreate(const std::vector<std::string> &imageNames, const TextureData &data) = 0;
-		virtual Texture* internalCreate(const ImageData &imageData, const TextureData &textureData) = 0;
-
-		virtual void parseResourceDescription(const TiXmlElement &element) override;
-
-		TextureType parseTextureType(const std::string &type) const;
-		TextureSemantic parseSemantic(const std::string &sem) const;
-		TextureFilteringMode parseFilteringMode(const std::string &mode) const;
-		TexturewWrappingMode parseWrappingMode(const std::string &mode) const;
-		int parseInt(const std::string &str) const;
+		TextureManager(TextureBuilder *builder);
 	};
 }

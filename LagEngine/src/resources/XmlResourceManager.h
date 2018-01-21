@@ -9,27 +9,58 @@ class TiXmlElement;
 
 namespace Lag
 {
+	template<class V>
+	class XmlResourceBuilder : public IManagedObjectBuilder<std::string, V>
+	{
+	public:
+		XmlResourceBuilder(const std::string &tagToParse, const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
+			tagToParse(tagToParse),
+			resourcesXml(resourcesXml),
+			resourceFolderPath(resourceFolderPath)
+		{
+			// Compile-time sanity check
+			static_assert(std::is_base_of<XmlResource, V>::value, "Creating a XmlResourceBuilder of Vs not derived from XmlResource");
+		}
+
+		virtual V* build(const std::string &name) const override
+		{
+			const TiXmlElement* element = findResourceNameOnXml(name);
+			if (element != nullptr)
+				return parseAndCreate(name, *element);
+			else
+				return nullptr;
+		}
+
+	protected:
+		const std::string parseFileAttribute(const TiXmlElement &element) const
+		{
+			const char* file = element.Attribute("file");
+			if (!file)
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "XmlResourceBuilder",
+					"A <" + tagToParse + "> element on the Resources file does not contain the required attribute <file>.");
+				return "";
+			}
+			return file;
+		}
+
+		const TiXmlElement* findResourceNameOnXml(const std::string &name) const;
+		virtual V* parseAndCreate(const std::string &name, const TiXmlElement &element) const = 0;
+
+		const TiXmlDocument &resourcesXml;
+		std::string tagToParse;
+		std::string resourceFolderPath;
+	};
+	
+	
 	/*
-	* Simple abstract ResourceManager that can iterate and create all the declared Resources on the passed in XML file.
 	* Each concrete implementation can handle some Resource type from the XML resources file.
 	*/
 	template<class V>
 	class XmlResourceManager : public Manager<std::string, V>
 	{
 	public:
-		XmlResourceManager(const std::string &name, const std::string &folder);
-		explicit XmlResourceManager(const std::string &name);
-
-		//TODO: pass some nicer structure instead of the XML file root?
-		//Parse resource file and check if there is something of interest for the manager
-		void parseResourceFile(const TiXmlElement &resourceFileRoot);
-
-	protected:
-
-		std::string folder;
-
-		//Handle a specific resource description
-		virtual void parseResourceDescription(const TiXmlElement &element) = 0;
+		XmlResourceManager(const std::string &name, XmlResourceBuilder<V> *builder);
 	};
 
 
@@ -38,28 +69,22 @@ namespace Lag
 	*/
 
 	template<class V>
-	XmlResourceManager<V>::XmlResourceManager(const std::string &name, const std::string &folder) :
-		Manager(name),
-		folder(folder)
+	const TiXmlElement* XmlResourceBuilder<V>::findResourceNameOnXml(const std::string &name) const
 	{
-		static_assert(std::is_base_of<XmlResource, V>::value, "Creating a XmlResourceManager of Values not derived from XmlResource");
-	}
-
-	template<class V>
-	XmlResourceManager<V>::XmlResourceManager(const std::string &name) :
-		Manager(name),
-		folder("")
-	{
-	}
-
-	template<class V>
-	void XmlResourceManager<V>::parseResourceFile(const TiXmlElement &resourceFileRoot)
-	{
-		for (const TiXmlElement* elem = resourceFileRoot.FirstChildElement();
+		for (const TiXmlElement* elem = resourcesXml.FirstChildElement()->FirstChildElement();
 			elem != NULL;
 			elem = elem->NextSiblingElement())
 		{
-			parseResourceDescription(*elem);
+			if (tagToParse == elem->ValueStr() && name == elem->Attribute("name"))
+				return elem;
 		}
+		return nullptr;
+	}
+
+	template<class V>
+	XmlResourceManager<V>::XmlResourceManager(const std::string &name, XmlResourceBuilder<V> *builder) :
+		Manager(name, builder)
+	{
+		static_assert(std::is_base_of<XmlResource, V>::value, "Creating a XmlResourceManager of Values not derived from XmlResource");
 	}
 }

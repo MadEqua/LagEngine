@@ -23,7 +23,7 @@ namespace Lag
 		inline GLuint getHandle() const { return handle; }
 
 	private:
-		friend class GL4GpuBufferManager;
+		friend class GL4GpuBufferBuilder;
 		//GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
 		GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 

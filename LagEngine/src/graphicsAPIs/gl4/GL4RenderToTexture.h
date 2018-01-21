@@ -10,7 +10,6 @@ namespace Lag
 	{
 	public:
 		GL4RenderToTexture(uint32 width, uint32 height);
-		virtual ~GL4RenderToTexture() override;
 
 		virtual void attachColorTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 attachment = 0, uint8 mipmapLevel = 0) override;
 		virtual void attachDepthStencilTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) override;
@@ -19,11 +18,13 @@ namespace Lag
 
 		inline GLuint getHandle() const { return handle; }
 
+		virtual bool initialize() override;
+		virtual void destroy() override;
+
 	private:
 		GLuint handle;
 
 		std::string generateTextureName(const char* type, uint8 layer, uint8 attachment);
-
 		virtual bool checkCompleteness() const override;
 	};
 }

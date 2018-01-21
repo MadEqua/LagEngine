@@ -31,14 +31,12 @@ bool Texture::loadImplementation()
 	{
 		int i = 0;
 		ImageManager &imageManager = Root::getInstance().getImageManager();
-		for (auto name : imageNames)
+		for (auto &name : imageNames)
 		{	
-			Image *image = imageManager.get(name);
+			Image *image = imageManager.get(name, *this);
+
 			if (image != nullptr)
-			{
-				if (!imageManager.load(name))
-					return false;
-				
+			{					
 				if (i == 0)
 					imageData = image->getData();
 
@@ -47,7 +45,7 @@ bool Texture::loadImplementation()
 			else
 			{
 				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-					"Texture", "Trying to use a non-declared Image: " + name);
+					"Texture", "Cannot get Image: " + name);
 				return false;
 			}
 			i++;

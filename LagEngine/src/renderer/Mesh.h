@@ -21,7 +21,7 @@ namespace Lag
 		inline const std::vector<SubMesh*>& getSubMeshes() const { return subMeshes; }
 
 	private:
-		friend class MeshManager;
+		friend class MeshBuilder;
 		explicit Mesh(const std::string &file);
 
 		virtual bool loadImplementation() override;

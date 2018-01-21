@@ -1,35 +1,20 @@
 #include "MeshManager.h"
 
 #include "../renderer/Mesh.h"
-#include "../io/log/LogManager.h"
-#include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-MeshManager::MeshManager(const std::string &folder) :
-	XmlResourceManager("MeshManager", folder)
+MeshManager::MeshManager(MeshBuilder *builder) :
+	XmlResourceManager("MeshManager", builder)
 {
 }
 
-bool MeshManager::create(const std::string &name, const std::string &file)
+MeshBuilder::MeshBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
+	XmlResourceBuilder("mesh", resourcesXml, resourceFolderPath)
 {
-	return add(name, new Mesh(folder + '/' + file));
 }
 
-void MeshManager::parseResourceDescription(const TiXmlElement &element)
+Mesh* MeshBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
 {
-	if (element.ValueStr() == "mesh")
-	{
-		const char* name = element.Attribute("name");
-		const char* file = element.Attribute("file");
-		
-		if (!name || !file)
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "MeshManager",
-				"A <mesh> element on the Resources file does not contain all required elements: <name> and <file>");
-			return;
-		}
-
-		create(name, file);
-	}
+	return new Mesh(resourceFolderPath + '/' + parseFileAttribute(element));
 }

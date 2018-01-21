@@ -19,6 +19,8 @@ namespace Lag
 		explicit Sky(const std::string &materialName);
 		//Sky(const std::string &textureName);
 
+		~Sky();
+
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 

@@ -1,35 +1,20 @@
 #include "MaterialManager.h"
 
 #include "../renderer/Material.h"
-#include "../io/log/LogManager.h"
-#include "../io/tinyxml/tinyxml.h"
 
 using namespace Lag;
 
-MaterialManager::MaterialManager(const std::string &folder) :
-	XmlResourceManager("MaterialManager", folder)
+MaterialManager::MaterialManager(MaterialBuilder *builder) :
+	XmlResourceManager("MaterialManager", builder)
 {
 }
 
-bool MaterialManager::create(const std::string &name, const std::string &file)
+MaterialBuilder::MaterialBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
+	XmlResourceBuilder("material", resourcesXml, resourceFolderPath)
 {
-	return add(name, new Material(folder + '/' + file));
 }
 
-void MaterialManager::parseResourceDescription(const TiXmlElement &element)
+Material* MaterialBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
 {
-	if (element.ValueStr() == "material")
-	{
-		const char* name = element.Attribute("name");
-		const char* file = element.Attribute("file");
-		
-		if (!name || !file)
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "MaterialManager",
-				"A <material> element on the Resources file does not contain all required elements: <name> and <file>");
-			return;
-		}
-
-		create(name, file);
-	}
+	return new Material(resourceFolderPath + '/' + parseFileAttribute(element));
 }

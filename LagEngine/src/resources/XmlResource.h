@@ -6,6 +6,9 @@
 
 namespace Lag
 {
+	/*
+	* Resource which metadata can be read from the XML Resources file.
+	*/
 	class XmlResource : public ManagedObject
 	{
 	public:

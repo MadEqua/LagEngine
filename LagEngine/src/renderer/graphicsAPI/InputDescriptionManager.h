@@ -11,7 +11,7 @@ namespace Lag
 {
 	struct InputDescriptionMapKey
 	{
-		InputDescriptionMapKey(const VertexDescription &vd, const GpuBuffer *vb);
+		InputDescriptionMapKey(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer);
 		bool operator==(const InputDescriptionMapKey &other) const;
 
 		const VertexDescription vertexDescription;
@@ -33,6 +33,14 @@ namespace Lag
 	class GpuBuffer;
 	class VertexDescription;
 
+	class InputDescriptionBuilder : public IManagedObjectBuilder<InputDescriptionMapKey, InputDescription>
+	{
+	public:
+		VertexDescription vertexDescription;
+		GpuBuffer *vertexBuffer;
+	};
+
+
 	/*
 	* Create and manage InputDescriptions, based on VertexDescriptions and VertexBuffers.
 	* Only create new InputDescriptions when there is not one that satisfies the input.
@@ -42,13 +50,12 @@ namespace Lag
 	class InputDescriptionManager : public Manager<InputDescriptionMapKey, InputDescription>
 	{
 	public:
-		InputDescriptionManager();
+		explicit InputDescriptionManager(InputDescriptionBuilder *builder);
 
-		//Create or get an already suitable InputDescription
-		//A suitable InputDescription is one that has the same VertexDescription for the same GpuBuffer
-		InputDescription* createInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
-
-	protected:
-		virtual InputDescription* internalCreateInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer) = 0;
+		//Convenience methods for the most common operations
+		InputDescription* get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer);
+		InputDescription* get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer, ManagedObject &parent);
+		
+		static InputDescriptionMapKey getName(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer);
 	};
 }

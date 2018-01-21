@@ -5,14 +5,25 @@
 
 namespace Lag
 {
+	class GL4GpuProgramStageBuilder : public GpuProgramStageBuilder
+	{
+	public:
+		GL4GpuProgramStageBuilder::GL4GpuProgramStageBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
+			GpuProgramStageBuilder(resourcesXml, resourceFolderPath) {}
+		
+		virtual GpuProgramStage* parseAndCreate(const std::string &name, const TiXmlElement &element) const override
+		{	
+			GL4GpuProgramStage* stage = new GL4GpuProgramStage(resourceFolderPath + '/' + parseFileAttribute(element), parseTypeAttribute(element));
+			parseUniforms(*stage, element);
+			return stage;
+		}
+	};
+	
+
 	class GL4GpuProgramStageManager : public GpuProgramStageManager
 	{
 	public:
-		GL4GpuProgramStageManager(const std::string &folder) : GpuProgramStageManager(folder) {}
-
-		virtual GpuProgramStage* internalCreate(const std::string &file, GpuProgramStageType type) override
-		{	
-			return new GL4GpuProgramStage(folder + '/' + file, type);
-		}
+		explicit GL4GpuProgramStageManager(GL4GpuProgramStageBuilder *builder) : 
+			GpuProgramStageManager(builder) {}
 	};
 }

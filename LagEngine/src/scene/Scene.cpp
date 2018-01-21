@@ -15,8 +15,7 @@
 
 using namespace Lag;
 
-Scene::Scene(const std::string &filePath) :
-	XmlResource(filePath),
+Scene::Scene() :
 	sky(nullptr)
 {
 }
@@ -27,76 +26,12 @@ Scene::~Scene()
 		delete sky;
 }
 
-bool Scene::loadImplementation()
+void Scene::onStart()
 {
-	if (path.empty())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Scene",
-			"Trying to load Scene with empty path.");
-		return false;
-	}
-
-	TiXmlDocument doc(path);
-	if (!doc.LoadFile())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Scene",
-			"Scene file: " + path + " does not exist or is malformed.");
-		return false;
-	}
-
-	const TiXmlElement *sceneElement = doc.FirstChildElement();
-	if (!sceneElement)
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Scene",
-			"Scene file: " + path + " does not contain <scene> element.");
-		return false;
-	}
-
-	for (const TiXmlElement* child = sceneElement->FirstChildElement();
-		child != 0;
-		child = child->NextSiblingElement())
-	{
-		if (child->ValueStr() == "material")
-		{
-			MaterialManager &matManager = Root::getInstance().getMaterialManager();
-			const char* name = child->Attribute("name");
-			if (name) 
-			{
-				if (!matManager.load(name))
-					return false;
-			}
-			else
-			{
-				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Scene",
-					"Scene file: " + path + " has a <material> element with no name");
-				return false;
-			}
-		}
-
-		if (child->ValueStr() == "mesh")
-		{
-			MeshManager &meshManager = Root::getInstance().getMeshManager();
-			const char* name = child->Attribute("name");
-			if (name)
-			{
-				if (!meshManager.load(name))
-					return false;
-			}
-			else
-			{
-				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Scene",
-					"Scene file: " + path + " has a <mesh> element with no name");
-				return false;
-			}
-		}
-	}
-	return true;
 }
 
-void Scene::unloadImplementation()
+void Scene::onEnd()
 {
-	//Like a bauss...
-	Root::getInstance().unloadAllResourcesExceptScenes();
 }
 
 Entity* Scene::createEntity(const std::string &meshName, const std::string &materialName)
@@ -109,7 +44,7 @@ Entity* Scene::createEntity(const std::string &meshName, const std::string &mate
 	if (!mesh || !material)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Scene", "Trying to create an Entity with a non-existent Mesh or Material: " + meshName + ", " + materialName);
+			"Scene", "Trying to build an Entity with a non-existent Mesh or Material: " + meshName + ", " + materialName);
 		return nullptr;
 	}
 

@@ -13,7 +13,7 @@ namespace Lag
 			stmt;\
 			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);
 #else
-#define GL_ERROR_PRINT(stmt) stmt
+#define GL_ERROR_PRINT(stmt) stmt;
 #endif
 
 #ifdef _DEBUG
@@ -22,5 +22,5 @@ namespace Lag
 			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);\
 		}
 #else
-#define GL_ERROR_PRINT_BLOCK(stmt) stmt
+#define GL_ERROR_PRINT_BLOCK(stmt) { stmt; }
 #endif

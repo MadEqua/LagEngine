@@ -4,6 +4,7 @@
 #include <vector>
 #include <unordered_map>
 #include "../../core/ManagedObject.h"
+#include "../GpuProgramUniformDescription.h"
 
 namespace Lag
 {
@@ -11,7 +12,6 @@ namespace Lag
 	enum GpuProgramStageType;
 	enum GpuProgramUniformSemantic;
 	class GpuProgramStage;
-	struct GpuProgramUniformDescription;
 	
 	/*
 	* Abstraction of a program meant to be run on the GPU. 
@@ -27,9 +27,6 @@ namespace Lag
 		
 		const GpuProgramUniform* getUniformByName(const std::string &name) const;
 		const std::vector<GpuProgramUniform*>* getUniformBySemantic(GpuProgramUniformSemantic semantic) const;
-
-		//Generates a name for the program, combining the names of the stages on a predefined order
-		static void generateName(std::vector<std::string> &stageNames, std::string &out);
 
 	protected:
 		GpuProgram(const std::string &name, const std::vector<std::string> &names);

@@ -9,6 +9,8 @@
 
 #include "core/SingletonPattern.h"
 
+class TiXmlDocument;
+
 namespace Lag
 {
 	class RenderWindow;
@@ -59,8 +61,6 @@ namespace Lag
 
 		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
 
-		void unloadAllResourcesExceptScenes(); //Lazy method for clearing a Scene when it finishes
-
 	private:
 		RenderWindow *renderWindow;
 		InputManager *inputManager;
@@ -80,6 +80,7 @@ namespace Lag
 		IGraphicsAPI *graphicsAPI;
 
 		InitializationParameters initializationParameters;
+		TiXmlDocument *resourcesFile;
 
 		void destroy();
 		bool internalInit(const InitializationParameters &parameters);

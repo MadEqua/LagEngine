@@ -1,12 +1,11 @@
 #include "InputDescriptionManager.h"
 
 #include "../VertexDescription.h"
-#include "../../io/log/LogManager.h"
 
 using namespace Lag;
 
-InputDescriptionMapKey::InputDescriptionMapKey(const VertexDescription &vd, const GpuBuffer *vb) :
-	vertexDescription(vd), vertexBuffer(vb)
+InputDescriptionMapKey::InputDescriptionMapKey(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer) :
+	vertexDescription(vertexDescription), vertexBuffer(vertexBuffer)
 {
 }
 
@@ -21,30 +20,28 @@ std::size_t std::hash<Lag::InputDescriptionMapKey>::operator()(const Lag::InputD
 }
 
 
-InputDescriptionManager::InputDescriptionManager() :
-	Manager("InputDescriptionManager")
+InputDescriptionManager::InputDescriptionManager(InputDescriptionBuilder *builder) :
+	Manager("InputDescriptionManager", builder)
 {
 }
 
-InputDescription* InputDescriptionManager::createInputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer)
+InputDescription* InputDescriptionManager::get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer)
 {
-	InputDescriptionMapKey key(vertexDescription, &vertexBuffer);
-	InputDescription *id = get(key);
-	if (id == nullptr)
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_DEBUG, LAG_LOG_VERBOSITY_NORMAL,
-			"InputDescriptionManager", "Creating InputDescription.");
+	InputDescriptionBuilder &inputDescriptionBuilder = static_cast<InputDescriptionBuilder&>(*builder);
+	inputDescriptionBuilder.vertexBuffer = const_cast<GpuBuffer*>(vertexBuffer);
+	inputDescriptionBuilder.vertexDescription = vertexDescription;
+	return Manager::get(getName(vertexDescription, vertexBuffer));
+}
 
-		id = internalCreateInputDescription(vertexDescription, vertexBuffer);
-	}
-	else
-	{		
-		LogManager::getInstance().log(LAG_LOG_TYPE_DEBUG, LAG_LOG_VERBOSITY_NORMAL,
-			"InputDescriptionManager", "Reutilizing InputDescription.");
-	}
+InputDescription* InputDescriptionManager::get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer, ManagedObject &parent)
+{
+	InputDescriptionBuilder &inputDescriptionBuilder = static_cast<InputDescriptionBuilder&>(*builder);
+	inputDescriptionBuilder.vertexBuffer = const_cast<GpuBuffer*>(vertexBuffer);
+	inputDescriptionBuilder.vertexDescription = vertexDescription;
+	return Manager::get(getName(vertexDescription, vertexBuffer), parent);
+}
 
-	if(add(key, id) && load(key))
-		return id;
-	else 
-		return nullptr;
+InputDescriptionMapKey InputDescriptionManager::getName(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer)
+{
+	return InputDescriptionMapKey(vertexDescription, vertexBuffer);
 }

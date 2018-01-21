@@ -16,7 +16,7 @@ namespace Lag
 		inline GLuint getHandle() const { return handle; }
 
 	private:
-		friend class GL4InputDescriptionManager;
+		friend class GL4InputDescriptionBuilder;
 		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
 
 		void setupVertexAttributtes() const;

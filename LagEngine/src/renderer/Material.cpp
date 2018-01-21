@@ -55,31 +55,19 @@ bool Material::initialize()
 {
 	Root &root = Root::getInstance();
 
-	GpuProgramStageManager &stageManager = root.getGpuProgramStageManager();
-	for (std::string &name : shaderStageNames)
-		if (!stageManager.load(name))
-			return false;
-
-	std::string gpuProgramName;
-	GpuProgram::generateName(shaderStageNames, gpuProgramName);
-
 	GpuProgramManager &programManager = root.getGpuProgramManager();
-	gpuProgram = programManager.get(gpuProgramName);
+	gpuProgram = programManager.get(shaderStageNames, *this);
 	if (gpuProgram == nullptr)
-	{
-		gpuProgram = programManager.create(gpuProgramName, shaderStageNames);
-		if (gpuProgram == nullptr)
-			return false;
-	}
-
-	if (!programManager.load(gpuProgramName))
 		return false;
 
-	TextureManager &texMan = Root::getInstance().getTextureManager();
+	TextureManager &texMan = root.getTextureManager();
+	TextureBuilder &textureBuilder = static_cast<TextureBuilder&>(texMan.getBuilder());
+	textureBuilder.setBuildFromXml();
+
 	for (std::string &name : textureNames)
 	{
-		Texture *tex = texMan.get(name);
-		if (tex != nullptr && texMan.load(name))
+		Texture *tex = texMan.get(name, *this);
+		if (tex != nullptr)
 		{
 			textures.push_back(tex);
 			texturesBySemantic[tex->getTextureData().semantic].push_back(tex);

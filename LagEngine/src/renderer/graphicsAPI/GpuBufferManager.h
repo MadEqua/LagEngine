@@ -8,6 +8,18 @@
 namespace Lag
 {	
 	class GpuBuffer;
+
+	class GpuBufferBuilder : public IManagedObjectBuilder<uint32, GpuBuffer>
+	{
+	public:
+		GpuBufferBuilder();
+
+		GpuBufferContents contents;
+		int32 itemCount;
+		uint32 itemSizeBytes, flags;
+		bool useMirrorBuffer;
+	};
+
 	
 	/*
 	* Creates and manages all GpuBuffers.
@@ -15,22 +27,15 @@ namespace Lag
 	class GpuBufferManager : public Manager<uint32, GpuBuffer>
 	{
 	public:
-		GpuBufferManager();
+		explicit GpuBufferManager(GpuBufferBuilder* builder);
+		uint32 getNextName();
 
-		GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer);
-		//GpuBuffer* createVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer);
-
-		GpuBuffer* createIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer);
-		//GpuBuffer* createIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer);
+		//Convenience methods for the most common operations
+		//Do not forget to set the builder before calling.
+		GpuBuffer* get();
+		GpuBuffer* get(ManagedObject &parent);
 
 	protected:
 		uint32 nextName;
-		uint32 getNextName();
-
-		virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
-		//virtual GpuBuffer* internalCreateVertexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
-
-		virtual GpuBuffer* internalCreateIndexBuffer(uint32 vertexCount, uint32 vertexSizeBytes, uint32 flags, bool useMirrorBuffer) = 0;
-		//virtual GpuBuffer* internalCreateIndexBuffer(uint32 indexCount, uint32 indexSizeBytes, byte* data, uint32 flags, bool useMirrorBuffer) = 0;
 	};
 }

@@ -27,7 +27,7 @@ bool GpuProgram::loadImplementation()
 		GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
 		for (const std::string &name : stagesNames)
 		{
-			GpuProgramStage *stage = man.get(name);
+			GpuProgramStage *stage = man.get(name, *this);
 			if (stage == nullptr)
 				LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 					"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
@@ -35,6 +35,7 @@ bool GpuProgram::loadImplementation()
 				stages.push_back(stage);
 		}
 	}
+
 	if (!checkStages())
 		return false;
 
@@ -139,29 +140,4 @@ const std::vector<GpuProgramUniform*>* GpuProgram::getUniformBySemantic(GpuProgr
 		return &it->second;
 	else
 		return nullptr;
-}
-
-void GpuProgram::generateName(std::vector<std::string> &stageNames, std::string &out)
-{
-	GpuProgramStageType stageOrder[PROGRAM_STAGE_COUNT] = 
-	{ 
-		LAG_GPU_PROG_STAGE_TYPE_VERTEX, LAG_GPU_PROG_STAGE_TYPE_TESS_CONTROL,
-		LAG_GPU_PROG_STAGE_TYPE_TESS_EVALUATION, LAG_GPU_PROG_STAGE_TYPE_GEOMETRY,
-		LAG_GPU_PROG_STAGE_TYPE_FRAGMENT 
-	};
-
-	GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
-
-	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
-	{
-		for (std::string &stageName : stageNames)
-		{
-			GpuProgramStage *stage = man.get(stageName);
-			if (stage != nullptr && stage->getType() == stageOrder[i])
-			{
-				out += stageName + '.';
-				break;
-			}
-		}
-	}
 }
