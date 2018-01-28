@@ -35,19 +35,7 @@ GLFWRenderWindow::GLFWRenderWindow(const InitializationParameters &parameters) :
 	glfwRenderWindow = this;
 }
 
-GLFWRenderWindow::~GLFWRenderWindow()
-{
-	glfwSetWindowCloseCallback(window, 0);
-	glfwSetWindowSizeCallback(window, 0);
-	glfwSetWindowPosCallback(window, 0);
-	glfwSetWindowFocusCallback(window, 0);
-	destroy();
-
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"GLFWRenderWindow", "Destroyed successfully.");
-}
-
-bool GLFWRenderWindow::initialize()
+bool GLFWRenderWindow::loadImplementation()
 {
 	if (!glfwInit())
 	{
@@ -99,9 +87,17 @@ bool GLFWRenderWindow::initialize()
 	}
 }
 
-void GLFWRenderWindow::destroy()
+void GLFWRenderWindow::unloadImplementation()
 {
+	glfwSetWindowCloseCallback(window, 0);
+	glfwSetWindowSizeCallback(window, 0);
+	glfwSetWindowPosCallback(window, 0);
+	glfwSetWindowFocusCallback(window, 0);
+	
 	glfwTerminate();
+
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+		"GLFWRenderWindow", "Destroyed successfully.");
 }
 
 void GLFWRenderWindow::processEvents()

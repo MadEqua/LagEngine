@@ -13,7 +13,6 @@ namespace Lag
 	class GpuBuffer;
 	class InputDescription;
 	class Color;
-	class RenderToTexture;
 	struct ImageData;
 	class RenderTarget;
 	
@@ -25,8 +24,6 @@ namespace Lag
 	{
 	public:
 		virtual ~IGraphicsAPI() = default;
-
-		virtual RenderToTexture* createRenderToTexture(uint32 width, uint32 height) = 0;
 
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) = 0;
 		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) = 0;

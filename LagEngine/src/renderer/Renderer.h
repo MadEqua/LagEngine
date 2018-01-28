@@ -3,6 +3,7 @@
 #include <string>
 #include <unordered_map>
 
+#include "RenderPhase.h"
 #include "../core/NamedContainer.h"
 #include "../Types.h"
 #include "RenderQueue.h"
@@ -11,6 +12,7 @@
 #include "../core/ObserverPattern.h"
 #include "GpuProgramUniformFiller.h"
 #include "../core/Timer.h"
+#include "RenderTargetManager.h"
 
 namespace Lag
 {
@@ -24,12 +26,6 @@ namespace Lag
 		LAG_RENDER_MODE_LINE_LOOP,
 		LAG_RENDER_MODE_POINTS,
 		LAG_RENDER_MODE_PATCHES
-	};
-
-	enum RenderPhase
-	{
-		LAG_RENDER_PHASE_DEPTH,
-		LAG_RENDER_PHASE_COLOR
 	};
 
 	class RenderTarget;
@@ -71,7 +67,7 @@ namespace Lag
 		LAG_DECLARE_NOTIFY_METHOD(onFrameEnd, LAG_ARGS(float timePassed))
 
 	public:
-		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager);
+		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager);
 		~Renderer();
 
 		static const uint8 MAX_POINT_LIGHTS = 8;
@@ -83,10 +79,10 @@ namespace Lag
 		void renderOneFrame();
 
 		//TODO: should render windows be created here instead of added? (problem: they are platform specific)
-		uint16 addRenderWindow(RenderWindow &renderWindow);
+		/*uint16 addRenderWindow(RenderWindow &renderWindow);
 		uint16 createRenderToTexture(uint32 width, uint32 height);
 		void removeRenderToTexture(uint16 name);
-		RenderToTexture* getRenderToTexture(uint16 name) const;
+		RenderToTexture* getRenderToTexture(uint16 name) const;*/
 
 		//Bind objects and settings
 		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
@@ -134,8 +130,8 @@ namespace Lag
 		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
 
 	private:
-		NamedContainer<RenderTarget> *renderTargets;
-		RenderWindow *renderWindow;
+		//NamedContainer<RenderTarget> *renderTargets;
+		//RenderWindow *renderWindow;
 
 		bool shouldLoop;
 		uint64 actualFrame;
@@ -148,6 +144,7 @@ namespace Lag
 		
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
+		RenderTargetManager &renderTargetManager;
 
 		GpuProgramUniformFiller uniformFiller;
 		RenderQueue renderQueue;
@@ -173,10 +170,10 @@ namespace Lag
 		const GpuProgram* lastUsedGpuProgramOnFrame;
 
 		//Listening to resizes. A resize may invalidate the current bound Viewport.
-		class RenderWindowListener : public IRenderTargetListener
+		class RenderTargetListener : public IRenderTargetListener
 		{
 		public:
-			RenderWindowListener(Renderer &renderer) : renderer(renderer) {}
+			RenderTargetListener(Renderer &renderer) : renderer(renderer) {}
 
 			virtual void onPreRender(RenderTarget &notifier) override {};
 			virtual void onPostRender(RenderTarget &notifier) override {};
@@ -185,6 +182,6 @@ namespace Lag
 		private:
 			Renderer &renderer;
 		};
-		RenderWindowListener renderWindowListener;
+		RenderTargetListener renderTargetListener;
 	};
 }

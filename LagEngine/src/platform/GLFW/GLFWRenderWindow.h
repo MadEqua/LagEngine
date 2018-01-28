@@ -21,10 +21,9 @@ namespace Lag
 
 	public:
 		GLFWRenderWindow(const InitializationParameters &parameters);
-		virtual ~GLFWRenderWindow();
 
-		virtual bool initialize() override;
-		virtual void destroy() override;
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 
 		virtual void processEvents() override;
 		virtual void swapBuffers() override;

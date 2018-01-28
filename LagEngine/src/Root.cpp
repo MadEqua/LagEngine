@@ -4,6 +4,10 @@
 
 #include "InitializationParameters.h"
 #include "io/log/LogManager.h"
+
+#include "platform/GLFW/GLFWRenderTargetBuilder.h"
+#include "graphicsAPIs/gl4/GL4RenderTargetBuilder.h"
+
 #include "platform/GLFW/GLFWRenderWindow.h"
 #include "platform/GLFW/GLFWInputManager.h"
 #include "renderer/Renderer.h"
@@ -28,10 +32,10 @@
 using namespace Lag;
 
 Root::Root() :
-	renderWindow(nullptr),
 	inputManager(nullptr),
 	renderer(nullptr),
 	sceneManager(nullptr),
+	renderTargetManager(nullptr),
 	gpuProgramStageManager(nullptr),
 	gpuProgramManager(nullptr),
 	materialManager(nullptr),
@@ -56,6 +60,11 @@ Root::~Root()
 
 void Root::destroy()
 {
+	if (renderTargetManager != nullptr)
+	{
+		delete renderTargetManager;
+		renderTargetManager = nullptr;
+	}
 	if (gpuProgramStageManager != nullptr)
 	{
 		delete gpuProgramStageManager;
@@ -157,8 +166,9 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	destroy();
 
 	//TODO Use a factory to initialize render window and graphics api?
-	renderWindow = new GLFWRenderWindow(parameters);
-	if (!renderWindow->initialize())
+	renderTargetManager = new RenderTargetManager(new GLFWRenderTargetBuilder(), new GL4RenderTargetBuilder());
+	RenderWindow *renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
+	if (renderWindow == nullptr)
 		return false;
 
 	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
@@ -168,8 +178,8 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	sceneManager = new SceneManager();
 
-	renderer = new Renderer(*graphicsAPI, *sceneManager);
-	renderer->addRenderWindow(*renderWindow);
+	renderer = new Renderer(*graphicsAPI, *sceneManager, *renderTargetManager);
+	//renderer->addRenderWindow(*renderWindow);
 
 	windowListener = new WindowListener();
 	keyboardListener = new KeyboardListener();
@@ -236,8 +246,8 @@ void Root::KeyboardListener::onKeyPress(int key, int modifier)
 	{
 	case KEY_LEFT_CONTROL:
 	{
-		RenderWindow &rw = Root::getInstance().getRenderWindow();
-		rw.setVirtualCursor(!rw.isVirtualCursorEnabled());
+		RenderWindow *rw = Root::getInstance().getRenderTargetManager().getRenderWindow();
+		rw->setVirtualCursor(!rw->isVirtualCursorEnabled());
 	} break;
 	case KEY_ESCAPE:
 		Root::getInstance().stopRenderingLoop();

@@ -1,12 +1,10 @@
 #pragma once
 
-#include "IRenderTargetListener.h"
-
 namespace Lag
 {
 	class RenderWindow;
 	
-	class IWindowListener : public IRenderTargetListener
+	class IWindowListener
 	{
 	public:
 		virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) = 0;

@@ -1,6 +1,6 @@
 #include "DirectionalLight.h"
 
-#include "../renderer/Renderer.h"
+#include "../renderer/RenderTargetManager.h"
 #include "../renderer/graphicsAPI/RenderToTexture.h"
 #include "../scene/OrthographicCamera.h"
 #include "../scene/SceneNode.h"
@@ -19,9 +19,7 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 	/*if (castShadow)
 	{
 		Root& root = Root::getInstance();
-
-		uint16 id = root.getRenderer().createRenderToTexture(1280, 800); //TODO: size and resizes?
-		RenderToTexture *rt = root.getRenderer().getRenderToTexture(id);
+		RenderToTexture *rt = root.getRenderTargetManager().getRenderToTexture(1280, 800, LAG_RENDER_PHASE_DEPTH); //TODO: size and resizes?
 		
 		ImageData imageData; 
 		imageData.width = 1280;
@@ -38,8 +36,8 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 
 		rt->attachDepthTexture(imageData, textureData);
 
-		if (!rt->initialize())
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "DirectionalLight", "Error initializing RTT.");
+		if (!rt->checkCompleteness())
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "DirectionalLight", "RTT completeness check failed.");
 
 		const float S = 30;
 		Camera &camera = root.getSceneManager().getCurrentScene().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light

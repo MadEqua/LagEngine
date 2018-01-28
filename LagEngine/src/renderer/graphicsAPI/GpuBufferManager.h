@@ -7,8 +7,6 @@
 
 namespace Lag
 {	
-	class GpuBuffer;
-
 	class GpuBufferBuilder : public IManagedObjectBuilder<uint32, GpuBuffer>
 	{
 	public:

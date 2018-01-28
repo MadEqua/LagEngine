@@ -1,4 +1,6 @@
 #include "Sky.h"
+
+#include "../renderer/Renderer.h"
 #include "../renderer/RenderQueue.h"
 #include "../Root.h"
 #include "../renderer/Material.h"

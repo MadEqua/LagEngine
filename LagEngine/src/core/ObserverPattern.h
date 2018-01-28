@@ -12,10 +12,10 @@
 //Add methods and storage allowing a class to be used as a Subject/Notifier of Observers/Listeners.
 #define LAG_GENERATE_OBSERVER_STORAGE(Type)\
 protected:\
-std::forward_list<Type*> Type##observers;\
+std::forward_list<Type*> Type##Observers;\
 public:\
-void registerObserver(Type &observer) { Type##observers.push_front(&observer); }\
-void unregisterObserver(Type &observer) { Type##observers.remove(&observer); }
+void registerObserver(Type &observer) { Type##Observers.push_front(&observer); }\
+void unregisterObserver(Type &observer) { Type##Observers.remove(&observer); }
 
 #define LAG_ARGS(...) __VA_ARGS__
 
@@ -28,4 +28,4 @@ protected:\
 void Name##Notify(MethodArguments);
 
 #define LAG_DEFINE_NOTIFY_METHOD(ClassName, Name, Type, MethodArguments, CallbackArgs)\
-void ClassName##::Name##Notify(MethodArguments) { for (Type *obs : Type##observers) obs->Name(CallbackArgs); }
+void ClassName##::Name##Notify(MethodArguments) { for (Type *obs : Type##Observers) obs->Name(CallbackArgs); }

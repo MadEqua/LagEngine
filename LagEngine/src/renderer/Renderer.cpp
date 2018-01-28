@@ -3,6 +3,7 @@
 #include <thread>
 #include <chrono>
 
+#include "RenderTargetManager.h"
 #include "graphicsAPI/RenderToTexture.h"
 #include "RenderWindow.h"
 #include "../scene/SceneManager.h"
@@ -45,26 +46,23 @@ LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameStart, IFrameListener, LAG_ARGS(float 
 LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
-Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager) :
-	sceneManager(sceneManager), graphicsAPI(graphicsAPI),
+Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager) :
+	sceneManager(sceneManager), graphicsAPI(graphicsAPI), renderTargetManager(renderTargetManager),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
-	renderWindowListener(*this),
-	actualFrame(0), renderWindow(nullptr),
+	renderTargetListener(*this),
+	actualFrame(0),
 	lastUsedGpuProgramOnFrame(nullptr)
 {
-	renderTargets = new NamedContainer<RenderTarget>();
-	
+	renderTargetManager.getRenderWindow()->RenderTarget::registerObserver(renderTargetListener);
+
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
 }
 
 Renderer::~Renderer()
 {
-	delete renderTargets;
-	delete renderWindow; //must be the last to be deleted
-	
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Destroyed successfully.");
 }
@@ -76,6 +74,14 @@ void Renderer::startRenderingLoop(uint32 maxFps)
 	
 	shouldLoop = true;
 	float elapsed = 0.0f;
+
+	RenderWindow *renderWindow = renderTargetManager.getRenderWindow();
+	if (renderWindow == nullptr)
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+			"Renderer", "Error starting rendering loop, can't get a RenderWindow.");
+		return;
+	}
 
 	while (shouldLoop)
 	{
@@ -115,21 +121,22 @@ void Renderer::renderOneFrame()
 {
 	renderQueue.clear();
 
-	for (uint32 i = 0; i < renderTargets->getSize(); ++i)
-	{
-		//TODO: add proper iterator
-		RenderTarget *rt = renderTargets->get(i);
-		if (rt != nullptr)
-			rt->addRenderablesToQueue(renderQueue, sceneManager);
-	}
+	//TODO: is this really needed? the queue will be sorted afterwards...
+	for (auto &pair : renderTargetManager.getAll())
+		if (!pair.second->isMainWindow())
+			pair.second->addRenderablesToQueue(renderQueue, sceneManager);
 
-	renderWindow->addRenderablesToQueue(renderQueue, sceneManager);
+	for (auto &pair : renderTargetManager.getAll())
+		if (pair.second->isMainWindow())
+		{
+			pair.second->addRenderablesToQueue(renderQueue, sceneManager);
+			break;
+		}
 
 	renderQueue.sort();
 
 	clearColorBuffer();
 	clearDepthAndStencilBuffer();
-
 
 	if (&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
 		uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
@@ -139,41 +146,6 @@ void Renderer::renderOneFrame()
 	lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.actualSlot - 1].material->getGpuProgram();
 
 	actualFrame++;
-}
-
-uint16 Renderer::addRenderWindow(RenderWindow &renderWindow)
-{
-	//Only supporting one render window
-	if (this->renderWindow != nullptr)
-		delete this->renderWindow;
-
-	this->renderWindow = &renderWindow;
-	static_cast<RenderTarget&>(renderWindow).registerObserver(renderWindowListener);
-
-	return 0;
-}
-
-uint16 Renderer::createRenderToTexture(uint32 width, uint32 height)
-{
-	RenderToTexture *rtt = graphicsAPI.createRenderToTexture(width, height);
-	rtt->initialize();
-	return renderTargets->add(static_cast<RenderTarget*>(rtt));
-}
-
-void Renderer::removeRenderToTexture(uint16 name)
-{
-	RenderTarget *rtt = renderTargets->get(name);
-	if (rtt != nullptr)
-	{
-		rtt->destroy();
-		renderTargets->remove(name);
-	}
-}
-
-RenderToTexture* Renderer::getRenderToTexture(uint16 name) const
-{
-	//TODO: this cast...	
-	return static_cast<RenderToTexture*>(renderTargets->get(name));
 }
 
 void Renderer::bindVertexBuffer(const GpuBuffer &vertexBuffer)
@@ -324,7 +296,7 @@ void Renderer::setDepthWritingEnabled(bool enabled)
 }
 
 
-void Renderer::RenderWindowListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
+void Renderer::RenderTargetListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
 {
 	if (renderer.boundViewport != nullptr)
 	{

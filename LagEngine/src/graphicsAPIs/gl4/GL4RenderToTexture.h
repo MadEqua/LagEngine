@@ -9,7 +9,7 @@ namespace Lag
 	class GL4RenderToTexture : public RenderToTexture
 	{
 	public:
-		GL4RenderToTexture(uint32 width, uint32 height);
+		GL4RenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase = LAG_RENDER_PHASE_COLOR);
 
 		virtual void attachColorTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 attachment = 0, uint8 mipmapLevel = 0) override;
 		virtual void attachDepthStencilTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0, uint8 mipmapLevel = 0) override;
@@ -18,8 +18,8 @@ namespace Lag
 
 		inline GLuint getHandle() const { return handle; }
 
-		virtual bool initialize() override;
-		virtual void destroy() override;
+		virtual bool loadImplementation() override;
+		virtual void unloadImplementation() override;
 
 	private:
 		GLuint handle;

@@ -1,5 +1,6 @@
 #include "FreeCamera.h"
 
+#include "../renderer/Renderer.h"
 #include "../io/Keys.h"
 #include "../Root.h"
 #include "SceneManager.h"

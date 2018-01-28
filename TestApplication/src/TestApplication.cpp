@@ -3,6 +3,8 @@
 #include <iostream>
 
 #include "Root.h"
+#include "renderer/Renderer.h"
+#include "renderer/RenderTargetManager.h"
 #include "renderer/RenderWindow.h"
 #include "scene/SceneManager.h"
 #include "scene/Scene.h"
@@ -49,7 +51,7 @@ bool TestApplication::start()
 	if (!root->initializeLag("startup.ini"))
 		return false;
 
-	renderWindow = &root->getRenderWindow();
+	renderWindow = root->getRenderTargetManager().getRenderWindow();
 
 	scene1 = &root->getSceneManager().createScene("scene1");
 	root->getSceneManager().setCurrentScene("scene1");

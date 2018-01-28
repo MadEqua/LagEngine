@@ -75,11 +75,6 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 	GL_ERROR_PRINT(glCullFace(GL_BACK))
 }
 
-RenderToTexture* GL4GraphicsAPI::createRenderToTexture(uint32 width, uint32 height)
-{
-	return new GL4RenderToTexture(width, height);
-}
-
 void GL4GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 count)
 {
 	GL_ERROR_PRINT(glDrawArrays(convertRenderModeToGLenum(mode), first, count))

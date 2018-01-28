@@ -3,7 +3,6 @@
 #include <string>
 #include "Types.h"
 
-#include "renderer/Renderer.h"
 #include "renderer/GraphicsApiType.h"
 
 namespace Lag

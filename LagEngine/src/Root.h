@@ -13,11 +13,12 @@ class TiXmlDocument;
 
 namespace Lag
 {
-	class RenderWindow;
 	class InputManager;
 	class Renderer;
 	class SceneManager;
 	class IFrameListener;
+	
+	class RenderTargetManager;
 
 	class GpuProgramStageManager;
 	class GpuProgramManager;
@@ -43,10 +44,10 @@ namespace Lag
 		void stopRenderingLoop();
 		void renderOneFrame();
 		
-		inline RenderWindow& getRenderWindow() const { return *renderWindow; }
 		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
 		inline SceneManager& getSceneManager() const { return *sceneManager; }
+		inline RenderTargetManager& getRenderTargetManager() const { return *renderTargetManager; }
 		//inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
 
 		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
@@ -62,10 +63,11 @@ namespace Lag
 		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
 
 	private:
-		RenderWindow *renderWindow;
 		InputManager *inputManager;
 		Renderer *renderer;
 		SceneManager *sceneManager;
+
+		RenderTargetManager *renderTargetManager;
 
 		GpuProgramStageManager *gpuProgramStageManager;
 		GpuProgramManager *gpuProgramManager;
@@ -102,9 +104,6 @@ namespace Lag
 		class WindowListener : public IWindowListener
 		{
 		public:
-			virtual void onPreRender(RenderTarget &notifier) {}
-			virtual void onPostRender(RenderTarget &notifier) {}
-			virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) {}
 			virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) {}
 			virtual void onFocusChange(RenderWindow &notifier, bool focused) {}
 			virtual void onClose(RenderWindow &notifier);

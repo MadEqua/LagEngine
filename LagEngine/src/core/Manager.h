@@ -53,10 +53,11 @@ namespace Lag
 
 		V* get(const K &name);
 		
-		//When the parent is returned so will be the child (Useful for dependencies Ex: Texture->Image)
+		//When the parent is returned so will be the child (Useful for dependencies Ex: Texture -> Image)
 		V* get(const K &name, ManagedObject &parent);
+
+		inline std::unordered_map<K, V*> getAll() const { return objects; }
 		
-		//Can be used to create Builder copies, in order to send them to the get() methods.
 		inline IManagedObjectBuilder<K, V>& getBuilder() { return *builder; }
 
 		void returnName(const K &name);

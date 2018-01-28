@@ -6,6 +6,7 @@
 #include "../scene/DirectionalLight.h"
 #include "../scene/Camera.h"
 
+#include "Renderer.h"
 #include "GpuProgramUniformDescription.h"
 #include "graphicsAPI/GpuProgram.h"
 #include "graphicsAPI/GpuProgramUniform.h"

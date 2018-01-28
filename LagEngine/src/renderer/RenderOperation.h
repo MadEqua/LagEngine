@@ -9,7 +9,6 @@ namespace Lag
 	class Material;
 	class IRenderable;
 	class Viewport;
-	enum RenderPhase;
 	class RenderTarget;
 	
 	/*

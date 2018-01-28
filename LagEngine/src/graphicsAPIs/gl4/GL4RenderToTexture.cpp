@@ -5,21 +5,20 @@
 
 using namespace Lag;
 
-GL4RenderToTexture::GL4RenderToTexture(uint32 width, uint32 height) :
-	RenderToTexture(width, height)
+GL4RenderToTexture::GL4RenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase) :
+	RenderToTexture(width, height, renderPhase)
 {
 }
 
-bool GL4RenderToTexture::initialize()
+bool GL4RenderToTexture::loadImplementation()
 {
 	GL_ERROR_PRINT(glCreateFramebuffers(1, &handle))
-	return checkCompleteness();
+	return true;
 }
 
-void GL4RenderToTexture::destroy()
+void GL4RenderToTexture::unloadImplementation()
 {
 	GL_ERROR_PRINT(glDeleteFramebuffers(1, &handle))
-	freeTextures();
 }
 
 void GL4RenderToTexture::attachColorTexture(const ImageData &imageData, const TextureData &textureData,

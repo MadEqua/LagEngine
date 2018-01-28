@@ -1,7 +1,5 @@
 #include "GpuBufferManager.h"
 
-#include "../../io/log/LogManager.h"
-
 using namespace Lag;
 
 GpuBufferBuilder::GpuBufferBuilder() :
