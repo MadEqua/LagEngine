@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include "../Types.h"
+#include <sstream>
 
 namespace Lag
 {
@@ -22,6 +22,6 @@ namespace Lag
 	template <>
 	inline std::string toString(const InputDescriptionMapKey &in)
 	{
-		return "InputDescriptionMapKey"; //TODO: something better
+		return "InputDescriptionMapKey";
 	}
 }

@@ -156,12 +156,18 @@ uint16 Renderer::addRenderWindow(RenderWindow &renderWindow)
 uint16 Renderer::createRenderToTexture(uint32 width, uint32 height)
 {
 	RenderToTexture *rtt = graphicsAPI.createRenderToTexture(width, height);
+	rtt->initialize();
 	return renderTargets->add(static_cast<RenderTarget*>(rtt));
 }
 
 void Renderer::removeRenderToTexture(uint16 name)
 {
-	renderTargets->remove(name);
+	RenderTarget *rtt = renderTargets->get(name);
+	if (rtt != nullptr)
+	{
+		rtt->destroy();
+		renderTargets->remove(name);
+	}
 }
 
 RenderToTexture* Renderer::getRenderToTexture(uint16 name) const

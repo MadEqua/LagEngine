@@ -8,6 +8,7 @@
 #include "../resources/Image.h"
 #include "../renderer/graphicsAPI/Texture.h"
 #include "../Root.h"
+#include "../io/log/LogManager.h"
 
 using namespace Lag;
 
@@ -15,7 +16,7 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 	Light(name, color, castShadow),
 	direction(direction)
 {
-	if (castShadow)
+	/*if (castShadow)
 	{
 		Root& root = Root::getInstance();
 
@@ -36,7 +37,9 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 		textureData.minificationFilteringMode = LAG_TEXTURE_FILTERING_MODE_NEAREST;
 
 		rt->attachDepthTexture(imageData, textureData);
-		rt->initialize();
+
+		if (!rt->initialize())
+			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "DirectionalLight", "Error initializing RTT.");
 
 		const float S = 30;
 		Camera &camera = root.getSceneManager().getCurrentScene().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light
@@ -48,5 +51,5 @@ DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, cons
 
 		camera.attachToSceneNode(sn);
 		rt->createViewport(camera);
-	}
+	}*/
 }

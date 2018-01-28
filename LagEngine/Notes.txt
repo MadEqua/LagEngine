@@ -9,12 +9,12 @@ Check and apply copy constructors good practices
 Rethink folder structure and VS filters
 coherency between tinyxml and ini parsers
 check main loop and callbacks to the application. facilitate app development using the engine
-fix lifecycles. resources should be selectively loaded and unloaded as needed. (per scene?)
 shadow mapping
 factory for generating renderApis and platforms specifics.
 logs are not very user friendly
 smart-pointers
-add name to ManagedObjects
+RenderTargets should be ManagedObjects managed by Managers
+Render to textures Linear/sRGB correctness. https://www.khronos.org/opengl/wiki/Framebuffer
 
 Long Term
 

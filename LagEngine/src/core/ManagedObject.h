@@ -1,6 +1,7 @@
 #pragma once
 
 #include <vector>
+#include <string>
 
 namespace Lag
 {
@@ -14,7 +15,7 @@ namespace Lag
 	};
 	
 	/*
-	* Object managed by a Manager, it can be loaded and unloaded. 
+	* Object managed by a Manager, it has the concept of loading and unloading. 
 	* It also maintains a reference count, when it reaches 0 the object will unload and notify the Manager.
 	* The list of dependencies are other ManagedObjects that were loaded by this one.
 	*/
@@ -22,7 +23,9 @@ namespace Lag
 	{
 	public:
 		ManagedObject();
-			
+		
+		inline const std::string& getName() const { return name; }
+		inline void setName(const std::string &name) { this->name = name; }
 		inline void setListener(IManagedObjectListener &listener) { this->listener = &listener; }
 		inline void addDependency(ManagedObject *object) { dependencies.push_back(object); }
 
@@ -33,6 +36,7 @@ namespace Lag
 		int refCount;
 		std::vector<ManagedObject*> dependencies;
 		IManagedObjectListener *listener;
+		std::string name;
 
 	private:
 		template<class K, class V> friend class Manager;

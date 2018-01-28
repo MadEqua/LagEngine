@@ -88,6 +88,5 @@ bool GL4RenderToTexture::checkCompleteness() const
 	GLenum status = GL_ERROR_PRINT(glCheckNamedFramebufferStatus(handle, GL_DRAW_FRAMEBUFFER))
 	if (status != GL_FRAMEBUFFER_COMPLETE)
 		return false;
-
 	return true;
 }

@@ -14,6 +14,7 @@ bool InputDescriptionMapKey::operator==(const InputDescriptionMapKey &other) con
 	return vertexBuffer == other.vertexBuffer && vertexDescription == other.vertexDescription;
 }
 
+
 std::size_t std::hash<Lag::InputDescriptionMapKey>::operator()(const Lag::InputDescriptionMapKey &k) const
 {
 	return std::hash<const GpuBuffer*>()(k.vertexBuffer) ^ static_cast<std::size_t>(k.vertexDescription);

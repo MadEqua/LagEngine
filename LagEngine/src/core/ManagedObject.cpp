@@ -6,7 +6,8 @@ using namespace Lag;
 
 ManagedObject::ManagedObject() :
 	refCount(0),
-	listener(nullptr)
+	listener(nullptr),
+	name("Unamed")
 {
 }
 
@@ -15,7 +16,7 @@ bool ManagedObject::load()
 	if (refCount == 0)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			"ManagedObject", "Loading ManagedObject for the first time.");
+			"ManagedObject", "Loading ManagedObject for the first time: " + name);
 		
 		bool loaded = loadImplementation();
 		if(loaded)
@@ -38,7 +39,7 @@ void ManagedObject::unload()
 	if (refCount <= 0)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			"ManagedObject", "Unloading ManagedObject. There are no more references.");
+			"ManagedObject", "Unloading ManagedObject, there are no more references: " + name);
 
 		unloadImplementation();
 		notifyZeroReferences();

@@ -2,7 +2,9 @@
 
 #include <vector>
 #include <unordered_map>
+#include <ostream>
 
+#include "GpuBuffer.h"
 #include "../../core/Manager.h"
 #include "InputDescription.h"
 #include "../VertexDescription.h"

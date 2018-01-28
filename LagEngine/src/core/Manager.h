@@ -114,12 +114,16 @@ namespace Lag
 	template<class K, class V>
 	V* Manager<K, V>::get(const K &name)
 	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			logTag, "Getting object with name: " + toString(name));
+		
 		auto it = objects.find(name);
 		V* object;
 
 		if (it == objects.end())
 		{
 			object = builder->build(name);
+			object->setName(toString(name));
 			if (object == nullptr)
 			{
 				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
@@ -131,7 +135,7 @@ namespace Lag
 			objects[name] = object;
 
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Creating object with name: " + toString(name));
+				logTag, "Created object with name: " + toString(name));
 		}
 		else
 		{
@@ -181,7 +185,7 @@ namespace Lag
 		if (object != nullptr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Returning object.");
+				logTag, "Returning object: " + object->getName());
 			unload(object);
 		}
 		else
@@ -197,7 +201,7 @@ namespace Lag
 		if (object != nullptr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Removing object.");
+				logTag, "Removing object: " + object->getName());
 			
 			delete object;
 
@@ -236,13 +240,13 @@ namespace Lag
 		if (object->load())
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Loaded object.");
+				logTag, "Loaded object: " + object->getName());
 			return true;
 		}
 		else
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Failed to load object.");
+				logTag, "Failed to load object: " + object->getName());
 			return false;
 		}
 	}
@@ -252,6 +256,6 @@ namespace Lag
 	{
 		object->unload();
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			logTag, "Unloaded object.");
+			logTag, "Unloaded object: " + object->getName());
 	}
 }

@@ -33,7 +33,8 @@ bool TestApplication::start()
 	root = &Lag::Root::getInstance();
 
 	//Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_CONSOLE);
+	
+	//Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_IDE);
 
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_CONSOLE);
@@ -42,7 +43,7 @@ bool TestApplication::start()
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_IDE);
 
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_CONSOLE);
+	//Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_IDE);
 
 	if (!root->initializeLag("startup.ini"))
@@ -102,7 +103,7 @@ void TestApplication::createScene(Lag::Scene *scene, bool isOne)
 	ent->attachToSceneNode(mainNode);
 
 	Lag::SceneNode &baseNode = scene->getSceneGraph().getRootSceneNode().createChildSceneNode("base");
-	//baseNode.translate(glm::vec3(0.0f, 10.1f, 0.0f), Lag::WORLD);
+	baseNode.translate(glm::vec3(0.0f, -0.9f, 0.0f), Lag::WORLD);
 	baseNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
 	Lag::Entity *base = scene->createEntity("cube", "testMaterial2");
 	base->attachToSceneNode(baseNode);
@@ -154,12 +155,12 @@ void TestApplication::updateScene(float timePassed)
 	posCpy.z = cycle * 11.0f;
 	pl2SceneNode->setPosition(posCpy);
 
-	Lag::SceneNode *mainNode = scene->getSceneGraph().getSceneNode("main");
+	/*Lag::SceneNode *mainNode = scene->getSceneGraph().getSceneNode("main");
 	cycle = glm::sin(time * glm::pi<float>() / 15.0f);
 	posCpy = mainNode->getWorldPosition();
 	posCpy.y = cycle * 0.2f;
 	mainNode->setPosition(posCpy);
-	mainNode->yaw(timePassed * 30.0f, Lag::LOCAL);
+	mainNode->yaw(timePassed * 30.0f, Lag::LOCAL);*/
 }
 
 void TestApplication::onFrameStart(float timePassed)
