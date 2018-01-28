@@ -1,19 +1,13 @@
 Short Term
 
 add uniform value cache on cpu side to avoid sending the same values
-allow meshes to create textures (or materials?). This makes me rethink the resource pre-declaration...
-
-implement techniques, passes, textures...
+implement techniques and passes
 define scenegraph through a xml file or scene "mesh"
-Check and apply copy constructors good practices
-Rethink folder structure and VS filters
-coherency between tinyxml and ini parsers
 check main loop and callbacks to the application. facilitate app development using the engine
 shadow mapping
 factory for generating renderApis and platforms specifics.
-logs are not very user friendly
+LogManager usage is not very user friendly
 smart-pointers
-RenderTargets should be ManagedObjects managed by Managers
 Render to textures Linear/sRGB correctness. https://www.khronos.org/opengl/wiki/Framebuffer
 
 Long Term

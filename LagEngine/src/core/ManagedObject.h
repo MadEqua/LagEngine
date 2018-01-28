@@ -26,7 +26,7 @@ namespace Lag
 		
 		inline const std::string& getName() const { return name; }
 		inline void setName(const std::string &name) { this->name = name; }
-		inline void setListener(IManagedObjectListener &listener) { this->listener = &listener; }
+		inline void setListener(IManagedObjectListener *listener) { this->listener = listener; }
 		inline void addDependency(ManagedObject *object) { dependencies.push_back(object); }
 
 	protected:

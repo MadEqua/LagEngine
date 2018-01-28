@@ -63,12 +63,13 @@ namespace Lag
 		void returnName(const K &name);
 		void returnObject(V *object);
 
+		void clear();
+
 		bool contains(const K &name) const;
 
 	protected:
 		bool load(V* object) const;
 		void unload(V* object) const;
-		void unloadAll();
 
 		void remove(V *object);
 
@@ -101,10 +102,7 @@ namespace Lag
 	template<class K, class V>
 	Manager<K, V>::~Manager()
 	{
-		unloadAll();
-
-		for (auto &pair : objects)
-			delete pair.second;
+		clear();
 
 		delete builder;
 
@@ -132,7 +130,7 @@ namespace Lag
 				return nullptr;
 			}
 
-			object->setListener(listener);
+			object->setListener(&listener);
 			objects[name] = object;
 
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
@@ -229,10 +227,22 @@ namespace Lag
 	}
 
 	template<class K, class V>
-	void Manager<K, V>::unloadAll()
+	void Manager<K, V>::clear()
 	{
 		for (auto &pair : objects)
+		{
+			//No zero refs callback, we will clear everything here
+			pair.second->setListener(nullptr);
 			unload(pair.second);
+		}
+
+		for (auto &pair : objects)
+			delete pair.second;
+
+		objects.clear();
+
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+			logTag, "Cleared all objects successfully.");
 	}
 
 	template<class K, class V>

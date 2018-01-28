@@ -65,35 +65,35 @@ void Root::destroy()
 		delete renderTargetManager;
 		renderTargetManager = nullptr;
 	}
-	if (gpuProgramStageManager != nullptr)
+	if (materialManager != nullptr)
 	{
-		delete gpuProgramStageManager;
-		gpuProgramStageManager = nullptr;
+		delete materialManager;
+		materialManager = nullptr;
 	}
 	if (gpuProgramManager != nullptr)
 	{
 		delete gpuProgramManager;
 		gpuProgramManager = nullptr;
 	}
-	if (materialManager != nullptr)
+	if (gpuProgramStageManager != nullptr)
 	{
-		delete materialManager;
-		materialManager = nullptr;
+		delete gpuProgramStageManager;
+		gpuProgramStageManager = nullptr;
 	}
-	if (meshManager != nullptr)
+	if (textureManager != nullptr)
 	{
-		delete meshManager;
-		meshManager = nullptr;
+		delete textureManager;
+		textureManager = nullptr;
 	}
 	if (imageManager != nullptr)
 	{
 		delete imageManager;
 		imageManager = nullptr;
 	}
-	if (textureManager != nullptr)
+	if (meshManager != nullptr)
 	{
-		delete textureManager;
-		textureManager = nullptr;
+		delete meshManager;
+		meshManager = nullptr;
 	}
 
 	if (gpuBufferManager != nullptr)
