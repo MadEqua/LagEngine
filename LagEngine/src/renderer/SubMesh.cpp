@@ -5,15 +5,13 @@
 
 using namespace Lag;
 
-SubMesh::SubMesh(VertexData &vxData, IndexData &idxData, const std::vector<Texture*> &textures) :
-	vertexData(vxData), indexData(&idxData),
-	textures(textures)
+SubMesh::SubMesh(VertexData &vxData, IndexData &idxData) :
+	vertexData(vxData), indexData(&idxData)
 {
 }
 
-SubMesh::SubMesh(VertexData &vxData, const std::vector<Texture*> &textures) :
-	vertexData(vxData), indexData(nullptr),
-	textures(textures)
+SubMesh::SubMesh(VertexData &vxData) :
+	vertexData(vxData), indexData(nullptr)
 {
 }
 

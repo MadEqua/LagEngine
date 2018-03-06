@@ -24,16 +24,22 @@ namespace Lag {
 	class RenderTarget;
 
 	/*
+	* Set of Entities, Cameras, Lights and all that represnt an unique "state" of the application.
+	* Applications should inherit and add to the SceneManager at least one Scene.
+	* I/O and frame observers are already implemented, ready to be overriden as needed.
+	*
 	* Contains all structures that represent a Scene for different purposes (object hierarchy, culling, fast iteration, ...)
 	* Can also create and manage Entities, Cameras, Lights, ...
+	*
+	* TODO spatial graph for culling
 	*/
 	class Scene
 	{
 	public:
-		~Scene();
+		virtual ~Scene() = default;
 
-		virtual void onStart();
-		virtual void onEnd();
+		void onStart();
+		void onEnd();
 
 		Entity* createEntity(const std::string &meshName, const std::string &materialName);
 
@@ -64,12 +70,33 @@ namespace Lag {
 		inline uint8 getPointLightCount() const { return static_cast<uint8>(pointLightVector.size()); }
 		inline uint8 getDirectionalLightCount() const { return static_cast<uint8>(directionalLightVector.size()); }
 
-	private:
+		//Callbacks coming from SceneManager
+		virtual void onFrameStart(float timePassed);
+		virtual void onFrameRenderingQueued(float timePassed);
+		virtual void onFrameEnd(float timePassed);
+
+		virtual void onKeyPress(int key, int modifier);
+		virtual void onKeyRelease(int key, int modifier);
+		virtual void onKeyRepeat(int key, int modifier);
+
+		virtual void onCursorMove(int x, int y);
+		virtual void onButtonPressed(int x, int y, int button, int modifiers);
+		virtual void onButtonReleased(int x, int y, int button, int modifiers);
+
+	protected:
 		friend class SceneManager;
 		Scene();
 
+		virtual void onStartImplementation() = 0;
+		virtual void onEndImplementation() = 0;
+
+		void scheduleSceneChange(const std::string &name);
+
 		SceneGraph sceneGraph;
 		Sky *sky;
+
+		bool shouldChangeScene;
+		std::string sceneToChange;
 
 		//All SceneObjects organized by name. Main repository.
 		NamedContainer<SceneObject> sceneObjectMap;
@@ -82,7 +109,5 @@ namespace Lag {
 
 		//IRenderable SceneObjects
 		std::vector<IRenderable*> renderableVector;
-
-		//TODO spatial graph for culling
 	};
 }

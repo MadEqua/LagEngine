@@ -208,13 +208,13 @@ bool Mesh::loadImplementation()
 		}
 
 		//Create SubMeshes
-		//TODO: add textures
-		std::vector<Texture*> textures;
+		//TODO: add textures and send to SubMesh
+		//std::vector<Texture*> textures;
 		SubMesh *subMesh;
 		if (idxCount > 0)
-			subMesh = new SubMesh(*vd, *id, textures);
+			subMesh = new SubMesh(*vd, *id);
 		else
-			subMesh = new SubMesh(*vd, textures);
+			subMesh = new SubMesh(*vd);
 
 		subMeshes.push_back(subMesh);
 

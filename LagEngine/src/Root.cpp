@@ -178,9 +178,8 @@ bool Root::internalInit(const InitializationParameters &parameters)
 		return false;
 
 	sceneManager = new SceneManager();
-
 	renderer = new Renderer(*graphicsAPI, *sceneManager, *renderTargetManager);
-	//renderer->addRenderWindow(*renderWindow);
+	sceneManager->registerObservers(); //Needs to be called after Renderer creation
 
 	windowListener = new WindowListener();
 	keyboardListener = new KeyboardListener(static_cast<GLFWRenderWindow*>(renderWindow.get()));
@@ -240,20 +239,22 @@ void Root::renderOneFrame()
 	renderer->renderOneFrame();
 }
 
+//This clear order is important, it's the dependency order.
+//TODO: find a better solution
 void Root::clearUnusedResources()
 {
 	renderTargetManager->clearUnused();
-	gpuProgramStageManager->clearUnused();
-	gpuProgramManager->clearUnused();
-	materialManager->clearUnused();
+	
 	meshManager->clearUnused();
-	imageManager->clearUnused();
-	textureManager->clearUnused();
-	gpuBufferManager->clearUnused();
 	inputDescriptionManager->clearUnused();
+	gpuBufferManager->clearUnused();
+
+	materialManager->clearUnused();
+	gpuProgramManager->clearUnused();
+	textureManager->clearUnused();
+	gpuProgramStageManager->clearUnused();
+	imageManager->clearUnused();
 }
-
-
 
 Root::KeyboardListener::KeyboardListener(RenderWindow *renderWindow) :
 	renderWindow(renderWindow)

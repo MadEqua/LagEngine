@@ -20,12 +20,12 @@ namespace Lag
 
 	private:
 		friend class Mesh;
-		SubMesh(VertexData &vxData, IndexData &idxData, const std::vector<Texture*> &textures);
-		SubMesh(VertexData &vxData, const std::vector<Texture*> &textures);
+		SubMesh(VertexData &vxData, IndexData &idxData);
+		SubMesh(VertexData &vxData);
 		~SubMesh();
 
 		VertexData &vertexData;
 		IndexData *indexData; //optional
-		std::vector<Texture*> textures;
+		//std::vector<Texture*> textures;
 	};
 }

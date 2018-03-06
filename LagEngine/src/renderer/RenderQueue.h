@@ -39,8 +39,10 @@ namespace Lag
 		void clear();
 		void sort();
 
+		inline bool hasRenderOperations() const { return currentSlot > 0; }
+
 	private:
-		uint32 actualSlot;
+		uint32 currentSlot;
 
 		//TODO: find out what's better: vector of pointers or actual Values.
 		//Pointers are better for sorting, but worse for fast sequential access.

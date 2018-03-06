@@ -114,8 +114,9 @@ void Manager<K, V>::clearUnused()
 			delete objectPair.second;
 			delete controlBlock;
 
-			it = objects.erase(it);
 			controlBlocks.erase(objectPair.first);
+			it = objects.erase(it);
+
 			++count;
 		}
 		else

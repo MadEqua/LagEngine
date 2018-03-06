@@ -150,7 +150,7 @@
     <ClCompile Include="src\scene\PointLight.cpp" />
     <ClCompile Include="src\scene\Light.cpp" />
     <ClCompile Include="src\renderer\Color.cpp" />
-    <ClCompile Include="src\scene\FreeCamera.cpp" />
+    <ClCompile Include="src\utils\FreeCamera.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescription.cpp" />
@@ -221,7 +221,7 @@
     <ClInclude Include="src\renderer\RenderTargetManager.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\core\NamedContainer.h" />
-    <ClInclude Include="src\core\Utils.h" />
+    <ClInclude Include="src\utils\Utils.h" />
     <ClInclude Include="src\scene\OrthographicCamera.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderToTexture.h" />
     <ClInclude Include="src\renderer\graphicsAPI\RenderToTexture.h" />
@@ -237,7 +237,7 @@
     <ClInclude Include="src\scene\PointLight.h" />
     <ClInclude Include="src\scene\Light.h" />
     <ClInclude Include="src\renderer\Color.h" />
-    <ClInclude Include="src\scene\FreeCamera.h" />
+    <ClInclude Include="src\utils\FreeCamera.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBuffer.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4Error.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4Includes.h" />

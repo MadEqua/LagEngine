@@ -121,7 +121,7 @@ void Renderer::renderOneFrame()
 {
 	renderQueue.clear();
 
-	//TODO: is this really needed? the queue will be sorted afterwards...
+	//TODO: is this separation really needed? the queue will be sorted afterwards...
 	for (auto &pair : renderTargetManager.getAll())
 		if (!pair.second->isMainWindow())
 			pair.second->addRenderablesToQueue(renderQueue, sceneManager);
@@ -138,12 +138,16 @@ void Renderer::renderOneFrame()
 	clearColorBuffer();
 	clearDepthAndStencilBuffer();
 
-	if (&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
-		uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
+	if (renderQueue.hasRenderOperations())
+	{
+		//Hammer Time!!
+		if(&renderQueue.queue[0].material->getGpuProgram() == lastUsedGpuProgramOnFrame)
+			uniformFiller.onGpuProgramBind(lastUsedGpuProgramOnFrame, boundViewport, boundTextures);
 
-	renderQueue.dispatchRenderOperations(*this);
+		renderQueue.dispatchRenderOperations(*this);
 
-	lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.actualSlot - 1].material->getGpuProgram();
+		lastUsedGpuProgramOnFrame = &renderQueue.queue[renderQueue.currentSlot - 1].material->getGpuProgram();
+	}
 
 	actualFrame++;
 }

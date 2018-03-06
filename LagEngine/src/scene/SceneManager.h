@@ -1,28 +1,55 @@
 #pragma once
 
+#include "Scene.h"
+
 #include <unordered_map>
 #include <string>
 
-#include "Scene.h"
+#include "../renderer/IFrameListener.h"
+#include "../io/IKeyboardListener.h"
+#include "../io/ICursorListener.h"
 
 namespace Lag
 {
-	//TODO: good scene management with multiple scenes
-	class SceneManager
+	class SceneManager : public Lag::IFrameListener,
+		public Lag::IKeyboardListener,
+		public Lag::ICursorListener
 	{
 	public:
 		SceneManager();
+		~SceneManager();
+
+		void registerObservers();
+		void unregisterObservers();
+
 
 		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
 		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const;
 
-		Scene& createScene(const std::string &name);
-		void setCurrentScene(const std::string &name);
+		void addScene(const std::string &name, Scene &scene);
+		void removeScene(const std::string &name);
+		void setActiveScene(const std::string &name);
 
-		inline Scene& getCurrentScene() const { return *currentScene; }
+		void clear();
+
+		Scene& getActiveScene() const;
+		inline bool hasActiveScene() const { return activeSceneName.size() > 0; }
+
+		//Callbacks
+		virtual void onFrameStart(float timePassed) override;
+		virtual void onFrameRenderingQueued(float timePassed) override;
+		virtual void onFrameEnd(float timePassed) override;
+
+		virtual void onKeyPress(int key, int modifier) override;
+		virtual void onKeyRelease(int key, int modifier) override;
+		virtual void onKeyRepeat(int key, int modifier) override;
+
+		virtual void onCursorMove(int x, int y) override;
+		virtual void onButtonPressed(int x, int y, int button, int modifiers) override;
+		virtual void onButtonReleased(int x, int y, int button, int modifiers) override;
 
 	private:
-		Scene *currentScene;
+		std::string activeSceneName;
 		std::unordered_map<std::string, Scene*> sceneMap;
 	};
 }

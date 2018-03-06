@@ -1,6 +1,7 @@
 #include "Scene.h"
 
 #include "../core/Handle.h"
+#include "SceneManager.h"
 #include "../io/log/LogManager.h"
 #include "Sky.h"
 #include "../Root.h"
@@ -17,11 +18,8 @@
 using namespace Lag;
 
 Scene::Scene() :
-	sky(nullptr)
-{
-}
-
-Scene::~Scene()
+	sky(nullptr),
+	shouldChangeScene(false)
 {
 }
 
@@ -29,16 +27,20 @@ void Scene::onStart()
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Scene", "Scene starting.");
+
+	onStartImplementation();
 }
 
 void Scene::onEnd()
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Scene", "Scene ending.");
-	
+
+	onEndImplementation();
+
 	disableSky();
 
-	//Main clearing is here
+	//Memory deallocations happens here, on the main SceneObject repository.
 	sceneObjectMap.clear();
 
 	entityVector.clear();
@@ -132,4 +134,54 @@ void Scene::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, 
 
 	for (IRenderable *renderable : renderableVector)
 		renderable->addToRenderQueue(renderQueue, viewport, renderTarget);
+}
+
+void Scene::scheduleSceneChange(const std::string &name)
+{
+	shouldChangeScene = true;
+	sceneToChange = name;
+}
+
+/////////////////////////////////
+// Callbacks from SceneManager
+/////////////////////////////////
+void Scene::onFrameStart(float timePassed)
+{
+}
+
+void Scene::onFrameRenderingQueued(float timePassed)
+{
+}
+
+void Scene::onFrameEnd(float timePassed)
+{
+	if (shouldChangeScene)
+	{
+		shouldChangeScene = false;
+		Root::getInstance().getSceneManager().setActiveScene(sceneToChange);
+	}
+}
+
+void Scene::onKeyPress(int key, int modifier)
+{
+}
+
+void Scene::onKeyRelease(int key, int modifier)
+{
+}
+
+void Scene::onKeyRepeat(int key, int modifier)
+{
+}
+
+void Scene::onCursorMove(int x, int y)
+{
+}
+
+void Scene::onButtonPressed(int x, int y, int button, int modifiers)
+{
+}
+
+void Scene::onButtonReleased(int x, int y, int button, int modifiers)
+{
 }

@@ -180,9 +180,6 @@
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\scene\FreeCamera.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\Color.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -241,6 +238,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Handle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\utils\FreeCamera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -461,9 +461,6 @@
     <ClInclude Include="src\renderer\graphicsAPI\GpuBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\scene\FreeCamera.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\Color.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -518,9 +515,6 @@
     <ClInclude Include="src\renderer\IFrameListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\core\Utils.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\resources\XmlResource.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -543,6 +537,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\Handle.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\Utils.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\utils\FreeCamera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

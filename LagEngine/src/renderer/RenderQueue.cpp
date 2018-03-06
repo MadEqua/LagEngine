@@ -8,7 +8,7 @@
 using namespace Lag;
 
 RenderQueue::RenderQueue() :
-	actualSlot(0)
+	currentSlot(0)
 {
 	//TODO: something smarter
 	queue.resize(50);
@@ -16,14 +16,14 @@ RenderQueue::RenderQueue() :
 
 RenderOperation& RenderQueue::addRenderOperation()
 {
-	if (actualSlot >= queue.size())
+	if (currentSlot >= queue.size())
 	{
 		queue.resize(queue.size() * 2);
 		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 			"RenderQueue", "Queue just got resized. Bad Bad!");
 	}
 
-	return queue[actualSlot++];
+	return queue[currentSlot++];
 }
 
 /*void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
@@ -51,7 +51,7 @@ RenderOperation& RenderQueue::addRenderOperation()
 
 void RenderQueue::clear()
 {
-	actualSlot = 0;
+	currentSlot = 0;
 }
 
 void RenderQueue::sort()
@@ -61,7 +61,7 @@ void RenderQueue::sort()
 
 void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 {
-	for (uint32 i = 0; i < actualSlot; ++i)
+	for (uint32 i = 0; i < currentSlot; ++i)
 	{
 		RenderOperation &ro = queue[i];
 		IRenderable *renderable = ro.renderable;

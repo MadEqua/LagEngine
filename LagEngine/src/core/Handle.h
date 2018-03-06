@@ -23,7 +23,7 @@ namespace Lag
 	* Handle to an object of type V.
 	* Classes that depend on object V should hold a copy of this Handle. 
 	* The object will not be unloaded and destroyed while there are alive holders.
-	* IMPORTANT: Do not hold a Handle on a class that should not influence the lifecycle of the object.
+	* IMPORTANT: Do not hold Handles on classes that should not influence the lifecycle of the handled object.
 	*/
 	template<class V>
 	class Handle

@@ -7,7 +7,7 @@
 #include "ManagedObject.h"
 #include "Handle.h"
 #include "../io/log/LogManager.h"
-#include "Utils.h"
+#include "../utils/Utils.h"
 
 namespace Lag
 {
