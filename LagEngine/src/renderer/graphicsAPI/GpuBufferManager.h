@@ -30,8 +30,7 @@ namespace Lag
 
 		//Convenience methods for the most common operations
 		//Do not forget to set the builder before calling.
-		GpuBuffer* get();
-		GpuBuffer* get(ManagedObject &parent);
+		Handle<GpuBuffer> get();
 
 	protected:
 		uint32 nextName;

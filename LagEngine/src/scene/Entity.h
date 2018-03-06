@@ -1,8 +1,10 @@
 #pragma once
 
 #include <vector>
+
 #include "SceneObject.h"
 #include "../renderer/IRenderable.h"
+#include "../core/Handle.h"
 
 namespace Lag
 {
@@ -22,7 +24,7 @@ namespace Lag
 	public:
 
 		//defaultMaterial will be used if the meshes contain no material information
-		Entity(uint32 name, Material &defaultMaterial, Mesh &mesh);
+		Entity(uint32 name, Handle<Material> defaultMaterial, Handle<Mesh> mesh);
 		virtual ~Entity();
 
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
@@ -31,7 +33,7 @@ namespace Lag
 	private:
 		std::vector<SubEntity*> subEntities;
 
-		Material &defaultMaterial;
-		Mesh &mesh;
+		Handle<Material> defaultMaterial;
+		Handle<Mesh> mesh;
 	};
 }

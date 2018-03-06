@@ -14,7 +14,6 @@ namespace Lag
 	protected:
 		friend class GL4GpuProgramBuilder;
 		GL4GpuProgram(const std::string &name, const std::vector<std::string> &names);
-		GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 
 		virtual bool link() override;
 		bool checkLinking() const;

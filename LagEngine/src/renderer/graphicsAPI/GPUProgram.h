@@ -3,8 +3,11 @@
 #include <string>
 #include <vector>
 #include <unordered_map>
+
+#include "../../core/Handle.h"
 #include "../../core/ManagedObject.h"
 #include "../GpuProgramUniformDescription.h"
+#include "../../core/Handle.h"
 
 namespace Lag
 {
@@ -30,7 +33,6 @@ namespace Lag
 
 	protected:
 		GpuProgram(const std::string &name, const std::vector<std::string> &names);
-		GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages);
 
 		std::string name;
 		std::unordered_map<std::string, GpuProgramUniform*> uniformsByName;
@@ -39,7 +41,7 @@ namespace Lag
 		static const int PROGRAM_STAGE_COUNT = 5;
 		bool presentStages[PROGRAM_STAGE_COUNT];
 		std::vector<std::string> stagesNames;
-		std::vector<GpuProgramStage*> stages;
+		std::vector<Handle<GpuProgramStage>> stages;
 		
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;

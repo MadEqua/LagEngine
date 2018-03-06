@@ -1,6 +1,8 @@
 #pragma once
 
 #include "../RenderTarget.h"
+#include "../../core/Handle.h"
+
 #include <unordered_map>
 #include <string>
 
@@ -23,11 +25,11 @@ namespace Lag
 		virtual bool checkCompleteness() const = 0;
 
 	protected:
-		std::unordered_map<uint8, std::unordered_map<uint8, const Texture*>> colorTextures;
-		std::unordered_map<uint8, const Texture*> depthTextures;
-		std::unordered_map<uint8, const Texture*> stencilTextures;
-		std::unordered_map<uint8, const Texture*> depthStencilTextures;
+		std::unordered_map<uint8, std::unordered_map<uint8, Handle<Texture>>> colorTextures;
+		std::unordered_map<uint8, Handle<Texture>> depthTextures;
+		std::unordered_map<uint8, Handle<Texture>> stencilTextures;
+		std::unordered_map<uint8, Handle<Texture>> depthStencilTextures;
 
-		const Texture* createAndLoadTexture(const std::string &name, const ImageData &imageData, const TextureData &textureData);
+		Handle<Texture> createAndLoadTexture(const std::string &name, const ImageData &imageData, const TextureData &textureData);
 	};
 }

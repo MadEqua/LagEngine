@@ -75,7 +75,7 @@ void Renderer::startRenderingLoop(uint32 maxFps)
 	shouldLoop = true;
 	float elapsed = 0.0f;
 
-	RenderWindow *renderWindow = renderTargetManager.getRenderWindow();
+	RenderWindow *renderWindow = static_cast<RenderWindow*>(renderTargetManager.getRenderWindow().get());
 	if (renderWindow == nullptr)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,

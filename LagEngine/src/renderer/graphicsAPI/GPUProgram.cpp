@@ -14,12 +14,6 @@ GpuProgram::GpuProgram(const std::string &name, const std::vector<std::string> &
 {
 }
 
-GpuProgram::GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages) :
-	name(name),
-	stages(stages)
-{
-}
-
 bool GpuProgram::loadImplementation()
 {
 	if (stages.empty())
@@ -27,8 +21,8 @@ bool GpuProgram::loadImplementation()
 		GpuProgramStageManager &man = Root::getInstance().getGpuProgramStageManager();
 		for (const std::string &name : stagesNames)
 		{
-			GpuProgramStage *stage = man.get(name, *this);
-			if (stage == nullptr)
+			Handle<GpuProgramStage> stage = man.get(name);
+			if (!stage.isValid())
 				LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
 					"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
 			else
@@ -42,7 +36,7 @@ bool GpuProgram::loadImplementation()
 	if (!link())
 		return false;
 
-	for (GpuProgramStage *stage : stages)
+	for (Handle<GpuProgramStage> &stage : stages)
 	{
 		for (uint32 i = 0; i < stage->getUniformDescriptionCount(); ++i)
 		{
@@ -96,7 +90,7 @@ bool GpuProgram::checkStages()
 	for (int i = 0; i < PROGRAM_STAGE_COUNT; ++i)
 		presentStages[i] = false;
 
-	for (GpuProgramStage *stage : stages)
+	for (Handle<GpuProgramStage> &stage : stages)
 	{
 		if (presentStages[stage->getType()])
 			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL, "GpuProgram",

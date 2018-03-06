@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../core/Handle.h"
 #include "../../resources/XmlResource.h"
 #include "../../Types.h"
 #include "../../resources/Image.h"
@@ -95,7 +96,7 @@ namespace Lag
 		ImageData imageData;
 
 		std::vector<std::string> imageNames;
-		std::vector<Image*> images;
+		std::vector<Handle<Image>> images;
 
 		virtual bool loadImplementation() override;
 		virtual void unloadImplementation() override;

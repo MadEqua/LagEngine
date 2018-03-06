@@ -1,6 +1,7 @@
 #include "GL4Error.h"
 
 #include "../../io/log/LogManager.h"
+#include <iomanip>
 #include <sstream>
 
 /*void Lag::printOpenGLErrors(const char* stmt, const char* fname, int line)
@@ -31,7 +32,11 @@ void Lag::printOpenGLErrors(const char* stmt, const char* fname, int line)
 			LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_VERBOSE, "OpenGL Error", "Failed to reset glGetError()");
 
 		std::stringstream sstream;
-		sstream << "Code: " << ret << ", file: " << fname << ", line: " << line << ", statement: " << stmt;
+		sstream << "Code: 0x" << std::hex << std::setw(4) << std::setfill('0') << ret 
+			<< ", file: " << fname 
+			<< ", line: " << std::dec << line
+			<< ", statement: " << stmt;
+
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_VERBOSE, "OpenGL Error", sstream.str());
 	}
 }

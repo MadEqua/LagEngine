@@ -17,14 +17,9 @@ GpuBufferManager::GpuBufferManager(GpuBufferBuilder* builder) :
 {
 }
 
-GpuBuffer* GpuBufferManager::get()
+Handle<GpuBuffer> GpuBufferManager::get()
 {
 	return Manager::get(getNextName());
-}
-
-GpuBuffer* GpuBufferManager::get(ManagedObject &parent)
-{
-	return Manager::get(getNextName(), parent);
 }
 
 uint32 GpuBufferManager::getNextName()

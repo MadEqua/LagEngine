@@ -21,6 +21,8 @@ namespace Lag
 		void remove(uint32 name);
 		T* get(uint32 name) const;
 
+		void clear();
+
 		bool contains(uint32 name) const;
 
 		uint32 getNextName() const;
@@ -35,9 +37,7 @@ namespace Lag
 	template<class T>
 	NamedContainer<T>::~NamedContainer()
 	{
-		for (T* value : data)
-			if(value != nullptr)
-				delete value;
+		clear();
 	}
 
 	template<class T>
@@ -77,6 +77,16 @@ namespace Lag
 			return data[name];
 		else
 			return nullptr;
+	}
+
+	template<class T>
+	void NamedContainer<T>::clear()
+	{
+		for (T* value : data)
+			if (value != nullptr)
+				delete value;
+
+		data.clear();
 	}
 
 	template<class T>

@@ -1,6 +1,7 @@
 #include "SceneManager.h"
 
 #include "Scene.h"
+#include "../Root.h"
 
 using namespace Lag;
 
@@ -23,7 +24,16 @@ Scene& SceneManager::createScene(const std::string &name)
 
 void SceneManager::setCurrentScene(const std::string &name)
 {
+	if (currentScene != nullptr)
+	{
+		currentScene->onEnd();
+		Root::getInstance().clearUnusedResources();
+	}
+
 	auto it = sceneMap.find(name);
 	if (it != sceneMap.end())
+	{
 		currentScene = it->second;
+		currentScene->onStart();
+	}
 }

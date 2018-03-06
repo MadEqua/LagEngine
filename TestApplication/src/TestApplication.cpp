@@ -51,19 +51,19 @@ bool TestApplication::start()
 	if (!root->initializeLag("startup.ini"))
 		return false;
 
-	renderWindow = root->getRenderTargetManager().getRenderWindow();
+	renderWindow = static_cast<Lag::RenderWindow*>(root->getRenderTargetManager().getRenderWindow().get());
 
 	scene1 = &root->getSceneManager().createScene("scene1");
 	root->getSceneManager().setCurrentScene("scene1");
 
-	//scene2 = &root->getSceneManager().createScene("scene2");
+	scene2 = &root->getSceneManager().createScene("scene2");
 
 	root->getRenderer().registerObserver(*this);
 	root->getInputManager().registerObserver(static_cast<Lag::IKeyboardListener&>(*this));
 	root->getInputManager().registerObserver(static_cast<Lag::ICursorListener&>(*this));
 
 	createScene(scene1, true);
-	//createScene(scene2, false);
+	createScene(scene2, false);
 
 	root->startRenderingLoop();
 
@@ -117,7 +117,7 @@ void TestApplication::createScene(Lag::Scene *scene, bool isOne)
 	Lag::Entity *ent = sceneManager->createEntity("sponza", "sponza", "testMaterial");
 	ent->attachToSceneNode(mainNode);*/
 
-	scene->enableSky("skyMaterial");
+	//scene->enableSky("skyMaterial");
 }
 
 void TestApplication::createSceneAux(Lag::Scene *scene, Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth)

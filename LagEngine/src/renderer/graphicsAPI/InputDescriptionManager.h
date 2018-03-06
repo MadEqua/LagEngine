@@ -39,7 +39,7 @@ namespace Lag
 	{
 	public:
 		VertexDescription vertexDescription;
-		GpuBuffer *vertexBuffer;
+		Handle<GpuBuffer> vertexBuffer;
 	};
 
 
@@ -54,9 +54,8 @@ namespace Lag
 	public:
 		explicit InputDescriptionManager(InputDescriptionBuilder *builder);
 
-		//Convenience methods for the most common operations
-		InputDescription* get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer);
-		InputDescription* get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer, ManagedObject &parent);
+		//Convenience method for the most common operation
+		Handle<InputDescription> get(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer);
 		
 		static InputDescriptionMapKey getName(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer);
 	};

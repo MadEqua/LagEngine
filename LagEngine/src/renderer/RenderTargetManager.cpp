@@ -38,24 +38,24 @@ RenderTargetManager::~RenderTargetManager()
 		delete renderWindowBuilder;
 }
 
-RenderWindow* RenderTargetManager::getRenderWindow(const InitializationParameters &parameters)
+Handle<RenderTarget> RenderTargetManager::getRenderWindow(const InitializationParameters &parameters)
 {
 	renderWindowBuilder->setBuildRenderWindow(parameters);
 	builder = renderWindowBuilder;
-	return static_cast<RenderWindow*>(Manager::get(0));
+	return Manager::get(0);
 }
 
-RenderWindow* RenderTargetManager::getRenderWindow()
+Handle<RenderTarget> RenderTargetManager::getRenderWindow()
 {
 	builder = renderWindowBuilder;
-	return static_cast<RenderWindow*>(Manager::get(0));
+	return Manager::get(0);
 }
 
-RenderToTexture* RenderTargetManager::getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase)
+Handle<RenderTarget> RenderTargetManager::getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase)
 {
 	renderTextureBuilder->setBuildRenderToTexture(width, height, renderPhase);
 	builder = renderTextureBuilder;
-	return static_cast<RenderToTexture*>(Manager::get(getNextName()));
+	return Manager::get(getNextName());
 }
 
 uint32 RenderTargetManager::getNextName()

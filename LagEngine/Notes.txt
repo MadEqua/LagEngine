@@ -1,5 +1,6 @@
 Short Term
 
+dummy resources for all types
 add uniform value cache on cpu side to avoid sending the same values
 implement techniques and passes
 define scenegraph through a xml file or scene "mesh"

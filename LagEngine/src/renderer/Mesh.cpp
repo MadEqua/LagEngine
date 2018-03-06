@@ -86,16 +86,16 @@ bool Mesh::loadImplementation()
 	bufferBuilder.itemCount = vxCount;
 	bufferBuilder.itemSizeBytes = vxSize;
 	bufferBuilder.useMirrorBuffer = true;
-	GpuBuffer *vb = bufferManager.get(*this);
+	Handle<GpuBuffer> vb = bufferManager.get();
 
-	if (vb == nullptr)
+	if (!vb.isValid())
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"Mesh", "Failed to load mesh from file: " + path + ". Failed to build a VertexBuffer");
 		return false;
 	}
 
-	GpuBuffer *ib = nullptr;
+	Handle<GpuBuffer> ib;
 	if (idxCount > 0)
 	{
 		bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_INDICES;
@@ -103,9 +103,9 @@ bool Mesh::loadImplementation()
 		bufferBuilder.itemCount = idxCount;
 		bufferBuilder.itemSizeBytes = idxSize;
 		bufferBuilder.useMirrorBuffer = true;
-		ib = bufferManager.get(*this);
+		ib = bufferManager.get();
 
-		if (ib == nullptr)
+		if (!ib.isValid())
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 				"Mesh", "Failed to load mesh from file: " + path + ". Failed to build a IndexBuffer");
@@ -189,7 +189,7 @@ bool Mesh::loadImplementation()
 		//Create Data objects, will be managed by the SubMesh
 		VertexData *vd = new VertexData();
 
-		vd->inputDescription = inputDescriptionManager.get(vxDesc, vb, *this);
+		vd->inputDescription = inputDescriptionManager.get(vxDesc, vb);
 		vd->vertexCount = mesh->mNumVertices;
 		vd->vertexStart = vxBufferOffset;
 

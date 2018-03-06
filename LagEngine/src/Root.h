@@ -9,6 +9,8 @@
 
 #include "core/SingletonPattern.h"
 
+#include "core/Handle.h"
+
 class TiXmlDocument;
 
 namespace Lag
@@ -19,6 +21,7 @@ namespace Lag
 	class IFrameListener;
 	
 	class RenderTargetManager;
+	class RenderTarget;
 
 	class GpuProgramStageManager;
 	class GpuProgramManager;
@@ -43,6 +46,8 @@ namespace Lag
 		void startRenderingLoop();
 		void stopRenderingLoop();
 		void renderOneFrame();
+
+		void clearUnusedResources();
 		
 		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
@@ -63,6 +68,8 @@ namespace Lag
 		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
 
 	private:
+		Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
+
 		InputManager *inputManager;
 		Renderer *renderer;
 		SceneManager *sceneManager;
@@ -93,9 +100,14 @@ namespace Lag
 		*/
 		class KeyboardListener : public IKeyboardListener
 		{
-			virtual void onKeyPress(int key, int modifier);
-			virtual void onKeyRelease(int key, int modifier) {}
-			virtual void onKeyRepeat(int key, int modifier) {}
+		public:
+			explicit KeyboardListener(RenderWindow *renderWindow);
+
+			virtual void onKeyPress(int key, int modifier) override;
+			virtual void onKeyRelease(int key, int modifier) override {}
+			virtual void onKeyRepeat(int key, int modifier) override {}
+		private:
+			RenderWindow *renderWindow;
 		};
 
 		/*
@@ -104,9 +116,9 @@ namespace Lag
 		class WindowListener : public IWindowListener
 		{
 		public:
-			virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) {}
-			virtual void onFocusChange(RenderWindow &notifier, bool focused) {}
-			virtual void onClose(RenderWindow &notifier);
+			virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) override {}
+			virtual void onFocusChange(RenderWindow &notifier, bool focused) override {}
+			virtual void onClose(RenderWindow &notifier) override;
 		};
 
 		WindowListener *windowListener;

@@ -26,20 +26,14 @@ InputDescriptionManager::InputDescriptionManager(InputDescriptionBuilder *builde
 {
 }
 
-InputDescription* InputDescriptionManager::get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer)
+Handle<InputDescription> InputDescriptionManager::get(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer)
 {
 	InputDescriptionBuilder &inputDescriptionBuilder = static_cast<InputDescriptionBuilder&>(*builder);
-	inputDescriptionBuilder.vertexBuffer = const_cast<GpuBuffer*>(vertexBuffer);
+	inputDescriptionBuilder.vertexBuffer = vertexBuffer;
 	inputDescriptionBuilder.vertexDescription = vertexDescription;
-	return Manager::get(getName(vertexDescription, vertexBuffer));
-}
-
-InputDescription* InputDescriptionManager::get(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer, ManagedObject &parent)
-{
-	InputDescriptionBuilder &inputDescriptionBuilder = static_cast<InputDescriptionBuilder&>(*builder);
-	inputDescriptionBuilder.vertexBuffer = const_cast<GpuBuffer*>(vertexBuffer);
-	inputDescriptionBuilder.vertexDescription = vertexDescription;
-	return Manager::get(getName(vertexDescription, vertexBuffer), parent);
+	Handle<InputDescription> handle = Manager::get(getName(vertexDescription, vertexBuffer.get()));
+	inputDescriptionBuilder.vertexBuffer.release(); //release Handle on the builder, the created InputDescription will own it
+	return handle;
 }
 
 InputDescriptionMapKey InputDescriptionManager::getName(const VertexDescription &vertexDescription, const GpuBuffer *vertexBuffer)

@@ -4,6 +4,7 @@
 #include <unordered_map>
 #include <string>
 
+#include "../core/Handle.h"
 #include "graphicsAPI/Texture.h"
 #include "../resources/XmlResource.h"
 #include "../Types.h"
@@ -41,11 +42,11 @@ namespace Lag
 		std::vector<std::string> shaderStageNames;
 		std::vector<std::string> textureNames;
 		
-		GpuProgram *gpuProgram;
+		Handle<GpuProgram> gpuProgram;
 		
 		//Textures by associated semantic
 		std::unordered_map<TextureSemantic, std::vector<Texture*>> texturesBySemantic;
-		std::vector<Texture*> textures;
+		std::vector<Handle<Texture>> textures;
 
 		bool parse();
 	};

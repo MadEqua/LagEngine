@@ -1,9 +1,12 @@
 #pragma once
 
-#include "../renderer/IRenderable.h"
 #include <string>
+
+
+#include "../renderer/IRenderable.h"
 #include "../renderer/VertexData.h"
 #include "../renderer/IndexData.h"
+#include "../core/Handle.h"
 
 #include <glm/mat3x3.hpp>
 #include <glm/mat4x4.hpp>
@@ -19,13 +22,11 @@ namespace Lag
 		explicit Sky(const std::string &materialName);
 		//Sky(const std::string &textureName);
 
-		~Sky();
-
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
 	private:
-		Material *material;
+		Handle<Material> material;
 		VertexData vertexData;
 		IndexData indexData;
 

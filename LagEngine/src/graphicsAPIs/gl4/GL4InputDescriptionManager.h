@@ -12,7 +12,7 @@ namespace Lag
 	public:
 		virtual GL4InputDescription* build(const InputDescriptionMapKey &name) const override
 		{
-			return new GL4InputDescription(vertexDescription, *vertexBuffer);
+			return new GL4InputDescription(vertexDescription, vertexBuffer);
 		}
 	};
 	

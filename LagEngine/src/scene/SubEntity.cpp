@@ -40,7 +40,7 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
 	if (renderTarget.getRenderPhase() == LAG_RENDER_PHASE_DEPTH)
 	{
 		//TODO out of here
-		Material *depthPassMaterial = Root::getInstance().getMaterialManager().get("depthPassMaterial");
+		Material *depthPassMaterial = Root::getInstance().getMaterialManager().get("depthPassMaterial").get();
 
 		ro.material = depthPassMaterial;
 	}

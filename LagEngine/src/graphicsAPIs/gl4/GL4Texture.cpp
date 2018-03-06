@@ -64,7 +64,7 @@ void GL4Texture::sendData() const
 {
 	if (!images.empty())
 	{
-		const Image *image = images[0];
+		const Image *image = images[0].get();
 
 		switch (textureData.type)
 		{
@@ -83,7 +83,7 @@ void GL4Texture::sendData() const
 
 				for (int i = 0; i < 6; ++i)
 				{
-					const Image *image = images[i];
+					const Image *image = images[i].get();
 					GL_ERROR_PRINT(glTexSubImage2D(GL_TEXTURE_CUBE_MAP_POSITIVE_X + i,
 						0, 0, 0,
 						imageData.width, imageData.height,

@@ -30,8 +30,8 @@ void Material::bind() const
 	Renderer &renderer = Root::getInstance().getRenderer();
 	renderer.bindGpuProgram(*gpuProgram);
 	uint32 i = 0;
-	for (auto tex : textures)
-		renderer.bindTexture(*tex, i++);
+	for (auto &tex : textures)
+		renderer.bindTexture(*tex.get(), i++);
 }
 
 const std::vector<Texture*>* Material::getTexturesBySemantic(TextureSemantic semantic) const
@@ -56,8 +56,8 @@ bool Material::initialize()
 	Root &root = Root::getInstance();
 
 	GpuProgramManager &programManager = root.getGpuProgramManager();
-	gpuProgram = programManager.get(shaderStageNames, *this);
-	if (gpuProgram == nullptr)
+	gpuProgram = programManager.get(shaderStageNames);
+	if (!gpuProgram.isValid())
 		return false;
 
 	TextureManager &texMan = root.getTextureManager();
@@ -66,11 +66,11 @@ bool Material::initialize()
 
 	for (std::string &name : textureNames)
 	{
-		Texture *tex = texMan.get(name, *this);
-		if (tex != nullptr)
+		Handle<Texture> tex = texMan.get(name);
+		if (tex.isValid())
 		{
 			textures.push_back(tex);
-			texturesBySemantic[tex->getTextureData().semantic].push_back(tex);
+			texturesBySemantic[tex->getTextureData().semantic].push_back(tex.get());
 		}
 		else
 			return false;

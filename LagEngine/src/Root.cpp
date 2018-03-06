@@ -60,11 +60,6 @@ Root::~Root()
 
 void Root::destroy()
 {
-	if (renderTargetManager != nullptr)
-	{
-		delete renderTargetManager;
-		renderTargetManager = nullptr;
-	}
 	if (materialManager != nullptr)
 	{
 		delete materialManager;
@@ -145,6 +140,12 @@ void Root::destroy()
 		delete resourcesFile;
 		resourcesFile = nullptr;
 	}
+
+	if (renderTargetManager != nullptr)
+	{
+		delete renderTargetManager;
+		renderTargetManager = nullptr;
+	}
 }
 
 bool Root::initializeLag(const InitializationParameters &parameters)
@@ -167,11 +168,11 @@ bool Root::internalInit(const InitializationParameters &parameters)
 
 	//TODO Use a factory to initialize render window and graphics api?
 	renderTargetManager = new RenderTargetManager(new GLFWRenderTargetBuilder(), new GL4RenderTargetBuilder());
-	RenderWindow *renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
-	if (renderWindow == nullptr)
+	renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
+	if (!renderWindow.isValid())
 		return false;
 
-	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow));
+	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow.get()));
 
 	if (!initResources(parameters.resourcesFolder + '/' + parameters.resourcesFile))
 		return false;
@@ -182,8 +183,8 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	//renderer->addRenderWindow(*renderWindow);
 
 	windowListener = new WindowListener();
-	keyboardListener = new KeyboardListener();
-	renderWindow->registerObserver(*windowListener);
+	keyboardListener = new KeyboardListener(static_cast<GLFWRenderWindow*>(renderWindow.get()));
+	static_cast<RenderWindow*>(renderWindow.get())->registerObserver(*windowListener);
 	inputManager->registerObserver(*keyboardListener);
 
 	return true;
@@ -239,16 +240,33 @@ void Root::renderOneFrame()
 	renderer->renderOneFrame();
 }
 
+void Root::clearUnusedResources()
+{
+	renderTargetManager->clearUnused();
+	gpuProgramStageManager->clearUnused();
+	gpuProgramManager->clearUnused();
+	materialManager->clearUnused();
+	meshManager->clearUnused();
+	imageManager->clearUnused();
+	textureManager->clearUnused();
+	gpuBufferManager->clearUnused();
+	inputDescriptionManager->clearUnused();
+}
+
+
+
+Root::KeyboardListener::KeyboardListener(RenderWindow *renderWindow) :
+	renderWindow(renderWindow)
+{
+}
 
 void Root::KeyboardListener::onKeyPress(int key, int modifier)
 {
 	switch (key)
 	{
 	case KEY_LEFT_CONTROL:
-	{
-		RenderWindow *rw = Root::getInstance().getRenderTargetManager().getRenderWindow();
-		rw->setVirtualCursor(!rw->isVirtualCursorEnabled());
-	} break;
+		renderWindow->setVirtualCursor(!renderWindow->isVirtualCursorEnabled());
+		break;
 	case KEY_ESCAPE:
 		Root::getInstance().stopRenderingLoop();
 		break;

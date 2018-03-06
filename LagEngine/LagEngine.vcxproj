@@ -127,6 +127,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="src\core\Handle.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
+    <ClCompile Include="src\core\Manager.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="src\renderer\RenderTargetManager.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp" />
@@ -206,6 +214,7 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\core\Handle.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderTargetBuilder.h" />
     <ClInclude Include="src\platform\GLFW\GLFWRenderTargetBuilder.h" />
     <ClInclude Include="src\renderer\RenderPhase.h" />

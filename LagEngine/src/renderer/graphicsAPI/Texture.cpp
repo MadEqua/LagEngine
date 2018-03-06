@@ -33,9 +33,9 @@ bool Texture::loadImplementation()
 		ImageManager &imageManager = Root::getInstance().getImageManager();
 		for (auto &name : imageNames)
 		{	
-			Image *image = imageManager.get(name, *this);
+			Handle<Image> image = imageManager.get(name);
 
-			if (image != nullptr)
+			if (image.isValid())
 			{					
 				if (i == 0)
 					imageData = image->getData();

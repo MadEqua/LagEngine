@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Types.h"
+#include "../core/Handle.h"
 
 namespace Lag
 {
@@ -20,11 +21,11 @@ namespace Lag
 	class IndexData
 	{
 	public:
-		//How to interpret the indexes
+		//How to interpret the indices
 		IndexType indexType;
 
-		//Where to get the index from
-		GpuBuffer *indexBuffer;
+		//Where to get the indices from
+		Handle<GpuBuffer> indexBuffer;
 
 		//Offset from the start of the buffer (bytes)
 		uint32 indexStart;

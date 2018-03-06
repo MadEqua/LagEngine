@@ -130,9 +130,6 @@ namespace Lag
 		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
 
 	private:
-		//NamedContainer<RenderTarget> *renderTargets;
-		//RenderWindow *renderWindow;
-
 		bool shouldLoop;
 		uint64 actualFrame;
 

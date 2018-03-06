@@ -42,10 +42,10 @@ namespace Lag
 		uint32 getNextName();
 
 		//Convenience methods for the most common operations
-		RenderWindow* getRenderWindow(const InitializationParameters &parameters);
-		RenderWindow* getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
+		Handle<RenderTarget> getRenderWindow(const InitializationParameters &parameters);
+		Handle<RenderTarget> getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
 
-		RenderToTexture* getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase);
+		Handle<RenderTarget> getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase);
 
 		inline RenderTargetBuilder& getRenderTextureToBuilder() { return *renderTextureBuilder; }
 		inline RenderTargetBuilder& getRenderWindowToBuilder() { return *renderWindowBuilder; }

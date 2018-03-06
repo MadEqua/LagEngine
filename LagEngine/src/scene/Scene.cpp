@@ -1,5 +1,6 @@
 #include "Scene.h"
 
+#include "../core/Handle.h"
 #include "../io/log/LogManager.h"
 #include "Sky.h"
 #include "../Root.h"
@@ -22,33 +23,46 @@ Scene::Scene() :
 
 Scene::~Scene()
 {
-	if (sky != nullptr)
-		delete sky;
 }
 
 void Scene::onStart()
 {
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+		"Scene", "Scene starting.");
 }
 
 void Scene::onEnd()
 {
+	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
+		"Scene", "Scene ending.");
+	
+	disableSky();
+
+	//Main clearing is here
+	sceneObjectMap.clear();
+
+	entityVector.clear();
+	cameraVector.clear();
+	pointLightVector.clear();
+	directionalLightVector.clear();
+	renderableVector.clear();
 }
 
 Entity* Scene::createEntity(const std::string &meshName, const std::string &materialName)
 {
 	Root &root = Root::getInstance();
 
-	Mesh *mesh = root.getMeshManager().get(meshName);
-	Material *material = root.getMaterialManager().get(materialName);
+	Handle<Mesh> mesh = root.getMeshManager().get(meshName);
+	Handle<Material> material = root.getMaterialManager().get(materialName);
 
-	if (!mesh || !material)
+	if (!mesh.isValid() || !material.isValid())
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Scene", "Trying to build an Entity with a non-existent Mesh or Material: " + meshName + ", " + materialName);
+			"Scene", "Trying to build an Entity with invalid Mesh or Material: " + meshName + ", " + materialName);
 		return nullptr;
 	}
 
-	Entity *e = new Entity(sceneObjectMap.getNextName(), *material, *mesh);
+	Entity *e = new Entity(sceneObjectMap.getNextName(), material, mesh);
 	sceneObjectMap.add(e);
 	entityVector.push_back(e);
 	renderableVector.push_back(e);

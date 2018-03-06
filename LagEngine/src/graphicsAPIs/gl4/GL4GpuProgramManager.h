@@ -10,10 +10,7 @@ namespace Lag
 	public:
 		virtual GpuProgram* build(const std::string &name) const override
 		{
-			if(useNames)
-				return new GL4GpuProgram(name, stagesNames);
-			else
-				return new GL4GpuProgram(name, stages);
+			return new GL4GpuProgram(name, stagesNames);
 		}
 	};
 	

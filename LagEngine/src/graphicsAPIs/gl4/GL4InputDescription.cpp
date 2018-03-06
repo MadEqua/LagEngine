@@ -4,7 +4,7 @@
 
 using namespace Lag;
 
-GL4InputDescription::GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer) :
+GL4InputDescription::GL4InputDescription(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer) :
 	InputDescription(vertexDescription, vertexBuffer)
 {
 }
@@ -25,7 +25,7 @@ void GL4InputDescription::setupVertexAttributtes() const
 {
 	//Bind the VBO to VBO binding point 0 (of this VAO) and describes how to get vertex data from the VBO
 	GL_ERROR_PRINT(glVertexArrayVertexBuffer(handle, 0,
-		static_cast<const GL4GpuBuffer&>(vertexBuffer).getHandle(),
+		static_cast<const GL4GpuBuffer&>(*vertexBuffer.get()).getHandle(),
 
 		//Not sending an offset within the VBO itself. 
 		//Relying on draw calls to use an offset (getting it from vertexStart on VertexData)

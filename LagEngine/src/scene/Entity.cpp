@@ -5,14 +5,14 @@
 
 using namespace Lag;
 
-Entity::Entity(uint32 name, Material &defaultMaterial, Mesh &mesh) :
+Entity::Entity(uint32 name, Handle<Material> defaultMaterial, Handle<Mesh> mesh) :
 	SceneObject(name),
 	defaultMaterial(defaultMaterial),
 	mesh(mesh)
 {
-	for (SubMesh *sm : mesh.getSubMeshes())
+	for (SubMesh *sm : mesh->getSubMeshes())
 	{
-		SubEntity *se = new SubEntity(*this, defaultMaterial, *sm);
+		SubEntity *se = new SubEntity(*this, *defaultMaterial.get(), *sm);
 		subEntities.push_back(se);
 	}
 }

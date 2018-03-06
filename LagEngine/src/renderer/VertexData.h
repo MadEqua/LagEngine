@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../Types.h"
+#include "../core/Handle.h"
 
 namespace Lag
 {
@@ -16,7 +17,7 @@ namespace Lag
 		//InputDescription object that describes the vertex data. (Format and source)
 		//Used to feed the pipeline entry-point.
 		//May (and should) be reutilized between many VertexDatas
-		InputDescription *inputDescription;
+		Handle<InputDescription> inputDescription;
 
 		//Offset from the start of the buffer (bytes)
 		uint32 vertexStart;

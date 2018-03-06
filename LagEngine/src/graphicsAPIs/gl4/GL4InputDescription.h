@@ -17,7 +17,7 @@ namespace Lag
 
 	private:
 		friend class GL4InputDescriptionBuilder;
-		GL4InputDescription(const VertexDescription &vertexDescription, const GpuBuffer &vertexBuffer);
+		GL4InputDescription(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer);
 
 		void setupVertexAttributtes() const;
 		GLenum convertAttributeTypeToGL(VertexAttributeType type) const;

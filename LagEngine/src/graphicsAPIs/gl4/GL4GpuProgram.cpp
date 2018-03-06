@@ -11,15 +11,10 @@ GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<std::str
 {
 }
 
-GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<GpuProgramStage*> &stages) :
-	GpuProgram(name, stages)
-{
-}
-
 bool GL4GpuProgram::link()
 {
-	for (GpuProgramStage *stage : stages)
-		GL_ERROR_PRINT_BLOCK(glAttachShader(handle, static_cast<GL4GpuProgramStage*>(stage)->getHandle()))
+	for (auto &stage : stages)
+		GL_ERROR_PRINT_BLOCK(glAttachShader(handle, static_cast<GL4GpuProgramStage*>(stage.get())->getHandle()))
 	
 	GL_ERROR_PRINT(glLinkProgram(handle))
 	return checkLinking();
