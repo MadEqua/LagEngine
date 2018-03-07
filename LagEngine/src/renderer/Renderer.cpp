@@ -75,11 +75,11 @@ void Renderer::startRenderingLoop(uint32 maxFps)
 	shouldLoop = true;
 	float elapsed = 0.0f;
 
-	RenderWindow *renderWindow = static_cast<RenderWindow*>(renderTargetManager.getRenderWindow().get());
+	RenderWindow *renderWindow = renderTargetManager.getRenderWindow();
 	if (renderWindow == nullptr)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Renderer", "Error starting rendering loop, can't get a RenderWindow.");
+			"Renderer", "Error starting rendering loop, can't get the RenderWindow.");
 		return;
 	}
 

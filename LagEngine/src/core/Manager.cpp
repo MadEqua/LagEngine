@@ -110,13 +110,7 @@ void Manager<K, V>::clearUnused()
 			LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Clearing unused object: " + objectPair.second->getName() + ".");
 
-			unload(objectPair.second);
-			delete objectPair.second;
-			delete controlBlock;
-
-			controlBlocks.erase(objectPair.first);
-			it = objects.erase(it);
-
+			it = deleteEntry(it);
 			++count;
 		}
 		else
@@ -150,4 +144,20 @@ void Manager<K, V>::unload(V* object) const
 	object->unload();
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		logTag, "Unloaded object: " + object->getName());
+}
+
+
+template<class K, class V>
+typename std::unordered_map<K, V*>::iterator Manager<K, V>::deleteEntry(typename std::unordered_map<K, V*>::iterator item)
+{
+	V* object = item->second;
+	ControlBlock<V> *controlBlock = controlBlocks.at(item->first);
+	
+	unload(object); //Unload ManagedObject
+	delete object; //Deallocate ManagedObject heap memory
+	delete controlBlock; //Deallocate ControlBlock
+
+	//Remove from maps
+	controlBlocks.erase(item->first);
+	return objects.erase(item);
 }

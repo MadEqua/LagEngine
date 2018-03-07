@@ -22,6 +22,7 @@ namespace Lag {
 	class Color;
 	class Sky;
 	class RenderTarget;
+	class RenderWindow;
 
 	/*
 	* Set of Entities, Cameras, Lights and all that represnt an unique "state" of the application.
@@ -38,8 +39,9 @@ namespace Lag {
 	public:
 		virtual ~Scene() = default;
 
-		void onStart();
-		void onEnd();
+		void start();
+		void end();
+		void initializeViewports();
 
 		Entity* createEntity(const std::string &meshName, const std::string &materialName);
 
@@ -87,8 +89,14 @@ namespace Lag {
 		friend class SceneManager;
 		Scene();
 
-		virtual void onStartImplementation() = 0;
-		virtual void onEndImplementation() = 0;
+		//Create all the scene hierarchy here
+		virtual void onStart() = 0;
+
+		//Destroy and deallocate any object created at onStart()
+		virtual void onEnd() = 0;
+
+		//Create and add the desired Viewports here
+		virtual void onInitializeViewports(RenderWindow &renderWindow) = 0;
 
 		void scheduleSceneChange(const std::string &name);
 

@@ -18,16 +18,10 @@ TestScene::TestScene(bool isScene1) :
 {
 }
 
-void TestScene::onStartImplementation()
+void TestScene::onStart()
 {
 	Lag::Root &root = Lag::Root::getInstance();
 	
-	camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
-	camera->getCamera().getParentSceneNode()->setPosition(isScene1 ? glm::vec3(0, 10, 20) : glm::vec3(0, 20, 30));
-
-	Lag::RenderWindow *renderWindow = static_cast<Lag::RenderWindow*>(root.getRenderTargetManager().getRenderWindow().get());
-	renderWindow->createViewport(camera->getCamera()); //TODO this will keep creating viewports when changing scenes
-
 	/*Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
 	Lag::SceneNode &secondaryCameraNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("secondaryCamera");
 	secondaryCameraNode.setPosition(glm::vec3(0.0f, 30.0f, 0.0f));
@@ -67,9 +61,17 @@ void TestScene::onStartImplementation()
 	//scene->enableSky("skyMaterial");
 }
 
-void TestScene::onEndImplementation()
+void TestScene::onEnd()
 {
 	delete camera;
+}
+
+void TestScene::onInitializeViewports(Lag::RenderWindow &renderWindow)
+{
+	camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
+	camera->getCamera().getParentSceneNode()->setPosition(isScene1 ? glm::vec3(0, 10, 20) : glm::vec3(0, 20, 30));
+
+	renderWindow.createViewport(camera->getCamera());
 }
 
 void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, int actualdepth, int maxdepth)

@@ -14,8 +14,10 @@ public:
 	TestScene(bool isScene1);
 
 private:
-	virtual void onStartImplementation() override;
-	virtual void onEndImplementation() override;
+	virtual void onStart() override;
+	virtual void onEnd() override;
+	virtual void onInitializeViewports(Lag::RenderWindow &renderWindow) override;
+
 
 	virtual void onFrameRenderingQueued(float timePassed) override;
 	virtual void onKeyPress(int key, int modifier) override;

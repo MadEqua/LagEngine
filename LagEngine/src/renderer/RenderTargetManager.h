@@ -39,13 +39,17 @@ namespace Lag
 		RenderTargetManager(RenderTargetBuilder *renderWindowBuilder, RenderTargetBuilder *renderTextureBuilder);
 		virtual ~RenderTargetManager();
 
-		uint32 getNextName();
-
 		//Convenience methods for the most common operations
 		Handle<RenderTarget> getRenderWindow(const InitializationParameters &parameters);
-		Handle<RenderTarget> getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
+		RenderWindow* getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
 
 		Handle<RenderTarget> getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase);
+
+		/* BasicState stands for:
+		 * - Only RenderWindow, no other RenderTargets
+		 * - No Viewports on RenderWindow
+		 */
+		void resetToBasicState();
 
 		inline RenderTargetBuilder& getRenderTextureToBuilder() { return *renderTextureBuilder; }
 		inline RenderTargetBuilder& getRenderWindowToBuilder() { return *renderWindowBuilder; }
@@ -53,5 +57,7 @@ namespace Lag
 	protected:
 		uint32 nextName;
 		RenderTargetBuilder *renderWindowBuilder, *renderTextureBuilder;
+
+		uint32 getNextName();
 	};
 }

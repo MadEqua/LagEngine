@@ -27,6 +27,7 @@ namespace Lag
 
 		uint32 getNextName() const;
 		inline uint32 getSize() const { return data.size(); }
+		inline bool isEmpty() const { return data.empty(); }
 
 	private:
 		std::vector<T*> data;

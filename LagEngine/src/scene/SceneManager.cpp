@@ -4,6 +4,7 @@
 #include "../Root.h"
 #include "../io/log/LogManager.h"
 #include "../io/InputManager.h"
+#include "../renderer/RenderTargetManager.h"
 #include "../renderer/Renderer.h"
 
 using namespace Lag;
@@ -129,12 +130,15 @@ void SceneManager::setActiveScene(const std::string &name)
 
 	if (hasActiveScene())
 	{
-		getActiveScene().onEnd();
+		getActiveScene().end();
 		Root::getInstance().clearUnusedResources();
 	}
 
 	activeSceneName = name;
-	sceneMap[name]->onStart();
+
+	Root::getInstance().getRenderTargetManager().resetToBasicState();
+	sceneMap[name]->initializeViewports();
+	sceneMap[name]->start();
 
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"SceneManager", "Active Scene is now " + name + ".");

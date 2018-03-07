@@ -20,8 +20,6 @@ namespace Lag
 		~SceneManager();
 
 		void registerObservers();
-		void unregisterObservers();
-
 
 		//Fill a RenderQueue with objects in range of the Camera of the received Viewport
 		void addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const;

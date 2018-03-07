@@ -25,7 +25,6 @@ namespace Lag
 		virtual V* build(const K &name) const = 0;
 	};
 
-
 	/*
 	* Generic class for Managers that store ManagedObjects mapped by a name.
 	*/
@@ -50,6 +49,10 @@ namespace Lag
 		bool load(V* object) const;
 		void unload(V* object) const;
 
+		//Deletes and removes the item from the map and returns a proper iterator to continue iteration
+		//The iterator is assumed to be from the objects map
+		typename std::unordered_map<K, V*>::iterator deleteEntry(typename std::unordered_map<K, V*>::iterator item);
+
 		IManagedObjectBuilder<K, V> *builder;
 		
 		std::unordered_map<K, V*> objects;
@@ -57,6 +60,5 @@ namespace Lag
 		
 		std::string logTag;
 	};
-
 #include "Manager.cpp"
 }

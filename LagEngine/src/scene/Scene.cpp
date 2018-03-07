@@ -9,6 +9,8 @@
 #include "../renderer/Material.h"
 #include "../resources/MeshManager.h"
 #include "../resources/MaterialManager.h"
+#include "../renderer/RenderTargetManager.h"
+#include "../renderer/RenderWindow.h"
 #include "Entity.h"
 #include "PerspectiveCamera.h"
 #include "OrthographicCamera.h"
@@ -23,20 +25,27 @@ Scene::Scene() :
 {
 }
 
-void Scene::onStart()
+void Scene::start()
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Scene", "Scene starting.");
 
-	onStartImplementation();
+	onStart();
 }
 
-void Scene::onEnd()
+void Scene::initializeViewports()
+{
+	Root &root = Root::getInstance();
+	RenderWindow *renderWindow = root.getRenderTargetManager().getRenderWindow();
+	onInitializeViewports(*renderWindow);
+}
+
+void Scene::end()
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Scene", "Scene ending.");
 
-	onEndImplementation();
+	onEnd();
 
 	disableSky();
 

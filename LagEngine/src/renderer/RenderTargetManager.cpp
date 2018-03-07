@@ -45,10 +45,10 @@ Handle<RenderTarget> RenderTargetManager::getRenderWindow(const InitializationPa
 	return Manager::get(0);
 }
 
-Handle<RenderTarget> RenderTargetManager::getRenderWindow()
+RenderWindow* RenderTargetManager::getRenderWindow()
 {
 	builder = renderWindowBuilder;
-	return Manager::get(0);
+	return static_cast<RenderWindow*>(RenderTargetManager::get(0).get());
 }
 
 Handle<RenderTarget> RenderTargetManager::getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase)
@@ -56,6 +56,20 @@ Handle<RenderTarget> RenderTargetManager::getRenderToTexture(uint32 width, uint3
 	renderTextureBuilder->setBuildRenderToTexture(width, height, renderPhase);
 	builder = renderTextureBuilder;
 	return Manager::get(getNextName());
+}
+
+void RenderTargetManager::resetToBasicState()
+{
+	for (auto it = objects.begin(); it != objects.end(); )
+	{
+		if (it->second->isMainWindow())
+		{
+			it->second->clearViewports();
+			++it;
+		}
+		else
+			it = deleteEntry(it);
+	}
 }
 
 uint32 RenderTargetManager::getNextName()

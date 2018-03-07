@@ -12,7 +12,7 @@ namespace Lag
 	class SceneManager;
 	
 	/*
-	* Associates a Camera to a section of a RenderTarget. 
+	* Associates a Camera to a section of a RenderTarget.
 	* Forces the camera to have a similar aspect ratio to that section of the RenderTarget.
 	*/
 	class Viewport

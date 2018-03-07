@@ -37,6 +37,7 @@ namespace Lag
 
 		Viewport& createViewport(Camera &camera, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
 		Viewport* getViewport(uint16 name) const;
+		void clearViewports();
 
 		inline uint32 getWidth() const { return width;}
 		inline uint32 getHeight() const { return height; }

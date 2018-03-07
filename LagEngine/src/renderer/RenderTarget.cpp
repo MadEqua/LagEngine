@@ -1,4 +1,6 @@
 #include "RenderTarget.h"
+
+#include "../io/log/LogManager.h"
 #include "Viewport.h"
 
 using namespace Lag;
@@ -22,8 +24,20 @@ Viewport* RenderTarget::getViewport(uint16 name) const
 	return viewports.get(name);
 }
 
+void RenderTarget::clearViewports()
+{
+	viewports.clear();
+}
+
 void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager)
 {
+	if (viewports.isEmpty())
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+			"RenderTarget", "RenderTarget " + name + " does not contain Viewports. At least one is needed.");
+		return;
+	}
+	
 	onPreRenderNotify(*this);
 	for (uint32 i = 0; i < viewports.getSize(); ++i)
 	{
