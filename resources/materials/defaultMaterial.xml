@@ -1,0 +1,4 @@
+<material>
+  <shader name="defaultVertex"/>
+  <shader name="defaultFragment"/>
+</material>

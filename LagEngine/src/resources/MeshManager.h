@@ -19,5 +19,6 @@ namespace Lag
 	{
 	public:
 		explicit MeshManager(MeshBuilder *builder);
+		virtual void initialize() override;
 	};
 }

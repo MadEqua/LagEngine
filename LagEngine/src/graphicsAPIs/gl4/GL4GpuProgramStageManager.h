@@ -23,7 +23,7 @@ namespace Lag
 	class GL4GpuProgramStageManager : public GpuProgramStageManager
 	{
 	public:
-		explicit GL4GpuProgramStageManager(GL4GpuProgramStageBuilder *builder) : 
+		GL4GpuProgramStageManager(GL4GpuProgramStageBuilder *builder) : 
 			GpuProgramStageManager(builder) {}
 	};
 }

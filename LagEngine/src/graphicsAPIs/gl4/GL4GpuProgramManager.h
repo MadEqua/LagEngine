@@ -18,7 +18,15 @@ namespace Lag
 	class GL4GpuProgramManager : public GpuProgramManager
 	{
 	public:
-		explicit GL4GpuProgramManager() :
+		GL4GpuProgramManager() :
 			GpuProgramManager(new GL4GpuProgramBuilder()) {}
+
+		virtual void initialize() override
+		{
+			std::vector<std::string> defaultStages;
+			defaultStages.push_back("defaultVertex");
+			defaultStages.push_back("defaultFragment");
+			defaultObject = get(defaultStages);
+		}
 	};
 }

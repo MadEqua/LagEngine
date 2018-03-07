@@ -40,6 +40,7 @@ namespace Lag
 	class TextureManager : public XmlResourceManager<Texture>
 	{
 	public:
-		TextureManager(TextureBuilder *builder);
+		explicit TextureManager(TextureBuilder *builder);
+		virtual void initialize() override;
 	};
 }

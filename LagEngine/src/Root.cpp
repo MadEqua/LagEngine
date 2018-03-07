@@ -221,6 +221,16 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	meshManager = new MeshManager(new MeshBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder));
 	materialManager = new MaterialManager(new MaterialBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder));
 
+	renderTargetManager->initialize();
+	gpuBufferManager->initialize();
+	inputDescriptionManager->initialize();
+	imageManager->initialize();
+	gpuProgramStageManager->initialize();
+	gpuProgramManager->initialize();
+	textureManager->initialize();
+	materialManager->initialize();
+	meshManager->initialize();
+
 	return true;
 }
 

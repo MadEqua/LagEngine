@@ -29,10 +29,9 @@ namespace Lag
 	class Handle
 	{ 
 	public:
-		Handle() : Handle(*(new ControlBlock<V>(nullptr))) {} //TODO: for now allowing empty handles (and leaks)...
+		Handle();
 		explicit Handle(ControlBlock<V> &controlBlock);
 		Handle(const Handle<V>& other);
-
 		~Handle();
 
 		Handle<V>& operator=(const Handle<V>& other);
@@ -43,7 +42,7 @@ namespace Lag
 		inline V* operator->() const { return controlBlock->getPointer(); }
 		inline V* get() const { return controlBlock->getPointer(); }
 
-		inline bool isValid() const { return controlBlock->getPointer() != nullptr; }
+		inline bool isValid() const { return controlBlock != nullptr && controlBlock->getPointer() != nullptr; }
 
 	private:
 		ControlBlock<V> *controlBlock;

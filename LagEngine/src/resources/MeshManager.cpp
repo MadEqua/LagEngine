@@ -9,6 +9,11 @@ MeshManager::MeshManager(MeshBuilder *builder) :
 {
 }
 
+void MeshManager::initialize()
+{
+	defaultObject = get("defaultMesh");
+}
+
 MeshBuilder::MeshBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
 	XmlResourceBuilder("mesh", resourcesXml, resourceFolderPath)
 {

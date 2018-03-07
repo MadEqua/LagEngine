@@ -1,13 +1,32 @@
 <resources>
 
 	<!-- Engine Fixed stuff TODO: make this hardcoded?-->
-	<shader name="depthPassVertex" file="depthPass.vs" type="Vertex">
-		<uniform name="mvpMatrix" semantic="MvpMatrix"/>
+  <shader name="defaultVertex" file="default.vert" type="Vertex">
+    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+  </shader>
+
+  <shader name="defaultFragment" file="default.frag" type="Fragment">
+  </shader>
+  
+  <material name="defaultMaterial" file="defaultMaterial.xml"/>
+
+  <image name="defaultImage" file="defaultImage.jpg" components="RGB"
+         componentType="UINT8" normalized="true" sRGB="true"/>
+
+  <texture name="defaultTexture" image="defaultImage" semantic="DiffuseColor"
+           type="2D" mipmaps="8"
+           minFilter="LinearMipmapLinear" magFilter="Linear"
+           wrappingAll="Repeat"/>
+
+  <mesh name="defaultMesh" file="defaultMesh.obj"/>
+
+  <shader name="depthPassVertex" file="depthPass.vert" type="Vertex">
+    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+  </shader>
+  
+  <shader name="depthPassFragment" file="depthPass.frag" type="Fragment">
 	</shader>
 
-	<shader name="depthPassFragment" file="depthPass.fs" type="Fragment">
-	</shader>
-	
 	<material name="depthPassMaterial" file="depthPassMaterial.xml"/>
 	<!-- End Engine Fixed stuff -->
 	
@@ -59,7 +78,7 @@
   <mesh name="cube" file="cube.obj"/>
   <!--<mesh name="sponza" file="sponza.obj"/>-->
 
-  <image name="spider" file="SpiderTex.png" components="RGB"
+  <image name="spider" file="SpiderTex.jpg" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
   <image name="test" file="test.png" components="RGB"

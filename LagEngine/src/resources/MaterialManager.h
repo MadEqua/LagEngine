@@ -18,5 +18,6 @@ namespace Lag
 	{
 	public:
 		explicit MaterialManager(MaterialBuilder *builder);
+		virtual void initialize() override;
 	};
 }

@@ -35,6 +35,8 @@ namespace Lag
 		Manager(const std::string &logTag, IManagedObjectBuilder<K, V> *builder);
 		virtual ~Manager();
 
+		virtual void initialize() {}
+
 		Handle<V> get(const K &name);
 		inline std::unordered_map<K, V*> getAll() const { return objects; }
 		
@@ -52,6 +54,9 @@ namespace Lag
 		//Deletes and removes the item from the map and returns a proper iterator to continue iteration
 		//The iterator is assumed to be from the objects map
 		typename std::unordered_map<K, V*>::iterator deleteEntry(typename std::unordered_map<K, V*>::iterator item);
+
+		//Some Managers may want to have a fallback object to be returned when there is a problem getting the requested one
+		Handle<V> defaultObject; //Handle stored here, avoiding the removal
 
 		IManagedObjectBuilder<K, V> *builder;
 		

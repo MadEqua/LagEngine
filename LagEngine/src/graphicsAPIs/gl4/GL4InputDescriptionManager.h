@@ -20,7 +20,7 @@ namespace Lag
 	class GL4InputDescriptionManager : public InputDescriptionManager
 	{
 	public:
-		explicit GL4InputDescriptionManager() :
+		GL4InputDescriptionManager() :
 			InputDescriptionManager(new GL4InputDescriptionBuilder()) {}
 	};
 }

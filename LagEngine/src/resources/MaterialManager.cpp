@@ -9,6 +9,11 @@ MaterialManager::MaterialManager(MaterialBuilder *builder) :
 {
 }
 
+void MaterialManager::initialize()
+{
+	defaultObject = get("defaultMaterial");
+}
+
 MaterialBuilder::MaterialBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
 	XmlResourceBuilder("material", resourcesXml, resourceFolderPath)
 {

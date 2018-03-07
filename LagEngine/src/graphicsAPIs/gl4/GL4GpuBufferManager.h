@@ -19,7 +19,7 @@ namespace Lag
 	class GL4GpuBufferManager : public GpuBufferManager
 	{
 	public:
-		explicit GL4GpuBufferManager() :
+		GL4GpuBufferManager() :
 			GpuBufferManager(new GL4GpuBufferBuilder()) {}
 	};
 }

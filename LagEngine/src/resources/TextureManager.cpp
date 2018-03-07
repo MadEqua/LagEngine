@@ -10,6 +10,11 @@ TextureManager::TextureManager(TextureBuilder *builder) :
 {
 }
 
+void TextureManager::initialize()
+{
+	defaultObject = get("defaultTexture");
+}
+
 TextureBuilder::TextureBuilder(const TiXmlDocument &resourcesXml) :
 	XmlResourceBuilder("texture", resourcesXml, ""), //Textures don't need folder path
 	buildingFromXml(true)

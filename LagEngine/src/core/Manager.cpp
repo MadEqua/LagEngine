@@ -35,14 +35,14 @@ Handle<V> Manager<K, V>::get(const K &name)
 	if (it == objects.end())
 	{
 		object = builder->build(name);
-		object->setName(toString(name));
 		if (object == nullptr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Error building Object " + toString(name));
-			return Handle<V>();
+			return defaultObject;
 		}
 
+		object->setName(toString(name));
 		objects[name] = object;
 
 		controlBlock = new ControlBlock<V>(object);
@@ -64,7 +64,7 @@ Handle<V> Manager<K, V>::get(const K &name)
 	else
 	{
 		unload(object);
-		return Handle<V>();
+		return defaultObject;
 	}
 }
 
@@ -145,7 +145,6 @@ void Manager<K, V>::unload(V* object) const
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		logTag, "Unloaded object: " + object->getName());
 }
-
 
 template<class K, class V>
 typename std::unordered_map<K, V*>::iterator Manager<K, V>::deleteEntry(typename std::unordered_map<K, V*>::iterator item)

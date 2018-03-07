@@ -1,8 +1,6 @@
 Short Term
 
 check for memleaks changing scenes
-cleaning resource managers should be automatic, and not needing a explicit call between scenes (and with a specific order)
-dummy resources for all types
 key codes as enum
 add uniform value cache on cpu side to avoid sending the same values
 implement techniques and passes

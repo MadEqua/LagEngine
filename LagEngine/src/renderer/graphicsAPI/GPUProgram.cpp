@@ -22,9 +22,12 @@ bool GpuProgram::loadImplementation()
 		for (const std::string &name : stagesNames)
 		{
 			Handle<GpuProgramStage> stage = man.get(name);
-			if (!stage.isValid())
-				LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-					"GpuProgram", "Trying to use a non-declared GpuProgramStage: " + name);
+			if (!stage.isValid()) //GpuProgramStage have no default. If a stage fails we force error (use the default GpuProgram).
+			{
+				LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+					"GpuProgram", "Trying to use an invalid GpuProgramStage: " + name);
+				return false;
+			}
 			else
 				stages.push_back(stage);
 		}

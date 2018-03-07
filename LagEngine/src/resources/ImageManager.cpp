@@ -10,6 +10,11 @@ ImageManager::ImageManager(ImageBuilder* builder) :
 {
 }
 
+void ImageManager::initialize()
+{
+	defaultObject = get("defaultImage");
+}
+
 ImageBuilder::ImageBuilder(const TiXmlDocument & resourcesXml, const std::string & resourceFolderPath) :
 	XmlResourceBuilder("image", resourcesXml, resourceFolderPath)
 {
