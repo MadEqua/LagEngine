@@ -1,6 +1,5 @@
 Short Term
 
-check for memleaks changing scenes
 key codes as enum
 add uniform value cache on cpu side to avoid sending the same values
 implement techniques and passes

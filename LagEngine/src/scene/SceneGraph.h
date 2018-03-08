@@ -17,7 +17,6 @@ namespace Lag
 	class SceneGraph
 	{
 	public:
-		SceneGraph();
 		~SceneGraph();
 
 		void clear();
@@ -25,11 +24,9 @@ namespace Lag
 		SceneNode& createSceneNode(const std::string &name);
 
 		SceneNode* getSceneNode(const std::string &name) const;
-		inline SceneNode& getRootSceneNode() const { return *root; }
+		SceneNode& getRootSceneNode();
 
 	private:
-		SceneNode *root;
-
 		//All created nodes by name
 		std::unordered_map<std::string, SceneNode*> nodes;
 	};

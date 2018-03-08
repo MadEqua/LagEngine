@@ -1,7 +1,7 @@
 #include "TestApplication.h"
 
 //Visual Leak Detector
-#include "vld.h"
+//#include "vld.h"
 
 int main()
 {

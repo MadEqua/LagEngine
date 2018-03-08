@@ -5,13 +5,6 @@
 
 using namespace Lag;
 
-SceneGraph::SceneGraph()
-{
-	SceneNode *root = new SceneNode(*this);
-	nodes["root"] = root;
-	this->root = root;
-}
-
 SceneGraph::~SceneGraph()
 {
 	clear();
@@ -48,4 +41,17 @@ SceneNode* SceneGraph::getSceneNode(const std::string &name) const
 		return it->second;
 	else
 		return nullptr;
+}
+
+SceneNode& SceneGraph::getRootSceneNode()
+{
+	auto it = nodes.find("root");
+	if (it == nodes.end())
+	{
+		SceneNode *root = new SceneNode(*this);
+		nodes["root"] = root;
+		return *root;
+	}
+	else
+		return *it->second;
 }
