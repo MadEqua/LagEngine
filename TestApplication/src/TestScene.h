@@ -28,5 +28,6 @@ private:
 	bool isScene1;
 	Lag::FreeCamera *camera;
 	float time;
+	int nodeName;
 };
 

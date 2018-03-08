@@ -20,6 +20,8 @@ namespace Lag
 		SceneGraph();
 		~SceneGraph();
 
+		void clear();
+
 		SceneNode& createSceneNode(const std::string &name);
 
 		SceneNode* getSceneNode(const std::string &name) const;

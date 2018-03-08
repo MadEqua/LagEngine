@@ -10,6 +10,7 @@ namespace Lag
 	class IRenderable;
 	class Viewport;
 	class RenderTarget;
+	enum RenderMode;
 	
 	/*
 	* A RenderOperation represents a single render call to the graphics API. 
@@ -18,6 +19,7 @@ namespace Lag
 	*/
 	struct RenderOperation
 	{
+		RenderMode renderMode;
 		RenderTarget *renderTarget;
 		VertexData *vertexData;
 		IndexData *indexData;

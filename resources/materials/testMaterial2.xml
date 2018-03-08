@@ -3,7 +3,7 @@
 		<pass> -->
   <shader name="testVertex"/>
   <shader name="testFragment"/>
-
+  
   <texture name="test"/>
 		<!-- </pass>
 	</technique> -->

@@ -18,6 +18,9 @@ SceneManager::SceneManager() :
 
 SceneManager::~SceneManager()
 {
+	if (hasActiveScene())
+		getActiveScene().end();
+	
 	clear();
 
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,

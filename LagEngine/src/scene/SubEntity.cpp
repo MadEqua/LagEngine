@@ -29,6 +29,7 @@ SubEntity::SubEntity(Entity &parent, Material &material, SubMesh &subMesh) :
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
 	RenderOperation &ro = renderQueue.addRenderOperation();
+	ro.renderMode = LAG_RENDER_MODE_TRIANGLES;
 	ro.renderTarget = &renderTarget;
 	ro.vertexData = const_cast<VertexData*>(&subMesh.getVertexData());
 	ro.indexData = const_cast<IndexData*>(&subMesh.getIndexData());

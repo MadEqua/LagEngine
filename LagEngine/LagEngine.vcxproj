@@ -74,7 +74,7 @@
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies\freeimage-3.17.0\include\;$(IncludePath)</IncludePath>
-    <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\release;$(ProjectDir)dependencies\assimp-1.3.0\lib\release;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\release</LibraryPath>
+    <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\release;$(ProjectDir)dependencies\assimp-1.3.0\lib\release;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\release;$(ProjectDir)dependencies\freeimage-3.17.0\lib</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -135,6 +135,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
+    <ClCompile Include="src\core\Memory.cpp" />
     <ClCompile Include="src\renderer\RenderTargetManager.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp" />
@@ -215,6 +216,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\core\Handle.h" />
+    <ClInclude Include="src\core\Memory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderTargetBuilder.h" />
     <ClInclude Include="src\platform\GLFW\GLFWRenderTargetBuilder.h" />
     <ClInclude Include="src\renderer\RenderPhase.h" />

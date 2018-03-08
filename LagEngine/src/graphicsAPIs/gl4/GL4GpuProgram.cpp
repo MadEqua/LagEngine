@@ -4,6 +4,7 @@
 
 #include "../../io/log/LogManager.h"
 
+
 using namespace Lag;
 
 GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<std::string> &names) :

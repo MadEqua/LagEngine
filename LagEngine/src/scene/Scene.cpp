@@ -49,6 +49,8 @@ void Scene::end()
 
 	disableSky();
 
+	sceneGraph.clear();
+
 	//Memory deallocations happens here, on the main SceneObject repository.
 	sceneObjectMap.clear();
 

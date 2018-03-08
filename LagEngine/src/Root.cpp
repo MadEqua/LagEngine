@@ -27,8 +27,6 @@
 
 #include "io/Keys.h"
 
-#include "io/tinyxml/tinyxml.h"
-
 using namespace Lag;
 
 Root::Root() :
@@ -60,6 +58,12 @@ Root::~Root()
 
 void Root::destroy()
 {
+	if (sceneManager != nullptr)
+	{
+		delete sceneManager;
+		sceneManager = nullptr;
+	}
+	
 	if (materialManager != nullptr)
 	{
 		delete materialManager;
@@ -111,11 +115,6 @@ void Root::destroy()
 	{
 		delete renderer;
 		renderer = nullptr;
-	}
-	if (sceneManager != nullptr)
-	{
-		delete sceneManager;
-		sceneManager = nullptr;
 	}
 
 	if (windowListener != nullptr)

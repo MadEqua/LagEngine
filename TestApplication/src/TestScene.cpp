@@ -12,9 +12,10 @@
 #include "renderer/Color.h"
 #include "io/Keys.h"
 
-
 TestScene::TestScene(bool isScene1) :
-	isScene1(isScene1)
+	isScene1(isScene1),
+	time(0.0f),
+	nodeName(0)
 {
 }
 
@@ -80,7 +81,10 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
 
 	for (int i = 0; i < count; ++i)
 	{
-		Lag::SceneNode &periferyNode = center.createChildSceneNode("perifery" + std::to_string(actualdepth) + std::to_string(i));
+		Lag::SceneNode &periferyNode = center.createChildSceneNode("perifery" + 
+			std::to_string(actualdepth) +
+			std::to_string(maxdepth) + "-" +
+			std::to_string(nodeName++));
 
 		periferyNode.scale(glm::vec3(0.6f));
 

@@ -1,7 +1,8 @@
 #pragma once
 
-#include "../../renderer/graphicsAPI/GpuBufferManager.h"
 #include "GL4GpuBuffer.h"
+
+#include "../../renderer/graphicsAPI/GpuBufferManager.h"
 
 namespace Lag
 {

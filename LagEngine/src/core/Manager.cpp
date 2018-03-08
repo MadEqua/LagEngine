@@ -63,7 +63,7 @@ Handle<V> Manager<K, V>::get(const K &name)
 		return Handle<V>(*controlBlock);
 	else
 	{
-		unload(object);
+		deleteEntry(objects.find(name));
 		return defaultObject;
 	}
 }

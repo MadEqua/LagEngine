@@ -66,6 +66,8 @@ void RenderQueue::dispatchRenderOperations(Renderer &renderer)
 		RenderOperation &ro = queue[i];
 		IRenderable *renderable = ro.renderable;
 
+		renderer.setRenderMode(ro.renderMode);
+
 		//Bind GpuProgram and then the Textures
 		ro.material->bind();
 		renderer.bindRenderTarget(*ro.renderTarget);

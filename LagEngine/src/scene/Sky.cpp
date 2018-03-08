@@ -105,6 +105,7 @@ void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderT
 	if (renderTarget.getRenderPhase() == LAG_RENDER_PHASE_COLOR)
 	{
 		RenderOperation &ro = renderQueue.addRenderOperation();
+		ro.renderMode = LAG_RENDER_MODE_TRIANGLES;
 		ro.renderTarget = &renderTarget;
 		ro.vertexData = &vertexData;
 		ro.indexData = &indexData;
