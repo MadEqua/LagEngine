@@ -4,7 +4,6 @@ key codes as enum
 add uniform value cache on cpu side to avoid sending the same values
 implement techniques and passes
 define scenegraph through a xml file or scene "mesh"
-check main loop and callbacks to the application. facilitate app development using the engine
 shadow mapping
 factory for generating renderApis and platforms specifics.
 LogManager usage is not very user friendly
