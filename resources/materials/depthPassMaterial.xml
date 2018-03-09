@@ -1,8 +1,4 @@
 <material>
-	<!-- <technique>
-		<pass> -->
   <shader name="depthPassVertex"/>
   <shader name="depthPassFragment"/>
-		<!-- </pass>
-	</technique> -->
 </material>

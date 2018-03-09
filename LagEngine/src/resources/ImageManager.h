@@ -22,7 +22,6 @@ namespace Lag
 		static ImageComponents parseComponents(const std::string &c);
 		static ImageComponentType parseComponentType(const std::string &type);
 		static bool parseBool(const std::string &str);
-		static int parseInt(const std::string &str);
 	};
 	
 	class ImageManager : public XmlResourceManager<Image>

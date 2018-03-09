@@ -1,0 +1,10 @@
+<material>
+	<!-- <technique>
+		<pass> -->
+  <shader name="mainVertex"/>
+  <shader name="mainFragment"/>
+
+  <texture name="test"/>
+		<!-- </pass>
+	</technique> -->
+</material>

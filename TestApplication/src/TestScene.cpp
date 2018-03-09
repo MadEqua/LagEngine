@@ -32,14 +32,14 @@ void TestScene::onStart()
 
 	Lag::PointLight& pl = createPointLight(isScene1 ? Lag::Color(0.0f, 1.0f, 0.0f) : Lag::Color(0.0f, 0.0f, 1.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl1SceneNode = sceneGraph.getRootSceneNode().createChildSceneNode("pl1SceneNode");
-	createEntity("sphere", "testMaterial2")->attachToSceneNode(pl1SceneNode);
+	createEntity("cube", "baseMaterial")->attachToSceneNode(pl1SceneNode);
 	pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl1SceneNode.setScale(glm::vec3(0.1f));
 	pl.attachToSceneNode(pl1SceneNode);
 
 	Lag::PointLight& pl2 = createPointLight(isScene1 ? Lag::Color(1.0f, 0.0f, 0.0f) : Lag::Color(0.5f, 0.5f, 0.0f), glm::vec3(0.01f, 0.01f, 0.01f));
 	Lag::SceneNode &pl2SceneNode = sceneGraph.getRootSceneNode().createChildSceneNode("pl2SceneNode");
-	createEntity("sphere", "testMaterial2")->attachToSceneNode(pl2SceneNode);
+	createEntity("cube", "baseMaterial")->attachToSceneNode(pl2SceneNode);
 	pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
 	pl2SceneNode.setScale(glm::vec3(0.1f));
 	pl2.attachToSceneNode(pl2SceneNode);
@@ -47,19 +47,19 @@ void TestScene::onStart()
 	Lag::DirectionalLight& dir1 = createDirectionalLight(Lag::Color(0.3f), glm::vec3(1.0f, -1.0f, 0.0f));
 
 	Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("main");
-	mainNode.setScale(glm::vec3(0.01f));
-	Lag::Entity *ent = createEntity("bunny", "testMaterial");
+	mainNode.setScale(glm::vec3(0.9f));
+	Lag::Entity *ent = createEntity("piano", "objectMaterial");
 	ent->attachToSceneNode(mainNode);
 
 	Lag::SceneNode &floorNode = getSceneGraph().getRootSceneNode().createChildSceneNode("floor");
-	floorNode.translate(glm::vec3(0.0f, -0.9f, 0.0f), Lag::WORLD);
+	floorNode.translate(glm::vec3(0.0f, -0.3f, 0.0f), Lag::WORLD);
 	floorNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
-	Lag::Entity *floor = createEntity("cube", "testMaterial2");
+	Lag::Entity *floor = createEntity("cube", "baseMaterial");
 	floor->attachToSceneNode(floorNode);
 
 	createSceneAux(mainNode, 10.0f, 8, 0, 3);
 
-	//scene->enableSky("skyMaterial");
+	enableSky("skyMaterial");
 }
 
 void TestScene::onEnd()
@@ -86,12 +86,12 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
 			std::to_string(maxdepth) + "-" +
 			std::to_string(nodeName++));
 
-		periferyNode.scale(glm::vec3(0.6f));
+		periferyNode.scale(glm::vec3(0.5f));
 
 		periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::PARENT);
 		periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::LOCAL);
 
-		Lag::Entity *periferyEnt = createEntity("bunny", "testMaterial");
+		Lag::Entity *periferyEnt = createEntity("piano", "objectMaterial");
 
 		periferyEnt->attachToSceneNode(periferyNode);
 

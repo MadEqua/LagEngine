@@ -1,6 +1,15 @@
 <resources>
 
 	<!-- Engine Fixed stuff TODO: make this hardcoded?-->
+  <shader name="depthPassVertex" file="depthPass.vert" type="Vertex">
+    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+  </shader>
+
+  <shader name="depthPassFragment" file="depthPass.frag" type="Fragment">
+  </shader>
+
+  <material name="depthPassMaterial" file="depthPassMaterial.xml"/>
+
   <shader name="defaultVertex" file="default.vert" type="Vertex">
     <uniform name="mvpMatrix" semantic="MvpMatrix"/>
   </shader>
@@ -19,26 +28,16 @@
            wrappingAll="Repeat"/>
 
   <mesh name="defaultMesh" file="defaultMesh.obj"/>
-
-  <shader name="depthPassVertex" file="depthPass.vert" type="Vertex">
-    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
-  </shader>
-  
-  <shader name="depthPassFragment" file="depthPass.frag" type="Fragment">
-	</shader>
-
-	<material name="depthPassMaterial" file="depthPassMaterial.xml"/>
 	<!-- End Engine Fixed stuff -->
 	
-	
-	<shader name="testVertex" file="test.vert" type="Vertex">
+	<shader name="mainVertex" file="main.vert" type="Vertex">
 		<uniform name="projectionMatrix" semantic="ProjectionMatrix"/>
 		<uniform name="modelMatrix" semantic="ModelMatrix"/>
 		<uniform name="viewMatrix" semantic="ViewMatrix"/>
 		<uniform name="normalMatrix" semantic="NormalViewMatrix"/>
 	</shader>
 
-  <shader name="testFragment" file="test.frag" type="Fragment">
+  <shader name="mainFragment" file="main.frag" type="Fragment">
     <uniform name="pointLightCount" semantic="PointLightCount"/>
     <uniform name="pointLightPositions" semantic="PointLightPositions"/>
     <uniform name="pointLightColors" semantic="PointLightColors"/>
@@ -52,14 +51,6 @@
     <uniform name="diffuseTexture" semantic="TextureDiffuse"/>
   </shader>
 
-  <shader name="testVertex2" file="test2.vert" type="Vertex">
-    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
-  </shader>
-
-  <shader name="testFragment2" file="test2.frag" type="Fragment">
-    <uniform name="cubemap" semantic="TextureDiffuse"/>
-  </shader>
-
   <shader name="skyVertex" file="sky.vert" type="Vertex">
     <uniform name="viewMatrix" semantic="ViewMatrix"/>
     <uniform name="projectionMatrix" semantic="ProjectionMatrix"/>
@@ -69,23 +60,23 @@
     <uniform name="cubemap" semantic="TextureDiffuse"/>
   </shader>
   
-  <material name="testMaterial" file="testMaterial.xml"/>
-  <material name="testMaterial2" file="testMaterial2.xml"/>
+  
+  
+  <material name="baseMaterial" file="baseMaterial.xml"/>
+  <material name="objectMaterial" file="objectMaterial.xml"/>
   <material name="skyMaterial" file="skyMaterial.xml"/>
 
-  <mesh name="sphere" file="sphere2.obj"/>
-  <mesh name="bunny" file="spider.obj"/>
+  
+  
+  <mesh name="piano" file="piano.obj"/>
   <mesh name="cube" file="cube.obj"/>
-  <!--<mesh name="sponza" file="sponza.obj"/>-->
-
-  <image name="spider" file="SpiderTex.jpg" components="RGB"
-         componentType="UINT8" normalized="true" sRGB="true"/>
-
+  
+  
   <image name="test" file="test.png" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
-  <image name="flare" file="engineflare1.jpg" components="RGB"
-         componentType="UINT8" normalized="true" sRGB="true"/>
+  <image name="piano" file="piano.png" components="RGBA"
+        componentType="UINT8" normalized="true" sRGB="true"/>
 
   <image name="sky0" file="PondWinter/0.jpg" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
@@ -100,17 +91,14 @@
   <image name="sky5" file="PondWinter/5.jpg" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
-  <texture name="spider" image="spider" semantic="DiffuseColor"
-           type="2D" mipmaps="8" 
-           minFilter="LinearMipmapLinear" magFilter="Linear"
-           wrappingAll="Repeat"/>
-
+  
+  
   <texture name="test" image="test" semantic="DiffuseColor"
            type="2D" mipmaps="8"
            minFilter="LinearMipmapLinear" magFilter="Linear"
            wrappingAll="Repeat"/>
 
-  <texture name="flare" image="flare" semantic="DiffuseColor"
+  <texture name="piano" image="piano" semantic="DiffuseColor"
            type="2D" mipmaps="8"
            minFilter="LinearMipmapLinear" magFilter="Linear"
            wrappingAll="Repeat"/>

@@ -130,11 +130,10 @@ GLenum GL4Texture::getPixelDataFormatGL() const
 {
 	switch (imageData.components)
 	{
-	//TODO: BGRA and BGR because of FreeImage
 	case LAG_IMAGE_COMPONENTS_RGBA:
-		return GL_BGRA;
+		return GL_RGBA;
 	case LAG_IMAGE_COMPONENTS_RGB:
-		return GL_BGR;
+		return GL_RGB;
 	case LAG_IMAGE_COMPONENTS_RG:
 		return GL_RG;
 	case LAG_IMAGE_COMPONENTS_R:

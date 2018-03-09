@@ -209,6 +209,9 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
 	{
 		graphicsAPI = new GL4GraphicsAPI();
+		if (!graphicsAPI->initialize())
+			return false;
+
 		textureManager = new GL4TextureManager(new GL4TextureBuilder(*resourcesFile));
 		gpuBufferManager = new GL4GpuBufferManager();
 		gpuProgramManager = new GL4GpuProgramManager();

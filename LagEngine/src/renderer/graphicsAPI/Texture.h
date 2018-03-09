@@ -73,9 +73,6 @@ namespace Lag
 		uint32 mipmaps;
 	};
 
-	class Image;
-	struct ImageData;
-	
 	/*
 	* Gpu representation of an Image (or a set of images). May contain mipmaps.
 	*/

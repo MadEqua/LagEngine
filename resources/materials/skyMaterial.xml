@@ -1,10 +1,6 @@
 <material>
-	<!-- <technique>
-		<pass> -->
   <shader name="skyVertex"/>
   <shader name="skyFragment"/>
 
   <texture name="sky"/>
-		<!-- </pass>
-	</technique> -->
 </material>

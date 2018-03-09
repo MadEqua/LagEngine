@@ -74,8 +74,3 @@ bool ImageBuilder::parseBool(const std::string &str)
 	if (str == "true" || str == "TRUE" || str == "1") return true;
 	else return false;
 }
-
-int ImageBuilder::parseInt(const std::string &str)
-{
-	return std::stoi(str);
-}

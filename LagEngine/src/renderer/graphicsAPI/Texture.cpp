@@ -38,7 +38,7 @@ bool Texture::loadImplementation()
 			if (image.isValid())
 			{					
 				if (i == 0)
-					imageData = image->getData();
+					imageData = image->getImageData();
 
 				images.push_back(image);
 			}

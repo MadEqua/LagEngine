@@ -50,7 +50,7 @@ namespace Lag
 	class Image : public XmlResource
 	{
 	public:
-		inline const ImageData& getData() const { return data; }
+		inline const ImageData& getImageData() const { return imageData; }
 		inline const byte* getRawDataPointer() const { return dataPtr; }
 
 		virtual bool loadImplementation() override;
@@ -58,9 +58,9 @@ namespace Lag
 
 	protected:
 		friend class ImageBuilder;
-		Image(const std::string &path, const ImageData &data);
+		Image(const std::string &path, const ImageData &imageData);
 
-		ImageData data;
+		ImageData imageData;
 		byte *dataPtr;
 	};
 }

@@ -18,12 +18,13 @@ namespace Lag
 	
 	/*
 	* Abstracting the calls of a Graphics API. A class implementing this interface is used
-	* to interact with the graphics pipeline and issue the efective draw calls.
+	* to interact with the graphics pipeline and issue draw calls.
 	*/
 	class IGraphicsAPI
 	{
 	public:
 		virtual ~IGraphicsAPI() = default;
+		virtual bool initialize() = 0;
 
 		virtual void renderVertices(RenderMode mode, uint32 first, uint32 count) = 0;
 		virtual void renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex = 0) = 0;

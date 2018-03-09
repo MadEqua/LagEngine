@@ -15,16 +15,15 @@
 
 using namespace Lag;
 
-GL4GraphicsAPI::GL4GraphicsAPI()
+bool GL4GraphicsAPI::initialize()
 {
-	//TODO: better initialization stuff
 	GLenum err = glewInit();
 	if (GLEW_OK != err)
 	{
 		std::string errorString = reinterpret_cast<const char*>(glewGetErrorString(err));
 		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Failed to initialize GLEW: " + errorString);
-		return;
+		return false;
 	}
 
 	if (GLEW_VERSION_4_5)
@@ -43,7 +42,7 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 			"GL4GraphicsAPI", "Linear RGB Default Framebuffer.");
 		
-		//TODO This should be disable. But on nVidia drivers the return value is always GL_LINEAR.
+		//TODO This should be disable. But on some nVidia drivers the return value is always GL_LINEAR.
 		GL_ERROR_PRINT(glEnable(GL_FRAMEBUFFER_SRGB))
 	}
 	else if (res == GL_SRGB) 
@@ -73,6 +72,8 @@ GL4GraphicsAPI::GL4GraphicsAPI()
 
 	GL_ERROR_PRINT(glEnable(GL_CULL_FACE))
 	GL_ERROR_PRINT(glCullFace(GL_BACK))
+
+	return true;
 }
 
 void GL4GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 count)
