@@ -34,10 +34,6 @@ namespace Lag
 		void removeChildSceneNode(const std::string &name);
 		void removeChildSceneNode(SceneNode &node);
 
-		//TODO: find out if it's really needed to store the attached objects for a SceneNode
-		//void attachSceneObject(SceneObject &sceneObject);
-		//void detachSceneObject(SceneObject &sceneObject);
-
 		inline bool hasParent() const { return parent != nullptr; }
 		inline SceneNode* getParentSceneNode() const { return parent; }
 

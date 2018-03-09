@@ -1,6 +1,6 @@
 #include "TextureManager.h"
 
-#include "../io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 #include "../renderer/graphicsAPI/Texture.h"
 
 using namespace Lag;

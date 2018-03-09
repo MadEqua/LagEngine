@@ -69,12 +69,14 @@
   </ImportGroup>
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\debug;$(ProjectDir)dependencies\assimp-1.3.0\lib\debug;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\debug</LibraryPath>
+    <SourcePath>($ProjectDir)dependencies;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
-    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies;$(IncludePath)</IncludePath>
+    <IncludePath>$(ProjectDir)dependencies\glfw-3.1.2\include;$(ProjectDir)dependencies\glm-0.9.7.4\glm;$(ProjectDir)dependencies\assimp-1.3.0\include;$(ProjectDir)dependencies\glew-1.13.0\include\;$(ProjectDir)dependencies\;$(IncludePath)</IncludePath>
     <LibraryPath>$(ProjectDir)dependencies\glfw-3.1.2\lib\release;$(ProjectDir)dependencies\assimp-1.3.0\lib\release;$(LibraryPath);$(ProjectDir)dependencies\glew-1.13.0\lib\release</LibraryPath>
+    <SourcePath>($ProjectDir)dependencies;$(SourcePath)</SourcePath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
@@ -127,6 +129,9 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="dependencies\tinyxml\tinyxml.cpp" />
+    <ClCompile Include="dependencies\tinyxml\tinyxmlerror.cpp" />
+    <ClCompile Include="dependencies\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\core\Handle.cpp">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
@@ -175,9 +180,6 @@
     </ClCompile>
     <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.cpp" />
     <ClCompile Include="src\resources\GpuProgramStageManager.cpp" />
-    <ClCompile Include="src\io\tinyxml\tinyxml.cpp" />
-    <ClCompile Include="src\io\tinyxml\tinyxmlerror.cpp" />
-    <ClCompile Include="src\io\tinyxml\tinyxmlparser.cpp" />
     <ClCompile Include="src\resources\XmlResource.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramStage.cpp" />
     <ClCompile Include="src\scene\SceneManager.cpp" />
@@ -215,6 +217,8 @@
     <ClCompile Include="src\scene\SubEntity.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="dependencies\stbi\stb_image.h" />
+    <ClInclude Include="dependencies\tinyxml\tinyxml.h" />
     <ClInclude Include="src\core\Handle.h" />
     <ClInclude Include="src\core\Memory.h" />
     <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderTargetBuilder.h" />

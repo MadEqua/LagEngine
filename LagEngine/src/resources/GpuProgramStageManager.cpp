@@ -3,7 +3,7 @@
 #include "../io/log/LogManager.h"
 #include "../renderer/graphicsAPI/GpuProgramStage.h"
 
-#include "../io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 
 using namespace Lag;
 

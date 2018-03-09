@@ -41,11 +41,9 @@ void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager 
 	onPreRenderNotify(*this);
 	for (uint32 i = 0; i < viewports.getSize(); ++i)
 	{
-		//TODO: add proper iterator
 		Viewport *v = viewports.get(i);
 		v->addRenderablesToQueue(renderQueue, sceneManager, *this);
 	}
-	onPostRenderNotify(*this); //TODO fix. this is not post render.
 }
 
 void RenderTarget::resize(uint32 width, uint32 height)

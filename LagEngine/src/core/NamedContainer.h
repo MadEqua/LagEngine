@@ -9,6 +9,8 @@ namespace Lag
 	* Container for objects (pointers to) with an integer as a name. 
 	* The container generates the names by itself.
 	* Useful for storing objects that need a name, but not an user-friendly one (not exposed to the application).
+	*
+	* TODO: it would be nice to have an iterator for this container
 	*/
 	template<class T>
 	class NamedContainer

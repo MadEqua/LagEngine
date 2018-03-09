@@ -8,7 +8,7 @@
 #include "../renderer/graphicsAPI/GpuProgramStage.h"
 #include "../renderer/graphicsAPI/GpuProgram.h"
 #include "../io/log/LogManager.h"
-#include "../io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 #include "../Root.h"
 #include "Renderer.h"
 

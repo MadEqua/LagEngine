@@ -3,7 +3,7 @@
 #include "../io/log/LogManager.h"
 
 #define STB_IMAGE_IMPLEMENTATION
-#include "stb_image.h"
+#include "stbi/stb_image.h"
 
 using namespace Lag;
 

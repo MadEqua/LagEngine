@@ -78,12 +78,6 @@ namespace Lag
 		void stopRenderingLoop();
 		void renderOneFrame();
 
-		//TODO: should render windows be created here instead of added? (problem: they are platform specific)
-		/*uint16 addRenderWindow(RenderWindow &renderWindow);
-		uint16 createRenderToTexture(uint32 width, uint32 height);
-		void removeRenderToTexture(uint16 name);
-		RenderToTexture* getRenderToTexture(uint16 name) const;*/
-
 		//Bind objects and settings
 		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
 		void bindVertexBuffer(const GpuBuffer &vertexBuffer);
@@ -116,16 +110,6 @@ namespace Lag
 
 		void setDepthTestEnabled(bool enabled);
 		void setDepthWritingEnabled(bool enabled);
-
-		//TODO
-		/** The RenderSystem will keep a count of tris rendered, this resets the count. */
-		//void beginGeometryCount();
-		/** Reports the number of tris rendered since the last _beginGeometryCount call. */
-		//uint32 getFaceCount(void) const;
-		/** Reports the number of batches rendered since the last _beginGeometryCount call. */
-		//uint32 getBatchCount(void) const;
-		/** Reports the number of vertices passed to the renderer since the last _beginGeometryCount call. */
-		//uint32 getVertexCount(void) const;
 
 		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
 

@@ -1,6 +1,6 @@
 #include "ImageManager.h"
 
-#include "../io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 #include "Image.h"
 
 using namespace Lag;

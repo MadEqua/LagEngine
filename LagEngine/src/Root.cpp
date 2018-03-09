@@ -1,6 +1,6 @@
 #include "Root.h"
 
-#include "io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 
 #include "InitializationParameters.h"
 #include "io/log/LogManager.h"

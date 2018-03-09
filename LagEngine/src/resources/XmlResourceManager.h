@@ -3,7 +3,7 @@
 #include <string>
 
 #include "../core/Manager.h"
-#include "../io/tinyxml/tinyxml.h"
+#include "tinyxml/tinyxml.h"
 
 class TiXmlElement;
 

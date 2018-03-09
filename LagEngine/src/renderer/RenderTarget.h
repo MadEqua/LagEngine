@@ -44,6 +44,8 @@ namespace Lag
 		inline bool isMainWindow() const { return mainWindow; }
 		inline RenderPhase getRenderPhase() const { return renderPhase; }
 
+		inline void notifyPostRender() { onPostRenderNotify(*this); }
+
 		//TODO (fps, frametimes...)
 		//FrameMetrics frameMetrics;
 

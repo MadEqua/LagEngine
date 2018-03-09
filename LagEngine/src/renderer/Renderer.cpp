@@ -103,6 +103,10 @@ void Renderer::startRenderingLoop(uint32 maxFps)
 		onFrameEndNotify(frameEndTimer.getElapsedSeconds());
 		frameEndTimer.start();
 
+		//RenderTargets have post render listeners to notify
+		for (auto &pair : renderTargetManager.getAll())
+			pair.second->notifyPostRender();
+
 		elapsed = wholeFrameTimer.getElapsedSeconds();
 		if (elapsed < minFrameTime)
 		{
