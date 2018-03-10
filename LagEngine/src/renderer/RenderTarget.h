@@ -9,20 +9,20 @@
 #include "../Types.h"
 #include "../renderer/Viewport.h"
 #include "RenderPhase.h"
+#include "IRenderTargetListener.h"
 
 namespace Lag
 {
 	class Camera;
 	class RenderQueue;
 	class SceneManager;
-	class IRenderTargetListener;
 	
 	class RenderTarget : public ManagedObject
 	{
 		LAG_GENERATE_OBSERVER_STORAGE(IRenderTargetListener)
-		LAG_DECLARE_NOTIFY_METHOD(onPreRender, LAG_ARGS(RenderTarget &notifier))
-		LAG_DECLARE_NOTIFY_METHOD(onPostRender, LAG_ARGS(RenderTarget &notifier))
-		LAG_DECLARE_NOTIFY_METHOD(onResize, LAG_ARGS(RenderTarget &notifier, uint32 width, uint32 height))
+		LAG_GENERATE_NOTIFY_METHOD(onPreRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
+		LAG_GENERATE_NOTIFY_METHOD(onPostRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
+		LAG_GENERATE_NOTIFY_METHOD(onResize, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier, uint32 width, uint32 height), LAG_ARGS(notifier, width, height))
 
 	public:
 		RenderTarget(uint32 width, uint32 height, RenderPhase renderPhase = LAG_RENDER_PHASE_COLOR, bool isMainWindow = false);

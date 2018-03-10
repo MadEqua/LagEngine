@@ -132,10 +132,7 @@ void SceneManager::setActiveScene(const std::string &name)
 	}
 
 	if (hasActiveScene())
-	{
 		getActiveScene().end();
-		Root::getInstance().clearUnusedResources();
-	}
 
 	activeSceneName = name;
 

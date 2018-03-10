@@ -1,7 +1,8 @@
 #pragma once
 
-#include "GL4GpuProgram.h"
 #include "../../renderer/graphicsAPI/GpuProgramManager.h"
+
+#include "GL4GpuProgram.h"
 
 namespace Lag
 {
@@ -20,13 +21,5 @@ namespace Lag
 	public:
 		GL4GpuProgramManager() :
 			GpuProgramManager(new GL4GpuProgramBuilder()) {}
-
-		virtual void initialize() override
-		{
-			std::vector<std::string> defaultStages;
-			defaultStages.push_back("defaultVertex");
-			defaultStages.push_back("defaultFragment");
-			defaultObject = get(defaultStages);
-		}
 	};
 }

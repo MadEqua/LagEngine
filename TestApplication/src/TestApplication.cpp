@@ -7,14 +7,6 @@
 #include "TestScene.h"
 
 
-TestApplication::TestApplication()
-{
-}
-
-TestApplication::~TestApplication()
-{
-}
-
 bool TestApplication::start()
 {
 	Lag::Root &root = Lag::Root::getInstance();
@@ -22,7 +14,7 @@ bool TestApplication::start()
 	//Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
 	
 	//Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_CONSOLE);
-	//Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_IDE);
+	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_IDE);
 
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_CONSOLE);
 	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_IDE);

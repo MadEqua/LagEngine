@@ -1,7 +1,9 @@
 #pragma once
 
 #include "RenderTarget.h"
+
 #include "../core/ObserverPattern.h"
+#include "IWindowListener.h"
 
 namespace Lag
 {
@@ -10,11 +12,10 @@ namespace Lag
 	
 	class RenderWindow : public RenderTarget
 	{
-		//Observer Pattern stuff
 		LAG_GENERATE_OBSERVER_STORAGE(IWindowListener)
-		LAG_DECLARE_NOTIFY_METHOD(onMove, LAG_ARGS(RenderWindow &notifier, uint32 x, uint32 y))
-		LAG_DECLARE_NOTIFY_METHOD(onClose, LAG_ARGS(RenderWindow &notifier))
-		LAG_DECLARE_NOTIFY_METHOD(onFocusChange, LAG_ARGS(RenderWindow &notifier, bool focused))
+		LAG_GENERATE_NOTIFY_METHOD(onMove, IWindowListener, LAG_ARGS(RenderWindow &notifier, uint32 x, uint32 y), LAG_ARGS(notifier, x, y))
+		LAG_GENERATE_NOTIFY_METHOD(onClose, IWindowListener, LAG_ARGS(RenderWindow &notifier), LAG_ARGS(notifier))
+		LAG_GENERATE_NOTIFY_METHOD(onFocusChange, IWindowListener, LAG_ARGS(RenderWindow &notifier, bool focused), LAG_ARGS(notifier, focused))
 
 	public:
 		explicit RenderWindow(const InitializationParameters &parameters);

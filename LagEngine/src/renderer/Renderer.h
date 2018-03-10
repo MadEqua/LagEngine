@@ -13,6 +13,7 @@
 #include "GpuProgramUniformFiller.h"
 #include "../core/Timer.h"
 #include "RenderTargetManager.h"
+#include "IFrameListener.h"
 
 namespace Lag
 {
@@ -39,7 +40,6 @@ namespace Lag
 	class InputDescription;
 	class Viewport;
 	class Texture;
-	class IFrameListener;
 	enum TextureType;
 
 	/*
@@ -59,12 +59,12 @@ namespace Lag
 	* 
 	* TODO: describe the process...
 	*/
-	class Renderer
+	class Renderer : public IRenderTargetListener
 	{
 		LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
-		LAG_DECLARE_NOTIFY_METHOD(onFrameStart, LAG_ARGS(float timePassed))
-		LAG_DECLARE_NOTIFY_METHOD(onFrameRenderingQueued, LAG_ARGS(float timePassed))
-		LAG_DECLARE_NOTIFY_METHOD(onFrameEnd, LAG_ARGS(float timePassed))
+			LAG_GENERATE_NOTIFY_METHOD(onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+			LAG_GENERATE_NOTIFY_METHOD(onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+			LAG_GENERATE_NOTIFY_METHOD(onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
 	public:
 		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager);
@@ -122,7 +122,7 @@ namespace Lag
 		Timer frameStartTimer;
 		Timer frameEndTimer;
 		Timer frameQueuedTimer;
-		
+
 		SceneManager &sceneManager;
 		IGraphicsAPI &graphicsAPI;
 		RenderTargetManager &renderTargetManager;
@@ -150,19 +150,8 @@ namespace Lag
 		//Force uniformFiller.onGpuProgramBind() to be called in that case, some uniforms may need to be updated.
 		const GpuProgram* lastUsedGpuProgramOnFrame;
 
-		//Listening to resizes. A resize may invalidate the current bound Viewport.
-		class RenderTargetListener : public IRenderTargetListener
-		{
-		public:
-			RenderTargetListener(Renderer &renderer) : renderer(renderer) {}
-
-			virtual void onPreRender(RenderTarget &notifier) override {};
-			virtual void onPostRender(RenderTarget &notifier) override {};
-			virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) override;
-
-		private:
-			Renderer &renderer;
-		};
-		RenderTargetListener renderTargetListener;
+		virtual void onPreRender(RenderTarget &notifier) override {}
+		virtual void onPostRender(RenderTarget &notifier) override {}
+		virtual void onResize(RenderTarget &notifier, uint32 width, uint32 height) override;
 	};
 }

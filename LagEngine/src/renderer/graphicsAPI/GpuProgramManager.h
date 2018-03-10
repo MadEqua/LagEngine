@@ -21,6 +21,8 @@ namespace Lag
 	{
 	public:
 		explicit GpuProgramManager(GpuProgramBuilder* builder);
+
+		virtual void initializeFallbackObject() override;
 		
 		//Convenience methods for the most common operations
 		Handle<GpuProgram> get(std::vector<std::string> &stagesNames);

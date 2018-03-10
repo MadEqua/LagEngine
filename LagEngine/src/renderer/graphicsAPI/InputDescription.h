@@ -3,10 +3,10 @@
 #include "../../Types.h"
 #include "../../core/ManagedObject.h"
 #include "../../core/Handle.h"
+#include "../VertexDescription.h"
 
 namespace Lag
 {
-	class VertexDescription;
 	class GpuBuffer;
 	
 	/*
@@ -18,7 +18,7 @@ namespace Lag
 	{
 	public:
 		//How to interpret the vertices
-		const VertexDescription &vertexDescription;
+		const VertexDescription vertexDescription;
 
 		// Where to get the vertices from
 		//TODO: maybe add a Bindings class (id -> buffer) to allow getting different attributes from different buffers. (add a binding id on VertexAttribute also)

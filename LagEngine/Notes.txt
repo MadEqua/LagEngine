@@ -1,13 +1,14 @@
 Short Term
 
+factory for generating renderApis and platforms specifics.
+smart-pointers
+free the in-memory images as soon as they are sent to the gpu (and meshes, shader code?)
 key codes as enum
 add uniform value cache on cpu side to avoid sending the same values
 implement techniques and passes
 define scenegraph through a xml file or scene "mesh"
 shadow mapping
-factory for generating renderApis and platforms specifics.
 LogManager usage is not very user friendly
-smart-pointers
 Render to textures Linear/sRGB correctness. https://www.khronos.org/opengl/wiki/Framebuffer
 
 Long Term

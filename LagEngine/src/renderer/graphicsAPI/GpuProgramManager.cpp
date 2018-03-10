@@ -9,6 +9,14 @@ GpuProgramManager::GpuProgramManager(GpuProgramBuilder* builder) :
 {
 }
 
+void GpuProgramManager::initializeFallbackObject()
+{
+	std::vector<std::string> defaultStages;
+	defaultStages.push_back("defaultVertex");
+	defaultStages.push_back("defaultFragment");
+	fallbackObject = get(defaultStages);
+}
+
 Handle<GpuProgram> GpuProgramManager::get(std::vector<std::string>& stagesNames)
 {
 	GpuProgramBuilder &gpuProgramBuilder = static_cast<GpuProgramBuilder&>(*builder);

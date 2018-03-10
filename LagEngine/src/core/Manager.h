@@ -9,6 +9,8 @@
 #include "../io/log/LogManager.h"
 #include "../utils/Utils.h"
 
+#include "../Root.h"
+
 namespace Lag
 {
 	template<class K, class V>
@@ -29,13 +31,13 @@ namespace Lag
 	* Generic class for Managers that store ManagedObjects mapped by a name.
 	*/
 	template<class K, class V>
-	class Manager
+	class Manager : public IObjectZeroReferencesListener
 	{
 	public:
 		Manager(const std::string &logTag, IManagedObjectBuilder<K, V> *builder);
 		virtual ~Manager();
 
-		virtual void initialize() {}
+		virtual void initializeFallbackObject() {}
 
 		Handle<V> get(const K &name);
 		inline std::unordered_map<K, V*> getAll() const { return objects; }
@@ -47,6 +49,8 @@ namespace Lag
 
 		bool contains(const K &name) const;
 
+		virtual void onZeroReferences() override;
+
 	protected:
 		bool load(V* object) const;
 		void unload(V* object) const;
@@ -56,7 +60,7 @@ namespace Lag
 		typename std::unordered_map<K, V*>::iterator deleteEntry(typename std::unordered_map<K, V*>::iterator item);
 
 		//Some Managers may want to have a fallback object to be returned when there is a problem getting the requested one
-		Handle<V> defaultObject; //Handle stored here, avoiding the removal
+		Handle<V> fallbackObject; //Handle stored here, avoiding the removal
 
 		IManagedObjectBuilder<K, V> *builder;
 		

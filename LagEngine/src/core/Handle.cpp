@@ -6,6 +6,13 @@ ControlBlock<V>::ControlBlock(V* const pointer) :
 {
 }
 
+template<class V>
+void ControlBlock<V>::decrementRefCount() { 
+	refCount--;
+	if (refCount == 0)
+		onZeroReferencesNotify();
+}
+
 
 template<class V>
 Handle<V>::Handle() : controlBlock(nullptr)
@@ -29,7 +36,7 @@ Handle<V>::Handle(const Handle<V>& other)
 }
 
 template<class V>
-Lag::Handle<V>::~Handle()
+Handle<V>::~Handle()
 {
 	if (controlBlock != nullptr)
 		controlBlock->decrementRefCount();

@@ -28,6 +28,6 @@ namespace Lag
 	{
 	public:
 		explicit ImageManager(ImageBuilder* builder);
-		virtual void initialize() override;
+		virtual void initializeFallbackObject() override;
 	};
 }

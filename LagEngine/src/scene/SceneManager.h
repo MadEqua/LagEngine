@@ -11,9 +11,9 @@
 
 namespace Lag
 {
-	class SceneManager : public Lag::IFrameListener,
-		public Lag::IKeyboardListener,
-		public Lag::ICursorListener
+	class SceneManager : public IFrameListener,
+		public IKeyboardListener,
+		public ICursorListener
 	{
 	public:
 		SceneManager();

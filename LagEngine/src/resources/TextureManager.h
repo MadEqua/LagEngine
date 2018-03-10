@@ -41,6 +41,6 @@ namespace Lag
 	{
 	public:
 		explicit TextureManager(TextureBuilder *builder);
-		virtual void initialize() override;
+		virtual void initializeFallbackObject() override;
 	};
 }

@@ -39,7 +39,7 @@ Handle<V> Manager<K, V>::get(const K &name)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
 				logTag, "Error building Object " + toString(name));
-			return defaultObject;
+			return fallbackObject;
 		}
 
 		object->setName(toString(name));
@@ -60,11 +60,15 @@ Handle<V> Manager<K, V>::get(const K &name)
 	}
 
 	if (load(object))
-		return Handle<V>(*controlBlock);
+	{
+		Handle<V> handle(*controlBlock);
+		controlBlock->registerObserver(*this);
+		return handle;
+	}
 	else
 	{
 		deleteEntry(objects.find(name));
-		return defaultObject;
+		return fallbackObject;
 	}
 }
 
@@ -159,4 +163,10 @@ typename std::unordered_map<K, V*>::iterator Manager<K, V>::deleteEntry(typename
 	//Remove from maps
 	controlBlocks.erase(item->first);
 	return objects.erase(item);
+}
+
+template<class K, class V>
+void Manager<K, V>::onZeroReferences()
+{ 
+	clearUnused();
 }

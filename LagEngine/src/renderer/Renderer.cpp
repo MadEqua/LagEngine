@@ -42,20 +42,15 @@ const Texture* TextureBindings::getBinding(uint8 unit) const
 		return nullptr;
 }
 
-LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-LAG_DEFINE_NOTIFY_METHOD(Renderer, onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager) :
 	sceneManager(sceneManager), graphicsAPI(graphicsAPI), renderTargetManager(renderTargetManager),
 	boundIndexBuffer(nullptr), boundVertexBuffer(nullptr),
 	boundGpuProgram(nullptr), boundViewport(nullptr),
 	clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
-	renderTargetListener(*this),
 	actualFrame(0),
 	lastUsedGpuProgramOnFrame(nullptr)
 {
-	renderTargetManager.getRenderWindow()->RenderTarget::registerObserver(renderTargetListener);
+	renderTargetManager.getRenderWindow()->RenderTarget::registerObserver(*this);
 
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Initialized successfully.");
@@ -63,6 +58,8 @@ Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, Render
 
 Renderer::~Renderer()
 {
+	renderTargetManager.getRenderWindow()->RenderTarget::unregisterObserver(*this);
+	
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
 		"Renderer", "Destroyed successfully.");
 }
@@ -304,12 +301,13 @@ void Renderer::setDepthWritingEnabled(bool enabled)
 }
 
 
-void Renderer::RenderTargetListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
+//Listening to resizes. A resize may invalidate the current bound Viewport.
+void Renderer::onResize(RenderTarget &notifier, uint32 width, uint32 height)
 {
-	if (renderer.boundViewport != nullptr)
+	if (boundViewport != nullptr)
 	{
-		const Viewport *vp = notifier.getViewport(renderer.boundViewport->getName());
-		if (renderer.boundViewport == vp)
-			renderer.boundViewport = nullptr;
+		const Viewport *vp = notifier.getViewport(boundViewport->getName());
+		if (boundViewport == vp)
+			boundViewport = nullptr;
 	}
 }

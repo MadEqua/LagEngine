@@ -47,8 +47,6 @@ namespace Lag
 		void stopRenderingLoop();
 		void renderOneFrame();
 
-		void clearUnusedResources();
-		
 		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
 		inline SceneManager& getSceneManager() const { return *sceneManager; }
@@ -101,13 +99,9 @@ namespace Lag
 		class KeyboardListener : public IKeyboardListener
 		{
 		public:
-			explicit KeyboardListener(RenderWindow *renderWindow);
-
 			virtual void onKeyPress(int key, int modifier) override;
 			virtual void onKeyRelease(int key, int modifier) override {}
 			virtual void onKeyRepeat(int key, int modifier) override {}
-		private:
-			RenderWindow *renderWindow;
 		};
 
 		/*
@@ -121,7 +115,7 @@ namespace Lag
 			virtual void onClose(RenderWindow &notifier) override;
 		};
 
-		WindowListener *windowListener;
-		KeyboardListener *keyboardListener;
+		WindowListener windowListener;
+		KeyboardListener keyboardListener;
 	};
 }

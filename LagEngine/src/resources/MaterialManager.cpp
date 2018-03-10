@@ -9,9 +9,9 @@ MaterialManager::MaterialManager(MaterialBuilder *builder) :
 {
 }
 
-void MaterialManager::initialize()
+void MaterialManager::initializeFallbackObject()
 {
-	defaultObject = get("defaultMaterial");
+	fallbackObject = get("defaultMaterial");
 }
 
 MaterialBuilder::MaterialBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :

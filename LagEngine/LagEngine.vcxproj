@@ -199,7 +199,6 @@
     <ClCompile Include="src\scene\SceneGraph.cpp" />
     <ClCompile Include="src\io\ini\IniSettings.cpp" />
     <ClCompile Include="src\io\ini\IniParser.cpp" />
-    <ClCompile Include="src\io\InputManager.cpp" />
     <ClCompile Include="src\io\log\LogManager.cpp" />
     <ClCompile Include="src\core\Timer.cpp" />
     <ClCompile Include="src\platform\GLFW\GLFWInputManager.cpp" />

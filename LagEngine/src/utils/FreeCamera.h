@@ -21,6 +21,8 @@ namespace Lag
 		FreeCamera(Scene &scene, float fovy, float nearPlane, float farPlane, float moveSpeed);
 		~FreeCamera();
 
+		inline Camera& getCamera() const { return *camera; }
+
 		virtual void onKeyPress(int key, int modifier) override;
 		virtual void onKeyRelease(int key, int modifier) override;
 		virtual void onKeyRepeat(int key, int modifier) override;
@@ -32,8 +34,6 @@ namespace Lag
 		virtual void onFrameStart(float timePassed) override;
 		virtual void onFrameRenderingQueued(float timePassed) override;
 		virtual void onFrameEnd(float timePassed) override;
-
-		inline Camera& getCamera() const { return *camera; }
 
 	protected:
 		float moveSpeed;

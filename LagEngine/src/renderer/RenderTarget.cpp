@@ -52,7 +52,3 @@ void RenderTarget::resize(uint32 width, uint32 height)
 	this->height = height;
 	onResizeNotify(*this, width, height);
 }
-
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPreRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onPostRender, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier), LAG_ARGS(notifier))
-LAG_DEFINE_NOTIFY_METHOD(RenderTarget, onResize, IRenderTargetListener, LAG_ARGS(RenderTarget &notifier, uint32 width, uint32 height), LAG_ARGS(notifier, width, height))

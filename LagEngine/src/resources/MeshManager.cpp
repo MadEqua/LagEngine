@@ -9,9 +9,9 @@ MeshManager::MeshManager(MeshBuilder *builder) :
 {
 }
 
-void MeshManager::initialize()
+void MeshManager::initializeFallbackObject()
 {
-	defaultObject = get("defaultMesh");
+	fallbackObject = get("defaultMesh");
 }
 
 MeshBuilder::MeshBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :

@@ -41,8 +41,6 @@ Root::Root() :
 	imageManager(nullptr),
 	textureManager(nullptr),
 	gpuBufferManager(nullptr),
-	windowListener(nullptr),
-	keyboardListener(nullptr),
 	graphicsAPI(nullptr),
 	inputDescriptionManager(nullptr),
 	resourcesFile(nullptr)
@@ -117,17 +115,6 @@ void Root::destroy()
 		renderer = nullptr;
 	}
 
-	if (windowListener != nullptr)
-	{
-		delete windowListener;
-		windowListener = nullptr;
-	}
-	if (keyboardListener != nullptr)
-	{
-		delete keyboardListener;
-		keyboardListener = nullptr;
-	}
-
 	if (inputManager != nullptr)
 	{
 		delete inputManager;
@@ -180,10 +167,8 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	renderer = new Renderer(*graphicsAPI, *sceneManager, *renderTargetManager);
 	sceneManager->registerObservers(); //Needs to be called after Renderer creation
 
-	windowListener = new WindowListener();
-	keyboardListener = new KeyboardListener(static_cast<GLFWRenderWindow*>(renderWindow.get()));
-	static_cast<RenderWindow*>(renderWindow.get())->registerObserver(*windowListener);
-	inputManager->registerObserver(*keyboardListener);
+	static_cast<RenderWindow*>(renderWindow.get())->registerObserver(windowListener);
+	inputManager->registerObserver(keyboardListener);
 
 	return true;
 }
@@ -223,15 +208,11 @@ bool Root::initResources(const std::string &resourcesFilePath)
 	meshManager = new MeshManager(new MeshBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder));
 	materialManager = new MaterialManager(new MaterialBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder));
 
-	renderTargetManager->initialize();
-	gpuBufferManager->initialize();
-	inputDescriptionManager->initialize();
-	imageManager->initialize();
-	gpuProgramStageManager->initialize();
-	gpuProgramManager->initialize();
-	textureManager->initialize();
-	materialManager->initialize();
-	meshManager->initialize();
+	imageManager->initializeFallbackObject();
+	gpuProgramManager->initializeFallbackObject();
+	textureManager->initializeFallbackObject();
+	materialManager->initializeFallbackObject();
+	meshManager->initializeFallbackObject();
 
 	return true;
 }
@@ -251,34 +232,15 @@ void Root::renderOneFrame()
 	renderer->renderOneFrame();
 }
 
-//This clear order is important, it's the dependency order.
-//TODO: find a better solution
-void Root::clearUnusedResources()
-{
-	renderTargetManager->clearUnused();
-	
-	meshManager->clearUnused();
-	inputDescriptionManager->clearUnused();
-	gpuBufferManager->clearUnused();
-
-	materialManager->clearUnused();
-	gpuProgramManager->clearUnused();
-	textureManager->clearUnused();
-	gpuProgramStageManager->clearUnused();
-	imageManager->clearUnused();
-}
-
-Root::KeyboardListener::KeyboardListener(RenderWindow *renderWindow) :
-	renderWindow(renderWindow)
-{
-}
-
 void Root::KeyboardListener::onKeyPress(int key, int modifier)
 {
 	switch (key)
 	{
-	case KEY_LEFT_CONTROL:
+	case KEY_LEFT_CONTROL: 
+	{
+		RenderWindow *renderWindow = Root::getInstance().getRenderTargetManager().getRenderWindow();
 		renderWindow->setVirtualCursor(!renderWindow->isVirtualCursorEnabled());
+	}
 		break;
 	case KEY_ESCAPE:
 		Root::getInstance().stopRenderingLoop();

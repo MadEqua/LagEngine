@@ -10,9 +10,9 @@ TextureManager::TextureManager(TextureBuilder *builder) :
 {
 }
 
-void TextureManager::initialize()
+void TextureManager::initializeFallbackObject()
 {
-	defaultObject = get("defaultTexture");
+	fallbackObject = get("defaultTexture");
 }
 
 TextureBuilder::TextureBuilder(const TiXmlDocument &resourcesXml) :

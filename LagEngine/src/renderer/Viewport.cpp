@@ -11,12 +11,15 @@ Viewport::Viewport(uint16 name, Camera &camera, RenderTarget &renderTarget,
 	name(name),
 	camera(camera),
 	renderTarget(renderTarget),
-	left(left), bottom(bottom), width(width), height(height),
-	renderTargetListener(*this)
-
+	left(left), bottom(bottom), width(width), height(height)
 {
 	computeCameraAspectRatio();
-	renderTarget.registerObserver(renderTargetListener);
+	renderTarget.registerObserver(*this);
+}
+
+Viewport::~Viewport()
+{
+	renderTarget.unregisterObserver(*this);
 }
 
 void Viewport::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager, RenderTarget &renderTarget)
@@ -51,20 +54,15 @@ void Viewport::computeCameraAspectRatio() const
 	camera.setAspectRatio(static_cast<float>(getRealWidth()) / static_cast<float>(getRealHeight()));
 }
 
-Viewport::RenderTargetListener::RenderTargetListener(const Viewport &vp) :
-	viewport(vp)
+void Viewport::onPreRender(RenderTarget &notifier)
 {
 }
 
-void Viewport::RenderTargetListener::onPreRender(RenderTarget &notifier)
+void Viewport::onPostRender(RenderTarget &notifier)
 {
 }
 
-void Viewport::RenderTargetListener::onPostRender(RenderTarget &notifier)
+void Viewport::onResize(RenderTarget &notifier, uint32 width, uint32 height)
 {
-}
-
-void Viewport::RenderTargetListener::onResize(RenderTarget &notifier, uint32 width, uint32 height)
-{
-	viewport.computeCameraAspectRatio();
+	computeCameraAspectRatio();
 }

@@ -10,9 +10,9 @@ ImageManager::ImageManager(ImageBuilder* builder) :
 {
 }
 
-void ImageManager::initialize()
+void ImageManager::initializeFallbackObject()
 {
-	defaultObject = get("defaultImage");
+	fallbackObject = get("defaultImage");
 }
 
 ImageBuilder::ImageBuilder(const TiXmlDocument & resourcesXml, const std::string & resourceFolderPath) :
