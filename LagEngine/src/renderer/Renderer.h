@@ -62,9 +62,9 @@ namespace Lag
 	class Renderer : public IRenderTargetListener
 	{
 		LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
-			LAG_GENERATE_NOTIFY_METHOD(onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-			LAG_GENERATE_NOTIFY_METHOD(onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-			LAG_GENERATE_NOTIFY_METHOD(onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+		LAG_GENERATE_NOTIFY_METHOD(onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+		LAG_GENERATE_NOTIFY_METHOD(onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+		LAG_GENERATE_NOTIFY_METHOD(onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
 	public:
 		Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager);

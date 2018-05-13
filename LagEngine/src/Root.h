@@ -10,6 +10,7 @@
 #include "core/SingletonPattern.h"
 
 #include "core/Handle.h"
+#include "io/ResourceFilesWatcher.h"
 
 class TiXmlDocument;
 
@@ -41,7 +42,6 @@ namespace Lag
 		LAG_GENERATE_SINGLETON(Root)
 
 	public:
-		bool initializeLag(const InitializationParameters &parameters);
 		bool initializeLag(const std::string &iniFile);
 
 		void startRenderingLoop();
@@ -90,8 +90,12 @@ namespace Lag
 		InitializationParameters initializationParameters;
 		TiXmlDocument *resourcesFile;
 
+		ResourceFilesWatcher resourceFilesWatcher;
+
 		void destroy();
-		bool internalInit(const IPlatformFactory *platformFactory, const InitializationParameters &parameters);
+
+		bool initializeLag();
+		bool internalInit(const IPlatformFactory *platformFactory);
 		bool initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath);
 
 		/*

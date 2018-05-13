@@ -45,7 +45,7 @@ bool GLFWRenderWindow::loadImplementation()
 	}
 	else
 	{
-		glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSSAsamples);
+		glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSAAsamples);
 		glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? 1 : 0);
 		glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
 		glfwWindowHint(GLFW_AUX_BUFFERS, 0);

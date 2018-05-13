@@ -126,6 +126,40 @@ void Manager<K, V>::clearUnused()
 }
 
 template<class K, class V>
+bool Manager<K, V>::reload(const K &name)
+{
+	auto it = objects.find(name);
+	V* object;
+
+	if (it == objects.end())
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
+			logTag, "Trying to reload unknown object: " + name);
+		return false;
+	}
+	else
+	{
+		object = it->second;
+	}
+
+	object->unload();
+	return object->load();
+}
+
+template<class K, class V>
+bool Manager<K, V>::reloadAll()
+{
+	for (auto &pair : objects)
+	{
+		V* object = pair.second;
+		object->unload();
+		if (!object->load())
+			return false;
+	}
+	return true;
+}
+
+template<class K, class V>
 bool Manager<K, V>::load(V* object) const
 {
 	if (object->load())

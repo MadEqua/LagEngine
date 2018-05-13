@@ -132,7 +132,13 @@ void Root::destroy()
 	}
 }
 
-bool Root::initializeLag(const InitializationParameters &parameters)
+bool Root::initializeLag(const std::string &iniFile)
+{
+	initializationParameters = InitializationParameters(iniFile);
+	return initializeLag();
+}
+
+bool Root::initializeLag()
 {
 	IPlatformFactory *platformFactory = nullptr;
 	if (initializationParameters.platformType == LAG_PLATFORM_GLFW_GL4)
@@ -146,22 +152,14 @@ bool Root::initializeLag(const InitializationParameters &parameters)
 	}
 	else
 	{
-		bool result = internalInit(platformFactory, parameters);
+		bool result = internalInit(platformFactory);
 		delete platformFactory;
 		return result;
 	}
 }
 
-bool Root::initializeLag(const std::string &iniFile)
+bool Root::internalInit(const IPlatformFactory *platformFactory)
 {
-	InitializationParameters parameters(iniFile);
-	return initializeLag(parameters);
-}
-
-bool Root::internalInit(const IPlatformFactory *platformFactory, const InitializationParameters &parameters)
-{
-	initializationParameters = parameters;
-	
 	//in case of reinitialization
 	destroy();
 
@@ -176,7 +174,7 @@ bool Root::internalInit(const IPlatformFactory *platformFactory, const Initializ
 	if (!graphicsAPI->initialize())
 		return false;
 
-	if (!initResources(platformFactory, parameters.resourcesFolder + '/' + parameters.resourcesFile))
+	if (!initResources(platformFactory, initializationParameters.resourcesFolder + '/' + initializationParameters.resourcesFile))
 		return false;
 
 	sceneManager = new SceneManager();
@@ -186,6 +184,8 @@ bool Root::internalInit(const IPlatformFactory *platformFactory, const Initializ
 	static_cast<RenderWindow*>(renderWindow.get())->registerObserver(windowListener);
 	inputManager->registerObserver(keyboardListener);
 
+	resourceFilesWatcher.run(initializationParameters);
+	
 	return true;
 }
 

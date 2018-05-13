@@ -18,7 +18,7 @@ InitializationParameters::InitializationParameters() :
 	meshesFolder("meshes"),
 	shadersFolder("shaders"),
 
-	MSSAsamples(0),
+	MSAAsamples(0),
 	sRGB(true),
 	platformType(LAG_PLATFORM_GLFW_GL4)
 {
@@ -44,7 +44,7 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		meshesFolder = iniSettings.getFieldAsString("meshesFolder", meshesFolder);
 		shadersFolder = iniSettings.getFieldAsString("shadersFolder", shadersFolder);
 
-		MSSAsamples = iniSettings.getFieldAsBasicType<int>("MSSAsamples", MSSAsamples);
+		MSAAsamples = iniSettings.getFieldAsBasicType<int>("MSAAsamples", MSAAsamples);
 		sRGB = iniSettings.getFieldAsBasicType<bool>("sRGB", sRGB);
 
 		std::string platformTypeStr = iniSettings.getFieldAsString("platformType", "GLFW_GL4");

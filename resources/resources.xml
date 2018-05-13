@@ -80,7 +80,7 @@
   <mesh name="cube" file="cube.obj"/>
   
   
-  <image name="test" file="test.png" components="RGB"
+  <image name="test" file="test.jpg" components="RGB"
          componentType="UINT8" normalized="true" sRGB="true"/>
 
   <image name="piano" file="piano.png" components="RGBA"

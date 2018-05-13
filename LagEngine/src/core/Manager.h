@@ -47,6 +47,9 @@ namespace Lag
 		void clear();
 		void clearUnused();
 
+		bool reload(const K &name);
+		bool reloadAll();
+
 		bool contains(const K &name) const;
 
 		virtual void onZeroReferences() override;

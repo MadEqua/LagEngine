@@ -6,7 +6,6 @@ namespace Lag
 {
 	/*
 	* Object managed by a Manager, it has the concept of loading and unloading. 
-	* The list of dependencies are other ManagedObjects that were loaded by this one.
 	*/
 	class ManagedObject
 	{

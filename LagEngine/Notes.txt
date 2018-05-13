@@ -1,5 +1,7 @@
 Short Term
 
+use cmake
+replace enums by enum class
 separate engine fixed resources from the app
 auto reloading of shaders
 smart-pointers

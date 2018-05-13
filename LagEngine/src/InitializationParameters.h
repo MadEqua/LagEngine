@@ -24,7 +24,7 @@ namespace Lag
 		std::string shadersFolder;
 
 		//Hints
-		uint32 MSSAsamples;
+		uint32 MSAAsamples;
 		bool sRGB;
 
 		PlatformType platformType;
