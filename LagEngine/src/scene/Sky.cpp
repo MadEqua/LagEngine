@@ -122,6 +122,6 @@ void Sky::render(Renderer &renderer, RenderOperation &renderOperation)
 		model, nor, *renderOperation.viewport);
 	
 	renderer.setDepthWritingEnabled(false);
-	renderer.renderIndexed(*renderOperation.vertexData, *renderOperation.indexData, 0);
+	renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData, 0);
 	renderer.setDepthWritingEnabled(true);
 }

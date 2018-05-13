@@ -5,6 +5,7 @@
 #include "scene/SceneManager.h"
 
 #include "TestScene.h"
+#include "TestScene2.h"
 
 
 bool TestApplication::start()
@@ -28,12 +29,13 @@ bool TestApplication::start()
 	if (!root.initializeLag("startup.ini"))
 		return false;
 
-	TestScene *testScene1 = new TestScene(true);
-	TestScene *testScene2 = new TestScene(false);
+	//TestScene *testScene1 = new TestScene(true);
+	//TestScene *testScene2 = new TestScene(false);
 
 	//SceneManager will own the Scene objects
-	root.getSceneManager().addScene("scene1", *testScene1); //will be auto-set as active
-	root.getSceneManager().addScene("scene2", *testScene2);
+	//root.getSceneManager().addScene("scene1", *testScene1); //will be auto-set as active
+	//root.getSceneManager().addScene("scene2", *testScene2);
+	root.getSceneManager().addScene("scene", *(new TestScene2()));
 
 	root.startRenderingLoop();
 

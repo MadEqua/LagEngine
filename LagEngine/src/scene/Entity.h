@@ -12,6 +12,7 @@ namespace Lag
 	class Material;
 	class Mesh;
 	struct RenderOperation;
+	enum RenderMode;
 	
 	/*
 	* Object represented by a Mesh (divided on SubMeshes) and a Material.
@@ -30,8 +31,13 @@ namespace Lag
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
+		inline void setRenderMode(RenderMode renderMode) { this->renderMode = renderMode; }
+		inline RenderMode getRenderMode() { return renderMode; }
+
 	private:
 		std::vector<SubEntity*> subEntities;
+
+		RenderMode renderMode;
 
 		Handle<Material> defaultMaterial;
 		Handle<Mesh> mesh;

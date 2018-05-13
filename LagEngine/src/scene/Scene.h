@@ -6,6 +6,7 @@
 #include "../core/NamedContainer.h"
 #include "../Types.h"
 #include "SceneGraph.h"
+#include "SceneObject.h"
 #include <glm/vec3.hpp>
 
 namespace Lag {

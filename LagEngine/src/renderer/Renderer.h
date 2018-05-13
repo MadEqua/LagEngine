@@ -79,7 +79,6 @@ namespace Lag
 		void renderOneFrame();
 
 		//Bind objects and settings
-		inline void setRenderMode(RenderMode mode) { actualRenderMode = mode; }
 		void bindVertexBuffer(const GpuBuffer &vertexBuffer);
 		void bindIndexBuffer(const GpuBuffer &indexBuffer);
 		void bindGpuProgram(const GpuProgram &gpuProgram);
@@ -90,8 +89,8 @@ namespace Lag
 
 
 		//High-level render calls
-		void renderVertices(const VertexData &vertexData);
-		void renderIndexed(const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex = 0);
+		void renderVertices(RenderMode renderMode, const VertexData &vertexData);
+		void renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex = 0);
 
 		/*void renderMultiVertices(const VertexData *vertexData[], uint32 drawCount);
 		void renderMultiIndexed(const VertexData *vertexData[], const IndexData *indexData[], uint32 drawCount);
@@ -110,6 +109,8 @@ namespace Lag
 
 		void setDepthTestEnabled(bool enabled);
 		void setDepthWritingEnabled(bool enabled);
+
+		void setPointSizeFromGpuProgramEnabled(bool enabled);
 
 		inline GpuProgramUniformFiller& getUniformFiller() { return uniformFiller; }
 
@@ -137,7 +138,6 @@ namespace Lag
 		//TODO: uint32 batch, face and vx counter
 
 		//Bound objects
-		RenderMode actualRenderMode;
 		const GpuBuffer *boundVertexBuffer;
 		const GpuBuffer *boundIndexBuffer;
 		const GpuProgram *boundGpuProgram;

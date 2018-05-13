@@ -1,29 +1,27 @@
 #include "Root.h"
 
-#include "tinyxml/tinyxml.h"
+#include <tinyxml/tinyxml.h>
+
+#include "platform/GLFW_GL4Factory.h"
 
 #include "InitializationParameters.h"
 #include "io/log/LogManager.h"
 
-#include "platform/GLFW/GLFWRenderTargetBuilder.h"
-#include "graphicsAPIs/gl4/GL4RenderTargetBuilder.h"
-
-#include "platform/GLFW/GLFWRenderWindow.h"
-#include "platform/GLFW/GLFWInputManager.h"
 #include "renderer/Renderer.h"
-#include "scene/SceneManager.h"
+#include "renderer/RenderWindow.h"
+#include "renderer/graphicsAPI/IGraphicsAPI.h"
+#include "renderer/graphicsAPI/GpuProgramManager.h"
+#include "renderer/graphicsAPI/GpuBufferManager.h"
+#include "renderer/graphicsAPI/InputDescriptionManager.h"
 
-#include "graphicsAPIs/gl4/GL4GpuProgramStageManager.h"
-#include "graphicsAPIs/gl4/GL4GpuProgramManager.h"
+#include "io/InputManager.h"
+#include "scene/SceneManager.h"
 
 #include "resources/MaterialManager.h"
 #include "resources/MeshManager.h"
 #include "resources/ImageManager.h"
-#include "graphicsAPIs/gl4/GL4TextureManager.h"
-#include "graphicsAPIs/gl4/GL4GpuBufferManager.h"
-
-#include "graphicsAPIs/gl4/GL4GraphicsAPI.h"
-#include "graphicsAPIs/gl4/GL4InputDescriptionManager.h"
+#include "resources/TextureManager.h"
+#include "resources/GpuProgramStageManager.h"
 
 #include "io/Keys.h"
 
@@ -136,31 +134,49 @@ void Root::destroy()
 
 bool Root::initializeLag(const InitializationParameters &parameters)
 {
-	return internalInit(parameters);
+	IPlatformFactory *platformFactory = nullptr;
+	if (initializationParameters.platformType == LAG_PLATFORM_GLFW_GL4)
+		platformFactory = new GLFW_GL4Factory();
+
+	if (platformFactory == nullptr)
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "Root",
+			"Cannot find a suitable platform factory. Double check the choosen platform on the .ini file.");
+		return false;
+	}
+	else
+	{
+		bool result = internalInit(platformFactory, parameters);
+		delete platformFactory;
+		return result;
+	}
 }
 
 bool Root::initializeLag(const std::string &iniFile)
 {
 	InitializationParameters parameters(iniFile);
-	return internalInit(parameters);
+	return initializeLag(parameters);
 }
 
-bool Root::internalInit(const InitializationParameters &parameters)
+bool Root::internalInit(const IPlatformFactory *platformFactory, const InitializationParameters &parameters)
 {
 	initializationParameters = parameters;
 	
 	//in case of reinitialization
 	destroy();
 
-	//TODO Use a factory to initialize render window and graphics api?
-	renderTargetManager = new RenderTargetManager(new GLFWRenderTargetBuilder(), new GL4RenderTargetBuilder());
+	renderTargetManager = platformFactory->getRenderTargetManager();
 	renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
 	if (!renderWindow.isValid())
 		return false;
 
-	inputManager = new GLFWInputManager(static_cast<GLFWRenderWindow*>(renderWindow.get()));
+	inputManager = platformFactory->getInputManager(static_cast<RenderWindow&>(*renderWindow));
 
-	if (!initResources(parameters.resourcesFolder + '/' + parameters.resourcesFile))
+	graphicsAPI = platformFactory->getGraphicsAPI();
+	if (!graphicsAPI->initialize())
+		return false;
+
+	if (!initResources(platformFactory, parameters.resourcesFolder + '/' + parameters.resourcesFile))
 		return false;
 
 	sceneManager = new SceneManager();
@@ -173,7 +189,7 @@ bool Root::internalInit(const InitializationParameters &parameters)
 	return true;
 }
 
-bool Root::initResources(const std::string &resourcesFilePath)
+bool Root::initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath)
 {
 	resourcesFile = new TiXmlDocument(resourcesFilePath);
 	if (!resourcesFile->LoadFile())
@@ -191,18 +207,11 @@ bool Root::initResources(const std::string &resourcesFilePath)
 		return false;
 	}
 
-	if (initializationParameters.graphicsApiType == LAG_GRAPHICS_API_TYPE_OPENGL_4)
-	{
-		graphicsAPI = new GL4GraphicsAPI();
-		if (!graphicsAPI->initialize())
-			return false;
-
-		textureManager = new GL4TextureManager(new GL4TextureBuilder(*resourcesFile));
-		gpuBufferManager = new GL4GpuBufferManager();
-		gpuProgramManager = new GL4GpuProgramManager();
-		inputDescriptionManager = new GL4InputDescriptionManager();
-		gpuProgramStageManager = new GL4GpuProgramStageManager(new GL4GpuProgramStageBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder));
-	}
+	textureManager = platformFactory->getTextureManager(*resourcesFile);
+	gpuBufferManager = platformFactory->getGpuBufferManager();
+	gpuProgramManager = platformFactory->getGpuProgramManager();
+	inputDescriptionManager = platformFactory->getInputDescriptionManager();
+	gpuProgramStageManager = platformFactory->getGpuProgramStageManager(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder);
 
 	imageManager = new ImageManager(new ImageBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder));
 	meshManager = new MeshManager(new MeshBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder));

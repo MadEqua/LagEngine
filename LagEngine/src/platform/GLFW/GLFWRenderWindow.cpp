@@ -50,6 +50,11 @@ bool GLFWRenderWindow::loadImplementation()
 		glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
 		glfwWindowHint(GLFW_AUX_BUFFERS, 0);
 
+		/* TODO: force a version and profile?
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
+
 		glfwSwapInterval(initializationParameters.vsync ? 1 : 0);
 
 		window = glfwCreateWindow(initializationParameters.width, 

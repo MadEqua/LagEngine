@@ -52,7 +52,7 @@ void Lag::mouseButtonCallback(GLFWwindow* window, int button, int action, int mo
 	}
 }
 
-GLFWInputManager::GLFWInputManager(GLFWRenderWindow *renderWindow) : window(renderWindow->getGLFWwindow())
+GLFWInputManager::GLFWInputManager(const GLFWRenderWindow &renderWindow) : window(renderWindow.getGLFWwindow())
 {
 	inputManager = this;
 	glfwSetKeyCallback(window, keyCallback);

@@ -50,5 +50,7 @@ namespace Lag
 
 		virtual void setDepthTestEnabled(bool enabled) = 0;
 		virtual void setDepthWritingEnabled(bool enabled) = 0;
+
+		virtual void setPointSizeFromGpuProgramEnabled(bool enabled) = 0;
 	};
 }

@@ -3,7 +3,7 @@
 #include <string>
 #include "Types.h"
 
-#include "renderer/GraphicsApiType.h"
+#include "platform/PlatformType.h"
 
 namespace Lag
 {
@@ -27,7 +27,7 @@ namespace Lag
 		uint32 MSSAsamples;
 		bool sRGB;
 
-		GraphicsApiType graphicsApiType;
+		PlatformType platformType;
 
 		InitializationParameters();
 		explicit InitializationParameters(const std::string &iniFilePath);

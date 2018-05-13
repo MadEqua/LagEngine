@@ -34,6 +34,7 @@ namespace Lag
 	class InputDescriptionManager;
 
 	class IGraphicsAPI;
+	class IPlatformFactory;
 
 	class Root
 	{
@@ -90,8 +91,8 @@ namespace Lag
 		TiXmlDocument *resourcesFile;
 
 		void destroy();
-		bool internalInit(const InitializationParameters &parameters);
-		bool initResources(const std::string &resourcesFilePath);
+		bool internalInit(const IPlatformFactory *platformFactory, const InitializationParameters &parameters);
+		bool initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath);
 
 		/*
 		* Listen for toggle virtual cursor and escape.

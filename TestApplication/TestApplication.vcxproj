@@ -124,10 +124,12 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\TestApplication.cpp" />
     <ClCompile Include="src\TestScene.cpp" />
+    <ClCompile Include="src\TestScene2.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\TestApplication.h" />
     <ClInclude Include="src\TestScene.h" />
+    <ClInclude Include="src\TestScene2.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

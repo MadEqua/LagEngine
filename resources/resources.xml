@@ -51,6 +51,14 @@
     <uniform name="diffuseTexture" semantic="TextureDiffuse"/>
   </shader>
 
+  <shader name="pointVertex" file="point.vert" type="Vertex">
+    <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+  </shader>
+
+  <shader name="pointFragment" file="point.frag" type="Fragment">
+    <uniform name="diffuseTexture" semantic="TextureDiffuse"/>
+  </shader>
+
   <shader name="skyVertex" file="sky.vert" type="Vertex">
     <uniform name="viewMatrix" semantic="ViewMatrix"/>
     <uniform name="projectionMatrix" semantic="ProjectionMatrix"/>

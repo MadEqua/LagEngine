@@ -57,9 +57,6 @@
     <ClCompile Include="src\renderer\Viewport.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphicsApis\gl4\GL4GraphicsApi.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\graphicsApi\GpuProgram.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -102,12 +99,6 @@
     <ClCompile Include="src\InitializationParameters.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgram.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\resources\MeshManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -124,9 +115,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\SubMesh.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramUniform.cpp">
@@ -153,16 +141,7 @@
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4Error.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4GpuBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\GpuBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4InputDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp">
@@ -186,9 +165,6 @@
     <ClCompile Include="src\resources\TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4Texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\resources\ImageManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -202,9 +178,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\RenderToTexture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\graphicsAPIs\gl4\GL4RenderToTexture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\PerspectiveCamera.cpp">
@@ -241,6 +214,36 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dependencies\tinyxml\tinyxmlparser.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\GLFW_GL4Factory.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4Error.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4GpuBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4GpuProgram.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4GpuProgramStage.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4GpuProgramUniform.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4GraphicsAPI.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4InputDescription.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4RenderToTexture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\platform\gl4\GL4Texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -314,9 +317,6 @@
     <ClInclude Include="src\renderer\Viewport.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsApis\gl4\GL4GraphicsApi.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\graphicsApi\GpuProgram.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -368,12 +368,6 @@
     <ClInclude Include="src\InitializationParameters.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgram.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStage.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\GraphicsApiType.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -398,9 +392,6 @@
     <ClInclude Include="src\renderer\SubMesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramUniform.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\Manager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -410,19 +401,10 @@
     <ClInclude Include="src\renderer\GpuProgramUniformDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramStageManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuProgramManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\GpuBufferManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBufferManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\core\ManagedObject.h">
@@ -441,21 +423,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\InputDescriptionManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescriptionManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4InputDescription.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4Error.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4Includes.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4GpuBuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\GpuBuffer.h">
@@ -479,12 +446,6 @@
     <ClInclude Include="src\resources\TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4TextureManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4Texture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\resources\ImageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -498,9 +459,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\RenderToTexture.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderToTexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\PerspectiveCamera.h">
@@ -530,9 +488,6 @@
     <ClInclude Include="src\platform\GLFW\GLFWRenderTargetBuilder.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\graphicsAPIs\gl4\GL4RenderTargetBuilder.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\renderer\RenderPhase.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -552,6 +507,54 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="dependencies\stbi\stb_image.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4Error.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuProgram.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuProgramStage.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuProgramUniform.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GraphicsAPI.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4Includes.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4InputDescription.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4InputDescriptionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4RenderTargetBuilder.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4RenderToTexture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4Texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4TextureManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuBufferManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuProgramManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\platform\gl4\GL4GpuProgramStageManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

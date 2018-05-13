@@ -222,17 +222,17 @@ void Renderer::bindTexture(const Texture &texture, uint8 unit)
 	}
 }
 
-void Renderer::renderVertices(const VertexData &vertexData)
+void Renderer::renderVertices(RenderMode renderMode, const VertexData &vertexData)
 {
 	bindInputDescription(*vertexData.inputDescription);
-	graphicsAPI.renderVertices(actualRenderMode, vertexData.vertexStart, vertexData.vertexCount);
+	graphicsAPI.renderVertices(renderMode, vertexData.vertexStart, vertexData.vertexCount);
 }
 
-void Renderer::renderIndexed(const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex)
+void Renderer::renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData, uint32 baseVertex)
 {
 	bindInputDescription(*vertexData.inputDescription);
 	bindIndexBuffer(*indexData.indexBuffer);
-	graphicsAPI.renderIndexed(actualRenderMode, indexData.indexStart, indexData.indexType, indexData.indexCount, baseVertex);
+	graphicsAPI.renderIndexed(renderMode, indexData.indexStart, indexData.indexType, indexData.indexCount, baseVertex);
 }
 
 /*void Renderer::renderMultiVertices(const VertexData *vertexData[], uint32 drawCount)
@@ -300,6 +300,10 @@ void Renderer::setDepthWritingEnabled(bool enabled)
 	graphicsAPI.setDepthWritingEnabled(enabled);
 }
 
+void Renderer::setPointSizeFromGpuProgramEnabled(bool enabled)
+{
+	graphicsAPI.setPointSizeFromGpuProgramEnabled(enabled);
+}
 
 //Listening to resizes. A resize may invalidate the current bound Viewport.
 void Renderer::onResize(RenderTarget &notifier, uint32 width, uint32 height)

@@ -1,6 +1,7 @@
 Short Term
 
-factory for generating renderApis and platforms specifics.
+separate engine fixed resources from the app
+auto reloading of shaders
 smart-pointers
 free the in-memory images as soon as they are sent to the gpu (and meshes, shader code?)
 key codes as enum

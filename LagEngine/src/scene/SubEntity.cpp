@@ -29,7 +29,7 @@ SubEntity::SubEntity(Entity &parent, Material &material, SubMesh &subMesh) :
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
 {
 	RenderOperation &ro = renderQueue.addRenderOperation();
-	ro.renderMode = LAG_RENDER_MODE_TRIANGLES;
+	ro.renderMode = parent.getRenderMode();
 	ro.renderTarget = &renderTarget;
 	ro.vertexData = const_cast<VertexData*>(&subMesh.getVertexData());
 	ro.indexData = const_cast<IndexData*>(&subMesh.getIndexData());
@@ -56,6 +56,6 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation)
 	renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
 		parent.getTransform(), parent.getNormalTransform(), *renderOperation.viewport);
 
-	renderer.renderIndexed(*renderOperation.vertexData, *renderOperation.indexData,
+	renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData,
 		renderOperation.vertexData->vertexStart);
 }

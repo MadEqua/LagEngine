@@ -21,7 +21,7 @@ namespace Lag
 		friend void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 	public:
-		GLFWInputManager(GLFWRenderWindow *renderWndow);
+		GLFWInputManager(const GLFWRenderWindow &renderWndow);
 		virtual ~GLFWInputManager();
 
 	private:
