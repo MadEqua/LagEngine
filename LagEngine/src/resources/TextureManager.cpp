@@ -15,6 +15,19 @@ void TextureManager::initializeFallbackObject()
 	fallbackObject = get("defaultTexture");
 }
 
+std::vector<std::string> TextureManager::getTexturesWithImageName(const std::string &imageName) const
+{
+	std::vector<std::string> res;
+
+	for (auto &pair : objects)
+	{
+		Texture &tex = *pair.second;
+		if (tex.containsImageWithName(imageName))
+			res.push_back(pair.first);
+	}
+	return res;
+}
+
 TextureBuilder::TextureBuilder(const TiXmlDocument &resourcesXml) :
 	XmlResourceBuilder("texture", resourcesXml, ""), //Textures don't need folder path
 	buildingFromXml(true)

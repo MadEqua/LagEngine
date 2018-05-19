@@ -1,5 +1,7 @@
 #include "GpuProgram.h"
 
+#include <algorithm>
+
 #include "GpuProgramStage.h"
 #include "GpuProgramUniform.h"
 #include "../../resources/GpuProgramStageManager.h"
@@ -137,4 +139,9 @@ const std::vector<GpuProgramUniform*>* GpuProgram::getUniformBySemantic(GpuProgr
 		return &it->second;
 	else
 		return nullptr;
+}
+
+bool GpuProgram::containsStageWithName(const std::string &imageName) const
+{
+	return std::find(stagesNames.begin(), stagesNames.end(), imageName) != stagesNames.end();
 }

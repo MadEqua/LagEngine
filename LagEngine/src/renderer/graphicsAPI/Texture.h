@@ -82,6 +82,8 @@ namespace Lag
 		inline const TextureData& getTextureData() const { return textureData; }
 		inline const ImageData& getImageData() const { return imageData; }
 
+		bool containsImageWithName(const std::string &imageName) const;
+
 		//TODO: set texture parameter methods
 
 	protected:

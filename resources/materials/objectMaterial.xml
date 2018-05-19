@@ -1,8 +1,8 @@
 <material>
 	<!-- <technique>
 		<pass> -->
-  <shader name="pointVertex"/>
-  <shader name="pointFragment"/>
+  <shader name="mainVertex"/>
+  <shader name="mainFragment"/>
   
   <texture name="piano"/>
 		<!-- </pass>

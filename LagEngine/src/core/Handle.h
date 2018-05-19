@@ -23,6 +23,7 @@ namespace Lag
 		void decrementRefCount();
 
 		inline bool hasReferences() const { return refCount > 0; }
+		inline uint32 getReferenceCount() const { return refCount; }
 
 		LAG_GENERATE_SINGLE_OBSERVER_STORAGE(IObjectZeroReferencesListener)
 		LAG_GENERATE_SINGLE_NOTIFY_METHOD(onZeroReferences, IObjectZeroReferencesListener, LAG_ARGS(), LAG_ARGS())

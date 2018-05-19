@@ -1,5 +1,7 @@
 #include "Texture.h"
 
+#include <algorithm>
+
 #include "../../resources/ImageManager.h"
 #include "../../resources/Image.h"
 #include "../../Root.h"
@@ -57,5 +59,9 @@ bool Texture::loadImplementation()
 void Texture::unloadImplementation()
 {
 	images.clear();
-	imageNames.clear();
+}
+
+bool Texture::containsImageWithName(const std::string &imageName) const
+{
+	return std::find(imageNames.begin(), imageNames.end(), imageName) != imageNames.end();
 }

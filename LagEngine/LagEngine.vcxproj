@@ -216,6 +216,7 @@
     <ClCompile Include="src\renderer\VertexDescription.cpp" />
     <ClCompile Include="src\renderer\SubMesh.cpp" />
     <ClCompile Include="src\scene\SubEntity.cpp" />
+    <ClCompile Include="src\utils\Utils.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="dependencies\stbi\stb_image.h" />

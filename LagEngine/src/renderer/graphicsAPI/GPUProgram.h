@@ -31,6 +31,8 @@ namespace Lag
 		const GpuProgramUniform* getUniformByName(const std::string &name) const;
 		const std::vector<GpuProgramUniform*>* getUniformBySemantic(GpuProgramUniformSemantic semantic) const;
 
+		bool containsStageWithName(const std::string &imageName) const;
+
 	protected:
 		GpuProgram(const std::string &name, const std::vector<std::string> &names);
 

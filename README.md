@@ -3,7 +3,7 @@
 This project exists as a learning experience about the implementation and design decisions of a 3D rendering engine. 
 While it tries to expose a friendly programming interface, it is not meant to have a GUI or an editor.
 
-This is not a finished engine (not even close).
+This is not a finished engine.
 
 # Current features:
 - Forward rendering based on simple per-pixel lighting, supporting directional and point lights.
@@ -15,6 +15,7 @@ This is not a finished engine (not even close).
 - SceneGraph based on a hierarchy of SceneNodes. SceneNodes have a 3D space transformation relative to their parent.
 - SceneObjects can be attached to SceneNodes and are inherit their properties. (Example SceneObjects: Lights, MeshEntities, Cameras)
 - XML based ResourceManager for assets like meshes, image textures, shader code.
+- Hot reloading of file Resources (images, shaders, materials).
 
 
 # License

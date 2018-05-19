@@ -35,6 +35,7 @@ bool GL4Texture::loadImplementation()
 void GL4Texture::unloadImplementation()
 {
 	GL_ERROR_PRINT(glDeleteTextures(1, &handle))
+	Texture::unloadImplementation();
 }
 
 void GL4Texture::initStorage() const

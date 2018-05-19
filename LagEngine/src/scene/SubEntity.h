@@ -20,7 +20,6 @@ namespace Lag
 		virtual void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
 		virtual void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
-	private:
 		Material &material;
 		SubMesh &subMesh;
 		Entity &parent;

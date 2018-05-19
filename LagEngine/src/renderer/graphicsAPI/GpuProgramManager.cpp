@@ -17,6 +17,19 @@ void GpuProgramManager::initializeFallbackObject()
 	fallbackObject = get(defaultStages);
 }
 
+std::vector<std::string> GpuProgramManager::getProgramsWithStageName(const std::string &stageName) const
+{
+	std::vector<std::string> res;
+
+	for (auto &pair : objects)
+	{
+		GpuProgram &prog = *pair.second;
+		if (prog.containsStageWithName(stageName))
+			res.push_back(pair.first);
+	}
+	return res;
+}
+
 Handle<GpuProgram> GpuProgramManager::get(std::vector<std::string>& stagesNames)
 {
 	GpuProgramBuilder &gpuProgramBuilder = static_cast<GpuProgramBuilder&>(*builder);

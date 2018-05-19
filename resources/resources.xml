@@ -14,7 +14,8 @@
     <uniform name="mvpMatrix" semantic="MvpMatrix"/>
   </shader>
 
-  <shader name="defaultFragment" file="default.frag" type="Fragment">
+  <shader name="defaultFragment" file="default.frag" 
+type="Fragment">
   </shader>
   
   <material name="defaultMaterial" file="defaultMaterial.xml"/>

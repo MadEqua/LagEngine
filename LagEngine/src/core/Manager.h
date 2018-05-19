@@ -51,6 +51,7 @@ namespace Lag
 		bool reloadAll();
 
 		bool contains(const K &name) const;
+		uint32 getReferenceCount(const K &name) const;
 
 		virtual void onZeroReferences() override;
 

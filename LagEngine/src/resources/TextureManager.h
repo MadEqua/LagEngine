@@ -2,7 +2,9 @@
 
 #include "XmlResourceManager.h"
 #include "../renderer/graphicsAPI/Texture.h"
+
 #include <string>
+#include <vector>
 
 namespace Lag
 {
@@ -42,5 +44,7 @@ namespace Lag
 	public:
 		explicit TextureManager(TextureBuilder *builder);
 		virtual void initializeFallbackObject() override;
+
+		std::vector<std::string> getTexturesWithImageName(const std::string &imageName) const;
 	};
 }

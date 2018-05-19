@@ -26,7 +26,7 @@ template<class K, class V>
 Handle<V> Manager<K, V>::get(const K &name)
 {
 	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		logTag, "Getting object with name: " + toString(name));
+		logTag, "Getting object with name: " + Utils::toString(name));
 
 	auto it = objects.find(name);
 	V* object;
@@ -38,25 +38,25 @@ Handle<V> Manager<K, V>::get(const K &name)
 		if (object == nullptr)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				logTag, "Error building Object " + toString(name));
+				logTag, "Error building Object " + Utils::toString(name));
 			return fallbackObject;
 		}
 
-		object->setName(toString(name));
+		object->setName(Utils::toString(name));
 		objects[name] = object;
 
 		controlBlock = new ControlBlock<V>(object);
 		controlBlocks[name] = controlBlock;
 
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			logTag, "Created object with name: " + toString(name));
+			logTag, "Created object with name: " + Utils::toString(name));
 	}
 	else
 	{
 		object = it->second;
 		controlBlock = controlBlocks[name];
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			logTag, "Getting already existent object with name: " + toString(name));
+			logTag, "Getting already existent object with name: " + Utils::toString(name));
 	}
 
 	if (load(object))
@@ -77,6 +77,16 @@ bool Manager<K, V>::contains(const K &name) const
 {
 	auto it = objects.find(name);
 	return it != objects.end();
+}
+
+template<class K, class V>
+uint32 Manager<K, V>::getReferenceCount(const K &name) const
+{
+	auto it = controlBlocks.find(name);
+	if (it == controlBlocks.end())
+		return 0;
+	else
+		return it->second->getReferenceCount();
 }
 
 template<class K, class V>
@@ -142,8 +152,8 @@ bool Manager<K, V>::reload(const K &name)
 		object = it->second;
 	}
 
-	object->unload();
-	return object->load();
+	unload(object);
+	return load(object);
 }
 
 template<class K, class V>
@@ -152,8 +162,8 @@ bool Manager<K, V>::reloadAll()
 	for (auto &pair : objects)
 	{
 		V* object = pair.second;
-		object->unload();
-		if (!object->load())
+		unload(object);
+		if (!load(object))
 			return false;
 	}
 	return true;

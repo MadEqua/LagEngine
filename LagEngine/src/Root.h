@@ -10,7 +10,6 @@
 #include "core/SingletonPattern.h"
 
 #include "core/Handle.h"
-#include "io/ResourceFilesWatcher.h"
 
 class TiXmlDocument;
 
@@ -37,6 +36,8 @@ namespace Lag
 	class IGraphicsAPI;
 	class IPlatformFactory;
 
+	class ResourceFilesWatcher;
+
 	class Root
 	{
 		LAG_GENERATE_SINGLETON(Root)
@@ -47,6 +48,8 @@ namespace Lag
 		void startRenderingLoop();
 		void stopRenderingLoop();
 		void renderOneFrame();
+
+		void reloadResourcesFile();
 
 		inline InputManager& getInputManager() const { return *inputManager; }
 		inline Renderer& getRenderer() const { return *renderer; }
@@ -90,13 +93,16 @@ namespace Lag
 		InitializationParameters initializationParameters;
 		TiXmlDocument *resourcesFile;
 
-		ResourceFilesWatcher resourceFilesWatcher;
+#ifdef _DEBUG
+		ResourceFilesWatcher *resourceFilesWatcher;
+#endif
 
 		void destroy();
 
 		bool initializeLag();
 		bool internalInit(const IPlatformFactory *platformFactory);
 		bool initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath);
+		bool initResourcesFile(const std::string &resourcesFilePath);
 
 		/*
 		* Listen for toggle virtual cursor and escape.

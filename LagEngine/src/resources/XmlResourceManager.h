@@ -5,6 +5,8 @@
 #include "../core/Manager.h"
 #include "tinyxml/tinyxml.h"
 
+#include "../utils/Utils.h"
+
 class TiXmlElement;
 
 namespace Lag
@@ -35,6 +37,8 @@ namespace Lag
 	{
 	public:
 		XmlResourceManager(const std::string &name, XmlResourceBuilder<V> *builder);
+
+		std::string getNameByFileName(const std::string &name) const;
 	};
 
 
@@ -94,5 +98,19 @@ namespace Lag
 		Manager(name, builder)
 	{
 		static_assert(std::is_base_of<XmlResource, V>::value, "Creating a XmlResourceManager of Values not derived from XmlResource");
+	}
+
+	template<class V>
+	std::string XmlResourceManager<V>::getNameByFileName(const std::string &name) const
+	{
+		for (auto &pair : objects)
+		{
+			std::string file = Utils::getFileNameFromPath(pair.second->getPath());
+			
+			if (file == name)
+				return pair.first;
+		}
+
+		return std::string();
 	}
 }

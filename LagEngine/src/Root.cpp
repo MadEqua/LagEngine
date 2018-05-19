@@ -25,6 +25,11 @@
 
 #include "io/Keys.h"
 
+#ifdef _DEBUG
+	#include "io/ResourceFilesWatcher.h"
+#endif
+
+
 using namespace Lag;
 
 Root::Root() :
@@ -45,6 +50,10 @@ Root::Root() :
 {
 	//Initialize other singletons
 	LogManager::getInstance();
+
+#ifdef _DEBUG
+	resourceFilesWatcher = nullptr;
+#endif
 }
 
 Root::~Root()
@@ -130,6 +139,14 @@ void Root::destroy()
 		delete renderTargetManager;
 		renderTargetManager = nullptr;
 	}
+
+#ifdef _DEBUG
+	if (resourceFilesWatcher != nullptr)
+	{
+		delete resourceFilesWatcher;
+		resourceFilesWatcher = nullptr;
+	}
+#endif
 }
 
 bool Root::initializeLag(const std::string &iniFile)
@@ -184,28 +201,17 @@ bool Root::internalInit(const IPlatformFactory *platformFactory)
 	static_cast<RenderWindow*>(renderWindow.get())->registerObserver(windowListener);
 	inputManager->registerObserver(keyboardListener);
 
-	resourceFilesWatcher.run(initializationParameters);
+#ifdef _DEBUG
+	resourceFilesWatcher = new ResourceFilesWatcher(initializationParameters);
+#endif
 	
 	return true;
 }
 
 bool Root::initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath)
 {
-	resourcesFile = new TiXmlDocument(resourcesFilePath);
-	if (!resourcesFile->LoadFile())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
-			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
+	if (!initResourcesFile(resourcesFilePath))
 		return false;
-	}
-
-	const TiXmlElement *resourcesElement = resourcesFile->FirstChildElement();
-	if (!resourcesElement)
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
-			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
-		return false;
-	}
 
 	textureManager = platformFactory->getTextureManager(*resourcesFile);
 	gpuBufferManager = platformFactory->getGpuBufferManager();
@@ -224,6 +230,37 @@ bool Root::initResources(const IPlatformFactory *platformFactory, const std::str
 	meshManager->initializeFallbackObject();
 
 	return true;
+}
+
+bool Root::initResourcesFile(const std::string &resourcesFilePath)
+{
+	TiXmlDocument *resourcesFile = new TiXmlDocument(resourcesFilePath);
+	if (!resourcesFile->LoadFile())
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
+			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
+		delete resourcesFile;
+		return false;
+	}
+
+	const TiXmlElement *resourcesElement = resourcesFile->FirstChildElement();
+	if (!resourcesElement)
+	{
+		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
+			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
+		delete resourcesFile;
+		return false;
+	}
+
+	this->resourcesFile = resourcesFile;
+	return true;
+}
+
+void Root::reloadResourcesFile()
+{
+	auto oldResourcesFile = resourcesFile;
+	if (initResourcesFile(initializationParameters.resourcesFolder + '/' + initializationParameters.resourcesFile))
+		delete oldResourcesFile;
 }
 
 void Root::startRenderingLoop()
