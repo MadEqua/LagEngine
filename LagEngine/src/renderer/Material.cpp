@@ -11,6 +11,7 @@
 #include "tinyxml/tinyxml.h"
 #include "../Root.h"
 #include "Renderer.h"
+#include "../Constants.h"
 
 using namespace Lag;
 
@@ -109,9 +110,9 @@ bool Material::parse()
 		child != 0;
 		child = child->NextSiblingElement())
 	{
-		if (child->ValueStr() == "shader")
+		if (child->ValueStr() == SHADER_XML_TAG)
 		{
-			const char* name = child->Attribute("name");
+			const char* name = child->Attribute(NAME_XML_ATTR);
 			if (name)
 				shaderStageNames.push_back(name);
 			else
@@ -119,9 +120,9 @@ bool Material::parse()
 					"Material file: " + path + " has a <shader> element with no name");
 		}
 
-		if (child->ValueStr() == "texture")
+		if (child->ValueStr() == TEXTURE_XML_TAG)
 		{
-			const char* name = child->Attribute("name");
+			const char* name = child->Attribute(NAME_XML_ATTR);
 			if (name)
 				textureNames.push_back(name);
 			else

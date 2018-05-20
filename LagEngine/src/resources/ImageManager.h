@@ -13,9 +13,9 @@ namespace Lag
 	class ImageBuilder : public XmlResourceBuilder<Image>
 	{
 	public:
-		ImageBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath);
+		ImageBuilder(const XmlResourceBuilderData &xmlResourceData);
 
-		virtual Image* parseAndCreate(const std::string &name, const TiXmlElement &element) const override;
+		virtual Image* parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
 
 	protected:
 		static ImageData parseImageData(const TiXmlElement &element);

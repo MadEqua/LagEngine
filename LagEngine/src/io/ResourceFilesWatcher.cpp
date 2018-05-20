@@ -24,7 +24,7 @@ ResourceFilesWatcher::ResourceFilesWatcher(const InitializationParameters &initi
 
 	timer.start();
 
-	fileWatcher = new filewatch::FileWatch<std::string>(initializationParameters.resourcesFolder,
+	fileWatcher = new filewatch::FileWatch<std::string>(initializationParameters.appResourcesFolder,
 		[this, &initializationParameters](const std::string &path, const filewatch::Event change_type) {
 
 		uint32 timeSinceLast = timer.getElapsedMilis();

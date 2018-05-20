@@ -2,6 +2,8 @@
 
 #include "Utils.h"
 
+#include <tinyxml/tinyxml.h>
+
 using namespace Lag;
 
 char Utils::getPathSeparator()
@@ -38,4 +40,19 @@ std::string Utils::getExtensionFromFile(const std::string &file)
 		return std::string();
 	else
 		return file.substr(dot, std::string::npos);
+}
+
+void Utils::copyTinyXmlNode(TiXmlNode *dest, const TiXmlNode *src)
+{
+	if (dest == NULL || src == NULL)
+		return;
+
+	TiXmlNode *copy = src->Clone();
+	if (copy == NULL)
+		return;
+
+	dest->InsertEndChild(*copy);
+
+	for (const TiXmlNode *node = src->FirstChild(); node != NULL; node = node->NextSibling())
+		copyTinyXmlNode(copy, node);
 }

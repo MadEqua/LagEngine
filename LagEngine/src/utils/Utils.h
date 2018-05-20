@@ -3,6 +3,8 @@
 #include <string>
 #include <sstream>
 
+class TiXmlNode;
+
 namespace Lag
 {
 	struct InputDescriptionMapKey;
@@ -31,5 +33,7 @@ namespace Lag
 		std::string getFileNameFromPath(const std::string &path, char separator = '/');
 		std::string getDirNameFromPath(const std::string &path, char separator = '/');
 		std::string getExtensionFromFile(const std::string &file);
+
+		void copyTinyXmlNode(TiXmlNode *dest, const TiXmlNode *src);
 	}
 }

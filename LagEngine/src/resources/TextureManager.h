@@ -18,7 +18,7 @@ namespace Lag
 	class TextureBuilder : public XmlResourceBuilder<Texture>
 	{
 	public:
-		TextureBuilder(const TiXmlDocument &resourcesXml);
+		TextureBuilder(const XmlResourceBuilderData &xmlResourceData);
 
 		inline void setBuildFromXml() { buildingFromXml = true; }
 		void setBuildCustom(const ImageData &imageData, const TextureData &textureData);

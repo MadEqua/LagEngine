@@ -9,9 +9,9 @@ namespace Lag
 	class MeshBuilder : public XmlResourceBuilder<Mesh>
 	{
 	public:
-		MeshBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath);
+		MeshBuilder(const XmlResourceBuilderData &xmlResourceData);
 
-		virtual Mesh* parseAndCreate(const std::string &name, const TiXmlElement &element) const override;
+		virtual Mesh* parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
 	};
 
 	

@@ -4,6 +4,7 @@
 #include "../renderer/graphicsAPI/GpuProgramStage.h"
 
 #include "tinyxml/tinyxml.h"
+#include "../Constants.h"
 
 using namespace Lag;
 
@@ -13,8 +14,8 @@ GpuProgramStageManager::GpuProgramStageManager(GpuProgramStageBuilder *builder) 
 }
 
 
-GpuProgramStageBuilder::GpuProgramStageBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
-	XmlResourceBuilder("shader", resourcesXml, resourceFolderPath)
+GpuProgramStageBuilder::GpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) :
+	XmlResourceBuilder(xmlResourceData)
 {
 }
 
@@ -26,7 +27,7 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
 	{
 		if (child->ValueStr() == "uniform")
 		{
-			const char* name = child->Attribute("name");
+			const char* name = child->Attribute(NAME_XML_ATTR);
 			const char* semanticString = child->Attribute("semantic");
 
 			if (!name || !semanticString)

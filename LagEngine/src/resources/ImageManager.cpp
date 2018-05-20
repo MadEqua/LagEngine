@@ -15,14 +15,14 @@ void ImageManager::initializeFallbackObject()
 	fallbackObject = get("defaultImage");
 }
 
-ImageBuilder::ImageBuilder(const TiXmlDocument & resourcesXml, const std::string & resourceFolderPath) :
-	XmlResourceBuilder("image", resourcesXml, resourceFolderPath)
+ImageBuilder::ImageBuilder(const XmlResourceBuilderData &xmlResourceData) :
+	XmlResourceBuilder(xmlResourceData)
 {
 }
 
-Image* ImageBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
+Image* ImageBuilder::parseAndCreate(const std::string &path, const TiXmlElement &element) const
 {
-	return new Image(resourceFolderPath + '/' + parseFileAttribute(element), parseImageData(element));
+	return new Image(path + '/' + parseFileAttribute(element), parseImageData(element));
 }
 
 ImageData ImageBuilder::parseImageData(const TiXmlElement &element)

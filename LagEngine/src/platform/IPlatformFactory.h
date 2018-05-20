@@ -2,8 +2,6 @@
 
 #include <string>
 
-class TiXmlDocument;
-
 namespace Lag
 {
 	class IGraphicsAPI;
@@ -15,6 +13,7 @@ namespace Lag
 	class InputDescriptionManager;
 	class GpuProgramStageManager;
 	class RenderWindow;
+	struct XmlResourceBuilderData;
 
 
 	/*
@@ -29,10 +28,10 @@ namespace Lag
 		virtual IGraphicsAPI* getGraphicsAPI() const = 0;
 		virtual InputManager* getInputManager(const RenderWindow &renderWindow) const = 0;
 		virtual RenderTargetManager* getRenderTargetManager() const = 0;
-		virtual TextureManager* getTextureManager(const TiXmlDocument &resourcesXml) const = 0;
+		virtual TextureManager* getTextureManager(const XmlResourceBuilderData &xmlResourceData) const = 0;
 		virtual GpuBufferManager* getGpuBufferManager() const = 0;
 		virtual GpuProgramManager* getGpuProgramManager() const = 0;
-		virtual GpuProgramStageManager* getGpuProgramStageManager(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) const = 0;
+		virtual GpuProgramStageManager* getGpuProgramStageManager(const XmlResourceBuilderData &xmlResourceData) const = 0;
 		virtual InputDescriptionManager* getInputDescriptionManager() const = 0;
 	};
 }

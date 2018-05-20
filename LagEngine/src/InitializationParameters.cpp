@@ -12,7 +12,8 @@ InitializationParameters::InitializationParameters() :
 	vsync(true),
 	maxFPS(60),
 	resourcesFile("resources.xml"),
-	resourcesFolder("resources"),
+	lagResourcesFolder("LagResources"),
+	appResourcesFolder("resources"),
 	imagesFolder("images"),
 	materialsFolder("materials"),
 	meshesFolder("meshes"),
@@ -38,7 +39,8 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		maxFPS = iniSettings.getFieldAsBasicType<int>("maxFPS", maxFPS);
 
 		resourcesFile = iniSettings.getFieldAsString("resourcesFile", resourcesFile);
-		resourcesFolder = iniSettings.getFieldAsString("resourcesFolder", resourcesFolder);
+		appResourcesFolder = iniSettings.getFieldAsString("appResourcesFolder", appResourcesFolder);
+		lagResourcesFolder = iniSettings.getFieldAsString("lagResourcesFolder", lagResourcesFolder);
 		imagesFolder = iniSettings.getFieldAsString("imagesFolder", imagesFolder);
 		materialsFolder = iniSettings.getFieldAsString("materialsFolder", materialsFolder);
 		meshesFolder = iniSettings.getFieldAsString("meshesFolder", meshesFolder);
@@ -50,4 +52,24 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 		std::string platformTypeStr = iniSettings.getFieldAsString("platformType", "GLFW_GL4");
 		if (platformTypeStr == "GLFW_GL4") platformType = LAG_PLATFORM_GLFW_GL4;
 	}
+}
+
+std::string InitializationParameters::getImagesFolder(bool lagResources) const
+{
+	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + imagesFolder;
+}
+
+std::string InitializationParameters::getMaterialsFolder(bool lagResources) const
+{
+	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + materialsFolder;
+}
+
+std::string InitializationParameters::getMeshesFolder(bool lagResources) const
+{
+	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + meshesFolder;
+}
+
+std::string InitializationParameters::getShadersFolder(bool lagResources) const
+{
+	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + shadersFolder;
 }

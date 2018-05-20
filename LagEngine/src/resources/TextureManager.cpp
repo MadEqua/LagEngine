@@ -3,6 +3,8 @@
 #include "tinyxml/tinyxml.h"
 #include "../renderer/graphicsAPI/Texture.h"
 
+#include "../Constants.h"
+
 using namespace Lag;
 
 TextureManager::TextureManager(TextureBuilder *builder) :
@@ -28,8 +30,8 @@ std::vector<std::string> TextureManager::getTexturesWithImageName(const std::str
 	return res;
 }
 
-TextureBuilder::TextureBuilder(const TiXmlDocument &resourcesXml) :
-	XmlResourceBuilder("texture", resourcesXml, ""), //Textures don't need folder path
+TextureBuilder::TextureBuilder(const XmlResourceBuilderData &xmlResourceData) :
+	XmlResourceBuilder(xmlResourceData), //Textures don't need folder path
 	buildingFromXml(true)
 {
 }
@@ -98,7 +100,7 @@ std::vector<std::string> TextureBuilder::parseTextureImages(const TextureData &t
 	std::vector<std::string> imageNames;
 	if (texturedata.type != LAG_TEXTURE_TYPE_CUBE)
 	{
-		const char* image = element.Attribute("image");
+		const char* image = element.Attribute(IMAGE_XML_TAG);
 		if (!image)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureBuilder",

@@ -38,9 +38,9 @@ RenderTargetManager* GLFW_GL4Factory::getRenderTargetManager() const
 	return new RenderTargetManager(new GLFWRenderTargetBuilder(), new GL4RenderTargetBuilder());
 }
 
-TextureManager* GLFW_GL4Factory::getTextureManager(const TiXmlDocument &resourcesXml) const
+TextureManager* GLFW_GL4Factory::getTextureManager(const XmlResourceBuilderData &xmlResourceData) const
 {
-	return new TextureManager(new GL4TextureBuilder(resourcesXml));
+	return new TextureManager(new GL4TextureBuilder(xmlResourceData));
 }
 
 GpuBufferManager* GLFW_GL4Factory::getGpuBufferManager() const
@@ -53,9 +53,9 @@ GpuProgramManager* GLFW_GL4Factory::getGpuProgramManager() const
 	return new GpuProgramManager(new GL4GpuProgramBuilder());
 }
 
-GpuProgramStageManager* GLFW_GL4Factory::getGpuProgramStageManager(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) const
+GpuProgramStageManager* GLFW_GL4Factory::getGpuProgramStageManager(const XmlResourceBuilderData &xmlResourceData) const
 {
-	return new GpuProgramStageManager(new GL4GpuProgramStageBuilder(resourcesXml, resourceFolderPath));
+	return new GpuProgramStageManager(new GL4GpuProgramStageBuilder(xmlResourceData));
 }
 
 InputDescriptionManager* GLFW_GL4Factory::getInputDescriptionManager() const

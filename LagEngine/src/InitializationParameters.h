@@ -17,7 +17,8 @@ namespace Lag
 		uint32 maxFPS;
 
 		std::string resourcesFile;
-		std::string resourcesFolder;
+		std::string appResourcesFolder;
+		std::string lagResourcesFolder;
 		std::string imagesFolder;
 		std::string materialsFolder;
 		std::string meshesFolder;
@@ -31,5 +32,10 @@ namespace Lag
 
 		InitializationParameters();
 		explicit InitializationParameters(const std::string &iniFilePath);
+
+		std::string getImagesFolder(bool lagResources) const;
+		std::string getMaterialsFolder(bool lagResources) const;
+		std::string getMeshesFolder(bool lagResources) const;
+		std::string getShadersFolder(bool lagResources) const;
 	};
 }

@@ -6,26 +6,42 @@
 #include "tinyxml/tinyxml.h"
 
 #include "../utils/Utils.h"
+#include "../Constants.h"
+
 
 class TiXmlElement;
 
 namespace Lag
 {
+	struct XmlResourceBuilderData
+	{
+		const TiXmlDocument &appResourcesFile;
+		const TiXmlDocument &lagResourcesFile;
+		const std::string appResourceFolderPath;
+		const std::string lagResourceFolderPath;
+		const std::string tagToParse;
+
+		XmlResourceBuilderData(const TiXmlDocument &appResourcesFile, const TiXmlDocument &lagResourcesFile, 
+			const std::string &appResourceFolderPath, const std::string &lagResourceFolderPath,
+			const std::string tagToParse) :
+			appResourcesFile(appResourcesFile), lagResourcesFile(lagResourcesFile),
+			appResourceFolderPath(appResourceFolderPath), lagResourceFolderPath(lagResourceFolderPath),
+			tagToParse(tagToParse) {}
+	};
+	
 	template<class V>
 	class XmlResourceBuilder : public IManagedObjectBuilder<std::string, V>
 	{
 	public:
-		XmlResourceBuilder(const std::string &tagToParse, const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath);
+		XmlResourceBuilder(const XmlResourceBuilderData &xmlResourceData);
 		virtual V* build(const std::string &name) const override;
 
 	protected:
 		const TiXmlElement* findResourceNameOnXml(const std::string &name) const;
-		virtual V* parseAndCreate(const std::string &name, const TiXmlElement &element) const = 0;
+		virtual V* parseAndCreate(const std::string &path, const TiXmlElement &element) const = 0;
 		const std::string parseFileAttribute(const TiXmlElement &element) const;
 
-		const TiXmlDocument &resourcesXml;
-		std::string tagToParse;
-		std::string resourceFolderPath;
+		const XmlResourceBuilderData xmlResourceData;
 	};
 	
 	
@@ -47,10 +63,8 @@ namespace Lag
 	* DEFINITION HERE 'CAUSE C++ TEMPLATE COMPILATION...
 	*/
 	template<class V>
-	XmlResourceBuilder<V>::XmlResourceBuilder(const std::string &tagToParse, const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
-		tagToParse(tagToParse),
-		resourcesXml(resourcesXml),
-		resourceFolderPath(resourceFolderPath)
+	XmlResourceBuilder<V>::XmlResourceBuilder(const XmlResourceBuilderData &xmlResourceData) :
+		xmlResourceData(xmlResourceData)
 	{
 		// Compile-time sanity check
 		static_assert(std::is_base_of<XmlResource, V>::value, "Creating a XmlResourceBuilder of Vs not derived from XmlResource");
@@ -60,8 +74,12 @@ namespace Lag
 	V* XmlResourceBuilder<V>::build(const std::string &name) const
 	{
 		const TiXmlElement* element = findResourceNameOnXml(name);
-		if (element != nullptr)
-			return parseAndCreate(name, *element);
+		if (element != nullptr) 
+		{
+			const std::string &path = element->GetDocument() == &xmlResourceData.appResourcesFile ? 
+				xmlResourceData.appResourceFolderPath : xmlResourceData.lagResourceFolderPath;
+			return parseAndCreate(path, *element);
+		}
 		else
 			return nullptr;
 	}
@@ -69,24 +87,33 @@ namespace Lag
 	template<class V>
 	const TiXmlElement* XmlResourceBuilder<V>::findResourceNameOnXml(const std::string &name) const
 	{
-		for (const TiXmlElement* elem = resourcesXml.FirstChildElement()->FirstChildElement();
+		for (const TiXmlElement* elem = xmlResourceData.appResourcesFile.FirstChildElement()->FirstChildElement();
 			elem != NULL;
 			elem = elem->NextSiblingElement())
 		{
-			if (tagToParse == elem->ValueStr() && name == elem->Attribute("name"))
+			if (xmlResourceData.tagToParse == elem->ValueStr() && name == elem->Attribute(NAME_XML_ATTR))
 				return elem;
 		}
+
+		for (const TiXmlElement* elem = xmlResourceData.lagResourcesFile.FirstChildElement()->FirstChildElement();
+			elem != NULL;
+			elem = elem->NextSiblingElement())
+		{
+			if (xmlResourceData.tagToParse == elem->ValueStr() && name == elem->Attribute(NAME_XML_ATTR))
+				return elem;
+		}
+
 		return nullptr;
 	}
 
 	template<class V>
 	const std::string XmlResourceBuilder<V>::parseFileAttribute(const TiXmlElement &element) const
 	{
-		const char* file = element.Attribute("file");
+		const char* file = element.Attribute(FILE_XML_ATTR);
 		if (!file)
 		{
 			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "XmlResourceBuilder",
-				"A <" + tagToParse + "> element on the Resources file does not contain the required attribute <file>.");
+				"A <" + xmlResourceData.tagToParse + "> element on the Resources file does not contain the required attribute <file>.");
 			return "";
 		}
 		return file;

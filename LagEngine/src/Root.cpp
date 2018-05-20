@@ -29,6 +29,7 @@
 	#include "io/ResourceFilesWatcher.h"
 #endif
 
+#include "Constants.h"
 
 using namespace Lag;
 
@@ -46,7 +47,8 @@ Root::Root() :
 	gpuBufferManager(nullptr),
 	graphicsAPI(nullptr),
 	inputDescriptionManager(nullptr),
-	resourcesFile(nullptr)
+	appResourcesFile(nullptr),
+	lagResourcesFile(nullptr)
 {
 	//Initialize other singletons
 	LogManager::getInstance();
@@ -128,10 +130,15 @@ void Root::destroy()
 		inputManager = nullptr;
 	}
 
-	if (resourcesFile != nullptr)
+	if (appResourcesFile != nullptr)
 	{
-		delete resourcesFile;
-		resourcesFile = nullptr;
+		delete appResourcesFile;
+		appResourcesFile = nullptr;
+	}
+	if (lagResourcesFile != nullptr)
+	{
+		delete lagResourcesFile;
+		lagResourcesFile = nullptr;
 	}
 
 	if (renderTargetManager != nullptr)
@@ -152,11 +159,7 @@ void Root::destroy()
 bool Root::initializeLag(const std::string &iniFile)
 {
 	initializationParameters = InitializationParameters(iniFile);
-	return initializeLag();
-}
-
-bool Root::initializeLag()
-{
+	
 	IPlatformFactory *platformFactory = nullptr;
 	if (initializationParameters.platformType == LAG_PLATFORM_GLFW_GL4)
 		platformFactory = new GLFW_GL4Factory();
@@ -191,7 +194,11 @@ bool Root::internalInit(const IPlatformFactory *platformFactory)
 	if (!graphicsAPI->initialize())
 		return false;
 
-	if (!initResources(platformFactory, initializationParameters.resourcesFolder + '/' + initializationParameters.resourcesFile))
+	gpuBufferManager = platformFactory->getGpuBufferManager();
+	gpuProgramManager = platformFactory->getGpuProgramManager();
+	inputDescriptionManager = platformFactory->getInputDescriptionManager();
+
+	if (!initResources(platformFactory))
 		return false;
 
 	sceneManager = new SceneManager();
@@ -208,20 +215,28 @@ bool Root::internalInit(const IPlatformFactory *platformFactory)
 	return true;
 }
 
-bool Root::initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath)
+bool Root::initResources(const IPlatformFactory *platformFactory)
 {
-	if (!initResourcesFile(resourcesFilePath))
+	if (!initResourcesFiles())
 		return false;
 
-	textureManager = platformFactory->getTextureManager(*resourcesFile);
-	gpuBufferManager = platformFactory->getGpuBufferManager();
-	gpuProgramManager = platformFactory->getGpuProgramManager();
-	inputDescriptionManager = platformFactory->getInputDescriptionManager();
-	gpuProgramStageManager = platformFactory->getGpuProgramStageManager(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.shadersFolder);
+	textureManager = platformFactory->getTextureManager(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, "", "", TEXTURE_XML_TAG));
 
-	imageManager = new ImageManager(new ImageBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.imagesFolder));
-	meshManager = new MeshManager(new MeshBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.meshesFolder));
-	materialManager = new MaterialManager(new MaterialBuilder(*resourcesFile, initializationParameters.resourcesFolder + '/' + initializationParameters.materialsFolder));
+	gpuProgramStageManager = platformFactory->getGpuProgramStageManager(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
+		initializationParameters.getShadersFolder(false), initializationParameters.getShadersFolder(true),
+		SHADER_XML_TAG));
+
+	imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
+		initializationParameters.getImagesFolder(false), initializationParameters.getImagesFolder(true), 
+		IMAGE_XML_TAG)));
+
+	meshManager = new MeshManager(new MeshBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
+		initializationParameters.getMeshesFolder(false), initializationParameters.getMeshesFolder(true),
+		MESH_XML_TAG)));
+
+	materialManager = new MaterialManager(new MaterialBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
+		initializationParameters.getMaterialsFolder(false), initializationParameters.getMaterialsFolder(true),
+		MATERIAL_XML_TAG)));
 
 	imageManager->initializeFallbackObject();
 	gpuProgramManager->initializeFallbackObject();
@@ -232,14 +247,37 @@ bool Root::initResources(const IPlatformFactory *platformFactory, const std::str
 	return true;
 }
 
-bool Root::initResourcesFile(const std::string &resourcesFilePath)
+bool Root::initResourcesFiles()
 {
-	TiXmlDocument *resourcesFile = new TiXmlDocument(resourcesFilePath);
+	std::string lagResourcesFilePath = initializationParameters.lagResourcesFolder + '/' + initializationParameters.resourcesFile;
+	std::string resourcesFilePath = initializationParameters.appResourcesFolder + '/' + initializationParameters.resourcesFile;
+
+	TiXmlDocument *lagResourcesFile = new TiXmlDocument(lagResourcesFilePath);
+	if (!checkResourcesFile(lagResourcesFilePath, lagResourcesFile))
+	{
+		delete lagResourcesFile;
+		return false;
+	}
+
+	TiXmlDocument *appResourcesFile = new TiXmlDocument(resourcesFilePath);
+	if (!checkResourcesFile(resourcesFilePath, appResourcesFile))
+	{
+		delete lagResourcesFile;
+		delete appResourcesFile;
+		return false;
+	}
+
+	this->appResourcesFile = appResourcesFile;
+	this->lagResourcesFile = lagResourcesFile;
+	return true;
+}
+
+bool Root::checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const
+{
 	if (!resourcesFile->LoadFile())
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
-			"Resources file: " + resourcesFilePath + " does not exist or is malformed.");
-		delete resourcesFile;
+			"Resources file: " + filePath + " does not exist or is malformed.");
 		return false;
 	}
 
@@ -247,20 +285,22 @@ bool Root::initResourcesFile(const std::string &resourcesFilePath)
 	if (!resourcesElement)
 	{
 		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL, "Root",
-			"Resources file: " + resourcesFilePath + " does not contain <resources> element.");
-		delete resourcesFile;
+			"Resources file: " + filePath + " does not contain <resources> element.");
 		return false;
 	}
 
-	this->resourcesFile = resourcesFile;
 	return true;
 }
 
 void Root::reloadResourcesFile()
 {
-	auto oldResourcesFile = resourcesFile;
-	if (initResourcesFile(initializationParameters.resourcesFolder + '/' + initializationParameters.resourcesFile))
-		delete oldResourcesFile;
+	auto oldAppResourcesFile = appResourcesFile;
+	auto oldLagResourcesFile = lagResourcesFile;
+	if (initResourcesFiles())
+	{
+		delete oldAppResourcesFile;
+		delete oldLagResourcesFile;
+	}
 }
 
 void Root::startRenderingLoop()

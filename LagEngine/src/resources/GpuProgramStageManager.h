@@ -14,7 +14,7 @@ namespace Lag
 	class GpuProgramStageBuilder : public XmlResourceBuilder<GpuProgramStage>
 	{
 	public:
-		GpuProgramStageBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath);
+		GpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData);
 
 	protected:
 		void parseUniforms(GpuProgramStage &stage, const TiXmlElement &element) const;

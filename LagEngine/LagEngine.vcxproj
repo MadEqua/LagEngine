@@ -221,6 +221,7 @@
   <ItemGroup>
     <ClInclude Include="dependencies\stbi\stb_image.h" />
     <ClInclude Include="dependencies\tinyxml\tinyxml.h" />
+    <ClInclude Include="src\Constants.h" />
     <ClInclude Include="src\io\ResourceFilesWatcher.h" />
     <ClInclude Include="src\core\Handle.h" />
     <ClInclude Include="src\core\Memory.h" />

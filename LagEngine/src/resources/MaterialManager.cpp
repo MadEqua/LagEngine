@@ -14,12 +14,12 @@ void MaterialManager::initializeFallbackObject()
 	fallbackObject = get("defaultMaterial");
 }
 
-MaterialBuilder::MaterialBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
-	XmlResourceBuilder("material", resourcesXml, resourceFolderPath)
+MaterialBuilder::MaterialBuilder(const XmlResourceBuilderData &xmlResourceData) :
+	XmlResourceBuilder(xmlResourceData)
 {
 }
 
-Material* MaterialBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
+Material* MaterialBuilder::parseAndCreate(const std::string &path, const TiXmlElement &element) const
 {
-	return new Material(resourceFolderPath + '/' + parseFileAttribute(element));
+	return new Material(path + '/' + parseFileAttribute(element));
 }

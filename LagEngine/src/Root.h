@@ -67,8 +67,6 @@ namespace Lag
 		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
 		inline InputDescriptionManager& getInputDescriptionManager() const { return *inputDescriptionManager; }
 
-		inline const std::string& getResourcesFolder() { return initializationParameters.resourcesFolder; }
-
 	private:
 		Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
 
@@ -91,7 +89,8 @@ namespace Lag
 		IGraphicsAPI *graphicsAPI;
 
 		InitializationParameters initializationParameters;
-		TiXmlDocument *resourcesFile;
+		TiXmlDocument *appResourcesFile;
+		TiXmlDocument *lagResourcesFile;
 
 #ifdef _DEBUG
 		ResourceFilesWatcher *resourceFilesWatcher;
@@ -99,10 +98,10 @@ namespace Lag
 
 		void destroy();
 
-		bool initializeLag();
 		bool internalInit(const IPlatformFactory *platformFactory);
-		bool initResources(const IPlatformFactory *platformFactory, const std::string &resourcesFilePath);
-		bool initResourcesFile(const std::string &resourcesFilePath);
+		bool initResources(const IPlatformFactory *platformFactory);
+		bool initResourcesFiles();
+		bool checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const;
 
 		/*
 		* Listen for toggle virtual cursor and escape.

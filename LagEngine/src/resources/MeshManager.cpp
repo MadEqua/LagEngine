@@ -14,12 +14,12 @@ void MeshManager::initializeFallbackObject()
 	fallbackObject = get("defaultMesh");
 }
 
-MeshBuilder::MeshBuilder(const TiXmlDocument &resourcesXml, const std::string &resourceFolderPath) :
-	XmlResourceBuilder("mesh", resourcesXml, resourceFolderPath)
+MeshBuilder::MeshBuilder(const XmlResourceBuilderData &xmlResourceData) :
+	XmlResourceBuilder(xmlResourceData)
 {
 }
 
-Mesh* MeshBuilder::parseAndCreate(const std::string &name, const TiXmlElement &element) const
+Mesh* MeshBuilder::parseAndCreate(const std::string &path, const TiXmlElement &element) const
 {
-	return new Mesh(resourceFolderPath + '/' + parseFileAttribute(element));
+	return new Mesh(path + '/' + parseFileAttribute(element));
 }
