@@ -56,20 +56,20 @@ InitializationParameters::InitializationParameters(const std::string &iniFilePat
 
 std::string InitializationParameters::getImagesFolder(bool lagResources) const
 {
-	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + imagesFolder;
+	return (lagResources ? lagResourcesFolder : appResourcesFolder) + '/' + imagesFolder;
 }
 
 std::string InitializationParameters::getMaterialsFolder(bool lagResources) const
 {
-	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + materialsFolder;
+	return (lagResources ? lagResourcesFolder : appResourcesFolder) + '/' + materialsFolder;
 }
 
 std::string InitializationParameters::getMeshesFolder(bool lagResources) const
 {
-	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + meshesFolder;
+	return (lagResources ? lagResourcesFolder : appResourcesFolder) + '/' + meshesFolder;
 }
 
 std::string InitializationParameters::getShadersFolder(bool lagResources) const
 {
-	return lagResources ? lagResourcesFolder : appResourcesFolder + '/' + shadersFolder;
+	return (lagResources ? lagResourcesFolder : appResourcesFolder) + '/' + shadersFolder;
 }

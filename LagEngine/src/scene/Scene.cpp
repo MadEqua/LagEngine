@@ -9,7 +9,7 @@
 #include "../renderer/Material.h"
 #include "../resources/MeshManager.h"
 #include "../resources/MaterialManager.h"
-#include "../renderer/RenderTargetManager.h"
+#include "../resources/RenderTargetManager.h"
 #include "../renderer/RenderWindow.h"
 #include "Entity.h"
 #include "PerspectiveCamera.h"

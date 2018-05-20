@@ -6,12 +6,12 @@ namespace Lag
 {
 	class IGraphicsAPI;
 	class InputManager;
-	class RenderTargetManager;
-	class TextureManager;
-	class GpuBufferManager;
-	class GpuProgramManager;
-	class InputDescriptionManager;
-	class GpuProgramStageManager;
+	class RenderTargetBuilder;
+	class TextureBuilder;
+	class GpuBufferBuilder;
+	class GpuProgramBuilder;
+	class InputDescriptionBuilder;
+	class GpuProgramStageBuilder;
 	class RenderWindow;
 	struct XmlResourceBuilderData;
 
@@ -27,11 +27,13 @@ namespace Lag
 
 		virtual IGraphicsAPI* getGraphicsAPI() const = 0;
 		virtual InputManager* getInputManager(const RenderWindow &renderWindow) const = 0;
-		virtual RenderTargetManager* getRenderTargetManager() const = 0;
-		virtual TextureManager* getTextureManager(const XmlResourceBuilderData &xmlResourceData) const = 0;
-		virtual GpuBufferManager* getGpuBufferManager() const = 0;
-		virtual GpuProgramManager* getGpuProgramManager() const = 0;
-		virtual GpuProgramStageManager* getGpuProgramStageManager(const XmlResourceBuilderData &xmlResourceData) const = 0;
-		virtual InputDescriptionManager* getInputDescriptionManager() const = 0;
+		
+		virtual RenderTargetBuilder* getWindowRenderTargetBuilder() const = 0;
+		virtual RenderTargetBuilder* getTextureRenderTargetBuilder() const = 0;
+		virtual TextureBuilder* getTextureBuilder(const XmlResourceBuilderData &xmlResourceData) const = 0;
+		virtual GpuBufferBuilder* getGpuBufferBuilder() const = 0;
+		virtual GpuProgramBuilder* getGpuProgramBuilder() const = 0;
+		virtual GpuProgramStageBuilder* getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const = 0;
+		virtual InputDescriptionBuilder* getInputDescriptionBuilder() const = 0;
 	};
 }

@@ -14,12 +14,13 @@
 #include "GLFW/GLFWRenderTargetBuilder.h"
 #include "GLFW/GLFWRenderWindow.h"
 
-#include "../renderer/RenderTargetManager.h"
+#include "../resources/RenderTargetManager.h"
 #include "../resources/TextureManager.h"
-#include "../renderer/graphicsAPI/GpuProgramManager.h"
-#include "../renderer/graphicsAPI/GpuBufferManager.h"
-#include "../renderer/graphicsAPI/InputDescriptionManager.h"
+#include "../resources/GpuProgramManager.h"
+#include "../resources/InputDescriptionManager.h"
 #include "../resources/GpuProgramStageManager.h"
+#include "../resources/GpuBufferManager.h"
+
 
 using namespace Lag;
 
@@ -33,32 +34,37 @@ InputManager* GLFW_GL4Factory::getInputManager(const RenderWindow &renderWindow)
 	return new GLFWInputManager(static_cast<const GLFWRenderWindow&>(renderWindow));
 }
 
-RenderTargetManager* GLFW_GL4Factory::getRenderTargetManager() const
+RenderTargetBuilder* GLFW_GL4Factory::getWindowRenderTargetBuilder() const
 {
-	return new RenderTargetManager(new GLFWRenderTargetBuilder(), new GL4RenderTargetBuilder());
+	return new GLFWRenderTargetBuilder();
 }
 
-TextureManager* GLFW_GL4Factory::getTextureManager(const XmlResourceBuilderData &xmlResourceData) const
+RenderTargetBuilder* GLFW_GL4Factory::getTextureRenderTargetBuilder() const
 {
-	return new TextureManager(new GL4TextureBuilder(xmlResourceData));
+	return new GL4RenderTargetBuilder();
 }
 
-GpuBufferManager* GLFW_GL4Factory::getGpuBufferManager() const
+TextureBuilder* GLFW_GL4Factory::getTextureBuilder(const XmlResourceBuilderData &xmlResourceData) const
 {
-	return new GpuBufferManager(new GL4GpuBufferBuilder());
+	return new GL4TextureBuilder(xmlResourceData);
 }
 
-GpuProgramManager* GLFW_GL4Factory::getGpuProgramManager() const
+GpuBufferBuilder* GLFW_GL4Factory::getGpuBufferBuilder() const
 {
-	return new GpuProgramManager(new GL4GpuProgramBuilder());
+	return new GL4GpuBufferBuilder();
 }
 
-GpuProgramStageManager* GLFW_GL4Factory::getGpuProgramStageManager(const XmlResourceBuilderData &xmlResourceData) const
+GpuProgramBuilder* GLFW_GL4Factory::getGpuProgramBuilder() const
 {
-	return new GpuProgramStageManager(new GL4GpuProgramStageBuilder(xmlResourceData));
+	return new GL4GpuProgramBuilder();
 }
 
-InputDescriptionManager* GLFW_GL4Factory::getInputDescriptionManager() const
+GpuProgramStageBuilder* GLFW_GL4Factory::getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const
 {
-	return new InputDescriptionManager(new GL4InputDescriptionBuilder());
+	return new GL4GpuProgramStageBuilder(xmlResourceData);
+}
+
+InputDescriptionBuilder* GLFW_GL4Factory::getInputDescriptionBuilder() const
+{
+	return new GL4InputDescriptionBuilder();
 }

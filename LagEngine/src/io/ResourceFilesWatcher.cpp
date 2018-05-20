@@ -8,7 +8,7 @@
 #include "../resources/TextureManager.h"
 #include "../resources/MeshManager.h"
 #include "../resources/GpuProgramStageManager.h"
-#include "../renderer/graphicsAPI/GpuProgramManager.h"
+#include "../resources/GpuProgramManager.h"
 #include "../renderer/Renderer.h"
 
 #include "../utils/Utils.h"

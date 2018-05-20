@@ -4,7 +4,7 @@
 #include "../Root.h"
 #include "../io/log/LogManager.h"
 #include "../io/InputManager.h"
-#include "../renderer/RenderTargetManager.h"
+#include "../resources/RenderTargetManager.h"
 #include "../renderer/Renderer.h"
 
 using namespace Lag;

@@ -9,11 +9,13 @@ namespace Lag
 	public:
 		virtual IGraphicsAPI* getGraphicsAPI() const override;
 		virtual InputManager* getInputManager(const RenderWindow &renderWindow) const override;
-		virtual RenderTargetManager* getRenderTargetManager() const override;
-		virtual TextureManager* getTextureManager(const XmlResourceBuilderData &xmlResourceData) const override;
-		virtual GpuBufferManager* getGpuBufferManager() const override;
-		virtual GpuProgramManager* getGpuProgramManager() const override;
-		virtual GpuProgramStageManager* getGpuProgramStageManager(const XmlResourceBuilderData &xmlResourceData) const override;
-		virtual InputDescriptionManager* getInputDescriptionManager() const override;
+		
+		virtual RenderTargetBuilder* getWindowRenderTargetBuilder() const override;
+		virtual RenderTargetBuilder* getTextureRenderTargetBuilder() const override;
+		virtual TextureBuilder* getTextureBuilder(const XmlResourceBuilderData &xmlResourceData) const override;
+		virtual GpuBufferBuilder* getGpuBufferBuilder() const override;
+		virtual GpuProgramBuilder* getGpuProgramBuilder() const override;
+		virtual GpuProgramStageBuilder* getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const override;
+		virtual InputDescriptionBuilder* getInputDescriptionBuilder() const override;
 	};
 }

@@ -2,8 +2,8 @@
 
 #include "../io/log/LogManager.h"
 
-#include "graphicsAPI/GpuBufferManager.h"
-#include "graphicsAPI/InputDescriptionManager.h"
+#include "../resources/GpuBufferManager.h"
+#include "../resources/InputDescriptionManager.h"
 #include "../Root.h"
 
 #include "../Types.h"

@@ -3,7 +3,7 @@
 #include <thread>
 #include <chrono>
 
-#include "RenderTargetManager.h"
+#include "../resources/RenderTargetManager.h"
 #include "graphicsAPI/RenderToTexture.h"
 #include "RenderWindow.h"
 #include "../scene/SceneManager.h"

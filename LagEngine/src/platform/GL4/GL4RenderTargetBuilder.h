@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../renderer/RenderTargetManager.h"
+#include "../../resources/RenderTargetManager.h"
 #include "GL4RenderToTexture.h"
 
 namespace Lag

@@ -1,7 +1,6 @@
 #include "RenderTargetManager.h"
 
-#include "RenderWindow.h"
-#include "graphicsAPI/RenderToTexture.h"
+#include "../renderer/RenderWindow.h"
 
 using namespace Lag;
 

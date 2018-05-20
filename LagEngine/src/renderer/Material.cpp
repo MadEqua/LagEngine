@@ -3,7 +3,7 @@
 #include "../Root.h"
 #include "../resources/TextureManager.h"
 #include "../renderer/graphicsAPI/Texture.h"
-#include "../renderer/graphicsAPI/GpuProgramManager.h"
+#include "../resources/GpuProgramManager.h"
 #include "../resources/GpuProgramStageManager.h"
 #include "../renderer/graphicsAPI/GpuProgramStage.h"
 #include "../renderer/graphicsAPI/GpuProgram.h"

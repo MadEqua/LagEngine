@@ -1,7 +1,7 @@
 #include "TestScene.h"
 
 #include "Root.h"
-#include "renderer/RenderTargetManager.h"
+#include "resources/RenderTargetManager.h"
 #include "renderer/RenderWindow.h"
 #include "utils/FreeCamera.h"
 #include "scene/OrthographicCamera.h"

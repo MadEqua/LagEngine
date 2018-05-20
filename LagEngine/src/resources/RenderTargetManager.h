@@ -1,8 +1,7 @@
 #pragma once
 
-#include <vector>
 #include "../core/Manager.h"
-#include "RenderTarget.h"
+#include "../renderer/RenderTarget.h"
 #include "../Types.h"
 #include "../InitializationParameters.h"
 

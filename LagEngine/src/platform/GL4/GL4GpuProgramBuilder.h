@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../renderer/graphicsAPI/GpuProgramManager.h"
+#include "../../resources/GpuProgramManager.h"
 
 #include "GL4GpuProgram.h"
 

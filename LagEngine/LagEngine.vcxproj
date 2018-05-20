@@ -143,7 +143,7 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
     </ClCompile>
     <ClCompile Include="src\core\Memory.cpp" />
-    <ClCompile Include="src\renderer\RenderTargetManager.cpp" />
+    <ClCompile Include="src\resources\RenderTargetManager.cpp" />
     <ClCompile Include="src\scene\Scene.cpp" />
     <ClCompile Include="src\platform\gl4\GL4RenderToTexture.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\RenderToTexture.cpp" />
@@ -162,16 +162,16 @@
     <ClCompile Include="src\platform\gl4\GL4GpuBuffer.cpp" />
     <ClCompile Include="src\platform\gl4\GL4Error.cpp" />
     <ClCompile Include="src\platform\gl4\GL4InputDescription.cpp" />
-    <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp" />
+    <ClCompile Include="src\resources\GpuProgramManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp" />
-    <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp" />
+    <ClCompile Include="src\resources\InputDescriptionManager.cpp" />
     <ClCompile Include="src\core\ManagedObject.cpp" />
     <ClCompile Include="src\platform\gl4\GL4GpuProgramUniform.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuProgramUniform.cpp" />
     <ClCompile Include="src\renderer\IndexData.cpp" />
     <ClCompile Include="src\core\MemoryBuffer.cpp" />
     <ClCompile Include="src\core\Buffer.cpp" />
-    <ClCompile Include="src\renderer\graphicsAPI\GpuBufferManager.cpp" />
+    <ClCompile Include="src\resources\GpuBufferManager.cpp" />
     <ClCompile Include="src\renderer\graphicsAPI\GpuBuffer.cpp" />
     <ClCompile Include="src\renderer\GpuProgramUniformDescription.cpp" />
     <ClCompile Include="src\resources\MaterialManager.cpp" />
@@ -236,7 +236,7 @@
     <ClInclude Include="src\platform\IPlatformFactory.h" />
     <ClInclude Include="src\platform\PlatformType.h" />
     <ClInclude Include="src\renderer\RenderPhase.h" />
-    <ClInclude Include="src\renderer\RenderTargetManager.h" />
+    <ClInclude Include="src\resources\RenderTargetManager.h" />
     <ClInclude Include="src\scene\Scene.h" />
     <ClInclude Include="src\core\NamedContainer.h" />
     <ClInclude Include="src\utils\Utils.h" />
@@ -262,7 +262,7 @@
     <ClInclude Include="src\platform\gl4\GL4InputDescription.h" />
     <ClInclude Include="src\platform\gl4\GL4InputDescriptionManager.h" />
     <ClInclude Include="src\renderer\graphicsAPI\InputDescription.h" />
-    <ClInclude Include="src\renderer\graphicsAPI\InputDescriptionManager.h" />
+    <ClInclude Include="src\resources\InputDescriptionManager.h" />
     <ClInclude Include="src\renderer\RenderOperation.h" />
     <ClInclude Include="src\core\ManagedObject.h" />
     <ClInclude Include="src\core\Manager.h" />
@@ -274,7 +274,7 @@
     <ClInclude Include="src\renderer\IndexData.h" />
     <ClInclude Include="src\core\MemoryBuffer.h" />
     <ClInclude Include="src\core\Buffer.h" />
-    <ClInclude Include="src\renderer\graphicsAPI\GpuBufferManager.h" />
+    <ClInclude Include="src\resources\GpuBufferManager.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuBuffer.h" />
     <ClInclude Include="src\renderer\GpuProgramUniformDescription.h" />
     <ClInclude Include="src\resources\MeshManager.h" />
@@ -289,7 +289,7 @@
     <ClInclude Include="src\resources\MaterialManager.h" />
     <ClInclude Include="src\resources\XmlResource.h" />
     <ClInclude Include="src\renderer\graphicsAPI\GpuProgramStage.h" />
-    <ClInclude Include="src\renderer\graphicsAPI\GpuProgramManager.h">
+    <ClInclude Include="src\resources\GpuProgramManager.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">false</ExcludedFromBuild>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>

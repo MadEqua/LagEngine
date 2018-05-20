@@ -117,25 +117,16 @@
     <ClCompile Include="src\renderer\GpuProgramUniformDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\graphicsAPI\GpuBufferManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\core\ManagedObject.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\SubEntity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="src\renderer\graphicsAPI\InputDescriptionManager.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\InputDescription.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\graphicsAPI\GpuBuffer.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderer\graphicsAPI\GpuProgramManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\renderer\Color.cpp">
@@ -181,9 +172,6 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\scene\Scene.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
-    <ClCompile Include="src\renderer\RenderTargetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\core\Manager.cpp">
@@ -250,6 +238,18 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="src\utils\Utils.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\GpuBufferManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\InputDescriptionManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\GpuProgramManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\resources\RenderTargetManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -386,12 +386,6 @@
     <ClInclude Include="src\renderer\GpuProgramUniformDescription.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="src\renderer\graphicsAPI\GpuProgramManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderer\graphicsAPI\GpuBufferManager.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="src\core\ManagedObject.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -405,9 +399,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\InputDescription.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderer\graphicsAPI\InputDescriptionManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\renderer\graphicsAPI\GpuBuffer.h">
@@ -465,9 +456,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\scene\Scene.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="src\renderer\RenderTargetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\platform\GLFW\GLFWRenderTargetBuilder.h">
@@ -591,6 +579,18 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="src\Constants.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\GpuBufferManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\InputDescriptionManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\GpuProgramManager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\resources\RenderTargetManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

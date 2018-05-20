@@ -1,6 +1,6 @@
 #pragma 
 
-#include "../../renderer/graphicsAPI/InputDescriptionManager.h"
+#include "../../resources/InputDescriptionManager.h"
 #include "GL4InputDescription.h"
 
 namespace Lag

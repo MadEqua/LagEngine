@@ -10,13 +10,13 @@
 #include "renderer/Renderer.h"
 #include "renderer/RenderWindow.h"
 #include "renderer/graphicsAPI/IGraphicsAPI.h"
-#include "renderer/graphicsAPI/GpuProgramManager.h"
-#include "renderer/graphicsAPI/GpuBufferManager.h"
-#include "renderer/graphicsAPI/InputDescriptionManager.h"
 
 #include "io/InputManager.h"
 #include "scene/SceneManager.h"
 
+#include "resources/GpuProgramManager.h"
+#include "resources/InputDescriptionManager.h"
+#include "resources/GpuBufferManager.h"
 #include "resources/MaterialManager.h"
 #include "resources/MeshManager.h"
 #include "resources/ImageManager.h"
@@ -183,7 +183,7 @@ bool Root::internalInit(const IPlatformFactory *platformFactory)
 	//in case of reinitialization
 	destroy();
 
-	renderTargetManager = platformFactory->getRenderTargetManager();
+	renderTargetManager = new RenderTargetManager(platformFactory->getWindowRenderTargetBuilder(), platformFactory->getTextureRenderTargetBuilder());
 	renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
 	if (!renderWindow.isValid())
 		return false;
@@ -194,9 +194,9 @@ bool Root::internalInit(const IPlatformFactory *platformFactory)
 	if (!graphicsAPI->initialize())
 		return false;
 
-	gpuBufferManager = platformFactory->getGpuBufferManager();
-	gpuProgramManager = platformFactory->getGpuProgramManager();
-	inputDescriptionManager = platformFactory->getInputDescriptionManager();
+	gpuBufferManager = new GpuBufferManager(platformFactory->getGpuBufferBuilder());
+	gpuProgramManager = new GpuProgramManager(platformFactory->getGpuProgramBuilder());
+	inputDescriptionManager = new InputDescriptionManager(platformFactory->getInputDescriptionBuilder());
 
 	if (!initResources(platformFactory))
 		return false;
@@ -220,11 +220,14 @@ bool Root::initResources(const IPlatformFactory *platformFactory)
 	if (!initResourcesFiles())
 		return false;
 
-	textureManager = platformFactory->getTextureManager(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, "", "", TEXTURE_XML_TAG));
+	textureManager = new TextureManager(platformFactory->getTextureBuilder(
+		XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
+			"", "", TEXTURE_XML_TAG)));
 
-	gpuProgramStageManager = platformFactory->getGpuProgramStageManager(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
+	gpuProgramStageManager = new GpuProgramStageManager(platformFactory->getGpuProgramStageBuilder(
+		XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
 		initializationParameters.getShadersFolder(false), initializationParameters.getShadersFolder(true),
-		SHADER_XML_TAG));
+		SHADER_XML_TAG)));
 
 	imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, 
 		initializationParameters.getImagesFolder(false), initializationParameters.getImagesFolder(true), 

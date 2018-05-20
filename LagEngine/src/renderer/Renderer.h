@@ -12,7 +12,7 @@
 #include "../core/ObserverPattern.h"
 #include "GpuProgramUniformFiller.h"
 #include "../core/Timer.h"
-#include "RenderTargetManager.h"
+#include "../resources/RenderTargetManager.h"
 #include "IFrameListener.h"
 
 namespace Lag
