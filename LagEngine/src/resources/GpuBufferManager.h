@@ -1,38 +1,35 @@
 #pragma once
 
 #include <vector>
-#include "../core/Manager.h"
-#include "../renderer/graphicsAPI/GpuBuffer.h"
-#include "../Types.h"
+#include "Manager.h"
+#include "GpuBuffer.h"
+#include "Types.h"
 
-namespace Lag
-{	
-	class GpuBufferBuilder : public IManagedObjectBuilder<uint32, GpuBuffer>
-	{
-	public:
-		GpuBufferBuilder();
+namespace Lag {
+    class GpuBufferBuilder : public IManagedObjectBuilder<uint32, GpuBuffer> {
+    public:
+        GpuBufferBuilder();
 
-		GpuBufferContents contents;
-		int32 itemCount;
-		uint32 itemSizeBytes, flags;
-		bool useMirrorBuffer;
-	};
+        GpuBufferContents contents;
+        int32 itemCount;
+        uint32 itemSizeBytes, flags;
+        bool useMirrorBuffer;
+    };
 
-	
-	/*
-	* Creates and manages all GpuBuffers.
-	*/
-	class GpuBufferManager : public Manager<uint32, GpuBuffer>
-	{
-	public:
-		explicit GpuBufferManager(GpuBufferBuilder* builder);
-		uint32 getNextName();
 
-		//Convenience methods for the most common operations
-		//Do not forget to set the builder before calling.
-		Handle<GpuBuffer> get();
+    /*
+    * Creates and manages all GpuBuffers.
+    */
+    class GpuBufferManager : public Manager<uint32, GpuBuffer> {
+    public:
+        explicit GpuBufferManager(GpuBufferBuilder *builder);
+        uint32 getNextName();
 
-	protected:
-		uint32 nextName;
-	};
+        //Convenience methods for the most common operations
+        //Do not forget to set the builder before calling.
+        Handle<GpuBuffer> get();
+
+    protected:
+        uint32 nextName;
+    };
 }

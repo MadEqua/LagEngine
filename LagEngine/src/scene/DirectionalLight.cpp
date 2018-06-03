@@ -1,53 +1,52 @@
 #include "DirectionalLight.h"
 
-#include "../renderer/RenderTargetManager.h"
-#include "../renderer/graphicsAPI/RenderToTexture.h"
-#include "../scene/OrthographicCamera.h"
-#include "../scene/SceneNode.h"
+#include "RenderTargetManager.h"
+#include "RenderToTexture.h"
+#include "OrthographicCamera.h"
+#include "SceneNode.h"
 #include "SceneManager.h"
-#include "../resources/Image.h"
-#include "../renderer/graphicsAPI/Texture.h"
-#include "../Root.h"
-#include "../io/log/LogManager.h"
+#include "Image.h"
+#include "Texture.h"
+#include "Root.h"
+#include "LogManager.h"
 
 using namespace Lag;
 
 DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, const Color &color, bool castShadow) :
-	Light(name, color, castShadow),
-	direction(direction)
-{
-	/*if (castShadow)
-	{
-		Root& root = Root::getInstance();
-		RenderToTexture *rt = root.getRenderTargetManager().getRenderToTexture(1280, 800, LAG_RENDER_PHASE_DEPTH); //TODO: size and resizes?
-		
-		ImageData imageData; 
-		imageData.width = 1280;
-		imageData.height = 800;
-		imageData.components= LAG_IMAGE_COMPONENTS_R;
-		imageData.componentType = LAG_IMAGE_COMPONENT_TYPE_FLOAT32;
+        Light(name, color, castShadow),
+        direction(direction) {
+    /*if (castShadow)
+    {
+        Root& root = Root::getInstance();
+        RenderToTexture *rt = root.getRenderTargetManager().getRenderToTexture(1280, 800, RenderPhase::DEPTH); //TODO: size and resizes?
 
-		TextureData textureData;
-		textureData.type = LAG_TEXTURE_TYPE_2D;
-		textureData.dataType = LAG_TEXTURE_DATA_TYPE_DEPTH;
-		textureData.mipmaps = 1;
-		textureData.magnificationFilteringMode = LAG_TEXTURE_FILTERING_MODE_NEAREST;
-		textureData.minificationFilteringMode = LAG_TEXTURE_FILTERING_MODE_NEAREST;
+        ImageData imageData;
+        imageData.width = 1280;
+        imageData.height = 800;
+        imageData.components= ImageComponents::R;
+        imageData.componentType = ImageComponentType::FLOAT32;
 
-		rt->attachDepthTexture(imageData, textureData);
+        TextureData textureData;
+        textureData.type = TextureType::TYPE_2D;
+        textureData.dataType = TextureDataType::DEPTH;
+        textureData.mipmaps = 1;
+        textureData.magnificationFilteringMode = TextureFilteringMode::NEAREST;
+        textureData.minificationFilteringMode = TextureFilteringMode::NEAREST;
 
-		if (!rt->checkCompleteness())
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "DirectionalLight", "RTT completeness check failed.");
+        rt->attachDepthTexture(imageData, textureData);
 
-		const float S = 30;
-		Camera &camera = root.getSceneManager().getCurrentScene().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light
-		SceneNode &sn = root.getSceneManager().getCurrentScene().getSceneGraph().getRootSceneNode().createChildSceneNode("");
-			
-		glm::vec3 dir = -direction;
-		glm::vec3 pos = 10.0f * dir;
-		sn.lookAt(pos, glm::vec3(0), glm::vec3(0, 1, 0));
+        if (!rt->checkCompleteness())
+            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "DirectionalLight", "RTT completeness check failed.");
 
-		camera.attachToSceneNode(sn);
-		rt->createViewport(camera);
-	}*/
+        const float S = 30;
+        Camera &camera = root.getSceneManager().getCurrentScene().createOrthographicCamera(-S, S, -S, S, 1, 100); //TODO: auto size and auto move with light
+        SceneNode &sn = root.getSceneManager().getCurrentScene().getSceneGraph().getRootSceneNode().createChildSceneNode("");
+
+        glm::vec3 dir = -direction;
+        glm::vec3 pos = 10.0f * dir;
+        sn.lookAt(pos, glm::vec3(0), glm::vec3(0, 1, 0));
+
+        camera.attachToSceneNode(sn);
+        rt->createViewport(camera);
+    }*/
 }

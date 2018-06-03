@@ -1,9 +1,7 @@
 #pragma once
 
-namespace Lag
-{
-	class Frustum
-	{
-	public:
-	};
+namespace Lag {
+    class Frustum {
+    public:
+    };
 }

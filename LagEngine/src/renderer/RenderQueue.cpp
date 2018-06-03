@@ -1,6 +1,6 @@
 #include "RenderQueue.h"
 
-#include "../io/log/LogManager.h"
+#include "LogManager.h"
 #include "IRenderable.h"
 #include "Renderer.h"
 #include "Material.h"
@@ -8,22 +8,19 @@
 using namespace Lag;
 
 RenderQueue::RenderQueue() :
-	currentSlot(0)
-{
-	//TODO: something smarter
-	queue.resize(50);
+        currentSlot(0) {
+    //TODO: something smarter
+    queue.resize(50);
 }
 
-RenderOperation& RenderQueue::addRenderOperation()
-{
-	if (currentSlot >= queue.size())
-	{
-		queue.resize(queue.size() * 2);
-		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
-			"RenderQueue", "Queue just got resized. Bad Bad!");
-	}
+RenderOperation &RenderQueue::addRenderOperation() {
+    if (currentSlot >= queue.size()) {
+        queue.resize(queue.size() * 2);
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL,
+                                      "RenderQueue", "Queue just got resized. Bad Bad!");
+    }
 
-	return queue[currentSlot++];
+    return queue[currentSlot++];
 }
 
 /*void RenderQueue::addRenderOperation(IRenderable &renderable, RenderPhase renderPhase, uint32 passId,
@@ -33,7 +30,7 @@ RenderOperation& RenderQueue::addRenderOperation()
 	if (actualSlot >= queue.size())
 	{
 		queue.resize(queue.size() * 2);
-		LogManager::getInstance().log(LAG_LOG_TYPE_WARNING, LAG_LOG_VERBOSITY_NORMAL,
+		LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL,
 			"RenderQueue", "Queue just got resized. Bad Bad!");
 	}
 	
@@ -49,27 +46,25 @@ RenderOperation& RenderQueue::addRenderOperation()
 	++actualSlot;
 }*/
 
-void RenderQueue::clear()
-{
-	currentSlot = 0;
+void RenderQueue::clear() {
+    currentSlot = 0;
 }
 
-void RenderQueue::sort()
-{
-	//TODO
+void RenderQueue::sort() {
+    //TODO
 }
 
-void RenderQueue::dispatchRenderOperations(Renderer &renderer)
-{
-	for (uint32 i = 0; i < currentSlot; ++i)
-	{
-		RenderOperation &ro = queue[i];
-		IRenderable *renderable = ro.renderable;
+void RenderQueue::dispatchRenderOperations(Renderer &renderer) {
+    for (uint32 i = 0; i < currentSlot; ++i) {
+        RenderOperation &ro = queue[i];
+        IRenderable *renderable = ro.renderable;
 
-		//Bind GpuProgram and then the Textures
-		ro.material->bind();
-		renderer.bindRenderTarget(*ro.renderTarget);
-		renderer.bindViewport(*ro.viewport);
-		renderable->render(renderer, ro);
-	}
+        renderer.bindRenderTarget(*ro.renderTarget);
+        renderer.bindViewport(*ro.viewport);
+
+        //Bind GpuProgram and then the Textures
+        ro.material->bind();
+
+        renderable->render(renderer, ro);
+    }
 }

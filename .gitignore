@@ -2,9 +2,14 @@
 *.opendb
 *.user
 .vs/
+
 dependencies/
 Debug/
 Release/
 
-resources/images/
-resources/meshes/
+TestApplication/resources/images/
+TestApplication/resources/meshes/
+
+.idea/
+cmake*/
+install/

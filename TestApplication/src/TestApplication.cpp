@@ -1,30 +1,29 @@
 #include "TestApplication.h"
 
 #include "Root.h"
-#include "io/log/LogManager.h"
-#include "scene/SceneManager.h"
+#include "LogManager.h"
+#include "SceneManager.h"
 
 #include "TestScene.h"
 #include "TestScene2.h"
-
 
 bool TestApplication::start()
 {
 	Lag::Root &root = Lag::Root::getInstance();
 
-	//Lag::LogManager::getInstance().removeFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_FILE);
+	//Lag::LogManager::getInstance().removeFlow(Lag::LogType::DEDUG, Lag::LogOutput::FILE);
 	
-	//Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_CONSOLE);
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_INFO, Lag::LAG_LOG_OUT_IDE);
+	//Lag::LogManager::getInstance().addFlow(Lag::LogType::INFO, Lag::CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::INFO, Lag::LogOutput::IDE);
 
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_CONSOLE);
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_WARNING, Lag::LAG_LOG_OUT_IDE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::WARNING, Lag::LogOutput::CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::WARNING, Lag::LogOutput::IDE);
 
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_CONSOLE);
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_DEBUG, Lag::LAG_LOG_OUT_IDE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::DEBUG, Lag::LogOutput::CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::DEBUG, Lag::LogOutput::IDE);
 
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_CONSOLE);
-	Lag::LogManager::getInstance().addFlow(Lag::LAG_LOG_TYPE_ERROR, Lag::LAG_LOG_OUT_IDE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::ERROR, Lag::LogOutput::CONSOLE);
+	Lag::LogManager::getInstance().addFlow(Lag::LogType::ERROR, Lag::LogOutput::IDE);
 
 	if (!root.initializeLag("startup.ini"))
 		return false;

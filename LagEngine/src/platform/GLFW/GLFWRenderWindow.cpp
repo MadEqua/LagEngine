@@ -1,128 +1,122 @@
 #include "GLFWRenderWindow.h"
 #include "GLFW/glfw3.h"
-#include "../../io/log/LogManager.h"
-#include "../../InitializationParameters.h"
+#include "LogManager.h"
+#include "InitializationParameters.h"
 
 using namespace Lag;
 
 //GLOBAL REFERENCE FOR CALLBACKS
 GLFWRenderWindow *glfwRenderWindow;
 
-void Lag::windowCloseCallback(GLFWwindow * window)
-{
-	glfwRenderWindow->onCloseNotify(*glfwRenderWindow);
+void Lag::windowCloseCallback(GLFWwindow *window) {
+    glfwRenderWindow->onCloseNotify(*glfwRenderWindow);
 }
 
-void Lag::windowSizeCallback(GLFWwindow * window, int width, int height)
-{
-	glfwRenderWindow->resize(width, height);
+void Lag::windowSizeCallback(GLFWwindow *window, int width, int height) {
+    glfwRenderWindow->resize(width, height);
 }
 
-void Lag::windowPosCallback(GLFWwindow * window, int xpos, int ypos)
-{
-	glfwRenderWindow->onMoveNotify(*glfwRenderWindow, xpos, ypos);
+void Lag::windowPosCallback(GLFWwindow *window, int xpos, int ypos) {
+    glfwRenderWindow->onMoveNotify(*glfwRenderWindow, xpos, ypos);
 }
 
-void Lag::windowFocusCallback(GLFWwindow * window, int focused)
-{
-	glfwRenderWindow->onFocusChangeNotify(*glfwRenderWindow, focused == GLFW_FOCUSED ? true : false);
+void Lag::windowFocusCallback(GLFWwindow *window, int focused) {
+    glfwRenderWindow->onFocusChangeNotify(*glfwRenderWindow, focused == GLFW_FOCUSED);
+}
+
+void Lag::errorCallback(int error, const char *description) {
+    LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "GLFWRenderWindow",
+                                  "Error " + std::to_string(error) + ": " + description);
 }
 
 
 GLFWRenderWindow::GLFWRenderWindow(const InitializationParameters &parameters) :
-	RenderWindow(parameters)
-{
-	glfwRenderWindow = this;
+        RenderWindow(parameters) {
+    glfwRenderWindow = this;
 }
 
-bool GLFWRenderWindow::loadImplementation()
-{
-	if (!glfwInit())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"GLFWRenderWindow", "Cannot initialize GLFW.");
-		return false;
-	}
-	else
-	{
-		glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSAAsamples);
-		glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? 1 : 0);
-		glfwWindowHint(GLFW_DOUBLEBUFFER, 1);
-		glfwWindowHint(GLFW_AUX_BUFFERS, 0);
+bool GLFWRenderWindow::loadImplementation() {
+    glfwSetErrorCallback(errorCallback);
 
-		/* TODO: force a version and profile?
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
-		glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
-		glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);*/
+    if (!glfwInit()) {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                      "GLFWRenderWindow", "Cannot initialize GLFW.");
+        return false;
+    }
+    else {
+        glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSAAsamples);
+        glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? GLFW_TRUE : GLFW_FALSE);
+        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
 
-		glfwSwapInterval(initializationParameters.vsync ? 1 : 0);
+        glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
+        glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
+        glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-		window = glfwCreateWindow(initializationParameters.width, 
-			initializationParameters.height, 
-			initializationParameters.title.c_str(),
-			NULL, NULL);
+#ifdef ENABLE_DEBUG_MACRO
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+#else
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
+#endif
 
-		if (window == 0)
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"GLFWRenderWindow", "Cannot build GLFW window.");
-			return false;
-		}
+        window = glfwCreateWindow(initializationParameters.width, initializationParameters.height,
+                                  initializationParameters.title.c_str(), nullptr, nullptr);
 
-		glfwSetWindowCloseCallback(window, windowCloseCallback);
-		glfwSetWindowSizeCallback(window, windowSizeCallback);
-		glfwSetWindowPosCallback(window, windowPosCallback);
-		glfwSetWindowFocusCallback(window, windowFocusCallback);
+        if (window == nullptr) {
+            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                          "GLFWRenderWindow", "Cannot build GLFW window.");
+            return false;
+        }
+
+        glfwSetWindowCloseCallback(window, windowCloseCallback);
+        glfwSetWindowSizeCallback(window, windowSizeCallback);
+        glfwSetWindowPosCallback(window, windowPosCallback);
+        glfwSetWindowFocusCallback(window, windowFocusCallback);
 
 
-		glfwMakeContextCurrent(window);
-		if (!glfwGetCurrentContext()) 
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"GLFWRenderWindow", "Cannot build OpenGL context.");
-			return false;
-		}
+        glfwMakeContextCurrent(window);
+        if (!glfwGetCurrentContext()) {
+            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                          "GLFWRenderWindow", "Cannot build OpenGL context.");
+            return false;
+        }
 
-		setVirtualCursor(false);
+        glfwSwapInterval(initializationParameters.vsync ? GLFW_TRUE : GLFW_FALSE);
+        setVirtualCursor(false);
 
-		LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-			"GLFWRenderWindow", "Initialized successfully.");
+        LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
+                                      "GLFWRenderWindow", "Initialized successfully.");
 
-		return true;
-	}
+        return true;
+    }
 }
 
-void GLFWRenderWindow::unloadImplementation()
-{
-	glfwSetWindowCloseCallback(window, 0);
-	glfwSetWindowSizeCallback(window, 0);
-	glfwSetWindowPosCallback(window, 0);
-	glfwSetWindowFocusCallback(window, 0);
-	
-	glfwTerminate();
+void GLFWRenderWindow::unloadImplementation() {
+    glfwSetWindowCloseCallback(window, nullptr);
+    glfwSetWindowSizeCallback(window, nullptr);
+    glfwSetWindowPosCallback(window, nullptr);
+    glfwSetWindowFocusCallback(window, nullptr);
 
-	LogManager::getInstance().log(LAG_LOG_TYPE_INFO, LAG_LOG_VERBOSITY_NORMAL,
-		"GLFWRenderWindow", "Destroyed successfully.");
+    glfwTerminate();
+
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
+                                  "GLFWRenderWindow", "Destroyed successfully.");
 }
 
-void GLFWRenderWindow::processEvents()
-{
-	glfwPollEvents();
+void GLFWRenderWindow::processEvents() {
+    glfwPollEvents();
 }
 
-void GLFWRenderWindow::swapBuffers()
-{
-	glfwSwapBuffers(window);
+void GLFWRenderWindow::swapBuffers() {
+    glfwSwapBuffers(window);
 }
 
-void GLFWRenderWindow::setVirtualCursor(bool value)
-{
-	virtualCursor = value;
-	int v = value ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
-	glfwSetInputMode(window, GLFW_CURSOR, v);
+void GLFWRenderWindow::setVirtualCursor(bool value) {
+    virtualCursor = value;
+    int v = value ? GLFW_CURSOR_DISABLED : GLFW_CURSOR_NORMAL;
+    glfwSetInputMode(window, GLFW_CURSOR, v);
 }
 
-bool GLFWRenderWindow::isVirtualCursorEnabled()
-{
-	return virtualCursor;
+bool GLFWRenderWindow::isVirtualCursorEnabled() {
+    return virtualCursor;
 }

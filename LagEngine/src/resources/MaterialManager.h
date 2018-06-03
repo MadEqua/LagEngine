@@ -1,23 +1,20 @@
 #pragma once
 
 #include "XmlResourceManager.h"
-#include "../renderer/Material.h"
+#include "Material.h"
 
-namespace Lag
-{
-	class MaterialBuilder : public XmlResourceBuilder<Material>
-	{
-	public:
-		MaterialBuilder(const XmlResourceBuilderData &xmlResourceData);
+namespace Lag {
+    class MaterialBuilder : public XmlResourceBuilder<Material> {
+    public:
+        explicit MaterialBuilder(const XmlResourceBuilderData &xmlResourceData);
 
-		virtual Material* parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
-	};
-	
+        Material *parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
+    };
 
-	class MaterialManager : public XmlResourceManager<Material>
-	{
-	public:
-		explicit MaterialManager(MaterialBuilder *builder);
-		virtual void initializeFallbackObject() override;
-	};
+
+    class MaterialManager : public XmlResourceManager<Material> {
+    public:
+        explicit MaterialManager(MaterialBuilder *builder);
+        void initializeFallbackObject() override;
+    };
 }

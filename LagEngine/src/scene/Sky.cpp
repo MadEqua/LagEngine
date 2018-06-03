@@ -1,127 +1,123 @@
 #include "Sky.h"
 
-#include "../renderer/Renderer.h"
-#include "../renderer/RenderQueue.h"
-#include "../Root.h"
-#include "../renderer/Material.h"
-#include "../resources/GpuBufferManager.h"
-#include "../renderer/graphicsAPI/GpuBuffer.h"
-#include "../renderer/VertexDescription.h"
-#include "../resources/InputDescriptionManager.h"
-#include "../resources/MaterialManager.h"
-#include "../Types.h"
-#include "../renderer/RenderTarget.h"
+#include "Renderer.h"
+#include "RenderQueue.h"
+#include "Root.h"
+#include "Material.h"
+#include "GpuBufferManager.h"
+#include "GpuBuffer.h"
+#include "VertexDescription.h"
+#include "InputDescriptionManager.h"
+#include "MaterialManager.h"
+#include "Types.h"
+#include "RenderTarget.h"
 
 using namespace Lag;
 
-Sky::Sky(const std::string &materialName)
-{
-	material = Root::getInstance().getMaterialManager().get(materialName);
-	
-	if (!material.isValid())
-	{
-		//TODO
-	}
+Sky::Sky(const std::string &materialName) :
+        nor(1.0f),
+        model(1.0f) {
+    material = Root::getInstance().getMaterialManager().get(materialName);
 
-	VertexDescription vxDesc;
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
+    if (!material.isValid()) {
+        //TODO
+    }
 
-	const int VERTEX_COUNT = 8;
-	const int INDEX_COUNT = 12 * 3;
-	const float v = 1.0f;
-	float vertices[] =
-	{
-		-v, v, v,
-		-v, -v, v,
-		v, -v, v,
-		v, v, v,
-		-v, v, -v,
-		-v, -v, -v,
-		v, -v, -v,
-		v, v, -v
-	};
+    VertexDescription vxDesc;
+    vxDesc.addAttribute(VertexAttributeSemantic::POSITION, 3, VertexAttributeType::FLOAT);
 
-	uint8 indices[INDEX_COUNT] =
-	{
-		2, 1, 0,
-		0, 3, 2,
-		4, 5, 6,
-		6, 7, 4,
-		6, 2, 7,
-		2, 3, 7,
-		4, 1, 5,
-		4, 0, 1,
-		5, 1, 2,
-		5, 2, 6,
-		4, 3, 0,
-		4, 7, 3
-	};
+    const int VERTEX_COUNT = 8;
+    const int INDEX_COUNT = 12 * 3;
+    const float v = 1.0f;
+    float vertices[] =
+            {
+                    -v, v, v,
+                    -v, -v, v,
+                    v, -v, v,
+                    v, v, v,
+                    -v, v, -v,
+                    -v, -v, -v,
+                    v, -v, -v,
+                    v, v, -v
+            };
 
-	GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
-	GpuBufferBuilder &bufferBuilder = static_cast<GpuBufferBuilder&>(gpuBufferManager.getBuilder());
-	bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_VERTICES;
-	bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
-	bufferBuilder.itemCount = VERTEX_COUNT;
-	bufferBuilder.itemSizeBytes = vxDesc.getByteSize();
-	bufferBuilder.useMirrorBuffer = false;
-	Handle<GpuBuffer> vertexBuffer = gpuBufferManager.get();
+    uint8 indices[INDEX_COUNT] =
+            {
+                    2, 1, 0,
+                    0, 3, 2,
+                    4, 5, 6,
+                    6, 7, 4,
+                    6, 2, 7,
+                    2, 3, 7,
+                    4, 1, 5,
+                    4, 0, 1,
+                    5, 1, 2,
+                    5, 2, 6,
+                    4, 3, 0,
+                    4, 7, 3
+            };
 
-	bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_INDICES;
-	bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
-	bufferBuilder.itemCount = INDEX_COUNT;
-	bufferBuilder.itemSizeBytes = sizeof(uint8);
-	bufferBuilder.useMirrorBuffer = false;
-	Handle<GpuBuffer> indexBuffer = gpuBufferManager.get();
+    GpuBufferManager &gpuBufferManager = Root::getInstance().getGpuBufferManager();
+    auto &bufferBuilder = dynamic_cast<GpuBufferBuilder &>(gpuBufferManager.getBuilder());
+    bufferBuilder.contents = GpuBufferContents::VERTICES;
+    bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
+    bufferBuilder.itemCount = VERTEX_COUNT;
+    bufferBuilder.itemSizeBytes = vxDesc.getByteSize();
+    bufferBuilder.useMirrorBuffer = false;
+    Handle<GpuBuffer> vertexBuffer = gpuBufferManager.get();
 
-	vertexBuffer->lock();
-	vertexBuffer->write(0, vertexBuffer->getSize(), reinterpret_cast<byte*>(vertices));
-	vertexBuffer->unlock();
+    bufferBuilder.contents = GpuBufferContents::INDICES;
+    bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
+    bufferBuilder.itemCount = INDEX_COUNT;
+    bufferBuilder.itemSizeBytes = sizeof(uint8);
+    bufferBuilder.useMirrorBuffer = false;
+    Handle<GpuBuffer> indexBuffer = gpuBufferManager.get();
 
-	indexBuffer->lock();
-	indexBuffer->write(0, indexBuffer->getSize(), reinterpret_cast<byte*>(indices));
-	indexBuffer->unlock();
+    vertexBuffer->lock();
+    vertexBuffer->write(0, vertexBuffer->getSize(), reinterpret_cast<byte *>(vertices));
+    vertexBuffer->unlock();
 
-	if (!vertexBuffer.isValid() || !indexBuffer.isValid())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Sky", "Failed to load sky. Failed to build a VertexBuffer or IndexBuffer");
-		return;
-	}
-	
-	vertexData.vertexStart = 0;
-	vertexData.vertexCount = VERTEX_COUNT;
+    indexBuffer->lock();
+    indexBuffer->write(0, indexBuffer->getSize(), reinterpret_cast<byte *>(indices));
+    indexBuffer->unlock();
 
-	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
-	vertexData.inputDescription = inputDescriptionManager.get(vxDesc, vertexBuffer);
+    if (!vertexBuffer.isValid() || !indexBuffer.isValid()) {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                      "Sky", "Failed to load sky. Failed to build a VertexBuffer or IndexBuffer");
+        return;
+    }
 
-	indexData.indexStart = 0;
-	indexData.indexCount = INDEX_COUNT;
-	indexData.indexBuffer = indexBuffer;
-	indexData.indexType = LAG_IDX_TYPE_UINT8;
+    vertexData.vertexStart = 0;
+    vertexData.vertexCount = VERTEX_COUNT;
+
+    InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
+    vertexData.inputDescription = inputDescriptionManager.get(vxDesc, vertexBuffer);
+
+    indexData.indexStart = 0;
+    indexData.indexCount = INDEX_COUNT;
+    indexData.indexBuffer = indexBuffer;
+    indexData.indexType = IndexType::UINT8;
 }
 
-void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget)
-{
-	if (renderTarget.getRenderPhase() == LAG_RENDER_PHASE_COLOR)
-	{
-		RenderOperation &ro = renderQueue.addRenderOperation();
-		ro.renderMode = LAG_RENDER_MODE_TRIANGLES;
-		ro.renderTarget = &renderTarget;
-		ro.vertexData = &vertexData;
-		ro.indexData = &indexData;
-		ro.material = material.get();
-		ro.renderable = this;
-		ro.viewport = &viewport;
-		ro.passId = 0;
-	}
+void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) {
+    if (renderTarget.getRenderPhase() == RenderPhase::COLOR) {
+        RenderOperation &ro = renderQueue.addRenderOperation();
+        ro.renderMode = RenderMode::TRIANGLES;
+        ro.renderTarget = &renderTarget;
+        ro.vertexData = &vertexData;
+        ro.indexData = &indexData;
+        ro.material = material.get();
+        ro.renderable = this;
+        ro.viewport = &viewport;
+        ro.passId = 0;
+    }
 }
 
-void Sky::render(Renderer &renderer, RenderOperation &renderOperation)
-{
-	renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
-		model, nor, *renderOperation.viewport);
-	
-	renderer.setDepthWritingEnabled(false);
-	renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData, 0);
-	renderer.setDepthWritingEnabled(true);
+void Sky::render(Renderer &renderer, RenderOperation &renderOperation) {
+    renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
+                                                   model, nor, *renderOperation.viewport);
+
+    renderer.setDepthWritingEnabled(false);
+    renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData, 0);
+    renderer.setDepthWritingEnabled(true);
 }

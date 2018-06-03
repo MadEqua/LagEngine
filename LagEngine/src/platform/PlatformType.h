@@ -1,9 +1,9 @@
 #pragma once
 
-namespace Lag
-{
-	enum PlatformType
-	{
-		LAG_PLATFORM_GLFW_GL4
-	};
+#include "Types.h"
+
+namespace Lag {
+    enum class PlatformType : uint8 {
+        GLFW_GL4_5
+    };
 }

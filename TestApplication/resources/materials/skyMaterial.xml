@@ -1,0 +1,6 @@
+<material>
+  <shader name="skyVertex"/>
+  <shader name="skyFragment"/>
+
+  <texture name="sky"/>
+</material>

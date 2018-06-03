@@ -6,19 +6,16 @@
 using namespace Lag;
 
 SubMesh::SubMesh(VertexData &vxData, IndexData &idxData) :
-	vertexData(vxData), indexData(&idxData)
-{
+        vertexData(vxData), indexData(&idxData) {
 }
 
 SubMesh::SubMesh(VertexData &vxData) :
-	vertexData(vxData), indexData(nullptr)
-{
+        vertexData(vxData), indexData(nullptr) {
 }
 
-SubMesh::~SubMesh()
-{
-	delete &vertexData;
+SubMesh::~SubMesh() {
+    delete &vertexData;
 
-	if (indexData != nullptr)
-		delete indexData;
+    if (indexData != nullptr)
+        delete indexData;
 }

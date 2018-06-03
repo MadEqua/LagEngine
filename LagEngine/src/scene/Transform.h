@@ -2,43 +2,44 @@
 
 #include "glm/vec3.hpp"
 #include "glm/gtc/quaternion.hpp"
+#include "glm/mat3x3.hpp"
 #include "glm/mat4x4.hpp"
 
-namespace Lag
-{
-	/*
-	* Container for SceneNode spatial data. Orientation, Postition and Scale.
-	*/
-	class Transform
-	{
-	public:
-		Transform();
+namespace Lag {
+    /*
+    * Container for SceneNode spatial data. Orientation, Postition and Scale.
+    */
+    class Transform {
+    private:
+        friend class SceneNode;
 
-		//Relative to parent, always up to date.
-		glm::vec3 position;
-		glm::quat orientation;
-		glm::vec3 scale;
+        Transform();
 
-		//Values computed from the node hierarchy, always up to date. Accumulate parent node data.
-		glm::vec3 inheritedPosition;
-		glm::quat inheritedOrientation;
-		glm::vec3 inheritedScale;
+        //Relative to parent, always up to date.
+        glm::vec3 position;
+        glm::quat orientation;
+        glm::vec3 scale;
 
-		//Final transform in World coordinates. Cache, may be dirty.
-		glm::mat4 finalTransform;
-		bool finalTransformOutOfDate;
+        //Values computed from the node hierarchy, always up to date. Accumulate parent node data.
+        glm::vec3 inheritedPosition;
+        glm::quat inheritedOrientation;
+        glm::vec3 inheritedScale;
 
-		//Final inverse transform in World coordinates. Cache, may be dirty.
-		glm::mat4 finalInverseTransform;
-		bool finalInverseTransformOutOfDate;
+        //Final transform in World coordinates. Cache, may be dirty.
+        glm::mat4 finalTransform;
+        bool finalTransformOutOfDate;
 
-		//Appropriate matrix to transform normals 
-		//(equals finalTransform if the scale is uniform)
-		glm::mat3 normalTransform;
-		bool normalTransformOutOfDate;
+        //Final inverse transform in World coordinates. Cache, may be dirty.
+        glm::mat4 finalInverseTransform;
+        bool finalInverseTransformOutOfDate;
 
-		//for returning
-		glm::vec3 tempVec3;
-		glm::quat tempQuat;
-	};
+        //Appropriate matrix to transform normals
+        //(equals finalTransform if the scale is uniform)
+        glm::mat3 normalTransform;
+        bool normalTransformOutOfDate;
+
+        //for returning
+        glm::vec3 tempVec3;
+        glm::quat tempQuat;
+    };
 }

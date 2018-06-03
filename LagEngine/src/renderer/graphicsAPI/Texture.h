@@ -1,103 +1,96 @@
 #pragma once
 
-#include "../../core/Handle.h"
-#include "../../resources/XmlResource.h"
-#include "../../Types.h"
-#include "../../resources/Image.h"
+#include "Handle.h"
+#include "XmlResource.h"
+#include "Types.h"
+#include "Image.h"
 
 #include <string>
 #include <vector>
+#include <iostream>
 
-namespace Lag
-{
-	//For shader uniform matching
-	enum TextureSemantic
-	{
-		LAG_TEXTURE_SEMANTIC_DIFFUSE,
-		LAG_TEXTURE_SEMANTIC_NORMAL,
-		LAG_TEXTURE_SEMANTIC_CUSTOM
-	};
-	
-	enum TextureType
-	{
-		LAG_TEXTURE_TYPE_1D,
-		LAG_TEXTURE_TYPE_2D,
-		LAG_TEXTURE_TYPE_CUBE,
-	};
+namespace Lag {
+    //For shader uniform matching
+    enum class TextureSemantic : uint8 {
+        DIFFUSE,
+        NORMAL,
+        CUSTOM
+    };
 
-	enum TextureDataType
-	{
-		LAG_TEXTURE_DATA_TYPE_COLOR,
-		LAG_TEXTURE_DATA_TYPE_DEPTH,
-		LAG_TEXTURE_DATA_TYPE_STENCIL,
-		LAG_TEXTURE_DATA_TYPE_DEPTH_STENCIL
-	};
+    enum class TextureType : uint8 {
+        TYPE_1D,
+        TYPE_2D,
+        TYPE_3D,
+    };
 
-	enum TextureFilteringMode
-	{
-		LAG_TEXTURE_FILTERING_MODE_NEAREST,
-		LAG_TEXTURE_FILTERING_MODE_LINEAR,
+    enum class TextureDataType : uint8 {
+        COLOR,
+        DEPTH,
+        STENCIL,
+        DEPTH_STENCIL
+    };
 
-		//[inside the mipmap]_MIPMAP_[between mipmaps]
-		LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST,
-		LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR,
-		LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST,
-		LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR
-	};
+    enum class TextureFilteringMode : uint8 {
+        NEAREST,
+        LINEAR,
 
-	enum TexturewWrappingMode
-	{
-		LAG_TEXTURE_WRAPPING_MODE_REPEAT,
-		LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT,
-		LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE,
-		LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER
-	};
+        //[inside the mipmap]_MIPMAP_[between mipmaps]
+                NEAREST_MIPMAP_NEAREST,
+        NEAREST_MIPMAP_LINEAR,
+        LINEAR_MIPMAP_NEAREST,
+        LINEAR_MIPMAP_LINEAR
+    };
 
-	struct TextureData
-	{
-		TextureData() : 
-			dataType(LAG_TEXTURE_DATA_TYPE_COLOR),
-			type(LAG_TEXTURE_TYPE_2D),
-			semantic(LAG_TEXTURE_SEMANTIC_DIFFUSE),
-			minificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR),
-			magnificationFilteringMode(LAG_TEXTURE_FILTERING_MODE_LINEAR),
-			wrappingMode{ LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT, LAG_TEXTURE_WRAPPING_MODE_REPEAT },
-			mipmaps(8) {}
-		
-		TextureDataType dataType;
-		TextureType type;
-		TextureSemantic semantic;
-		TextureFilteringMode minificationFilteringMode;
-		TextureFilteringMode magnificationFilteringMode;
-		TexturewWrappingMode wrappingMode[3];
-		uint32 mipmaps;
-	};
+    enum class TexturewWrappingMode : uint8 {
+        REPEAT,
+        MIRRORED_REPEAT,
+        CLAMP_TO_EDGE,
+        CLAMP_TO_BORDER
+    };
 
-	/*
-	* Gpu representation of an Image (or a set of images). May contain mipmaps.
-	*/
-	class Texture : public XmlResource
-	{
-	public:
-		inline const TextureData& getTextureData() const { return textureData; }
-		inline const ImageData& getImageData() const { return imageData; }
+    struct TextureData {
+        TextureData() :
+                dataType(TextureDataType::COLOR),
+                type(TextureType::TYPE_2D),
+                semantic(TextureSemantic::DIFFUSE),
+                minificationFilteringMode(TextureFilteringMode::LINEAR_MIPMAP_LINEAR),
+                magnificationFilteringMode(TextureFilteringMode::LINEAR),
+                wrappingMode{TexturewWrappingMode::REPEAT, TexturewWrappingMode::REPEAT, TexturewWrappingMode::REPEAT},
+                mipmaps(8) {}
 
-		bool containsImageWithName(const std::string &imageName) const;
+        TextureDataType dataType;
+        TextureType type;
+        TextureSemantic semantic;
+        TextureFilteringMode minificationFilteringMode;
+        TextureFilteringMode magnificationFilteringMode;
+        TexturewWrappingMode wrappingMode[3];
+        uint32 mipmaps;
+    };
 
-		//TODO: set texture parameter methods
+    /*
+    * Gpu representation of an Image (or a set of images). May contain mipmaps.
+    */
+    class Texture : public XmlResource {
+    public:
+        inline const TextureData &getTextureData() const { return textureData; }
+        inline const ImageData &getImageData() const { return imageData; }
 
-	protected:
-		Texture(const std::string &imageName, const TextureData &data);
-		Texture(const std::vector<std::string> &imageNames, const TextureData &data);
-		Texture(const ImageData &imageData, const TextureData &textureData);
+        bool containsImageWithName(const std::string &imageName) const;
 
-		TextureData textureData;
-		ImageData imageData;
+        //TODO: set texture parameter methods
 
-		std::vector<std::string> imageNames;
-		std::vector<Handle<Image>> images;
+    protected:
+        Texture(const std::string &imageName, const TextureData &data);
+        Texture(const std::vector<std::string> &imageNames, const TextureData &data);
+        Texture(const ImageData &imageData, const TextureData &textureData);
 
-		virtual bool loadImplementation() override;
-		virtual void unloadImplementation() override;
-	};
+        TextureData textureData;
+        ImageData imageData;
+
+        std::vector<std::string> imageNames;
+        std::vector<Handle<Image>> images;
+
+        bool loadImplementation() override;
+        void unloadImplementation() override;
+    };
 }

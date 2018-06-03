@@ -1,10 +1,10 @@
 #pragma once
 
-namespace Lag
-{
-	enum RenderPhase
-	{
-		LAG_RENDER_PHASE_DEPTH,
-		LAG_RENDER_PHASE_COLOR
-	};
+#include "Types.h"
+
+namespace Lag {
+    enum class RenderPhase : uint8 {
+        DEPTH,
+        COLOR
+    };
 }

@@ -1,66 +1,63 @@
 #pragma once
 
-#include "../resources/XmlResource.h"
-#include "../Types.h"
+#include "XmlResource.h"
+#include "Types.h"
 
 #include <string>
 
-namespace Lag
-{
-	enum ImageComponents
-	{
-		LAG_IMAGE_COMPONENTS_RGBA,
-		LAG_IMAGE_COMPONENTS_RGB,
-		LAG_IMAGE_COMPONENTS_RG,
-		LAG_IMAGE_COMPONENTS_R
-	};
+namespace Lag {
+    enum class ImageComponents : uint8 {
+        RGBA,
+        RGB,
+        RG,
+        R
+    };
 
-	enum ImageComponentType
-	{
-		LAG_IMAGE_COMPONENT_TYPE_FLOAT16,
-		LAG_IMAGE_COMPONENT_TYPE_FLOAT32,
-		
-		LAG_IMAGE_COMPONENT_TYPE_INT8,
-		LAG_IMAGE_COMPONENT_TYPE_INT16,
-		LAG_IMAGE_COMPONENT_TYPE_INT32,
+    enum class ImageComponentType : uint8 {
+        FLOAT16,
+        FLOAT32,
 
-		LAG_IMAGE_COMPONENT_TYPE_UINT1,
-		LAG_IMAGE_COMPONENT_TYPE_UINT4,
-		LAG_IMAGE_COMPONENT_TYPE_UINT8,
-		LAG_IMAGE_COMPONENT_TYPE_UINT16,
-		LAG_IMAGE_COMPONENT_TYPE_UINT24,
-		LAG_IMAGE_COMPONENT_TYPE_UINT32
-	};
+        INT8,
+        INT16,
+        INT32,
 
-	struct ImageData
-	{
-		ImageData() : components(LAG_IMAGE_COMPONENTS_RGBA),
-			componentType(LAG_IMAGE_COMPONENT_TYPE_UINT8),
-			normalized(true),
-			sRGB(true)
-		{}
+        UINT1,
+        UINT4,
+        UINT8,
+        UINT16,
+        UINT24,
+        UINT32
+    };
 
-		uint32 width, height;
-		ImageComponents components;
-		ImageComponentType componentType;
-		bool normalized;
-		bool sRGB; //is the image in non-linar format?
-	};
-	
-	class Image : public XmlResource
-	{
-	public:
-		inline const ImageData& getImageData() const { return imageData; }
-		inline const byte* getRawDataPointer() const { return dataPtr; }
+    struct ImageData {
+        ImageData() : width(0), height(0),
+                      components(ImageComponents::RGBA),
+                      componentType(ImageComponentType::UINT8),
+                      normalized(true),
+                      sRGB(true) {}
 
-		virtual bool loadImplementation() override;
-		virtual void unloadImplementation() override;
+        uint32 width, height;
+        ImageComponents components;
+        ImageComponentType componentType;
+        bool normalized;
+        bool sRGB; //is the image in non-linar format?
+    };
 
-	protected:
-		friend class ImageBuilder;
-		Image(const std::string &path, const ImageData &imageData);
+    class Image : public XmlResource {
+    public:
+        inline const ImageData &getImageData() const { return imageData; }
 
-		ImageData imageData;
-		byte *dataPtr;
-	};
+        inline const byte *getRawDataPointer() const { return dataPtr; }
+
+        bool loadImplementation() override;
+        void unloadImplementation() override;
+
+    protected:
+        friend class ImageBuilder;
+
+        Image(const std::string &path, const ImageData &imageData);
+
+        ImageData imageData;
+        byte *dataPtr;
+    };
 }

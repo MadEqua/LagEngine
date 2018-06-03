@@ -16,7 +16,7 @@ void TestScene2::onStart()
 
 	Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("main");
 	Lag::Entity *ent = createEntity("piano", "objectMaterial");
-	ent->setRenderMode(Lag::LAG_RENDER_MODE_POINTS);
+	ent->setRenderMode(Lag::RenderMode::LINE_POINTS);
 	ent->attachToSceneNode(mainNode);
 }
 

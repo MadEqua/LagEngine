@@ -1,68 +1,63 @@
 #pragma once
 
 #include <string>
-#include "../Types.h"
+#include "Types.h"
 
-namespace Lag
-{
-	enum GpuProgramUniformSize
-	{
-		LAG_GPU_PROG_UNIFORM_SIZE_1,
-		LAG_GPU_PROG_UNIFORM_SIZE_2,
-		LAG_GPU_PROG_UNIFORM_SIZE_3,
-		LAG_GPU_PROG_UNIFORM_SIZE_4,
-		LAG_GPU_PROG_UNIFORM_SIZE_UNKNOWN
-	};
+namespace Lag {
+    enum class GpuProgramUniformSize : uint8 {
+        SIZE_1,
+        SIZE_2,
+        SIZE_3,
+        SIZE_4,
+        SIZE_UNKNOWN
+    };
 
-	enum GpuProgramUniformType
-	{
-		LAG_GPU_PROG_UNIFORM_TYPE_BOOL,
-		LAG_GPU_PROG_UNIFORM_TYPE_FLOAT,
-		LAG_GPU_PROG_UNIFORM_TYPE_INT32,
-		LAG_GPU_PROG_UNIFORM_TYPE_UINT32,
-		LAG_GPU_PROG_UNIFORM_TYPE_MATRIX,
-		LAG_GPU_PROG_UNIFORM_TYPE_UNKNOWN
-	};
+    enum class GpuProgramUniformType : uint8 {
+        BOOL,
+        FLOAT,
+        INT32,
+        UINT32,
+        MATRIX,
+        UNKNOWN
+    };
 
-	enum GpuProgramUniformSemantic
-	{
-		LAG_GPU_PROG_UNI_SEM_MODEL_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_MODELVIEW_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_VIEW_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_VIEWPROJECTION_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_MVP_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_PROJECTION_MATRIX,
+    enum class GpuProgramUniformSemantic : uint8 {
+        MODEL_MATRIX,
+        MODELVIEW_MATRIX,
+        VIEW_MATRIX,
+        VIEWPROJECTION_MATRIX,
+        MVP_MATRIX,
+        PROJECTION_MATRIX,
 
-		LAG_GPU_PROG_UNI_SEM_NORMAL_WORLD_MATRIX,
-		LAG_GPU_PROG_UNI_SEM_NORMAL_VIEW_MATRIX,
+        NORMAL_WORLD_MATRIX,
+        NORMAL_VIEW_MATRIX,
 
-		LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COUNT,
-		LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_POSITIONS,
-		LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_COLORS,
-		LAG_GPU_PROG_UNI_SEM_POINT_LIGHT_ATTENUATIONS,
+        POINT_LIGHT_COUNT,
+        POINT_LIGHT_POSITIONS,
+        POINT_LIGHT_COLORS,
+        POINT_LIGHT_ATTENUATIONS,
 
-		LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COUNT,
-		LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_DIRECTIONS,
-		LAG_GPU_PROG_UNI_SEM_DIR_LIGHT_COLORS,
+        DIR_LIGHT_COUNT,
+        DIR_LIGHT_DIRECTIONS,
+        DIR_LIGHT_COLORS,
 
-		LAG_GPU_PROG_UNI_SEM_TEXTURE_DIFFUSE,
-		LAG_GPU_PROG_UNI_SEM_TEXTURE_NORMAL,
-		LAG_GPU_PROG_UNI_SEM_TEXTURE_CUSTOM,
+        TEXTURE_DIFFUSE,
+        TEXTURE_NORMAL,
+        TEXTURE_CUSTOM,
 
-		LAG_GPU_PROG_UNI_SEM_CUSTOM
-	};
-	
-	/*
-	* Container for all the data that describe an Uniform. Belongs to a GpuProgramStage.
-	*/
-	struct GpuProgramUniformDescription
-	{
-		std::string name;
-		GpuProgramUniformSize size;
-		GpuProgramUniformType type;
-		GpuProgramUniformSemantic semantic;
+        CUSTOM
+    };
 
-		uint8 getSize() const;
-		uint8 getSizeBytes() const;
-	};
+    /*
+    * Container for all the data that describe an Uniform. Belongs to a GpuProgramStage.
+    */
+    struct GpuProgramUniformDescription {
+        std::string name;
+        GpuProgramUniformSize size;
+        GpuProgramUniformType type;
+        GpuProgramUniformSemantic semantic;
+
+        uint8 getSize() const;
+        uint8 getSizeBytes() const;
+    };
 }

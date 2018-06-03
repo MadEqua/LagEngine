@@ -1,9 +1,7 @@
 #pragma once
 
-namespace Lag
-{
-	class Technique
-	{
-	public:
-	};
+namespace Lag {
+    class Technique {
+    public:
+    };
 }

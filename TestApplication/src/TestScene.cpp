@@ -26,7 +26,7 @@ void TestScene::onStart()
 	/*Lag::Camera &secondaryCamera = sceneManager->createCamera("secondary", 45.0f, 0.1f, 100.0f);
 	Lag::SceneNode &secondaryCameraNode = sceneManager->getSceneGraph().getRootSceneNode().createChildSceneNode("secondaryCamera");
 	secondaryCameraNode.setPosition(glm::vec3(0.0f, 30.0f, 0.0f));
-	secondaryCameraNode.rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f), Lag::WORLD);
+	secondaryCameraNode.rotate(-90.0f, glm::vec3(1.0f, 0.0f, 0.0f), Lag::TransformSpace::WORLD);
 	secondaryCamera.attachToSceneNode(secondaryCameraNode);
 	renderWindow->createViewport("secondary", secondaryCamera, 0.5f, 0.0f, 0.5f, 0.5f);*/
 
@@ -52,7 +52,7 @@ void TestScene::onStart()
 	ent->attachToSceneNode(mainNode);
 
 	Lag::SceneNode &floorNode = getSceneGraph().getRootSceneNode().createChildSceneNode("floor");
-	floorNode.translate(glm::vec3(0.0f, -0.3f, 0.0f), Lag::WORLD);
+	floorNode.translate(glm::vec3(0.0f, -0.3f, 0.0f), Lag::TransformSpace::WORLD);
 	floorNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
 	Lag::Entity *floor = createEntity("cube", "baseMaterial");
 	floor->attachToSceneNode(floorNode);
@@ -88,8 +88,8 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
 
 		periferyNode.scale(glm::vec3(0.5f));
 
-		periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::PARENT);
-		periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::LOCAL);
+		periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::PARENT);
+		periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::TransformSpace::LOCAL);
 
 		Lag::Entity *periferyEnt = createEntity("piano", "objectMaterial");
 
@@ -118,7 +118,7 @@ void TestScene::updateScene(float timePassed)
 	posCpy = mainNode->getWorldPosition();
 	posCpy.y = cycle * 0.2f;
 	mainNode->setPosition(posCpy);
-	mainNode->yaw(timePassed * 30.0f, Lag::LOCAL);*/
+	mainNode->yaw(timePassed * 30.0f, Lag::TransformSpace::LOCAL);*/
 }
 
 void TestScene::onFrameRenderingQueued(float timePassed)

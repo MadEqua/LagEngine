@@ -1,34 +1,31 @@
 #pragma once
 
+#include "Types.h"
 #include "XmlResourceManager.h"
-#include "../renderer/graphicsAPI/GpuProgramStage.h"
+#include "GpuProgramStage.h"
 
-namespace Lag
-{
-	enum GpuProgramStageType;
+namespace Lag {
+    enum class GpuProgramStageType : uint8;
+    enum class GpuProgramUniformSize : uint8;
+    enum class GpuProgramUniformType : uint8;
+    enum class GpuProgramUniformSemantic : uint8;
 
-	enum GpuProgramUniformSize;
-	enum GpuProgramUniformType;
-	enum GpuProgramUniformSemantic;
+    class GpuProgramStageBuilder : public XmlResourceBuilder<GpuProgramStage> {
+    public:
+        explicit GpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData);
 
-	class GpuProgramStageBuilder : public XmlResourceBuilder<GpuProgramStage>
-	{
-	public:
-		GpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData);
+    protected:
+        void parseUniforms(GpuProgramStage &stage, const TiXmlElement &element) const;
 
-	protected:
-		void parseUniforms(GpuProgramStage &stage, const TiXmlElement &element) const;
+        static GpuProgramStageType parseTypeAttribute(const TiXmlElement &element);
+        static GpuProgramUniformType parseUniformTypeFromString(const std::string &type);
+        static GpuProgramUniformSize parseUniformSizeFromString(const std::string &size);
+        static GpuProgramUniformSemantic parseUniformSemanticFromString(const std::string &semantic);
+    };
 
-		static GpuProgramStageType parseTypeAttribute(const TiXmlElement &element);
-		static GpuProgramUniformType parseUniformTypeFromString(const std::string &type);
-		static GpuProgramUniformSize parseUniformSizeFromString(const std::string &size);
-		static GpuProgramUniformSemantic parseUniformSemanticFromString(const std::string &semantic);
-	};
-	
 
-	class GpuProgramStageManager : public XmlResourceManager<GpuProgramStage>
-	{
-	public:
-		explicit GpuProgramStageManager(GpuProgramStageBuilder *builder);
-	};
+    class GpuProgramStageManager : public XmlResourceManager<GpuProgramStage> {
+    public:
+        explicit GpuProgramStageManager(GpuProgramStageBuilder *builder);
+    };
 }

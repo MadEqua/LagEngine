@@ -1,9 +1,9 @@
 #include "TextureManager.h"
 
 #include "tinyxml/tinyxml.h"
-#include "../renderer/graphicsAPI/Texture.h"
+#include "Texture.h"
 
-#include "../Constants.h"
+#include "Constants.h"
 
 using namespace Lag;
 
@@ -50,13 +50,13 @@ TextureData TextureBuilder::parseTextureData(const TiXmlElement &element)
 	const char* typeStr = element.Attribute("type");
 	if (!typeStr)
 	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureBuilder",
+		LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "TextureBuilder",
 			"A <texture> element on the Resources file does not contain the required element <type>");
 		return data;
 	}
 
 	data.type = parseTextureType(typeStr);
-	data.dataType = LAG_TEXTURE_DATA_TYPE_COLOR; //loading depth or stencil from an image makes no sense
+	data.dataType = TextureDataType::COLOR; //loading depth or stencil from an image makes no sense
 	
 	const char* mipMapsStr = element.Attribute("mipmaps");
 	const char* semanticStr = element.Attribute("semantic");
@@ -69,7 +69,7 @@ TextureData TextureBuilder::parseTextureData(const TiXmlElement &element)
 	const char* wrappingRStr = element.Attribute("wrappingR");
 
 	if (mipMapsStr != nullptr)
-		data.mipmaps = parseInt(mipMapsStr);
+		data.mipmaps = static_cast<uint32>(parseInt(mipMapsStr));
 	if (semanticStr != nullptr)
 		data.semantic = parseSemantic(semanticStr);
 	if (minStr != nullptr)
@@ -98,16 +98,16 @@ TextureData TextureBuilder::parseTextureData(const TiXmlElement &element)
 std::vector<std::string> TextureBuilder::parseTextureImages(const TextureData &texturedata, const TiXmlElement &element)
 {
 	std::vector<std::string> imageNames;
-	if (texturedata.type != LAG_TEXTURE_TYPE_CUBE)
+	if (texturedata.type != TextureType::TYPE_3D)
 	{
 		const char* image = element.Attribute(IMAGE_XML_TAG);
 		if (!image)
 		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureBuilder",
+			LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "TextureBuilder",
 				"A <texture> element on the Resources file does not contain the required element <image>");
 			return imageNames;
 		}
-		imageNames.push_back(image);
+		imageNames.emplace_back(image);
 	}
 	else
 	{
@@ -120,55 +120,55 @@ std::vector<std::string> TextureBuilder::parseTextureImages(const TextureData &t
 
 		if (!imageX || !imageNegX || !imageY || !imageNegY || !imageZ || !imageNegZ)
 		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL, "TextureBuilder",
+			LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "TextureBuilder",
 				"A <texture> element on the Resources file does not contain all required elements: <image[+-XYZ]>");
 			return imageNames;
 		}
 
-		imageNames.push_back(imageX);
-		imageNames.push_back(imageNegX);
-		imageNames.push_back(imageY);
-		imageNames.push_back(imageNegY);
-		imageNames.push_back(imageZ);
-		imageNames.push_back(imageNegZ);
+		imageNames.emplace_back(imageX);
+		imageNames.emplace_back(imageNegX);
+		imageNames.emplace_back(imageY);
+		imageNames.emplace_back(imageNegY);
+		imageNames.emplace_back(imageZ);
+		imageNames.emplace_back(imageNegZ);
 	}
 	return imageNames;
 }
 
 TextureType TextureBuilder::parseTextureType(const std::string &type)
 {
-	if (type == "1D") return LAG_TEXTURE_TYPE_1D;
-	else if (type == "2D") return LAG_TEXTURE_TYPE_2D;
-	else if (type == "Cube") return LAG_TEXTURE_TYPE_CUBE;
+	if (type == "1D") return TextureType::TYPE_1D;
+	else if (type == "2D") return TextureType::TYPE_2D;
+	else if (type == "Cube") return TextureType::TYPE_3D;
 	//else if (type == "3D") return LAG_TEXTURE_TYPE_3D;
-	else return LAG_TEXTURE_TYPE_2D;
+	else return TextureType::TYPE_2D;
 }
 
 TextureSemantic TextureBuilder::parseSemantic(const std::string &sem)
 {
-	if (sem == "Diffuse" || sem == "DiffuseColor") return LAG_TEXTURE_SEMANTIC_DIFFUSE;
-	else if (sem == "Normal")return LAG_TEXTURE_SEMANTIC_NORMAL;
-	else return LAG_TEXTURE_SEMANTIC_CUSTOM;
+	if (sem == "Diffuse" || sem == "DiffuseColor") return TextureSemantic::DIFFUSE;
+	else if (sem == "Normal")return TextureSemantic::NORMAL;
+	else return TextureSemantic::CUSTOM;
 }
 
 TextureFilteringMode TextureBuilder::parseFilteringMode(const std::string &mode)
 {
-	if (mode == "Nearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST;
-	else if (mode == "Linear") return LAG_TEXTURE_FILTERING_MODE_LINEAR;
-	else if (mode == "NearestMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_NEAREST;
-	else if (mode == "NearestMipmapLinear") return LAG_TEXTURE_FILTERING_MODE_NEAREST_MIPMAP_LINEAR;
-	else if (mode == "LinearMipmapNearest") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_NEAREST;
-	else if (mode == "LinearMipmapLinear" || mode == "TriLinear") return LAG_TEXTURE_FILTERING_MODE_LINEAR_MIPMAP_LINEAR;
-	else return LAG_TEXTURE_FILTERING_MODE_LINEAR;
+	if (mode == "Nearest") return TextureFilteringMode::NEAREST;
+	else if (mode == "Linear") return TextureFilteringMode::LINEAR;
+	else if (mode == "NearestMipmapNearest") return TextureFilteringMode::NEAREST_MIPMAP_NEAREST;
+	else if (mode == "NearestMipmapLinear") return TextureFilteringMode::NEAREST_MIPMAP_LINEAR;
+	else if (mode == "LinearMipmapNearest") return TextureFilteringMode::LINEAR_MIPMAP_NEAREST;
+	else if (mode == "LinearMipmapLinear" || mode == "TriLinear") return TextureFilteringMode::LINEAR_MIPMAP_LINEAR;
+	else return TextureFilteringMode::LINEAR;
 }
 
 TexturewWrappingMode TextureBuilder::parseWrappingMode(const std::string &mode)
 {
-	if (mode == "Repeat") return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
-	else if (mode == "MirroredRepeat") return LAG_TEXTURE_WRAPPING_MODE_MIRRORED_REPEAT;
-	else if (mode == "ClampEdge" || mode == "ClampToEdge") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_EDGE;
-	else if (mode == "ClampBorder" || mode == "ClampToBorder") return LAG_TEXTURE_WRAPPING_MODE_CLAMP_TO_BORDER;
-	else return LAG_TEXTURE_WRAPPING_MODE_REPEAT;
+	if (mode == "Repeat") return TexturewWrappingMode ::REPEAT;
+	else if (mode == "MirroredRepeat") return TexturewWrappingMode::MIRRORED_REPEAT;
+	else if (mode == "ClampEdge" || mode == "ClampToEdge") return TexturewWrappingMode::CLAMP_TO_EDGE;
+	else if (mode == "ClampBorder" || mode == "ClampToBorder") return TexturewWrappingMode::CLAMP_TO_BORDER;
+	else return TexturewWrappingMode::REPEAT;
 }
 
 int TextureBuilder::parseInt(const std::string &str)

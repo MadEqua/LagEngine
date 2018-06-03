@@ -4,59 +4,56 @@
 #include <fstream>
 #include <unordered_set>
 
-#include "../../core/SingletonPattern.h"
+#include "Types.h"
+#include "Constants.h"
+#include "SingletonPattern.h"
 
-#define LOG_FILE_NAME "LagEngineLog.txt"
+namespace Lag {
+    enum class LogOutput : uint8 {
+        CONSOLE,
+        FILE,
+        IDE
+    };
 
-namespace Lag
-{
-	enum LogOutput
-	{
-		LAG_LOG_OUT_CONSOLE,
-		LAG_LOG_OUT_FILE,
-		LAG_LOG_OUT_IDE
-	};
+    enum class LogVerbosity : uint8 {
+        VERBOSE,
+        NORMAL,
+        MINIMAL
+    };
 
-	enum LogVerbosity
-	{
-		LAG_LOG_VERBOSITY_VERBOSE,
-		LAG_LOG_VERBOSITY_NORMAL,
-		LAG_LOG_VERBOSITY_MINIMAL
-	};
+#undef ERROR
+    enum class LogType : uint8 {
+        DEBUG,
+        INFO,
+        ERROR,
+        WARNING
+    };
 
-	enum LogType
-	{
-		LAG_LOG_TYPE_DEBUG,
-		LAG_LOG_TYPE_INFO, 
-		LAG_LOG_TYPE_ERROR, 
-		LAG_LOG_TYPE_WARNING
-	};
-	
-	
-	class LogManager
-	{
-		LAG_GENERATE_SINGLETON(LogManager)
+    constexpr int LOG_TYPE_COUNT = 4;
 
-	public:
-		//Adds another place where each log type goes (All to file by default)
-		void addFlow(LogType type, LogOutput out);
-		void removeFlow(LogType type, LogOutput out);
+    class LogManager {
+    LAG_GENERATE_SINGLETON(LogManager)
 
-		void log(LogType type, LogVerbosity verbosity, const std::string &title, const std::string &message);
+    public:
+        //Adds another place where each log type goes (All to file by default)
+        void addFlow(LogType type, LogOutput out);
+        void removeFlow(LogType type, LogOutput out);
 
-	private:
-		static const int LOG_TYPE_COUNT = 4;
-		std::unordered_set<LogOutput> flows[LOG_TYPE_COUNT];
+        void log(LogType type, LogVerbosity verbosity, const std::string &title, const std::string &message);
 
-		std::ofstream logFile;
+    private:
+        std::unordered_set<LogOutput> flows[LOG_TYPE_COUNT];
 
-		void initLogFile();
-		void closeLogFile();
+        std::ofstream logFile;
 
-		void formatMessage(LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message, std::string &formattedMessage) const;
-		void printMessage(LogOutput whereTo, const std::string &formattedMessage);
-		void printToFile(const std::string &formattedMessage);
+        void initLogFile();
+        void closeLogFile();
 
-		void appendDateTimeToString(std::string &str) const;
-	};
+        void formatMessage(LogVerbosity verbosity, LogType type, const std::string &title, const std::string &message,
+                           std::string &formattedMessage) const;
+        void printMessage(LogOutput whereTo, const std::string &formattedMessage);
+        void printToFile(const std::string &formattedMessage);
+
+        void appendDateTimeToString(std::string &str) const;
+    };
 }

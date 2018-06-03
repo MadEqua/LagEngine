@@ -1,26 +1,25 @@
 #pragma once
 
 #include "SceneObject.h"
-#include "../renderer/Color.h"
+#include "Color.h"
 
-namespace Lag
-{
-	class Camera;
-	
-	class Light : public SceneObject
-	{
-	public:
-		Light(uint32 name, const Color &color, bool castShadow = true);
+namespace Lag {
+    class Camera;
 
-		inline const Color& getColor() const { return color; }
-		inline bool getCastShadow() const { return castShadow; }
+    class Light : public SceneObject {
+    public:
+        Light(uint32 name, const Color &color, bool castShadow = true);
 
-	protected:
-		Color color;
+        inline const Color &getColor() const { return color; }
 
-		bool castShadow;
+        inline bool getCastShadow() const { return castShadow; }
 
-		//For shadow mapping, if castShadow == true
-		Camera *camera;
-	};
+    protected:
+        Color color;
+
+        bool castShadow;
+
+        //For shadow mapping, if castShadow == true
+        Camera *camera;
+    };
 }

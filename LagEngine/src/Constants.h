@@ -10,4 +10,8 @@ namespace Lag
 
 	constexpr const char* const NAME_XML_ATTR = "name";
 	constexpr const char* const FILE_XML_ATTR = "file";
+
+	constexpr const char* const LOG_FILE_NAME = "LagEngineLog.txt";
+
+	constexpr const char* const GLFW_GL4_5 = "GLFW_GL4_5";
 }

@@ -1,9 +1,7 @@
-#pragma 
+#pragma
 
-namespace Lag
-{
-	class Pass
-	{
-	public:
-	};
+namespace Lag {
+    class Pass {
+    public:
+    };
 }

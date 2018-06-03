@@ -1,40 +1,40 @@
 #pragma once
 
-#include "../../renderer/RenderWindow.h"
+#include "RenderWindow.h"
 
 struct GLFWwindow;
 
-namespace Lag
-{
-	void windowCloseCallback(GLFWwindow* window);
-	void windowSizeCallback(GLFWwindow* window, int width, int height);
-	void windowPosCallback(GLFWwindow* window, int xpos, int ypos);
-	void windowFocusCallback(GLFWwindow* window, int focused);
+namespace Lag {
+    void windowCloseCallback(GLFWwindow *window);
+    void windowSizeCallback(GLFWwindow *window, int width, int height);
+    void windowPosCallback(GLFWwindow *window, int xpos, int ypos);
+    void windowFocusCallback(GLFWwindow *window, int focused);
+    void errorCallback(int error, const char *description);
 
 
-	class GLFWRenderWindow : public RenderWindow
-	{
-		friend void windowCloseCallback(GLFWwindow* window);
-		friend void windowSizeCallback(GLFWwindow* window, int width, int height);
-		friend void windowPosCallback(GLFWwindow* window, int xpos, int ypos);
-		friend void windowFocusCallback(GLFWwindow* window, int focused);
+    class GLFWRenderWindow : public RenderWindow {
+        friend void windowCloseCallback(GLFWwindow *window);
+        friend void windowSizeCallback(GLFWwindow *window, int width, int height);
+        friend void windowPosCallback(GLFWwindow *window, int xpos, int ypos);
+        friend void windowFocusCallback(GLFWwindow *window, int focused);
+        friend void errorCallback(int error, const char *description);
 
-	public:
-		GLFWRenderWindow(const InitializationParameters &parameters);
+    public:
+        explicit GLFWRenderWindow(const InitializationParameters &parameters);
 
-		virtual bool loadImplementation() override;
-		virtual void unloadImplementation() override;
+        bool loadImplementation() override;
+        void unloadImplementation() override;
 
-		virtual void processEvents() override;
-		virtual void swapBuffers() override;
+        void processEvents() override;
+        void swapBuffers() override;
 
-		virtual void setVirtualCursor(bool value) override;
-		virtual bool isVirtualCursorEnabled() override;
+        void setVirtualCursor(bool value) override;
+        bool isVirtualCursorEnabled() override;
 
-		inline GLFWwindow* getGLFWwindow() const { return window; }
+        inline GLFWwindow *getGLFWwindow() const { return window; }
 
-	private:
-		GLFWwindow *window;
-		bool virtualCursor;
-	};
+    private:
+        GLFWwindow *window;
+        bool virtualCursor;
+    };
 }

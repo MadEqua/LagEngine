@@ -4,128 +4,134 @@
 
 #include "InitializationParameters.h"
 
-#include "io/IKeyboardListener.h"
-#include "renderer/IWindowListener.h"
+#include "IKeyboardListener.h"
+#include "IWindowListener.h"
 
-#include "core/SingletonPattern.h"
+#include "SingletonPattern.h"
 
-#include "core/Handle.h"
+#include "Handle.h"
 
 class TiXmlDocument;
 
-namespace Lag
-{
-	class InputManager;
-	class Renderer;
-	class SceneManager;
-	class IFrameListener;
-	
-	class RenderTargetManager;
-	class RenderTarget;
+namespace Lag {
 
-	class GpuProgramStageManager;
-	class GpuProgramManager;
-	class MaterialManager;
-	class MeshManager;
-	class ImageManager;
-	class TextureManager;
+    class InputManager;
+    class Renderer;
+    class SceneManager;
+    class IFrameListener;
+    class RenderTargetManager;
+    class RenderTarget;
+    class GpuProgramStageManager;
+    class GpuProgramManager;
+    class MaterialManager;
+    class MeshManager;
+    class ImageManager;
+    class TextureManager;
+    class GpuBufferManager;
+    class InputDescriptionManager;
 
-	class GpuBufferManager;
-	class InputDescriptionManager;
+    class IGraphicsAPI;
+    class IPlatformFactory;
+    class ResourceFilesWatcher;
 
-	class IGraphicsAPI;
-	class IPlatformFactory;
+    class Root {
+        LAG_GENERATE_SINGLETON(Root)
 
-	class ResourceFilesWatcher;
+    public:
+        bool initializeLag(const std::string &iniFile);
 
-	class Root
-	{
-		LAG_GENERATE_SINGLETON(Root)
+        void startRenderingLoop();
+        void stopRenderingLoop();
+        void renderOneFrame();
 
-	public:
-		bool initializeLag(const std::string &iniFile);
+        void reloadResourcesFile();
 
-		void startRenderingLoop();
-		void stopRenderingLoop();
-		void renderOneFrame();
+        inline InputManager &getInputManager() const { return *inputManager; }
 
-		void reloadResourcesFile();
+        inline Renderer &getRenderer() const { return *renderer; }
 
-		inline InputManager& getInputManager() const { return *inputManager; }
-		inline Renderer& getRenderer() const { return *renderer; }
-		inline SceneManager& getSceneManager() const { return *sceneManager; }
-		inline RenderTargetManager& getRenderTargetManager() const { return *renderTargetManager; }
-		//inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
+        inline SceneManager &getSceneManager() const { return *sceneManager; }
 
-		inline GpuProgramStageManager& getGpuProgramStageManager() const { return *gpuProgramStageManager; }
-		inline GpuProgramManager& getGpuProgramManager() const { return *gpuProgramManager; }
-		inline MaterialManager& getMaterialManager() const { return *materialManager; }
-		inline MeshManager& getMeshManager() const { return *meshManager; }
-		inline ImageManager& getImageManager() const { return *imageManager; }
-		inline TextureManager& getTextureManager() const { return *textureManager; }
+        inline RenderTargetManager &getRenderTargetManager() const { return *renderTargetManager; }
+        //inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
 
-		inline GpuBufferManager& getGpuBufferManager() const { return *gpuBufferManager; }
-		inline InputDescriptionManager& getInputDescriptionManager() const { return *inputDescriptionManager; }
+        inline GpuProgramStageManager &getGpuProgramStageManager() const { return *gpuProgramStageManager; }
 
-	private:
-		Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
+        inline GpuProgramManager &getGpuProgramManager() const { return *gpuProgramManager; }
 
-		InputManager *inputManager;
-		Renderer *renderer;
-		SceneManager *sceneManager;
+        inline MaterialManager &getMaterialManager() const { return *materialManager; }
 
-		RenderTargetManager *renderTargetManager;
+        inline MeshManager &getMeshManager() const { return *meshManager; }
 
-		GpuProgramStageManager *gpuProgramStageManager;
-		GpuProgramManager *gpuProgramManager;
-		MaterialManager *materialManager;
-		MeshManager *meshManager;
-		ImageManager *imageManager;
-		TextureManager *textureManager;
+        inline ImageManager &getImageManager() const { return *imageManager; }
 
-		GpuBufferManager *gpuBufferManager;
-		InputDescriptionManager *inputDescriptionManager;
+        inline TextureManager &getTextureManager() const { return *textureManager; }
 
-		IGraphicsAPI *graphicsAPI;
+        inline GpuBufferManager &getGpuBufferManager() const { return *gpuBufferManager; }
 
-		InitializationParameters initializationParameters;
-		TiXmlDocument *appResourcesFile;
-		TiXmlDocument *lagResourcesFile;
+        inline InputDescriptionManager &getInputDescriptionManager() const { return *inputDescriptionManager; }
 
-#ifdef _DEBUG
-		ResourceFilesWatcher *resourceFilesWatcher;
+    private:
+        Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
+
+        InputManager *inputManager;
+        Renderer *renderer;
+        SceneManager *sceneManager;
+
+        RenderTargetManager *renderTargetManager;
+
+        GpuProgramStageManager *gpuProgramStageManager;
+        GpuProgramManager *gpuProgramManager;
+        MaterialManager *materialManager;
+        MeshManager *meshManager;
+        ImageManager *imageManager;
+        TextureManager *textureManager;
+
+        GpuBufferManager *gpuBufferManager;
+        InputDescriptionManager *inputDescriptionManager;
+
+        IGraphicsAPI *graphicsAPI;
+
+        InitializationParameters initializationParameters;
+        TiXmlDocument *appResourcesFile;
+        TiXmlDocument *lagResourcesFile;
+
+#ifdef ENABLE_DEBUG_MACRO
+        ResourceFilesWatcher *resourceFilesWatcher;
 #endif
 
-		void destroy();
+        void destroy();
 
-		bool internalInit(const IPlatformFactory *platformFactory);
-		bool initResources(const IPlatformFactory *platformFactory);
-		bool initResourcesFiles();
-		bool checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const;
+        bool internalInit(const IPlatformFactory *platformFactory);
+        bool initResources(const IPlatformFactory *platformFactory);
+        bool initResourcesFiles();
+        bool checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const;
 
-		/*
-		* Listen for toggle virtual cursor and escape.
-		*/
-		class KeyboardListener : public IKeyboardListener
-		{
-		public:
-			virtual void onKeyPress(int key, int modifier) override;
-			virtual void onKeyRelease(int key, int modifier) override {}
-			virtual void onKeyRepeat(int key, int modifier) override {}
-		};
+        /*
+        * Listen for toggle virtual cursor and escape.
+        */
+        class KeyboardListener : public IKeyboardListener {
+        public:
+            void onKeyPress(int key, int modifier) override;
 
-		/*
-		* Listen for window close and stop looping.
-		*/
-		class WindowListener : public IWindowListener
-		{
-		public:
-			virtual void onMove(RenderWindow &notifier, uint32 x, uint32 y) override {}
-			virtual void onFocusChange(RenderWindow &notifier, bool focused) override {}
-			virtual void onClose(RenderWindow &notifier) override;
-		};
+            void onKeyRelease(int key, int modifier) override {}
 
-		WindowListener windowListener;
-		KeyboardListener keyboardListener;
-	};
+            void onKeyRepeat(int key, int modifier) override {}
+        };
+
+        /*
+        * Listen for window close and stop looping.
+        */
+        class WindowListener : public IWindowListener {
+        public:
+            void onMove(RenderWindow &notifier, uint32 x, uint32 y) override {}
+
+            void onFocusChange(RenderWindow &notifier, bool focused) override {}
+
+            void onClose(RenderWindow &notifier) override;
+        };
+
+        WindowListener windowListener;
+        KeyboardListener keyboardListener;
+    };
 }

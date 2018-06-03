@@ -2,30 +2,32 @@
 
 #include <string>
 
-namespace Lag
-{
-	/*
-	* Object managed by a Manager, it has the concept of loading and unloading. 
-	*/
-	class ManagedObject
-	{
-	public:
-		ManagedObject();
-		
-		inline const std::string& getName() const { return name; }
-		inline void setName(const std::string &name) { this->name = name; }
+namespace Lag {
 
-	protected:
-		virtual bool loadImplementation() = 0;
-		virtual void unloadImplementation() = 0;
+    /*
+    * Object managed by a Manager, it has the concept of loading and unloading.
+    */
+    class ManagedObject {
+    public:
+        ManagedObject();
+        virtual ~ManagedObject() = default;
 
-		std::string name;
+        inline const std::string &getName() const { return name; }
+        inline void setName(const std::string &name) { this->name = name; }
 
-	private:
-		template<class K, class V> friend class Manager;
-		bool load();
-		void unload();
+    protected:
+        virtual bool loadImplementation() = 0;
+        virtual void unloadImplementation() = 0;
 
-		bool isLoaded;
-	};
+        std::string name;
+
+    private:
+        template<class K, class V> friend
+        class Manager;
+
+        bool load();
+        void unload();
+
+        bool isLoaded;
+    };
 }

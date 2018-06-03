@@ -1,232 +1,219 @@
 #include "Mesh.h"
 
-#include "../io/log/LogManager.h"
+#include "LogManager.h"
 
-#include "../resources/GpuBufferManager.h"
-#include "../resources/InputDescriptionManager.h"
-#include "../Root.h"
+#include "GpuBufferManager.h"
+#include "InputDescriptionManager.h"
+#include "Root.h"
 
-#include "../Types.h"
+#include "Types.h"
 
-#include "graphicsAPI/GpuBuffer.h"
+#include "GpuBuffer.h"
 #include "IndexData.h"
 #include "VertexData.h"
 #include "VertexDescription.h"
 
 #include "SubMesh.h"
 
-#include <assimp/scene.h>
-#include <assimp/Importer.hpp>
-#include <assimp/postprocess.h> 
+#include "assimp/scene.h"
+#include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
 
 using namespace Lag;
 
 Mesh::Mesh(const std::string &file) :
-	XmlResource(file)
-{
+        XmlResource(file) {
 }
 
-bool Mesh::loadImplementation()
-{
-	Assimp::Importer importer;
-	
-	uint32 flags = aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices |
-		aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace;
-	
-	const aiScene *scene = importer.ReadFile(path, flags);
+bool Mesh::loadImplementation() {
+    Assimp::Importer importer;
 
-	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) 
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Mesh", "Failed to load mesh from file: " + path + ". Error: " + importer.GetErrorString());
-		return false;
-	}
+    uint32 flags = aiProcess_GenSmoothNormals | aiProcess_PreTransformVertices |
+                   aiProcess_Triangulate | aiProcess_JoinIdenticalVertices | aiProcess_CalcTangentSpace;
 
-	GpuBufferManager &bufferManager = Root::getInstance().getGpuBufferManager();
-	InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
+    const aiScene *scene = importer.ReadFile(path, flags);
 
-	//Create the VertexDescription
-	VertexDescription vxDesc;
-	vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_POSITION, 3, LAG_VX_ATTR_TYPE_FLOAT);
-	
-	if (scene->mMeshes[0]->HasNormals())
-		vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL, 3, LAG_VX_ATTR_TYPE_FLOAT);
+    if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !scene->mRootNode) {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                      "Mesh", "Failed to load mesh from file: " + path + ". Error: " +
+                                              importer.GetErrorString());
+        return false;
+    }
 
-	if (scene->mMeshes[0]->HasTangentsAndBitangents())
-		vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT, 3, LAG_VX_ATTR_TYPE_FLOAT);
+    GpuBufferManager &bufferManager = Root::getInstance().getGpuBufferManager();
+    InputDescriptionManager &inputDescriptionManager = Root::getInstance().getInputDescriptionManager();
 
-	//Make some space calculations
-	uint32 vxCount = 0, idxCount = 0;
-	uint32 vxSize, idxSize;
-	for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI)
-	{
-		aiMesh *mesh = scene->mMeshes[meshI];
-		vxCount += mesh->mNumVertices;
-		idxCount += mesh->mNumFaces * mesh->mFaces->mNumIndices;
+    //Create the VertexDescription
+    VertexDescription vxDesc;
+    vxDesc.addAttribute(VertexAttributeSemantic::POSITION, 3, VertexAttributeType::FLOAT);
 
-		for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
-		{
-			if (mesh->HasTextureCoords(i))
-				vxDesc.addAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, 2, LAG_VX_ATTR_TYPE_UINT16, i, true);
-			else break;
-		}
-	}
+    if (scene->mMeshes[0]->HasNormals())
+        vxDesc.addAttribute(VertexAttributeSemantic::NORMAL, 3, VertexAttributeType::FLOAT);
 
-	vxSize = vxDesc.getByteSize();
+    if (scene->mMeshes[0]->HasTangentsAndBitangents())
+        vxDesc.addAttribute(VertexAttributeSemantic::TANGENT, 3, VertexAttributeType::FLOAT);
 
-	if (idxCount == 0) idxSize = 0;
-	else if (idxCount <= MAX_UINT8) idxSize = 1;
-	else if (idxCount <= MAX_UINT16) idxSize = 2;
-	else idxSize = 4;
+    //Make some space calculations
+    uint32 vxCount = 0, idxCount = 0;
+    uint32 vxSize, idxSize;
+    for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI) {
+        aiMesh *mesh = scene->mMeshes[meshI];
+        vxCount += mesh->mNumVertices;
+        idxCount += mesh->mNumFaces * mesh->mFaces->mNumIndices;
 
-	//create buffers
-	GpuBufferBuilder &bufferBuilder = static_cast<GpuBufferBuilder&>(bufferManager.getBuilder());
-	bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_VERTICES;
-	bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
-	bufferBuilder.itemCount = vxCount;
-	bufferBuilder.itemSizeBytes = vxSize;
-	bufferBuilder.useMirrorBuffer = true;
-	Handle<GpuBuffer> vb = bufferManager.get();
+        for (uint32 i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i) {
+            if (mesh->HasTextureCoords(i))
+                vxDesc.addAttribute(VertexAttributeSemantic::TEXCOORD, 2, VertexAttributeType::UINT16,
+                                    static_cast<uint8>(i), true);
+            else break;
+        }
+    }
 
-	if (!vb.isValid())
-	{
-		LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-			"Mesh", "Failed to load mesh from file: " + path + ". Failed to build a VertexBuffer");
-		return false;
-	}
+    vxSize = vxDesc.getByteSize();
 
-	Handle<GpuBuffer> ib;
-	if (idxCount > 0)
-	{
-		bufferBuilder.contents = LAG_GPU_BUFFER_CONTENTS_INDICES;
-		bufferBuilder.flags = LAG_GPU_BUFFER_USAGE_DYNAMIC;
-		bufferBuilder.itemCount = idxCount;
-		bufferBuilder.itemSizeBytes = idxSize;
-		bufferBuilder.useMirrorBuffer = true;
-		ib = bufferManager.get();
+    if (idxCount == 0) idxSize = 0;
+    else if (idxCount <= MAX_UINT8) idxSize = 1;
+    else if (idxCount <= MAX_UINT16) idxSize = 2;
+    else idxSize = 4;
 
-		if (!ib.isValid())
-		{
-			LogManager::getInstance().log(LAG_LOG_TYPE_ERROR, LAG_LOG_VERBOSITY_NORMAL,
-				"Mesh", "Failed to load mesh from file: " + path + ". Failed to build a IndexBuffer");
-			return false;
-		}
-	}
+    //create buffers
+    auto &bufferBuilder = dynamic_cast<GpuBufferBuilder &>(bufferManager.getBuilder());
+    bufferBuilder.contents = GpuBufferContents::VERTICES;
+    bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
+    bufferBuilder.itemCount = vxCount;
+    bufferBuilder.itemSizeBytes = vxSize;
+    bufferBuilder.useMirrorBuffer = true;
+    Handle<GpuBuffer> vb = bufferManager.get();
 
-	//for each submesh
-	uint32 vxBufferOffset = 0, idxBufferOffset = 0;
-	for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI) 
-	{
-		aiMesh *mesh = scene->mMeshes[meshI];
-		uint32 subMeshVxCount = mesh->mNumVertices;
-		uint32 subMeshIdxCount = mesh->mNumFaces * mesh->mFaces->mNumIndices;
-		
-		//Fill vertex buffer with the respective submesh part (interleaved)
-		uint32 posSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_POSITION)->getByteSize();
-		uint32 norSize = 0;
-		uint32 tanSize = 0;
+    if (!vb.isValid()) {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                      "Mesh",
+                                      "Failed to load mesh from file: " + path + ". Failed to build a VertexBuffer");
+        return false;
+    }
 
-		if (mesh->HasNormals())
-			norSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_NORMAL)->getByteSize();
-		if (mesh->HasTangentsAndBitangents())
-			tanSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TANGENT)->getByteSize();
+    Handle<GpuBuffer> ib;
+    if (idxCount > 0) {
+        bufferBuilder.contents = GpuBufferContents::INDICES;
+        bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
+        bufferBuilder.itemCount = idxCount;
+        bufferBuilder.itemSizeBytes = idxSize;
+        bufferBuilder.useMirrorBuffer = true;
+        ib = bufferManager.get();
 
-		vb->lock(vxBufferOffset, vxSize * subMeshVxCount);
-		uint32 offset = 0;
-		for (uint32 vx = 0; vx < mesh->mNumVertices; ++vx)
-		{
-			vb->write(offset, posSize, reinterpret_cast<byte*>(&mesh->mVertices[vx]));
-			offset += posSize;
+        if (!ib.isValid()) {
+            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
+                                          "Mesh",
+                                          "Failed to load mesh from file: " + path + ". Failed to build a IndexBuffer");
+            return false;
+        }
+    }
 
-			if (mesh->HasNormals())
-			{
-				vb->write(offset, norSize, reinterpret_cast<byte*>(&mesh->mNormals[vx]));
-				offset += norSize;
-			}
+    //for each submesh
+    uint32 vxBufferOffset = 0, idxBufferOffset = 0;
+    for (unsigned int meshI = 0; meshI < scene->mNumMeshes; ++meshI) {
+        aiMesh *mesh = scene->mMeshes[meshI];
+        uint32 subMeshVxCount = mesh->mNumVertices;
+        uint32 subMeshIdxCount = mesh->mNumFaces * mesh->mFaces->mNumIndices;
 
-			if (mesh->HasTangentsAndBitangents())
-			{
-				vb->write(offset, tanSize, reinterpret_cast<byte*>(&mesh->mTangents[vx]));
-				offset += tanSize;
-			}
+        //Fill vertex buffer with the respective submesh part (interleaved)
+        uint32 posSize = vxDesc.getAttribute(VertexAttributeSemantic::POSITION)->getByteSize();
+        uint32 norSize = 0;
+        uint32 tanSize = 0;
 
-			for (int i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i)
-			{
-				if (mesh->HasTextureCoords(i))
-				{
-					uint32 texCoordSize = vxDesc.getAttribute(LAG_VX_ATTR_SEMANTIC_TEX_COORD, i)->getByteSize();
-					
-					//Float [0.0, 1.0] to uint16 [0, MAX_UINT16]
-					uint16 texCoord[2];
-					texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] * static_cast<float>(MAX_UINT16));
-					texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] * static_cast<float>(MAX_UINT16));
+        if (mesh->HasNormals())
+            norSize = vxDesc.getAttribute(VertexAttributeSemantic::NORMAL)->getByteSize();
+        if (mesh->HasTangentsAndBitangents())
+            tanSize = vxDesc.getAttribute(VertexAttributeSemantic::TANGENT)->getByteSize();
 
-					vb->write(offset, texCoordSize, reinterpret_cast<byte*>(texCoord));
-					offset += texCoordSize;
-				}
-				else break;
-			}
-		}
-		vb->unlock();
-		vb->setUseMirror(false);
+        vb->lock(vxBufferOffset, vxSize * subMeshVxCount);
+        uint32 offset = 0;
+        for (uint32 vx = 0; vx < mesh->mNumVertices; ++vx) {
+            vb->write(offset, posSize, reinterpret_cast<byte *>(&mesh->mVertices[vx]));
+            offset += posSize;
 
-		//fill index buffer (writes are done to the in-memory mirror buffer)
-		if (idxCount > 0)
-		{
-			ib->lock();
-			offset = 0;
-			for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
-				for (unsigned int j = 0; j < mesh->mFaces->mNumIndices; ++j)
-				{
-					ib->write(offset, idxSize, reinterpret_cast<byte*>(mesh->mFaces[i].mIndices + j));
-					offset += idxSize;
-				}
-			ib->unlock();
-		}
+            if (mesh->HasNormals()) {
+                vb->write(offset, norSize, reinterpret_cast<byte *>(&mesh->mNormals[vx]));
+                offset += norSize;
+            }
 
-		ib->setUseMirror(false);
-	
-		//Create Data objects, will be managed by the SubMesh
-		VertexData *vd = new VertexData();
+            if (mesh->HasTangentsAndBitangents()) {
+                vb->write(offset, tanSize, reinterpret_cast<byte *>(&mesh->mTangents[vx]));
+                offset += tanSize;
+            }
 
-		vd->inputDescription = inputDescriptionManager.get(vxDesc, vb);
-		vd->vertexCount = mesh->mNumVertices;
-		vd->vertexStart = vxBufferOffset;
+            for (uint32 i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i) {
+                if (mesh->HasTextureCoords(i)) {
+                    uint32 texCoordSize = vxDesc.getAttribute(VertexAttributeSemantic::TEXCOORD,
+                                                              static_cast<uint8>(i))->getByteSize();
 
-		IndexData *id = nullptr;
-		if (idxCount > 0)
-		{
-			id = new IndexData();
-			id->indexBuffer = ib;
-			id->indexCount = subMeshIdxCount;
+                    //Float [0.0, 1.0] to uint16 [0, MAX_UINT16]
+                    uint16 texCoord[2];
+                    texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] * static_cast<float>(MAX_UINT16));
+                    texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] * static_cast<float>(MAX_UINT16));
 
-			if (idxSize <= 1) id->indexType = LAG_IDX_TYPE_UINT8;
-			else if (idxSize <= 2) id->indexType = LAG_IDX_TYPE_UINT16;
-			else idxSize = id->indexType = LAG_IDX_TYPE_UINT32;
+                    vb->write(offset, texCoordSize, reinterpret_cast<byte *>(texCoord));
+                    offset += texCoordSize;
+                }
+                else break;
+            }
+        }
+        vb->unlock();
+        vb->setUseMirror(false);
 
-			id->indexStart = idxBufferOffset;
-		}
+        //fill index buffer (writes are done to the in-memory mirror buffer)
+        if (idxCount > 0) {
+            ib->lock();
+            offset = 0;
+            for (unsigned int i = 0; i < mesh->mNumFaces; ++i)
+                for (unsigned int j = 0; j < mesh->mFaces->mNumIndices; ++j) {
+                    ib->write(offset, idxSize, reinterpret_cast<byte *>(mesh->mFaces[i].mIndices + j));
+                    offset += idxSize;
+                }
+            ib->unlock();
+        }
 
-		//Create SubMeshes
-		//TODO: add textures and send to SubMesh
-		//std::vector<Texture*> textures;
-		SubMesh *subMesh;
-		if (idxCount > 0)
-			subMesh = new SubMesh(*vd, *id);
-		else
-			subMesh = new SubMesh(*vd);
+        ib->setUseMirror(false);
 
-		subMeshes.push_back(subMesh);
+        //Create Data objects, will be managed by the SubMesh
+        auto *vd = new VertexData();
 
-		vxBufferOffset += vxSize * subMeshVxCount;
-		idxBufferOffset += idxSize * subMeshIdxCount;
-	}
+        vd->inputDescription = inputDescriptionManager.get(vxDesc, vb);
+        vd->vertexCount = mesh->mNumVertices;
+        vd->vertexStart = vxBufferOffset;
 
-	return true;
+        IndexData *id = nullptr;
+        if (idxCount > 0) {
+            id = new IndexData();
+            id->indexBuffer = ib;
+            id->indexCount = subMeshIdxCount;
+
+            if (idxSize <= 1) id->indexType = IndexType::UINT8;
+            else if (idxSize <= 2) id->indexType = IndexType::UINT16;
+            else id->indexType = IndexType::UINT32;
+
+            id->indexStart = idxBufferOffset;
+        }
+
+        //Create SubMeshes
+        //TODO: add textures and send to SubMesh
+        //std::vector<Texture*> textures;
+        SubMesh *subMesh;
+        if (idxCount > 0)
+            subMesh = new SubMesh(*vd, *id);
+        else
+            subMesh = new SubMesh(*vd);
+
+        subMeshes.push_back(subMesh);
+
+        vxBufferOffset += vxSize * subMeshVxCount;
+        idxBufferOffset += idxSize * subMeshIdxCount;
+    }
+
+    return true;
 }
 
-void Mesh::unloadImplementation()
-{
-	for (SubMesh *sm : subMeshes)
-		delete sm;
+void Mesh::unloadImplementation() {
+    for (SubMesh *sm : subMeshes)
+        delete sm;
 }

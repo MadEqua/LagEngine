@@ -2,30 +2,29 @@
 
 #include "SceneObject.h"
 #include "Frustum.h"
-#include <glm/glm.hpp>
 
-namespace Lag
-{
-	/*
-	* TODO: use the Frustum
-	*/
-	class Camera : public SceneObject
-	{
-	public:
-		Camera(uint32 name, float aspectRatio, float nearPlane, float farPlane);
+#include "glm/glm.hpp"
 
-		void setAspectRatio(float aspectRatio);
+namespace Lag {
+    /*
+    * TODO: use the Frustum
+    */
+    class Camera : public SceneObject {
+    public:
+        Camera(uint32 name, float aspectRatio, float nearPlane, float farPlane);
 
-		const glm::mat4& getProjectionMatrix() const { return projectionMatrix; }
+        void setAspectRatio(float aspectRatio);
 
-	protected:
-		Frustum frustum;
+        inline const glm::mat4 &getProjectionMatrix() const { return projectionMatrix; }
 
-		float aspectRatio;
-		float nearPlane, farPlane;
-		glm::mat4 projectionMatrix;
+    protected:
+        Frustum frustum;
 
-		virtual void computeProjectionMatrix() = 0;
-	};
+        float aspectRatio;
+        float nearPlane, farPlane;
+        glm::mat4 projectionMatrix;
+
+        virtual void computeProjectionMatrix() = 0;
+    };
 }
 
