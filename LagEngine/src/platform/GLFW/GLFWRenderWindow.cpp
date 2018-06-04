@@ -13,7 +13,8 @@ void Lag::windowCloseCallback(GLFWwindow *window) {
 }
 
 void Lag::windowSizeCallback(GLFWwindow *window, int width, int height) {
-    glfwRenderWindow->resize(width, height);
+    if(width > 0 && height > 0)
+        glfwRenderWindow->resize(static_cast<uint32>(width), static_cast<uint32>(height));
 }
 
 void Lag::windowPosCallback(GLFWwindow *window, int xpos, int ypos) {

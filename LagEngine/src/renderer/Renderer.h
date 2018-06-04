@@ -58,10 +58,10 @@ namespace Lag {
     * TODO: describe the process...
     */
     class Renderer : public IRenderTargetListener {
-    LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
-    LAG_GENERATE_NOTIFY_METHOD(onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-    LAG_GENERATE_NOTIFY_METHOD(onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
-    LAG_GENERATE_NOTIFY_METHOD(onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+        LAG_GENERATE_OBSERVER_STORAGE(IFrameListener)
+        LAG_GENERATE_NOTIFY_METHOD(onFrameStart, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+        LAG_GENERATE_NOTIFY_METHOD(onFrameRenderingQueued, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
+        LAG_GENERATE_NOTIFY_METHOD(onFrameEnd, IFrameListener, LAG_ARGS(float timePassed), LAG_ARGS(timePassed))
 
     public:
         Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager);
@@ -151,9 +151,7 @@ namespace Lag {
         const GpuProgram *lastUsedGpuProgramOnFrame;
 
         void onPreRender(RenderTarget &notifier) override {}
-
         void onPostRender(RenderTarget &notifier) override {}
-
         void onResize(RenderTarget &notifier, uint32 width, uint32 height) override;
     };
 }

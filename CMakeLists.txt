@@ -7,6 +7,3 @@ set(CMAKE_CXX_FLAGS_DEBUG "${CMAKE_CXX_FLAGS_DEBUG} -DENABLE_DEBUG_MACRO")
 
 add_subdirectory(LagEngine)
 add_subdirectory(TestApplication)
-
-
-
