@@ -1,20 +1,18 @@
 #pragma once
 
-#include "scene/Scene.h"
+#include "Scene.h"
 
-namespace Lag
-{
-	class FreeCamera;
+namespace Lag {
+    class FreeCamera;
 }
 
-class TestScene2 : public Lag::Scene
-{
+class TestScene2 : public Lag::Scene {
 public:
-	virtual void onStart() override;
-	virtual void onEnd() override;
-	virtual void onInitializeViewports(Lag::RenderWindow &renderWindow) override;
+    void onStart() override;
+    void onEnd() override;
+    void onInitializeViewports(Lag::RenderWindow &renderWindow) override;
 
 private:
-	Lag::FreeCamera *camera;
+    Lag::FreeCamera *camera;
 };
 

@@ -1,8 +1,7 @@
 #pragma once
 
-class TestApplication
-{
+class TestApplication {
 public:
-	bool start();
+    bool start();
 };
 

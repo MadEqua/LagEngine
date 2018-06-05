@@ -199,9 +199,9 @@ GLenum GL4_5GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode) {
             return GL_LINE_STRIP;
         case RenderMode::LINE_LOOP:
             return GL_LINE_LOOP;
-        case RenderMode::LINE_POINTS:
+        case RenderMode::POINTS:
             return GL_POINTS;
-        case RenderMode::LINE_PATCHES:
+        case RenderMode::PATCHES:
             return GL_PATCHES;
         default:
             return 0;

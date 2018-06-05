@@ -23,8 +23,8 @@ namespace Lag {
         LINES,
         LINE_STRIP,
         LINE_LOOP,
-        LINE_POINTS,
-        LINE_PATCHES
+        POINTS,
+        PATCHES
     };
 
     class RenderTarget;
