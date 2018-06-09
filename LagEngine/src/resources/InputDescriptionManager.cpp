@@ -1,7 +1,5 @@
 #include "InputDescriptionManager.h"
 
-#include "VertexDescription.h"
-
 using namespace Lag;
 
 InputDescriptionMapKey::InputDescriptionMapKey(const VertexDescription &vertexDescription,

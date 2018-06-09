@@ -18,7 +18,7 @@ namespace Lag {
         void setBuildRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase);
 
     protected:
-        InitializationParameters initializationParameters;
+        const InitializationParameters *initializationParameters;
         uint32 width, height;
         RenderPhase renderPhase;
     };

@@ -1,30 +1,19 @@
 #include "Renderer.h"
 
 #include <thread>
-#include <chrono>
 
-#include "RenderTargetManager.h"
 #include "RenderToTexture.h"
 #include "RenderWindow.h"
 #include "SceneManager.h"
-#include "DirectionalLight.h"
-#include "OrthographicCamera.h"
 #include "GpuProgram.h"
 #include "Material.h"
 
 #include "GpuBuffer.h"
 #include "VertexData.h"
 #include "IndexData.h"
-#include "Viewport.h"
-#include "Texture.h"
 #include "InputDescription.h"
 
 #include "IGraphicsAPI.h"
-#include "IFrameListener.h"
-
-#include "LogManager.h"
-
-#include "Root.h"
 
 using namespace Lag;
 

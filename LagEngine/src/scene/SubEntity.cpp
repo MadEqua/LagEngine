@@ -6,16 +6,9 @@
 #include "VertexData.h"
 #include "Material.h"
 #include "GpuProgram.h"
-#include "GpuProgramUniform.h"
-#include "GpuProgramUniformDescription.h"
 #include "Entity.h"
 #include "SceneNode.h"
-#include "Viewport.h"
-#include "Camera.h"
-#include "Texture.h"
-#include "Root.h"
 #include "MaterialManager.h"
-#include "RenderTarget.h"
 
 using namespace Lag;
 

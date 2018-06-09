@@ -1,14 +1,8 @@
 #include "DirectionalLight.h"
 
-#include "RenderTargetManager.h"
-#include "RenderToTexture.h"
 #include "OrthographicCamera.h"
 #include "SceneNode.h"
 #include "SceneManager.h"
-#include "Image.h"
-#include "Texture.h"
-#include "Root.h"
-#include "LogManager.h"
 
 using namespace Lag;
 

@@ -9,12 +9,7 @@
 #include "Renderer.h"
 #include "GpuProgramUniformDescription.h"
 #include "GpuProgram.h"
-#include "GpuProgramUniform.h"
-#include "Viewport.h"
 #include "Texture.h"
-
-#include "glm/mat3x3.hpp"
-#include "glm/mat4x4.hpp"
 
 using namespace Lag;
 

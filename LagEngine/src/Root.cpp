@@ -4,7 +4,6 @@
 
 #include "GLFW_GL4_5Factory.h"
 
-#include "InitializationParameters.h"
 #include "LogManager.h"
 
 #include "Renderer.h"
@@ -29,8 +28,6 @@
     #include "io/ResourceFilesWatcher.h"
 #endif
 
-#include "Constants.h"
-
 using namespace Lag;
 
 Root::Root() :
@@ -48,14 +45,14 @@ Root::Root() :
         graphicsAPI(nullptr),
         inputDescriptionManager(nullptr),
         appResourcesFile(nullptr),
-        lagResourcesFile(nullptr) {
+        lagResourcesFile(nullptr),
+#ifdef ENABLE_DEBUG_MACRO
+        resourceFilesWatcher(nullptr),
+#endif
+        initializationParameters(nullptr) {
 
     //Initialize other singletons
     LogManager::getInstance();
-
-#ifdef ENABLE_DEBUG_MACRO
-    resourceFilesWatcher = nullptr;
-#endif
 }
 
 Root::~Root() {
@@ -99,11 +96,8 @@ void Root::destroy() {
     delete inputManager;
     inputManager = nullptr;
 
-    delete appResourcesFile;
-    appResourcesFile = nullptr;
-
-    delete lagResourcesFile;
-    lagResourcesFile = nullptr;
+    if(renderWindow.isValid())
+        renderWindow.invalidate();
 
     delete renderTargetManager;
     renderTargetManager = nullptr;
@@ -112,34 +106,41 @@ void Root::destroy() {
     delete resourceFilesWatcher;
     resourceFilesWatcher = nullptr;
 #endif
+
+    delete initializationParameters;
+    initializationParameters = nullptr;
+
+    delete appResourcesFile;
+    appResourcesFile = nullptr;
+
+    delete lagResourcesFile;
+    lagResourcesFile = nullptr;
 }
 
 bool Root::initializeLag(const std::string &iniFile) {
-    initializationParameters = InitializationParameters(iniFile);
-
-    IPlatformFactory *platformFactory = nullptr;
-    if (initializationParameters.platformType == PlatformType::GLFW_GL4_5)
-        platformFactory = new GLFW_GL4_5Factory();
-
-    if (platformFactory == nullptr) {
-        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Root",
-                                      "Cannot find a suitable platform factory. Double check the choosen platform on the .ini file.");
-        return false;
-    }
-    else {
-        bool result = internalInit(platformFactory);
-        delete platformFactory;
-        return result;
-    }
-}
-
-bool Root::internalInit(const IPlatformFactory *platformFactory) {
     //in case of reinitialization
     destroy();
 
+    initializationParameters = new InitializationParameters(iniFile);
+
+    IPlatformFactory *platformFactory = nullptr;
+    if (initializationParameters->platformType == PlatformType::GLFW_GL4_5)
+        platformFactory = new GLFW_GL4_5Factory();
+    else {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Root",
+                                      "Cannot find a suitable platform factory. Double check the chosen platform on the .ini file.");
+        return false;
+    }
+
+    bool result = internalInit(platformFactory);
+    delete platformFactory;
+    return result;
+}
+
+bool Root::internalInit(const IPlatformFactory *platformFactory) {
     renderTargetManager = new RenderTargetManager(platformFactory->getWindowRenderTargetBuilder(),
                                                   platformFactory->getTextureRenderTargetBuilder());
-    renderWindow = renderTargetManager->getRenderWindow(initializationParameters);
+    renderWindow = renderTargetManager->getRenderWindow(*initializationParameters);
     if (!renderWindow.isValid())
         return false;
 
@@ -164,7 +165,7 @@ bool Root::internalInit(const IPlatformFactory *platformFactory) {
     inputManager->registerObserver(keyboardListener);
 
 #ifdef ENABLE_DEBUG_MACRO
-    resourceFilesWatcher = new ResourceFilesWatcher(initializationParameters);
+    resourceFilesWatcher = new ResourceFilesWatcher(*initializationParameters);
 #endif
 
     return true;
@@ -179,24 +180,23 @@ bool Root::initResources(const IPlatformFactory *platformFactory) {
 
     gpuProgramStageManager = new GpuProgramStageManager(platformFactory->getGpuProgramStageBuilder(
             XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                   initializationParameters.getShadersFolder(false),
-                                   initializationParameters.getShadersFolder(true),
+                                   initializationParameters->getShadersFolder(false),
+                                   initializationParameters->getShadersFolder(true),
                                    SHADER_XML_TAG)));
 
     imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                                            initializationParameters.getImagesFolder(false),
-                                                                            initializationParameters.getImagesFolder(true),
+                                                                            initializationParameters->getImagesFolder(false),
+                                                                            initializationParameters->getImagesFolder(true),
                                                                             IMAGE_XML_TAG)));
 
     meshManager = new MeshManager(new MeshBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                                         initializationParameters.getMeshesFolder(false),
-                                                                         initializationParameters.getMeshesFolder(true),
+                                                                         initializationParameters->getMeshesFolder(false),
+                                                                         initializationParameters->getMeshesFolder(true),
                                                                          MESH_XML_TAG)));
 
-    materialManager = new MaterialManager(
-            new MaterialBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                       initializationParameters.getMaterialsFolder(false),
-                                                       initializationParameters.getMaterialsFolder(true),
+    materialManager = new MaterialManager(new MaterialBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
+                                                       initializationParameters->getMaterialsFolder(false),
+                                                       initializationParameters->getMaterialsFolder(true),
                                                        MATERIAL_XML_TAG)));
 
     imageManager->initializeFallbackObject();
@@ -209,8 +209,8 @@ bool Root::initResources(const IPlatformFactory *platformFactory) {
 }
 
 bool Root::initResourcesFiles() {
-    std::string lagResourcesFilePath = initializationParameters.lagResourcesFolder + '/' + initializationParameters.resourcesFile;
-    std::string resourcesFilePath = initializationParameters.appResourcesFolder + '/' + initializationParameters.resourcesFile;
+    std::string lagResourcesFilePath = initializationParameters->lagResourcesFolder + '/' + initializationParameters->resourcesFile;
+    std::string resourcesFilePath = initializationParameters->appResourcesFolder + '/' + initializationParameters->resourcesFile;
 
     auto *lagResourcesFile = new TiXmlDocument(lagResourcesFilePath);
     if (!checkResourcesFile(lagResourcesFilePath, lagResourcesFile)) {
@@ -257,7 +257,7 @@ void Root::reloadResourcesFile() {
 }
 
 void Root::startRenderingLoop() {
-    renderer->startRenderingLoop(initializationParameters.maxFPS);
+    renderer->startRenderingLoop(initializationParameters->maxFPS);
 }
 
 void Root::stopRenderingLoop() {

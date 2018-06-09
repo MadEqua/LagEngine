@@ -5,7 +5,6 @@
 #include "LogManager.h"
 #include "Renderer.h"
 #include "IndexData.h"
-#include "Color.h"
 
 #include "GL4_5InputDescription.h"
 #include "GL4_5GpuProgram.h"

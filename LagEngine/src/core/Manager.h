@@ -22,7 +22,6 @@ namespace Lag {
         }
 
         virtual ~IManagedObjectBuilder() = default;
-
         virtual V *build(const K &name) const = 0;
     };
 
@@ -77,15 +76,15 @@ namespace Lag {
             logTag(logTag),
             builder(builder) {
         // Compile-time sanity check
-        static_assert(std::is_base_of<ManagedObject, V>::value,
-                      "Creating a Manager of Values not derived from ManagedObject");
+        static_assert(std::is_base_of<ManagedObject, V>::value, "Creating a Manager of Values not derived from ManagedObject");
 
-        LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
-                                      logTag, "Initialized successfully.");
+        LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, logTag, "Initialized successfully.");
     }
 
     template<class K, class V>
     Manager<K, V>::~Manager() {
+        fallbackObject.invalidate();
+
         clear();
 
         delete builder;

@@ -1,10 +1,5 @@
 #include "TextureManager.h"
 
-#include "tinyxml/tinyxml.h"
-#include "Texture.h"
-
-#include "Constants.h"
-
 using namespace Lag;
 
 TextureManager::TextureManager(TextureBuilder *builder) :

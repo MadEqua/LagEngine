@@ -1,7 +1,6 @@
 #include "GpuProgramStage.h"
 
 #include "LogManager.h"
-#include <fstream>
 
 using namespace Lag;
 

@@ -32,8 +32,7 @@ namespace Lag {
         //For double-buffered targets
         virtual void swapBuffers() {}
 
-        Viewport &
-        createViewport(Camera &camera, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
+        Viewport &createViewport(Camera &camera, float left = 0.0f, float top = 0.0f, float width = 1.0f, float height = 1.0f);
         Viewport *getViewport(uint16 name) const;
         void clearViewports();
 

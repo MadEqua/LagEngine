@@ -1,7 +1,5 @@
 #include "MeshManager.h"
 
-#include "Mesh.h"
-
 using namespace Lag;
 
 MeshManager::MeshManager(MeshBuilder *builder) :

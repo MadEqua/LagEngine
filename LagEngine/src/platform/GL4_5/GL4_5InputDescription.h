@@ -4,8 +4,6 @@
 #include "GL/glew.h"
 
 namespace Lag {
-    enum VertexAttributeType;
-
     class GL4InputDescription : public InputDescription {
     public:
         bool loadImplementation() override;

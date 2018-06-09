@@ -1,5 +1,4 @@
 #include "GL4_5Texture.h"
-#include "Image.h"
 
 using namespace Lag;
 
@@ -284,10 +283,11 @@ GLenum GL4_5Texture::getPixelDataSizedFormatGL() const {
                         case ImageComponents::R:
                             return imageData.normalized ? -1 : GL_R32UI;
                         default:
-                            return -1;
+                            return 0;
                     }
             }
     }
+    return 0;
 }
 
 GLint GL4_5Texture::getFilteringModeGL(TextureFilteringMode mode) const {

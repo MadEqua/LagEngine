@@ -24,7 +24,6 @@ namespace Lag {
 
         //Useful for camera movement
         virtual void setVirtualCursor(bool value) {}
-
         virtual bool isVirtualCursorEnabled() { return false; }
 
     protected:

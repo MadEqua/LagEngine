@@ -1,6 +1,5 @@
 #include "GL4_5GpuProgramUniform.h"
 #include "GL4_5GpuProgram.h"
-#include "GpuProgramUniformDescription.h"
 #include "LogManager.h"
 
 using namespace Lag;

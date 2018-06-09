@@ -1,9 +1,7 @@
 #include "IniParser.h"
 
-#include <string>
 #include <fstream>
 
-#include "IniSettings.h"
 #include "LogManager.h"
 
 using namespace Lag;

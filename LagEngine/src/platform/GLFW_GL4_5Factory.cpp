@@ -10,14 +10,6 @@
 
 #include "GLFWInputManager.h"
 #include "GLFWRenderTargetBuilder.h"
-#include "GLFWRenderWindow.h"
-
-#include "RenderTargetManager.h"
-#include "TextureManager.h"
-#include "GpuProgramManager.h"
-#include "InputDescriptionManager.h"
-#include "GpuProgramStageManager.h"
-#include "GpuBufferManager.h"
 
 
 using namespace Lag;
@@ -50,8 +42,7 @@ GpuProgramBuilder *GLFW_GL4_5Factory::getGpuProgramBuilder() const {
     return new GL4_5GpuProgramBuilder();
 }
 
-GpuProgramStageBuilder *
-GLFW_GL4_5Factory::getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const {
+GpuProgramStageBuilder *GLFW_GL4_5Factory::getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const {
     return new GL4_5GpuProgramStageBuilder(xmlResourceData);
 }
 

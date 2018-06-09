@@ -4,14 +4,8 @@
 
 #include "Root.h"
 #include "TextureManager.h"
-#include "Texture.h"
 #include "GpuProgramManager.h"
-#include "GpuProgramStageManager.h"
-#include "GpuProgramStage.h"
-#include "GpuProgram.h"
-#include "LogManager.h"
 #include "Renderer.h"
-#include "Constants.h"
 
 using namespace Lag;
 

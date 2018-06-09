@@ -1,8 +1,5 @@
 #include "ImageManager.h"
 
-#include "tinyxml/tinyxml.h"
-#include "Image.h"
-
 using namespace Lag;
 
 ImageManager::ImageManager(ImageBuilder *builder) :

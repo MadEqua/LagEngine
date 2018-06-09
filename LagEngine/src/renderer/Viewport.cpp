@@ -2,7 +2,6 @@
 #include "SceneManager.h"
 #include "Camera.h"
 #include "RenderTarget.h"
-#include "glm/glm.hpp"
 
 using namespace Lag;
 

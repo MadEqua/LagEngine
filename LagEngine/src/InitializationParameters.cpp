@@ -1,7 +1,6 @@
 #include "InitializationParameters.h"
 
 #include "IniParser.h"
-#include "IniSettings.h"
 #include "Constants.h"
 
 using namespace Lag;

@@ -3,9 +3,6 @@
 #include <algorithm>
 
 #include "ImageManager.h"
-#include "Image.h"
-#include "Root.h"
-#include "LogManager.h"
 
 using namespace Lag;
 

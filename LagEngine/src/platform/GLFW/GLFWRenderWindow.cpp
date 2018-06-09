@@ -1,7 +1,8 @@
 #include "GLFWRenderWindow.h"
-#include "GLFW/glfw3.h"
 #include "LogManager.h"
 #include "InitializationParameters.h"
+
+#include "GLFW/glfw3.h"
 
 using namespace Lag;
 
@@ -40,8 +41,7 @@ bool GLFWRenderWindow::loadImplementation() {
     glfwSetErrorCallback(errorCallback);
 
     if (!glfwInit()) {
-        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "GLFWRenderWindow", "Cannot initialize GLFW.");
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "GLFWRenderWindow", "Cannot initialize GLFW.");
         return false;
     }
     else {
@@ -64,8 +64,7 @@ bool GLFWRenderWindow::loadImplementation() {
                                   initializationParameters.title.c_str(), nullptr, nullptr);
 
         if (window == nullptr) {
-            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                          "GLFWRenderWindow", "Cannot build GLFW window.");
+            LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "GLFWRenderWindow", "Cannot build GLFW window.");
             return false;
         }
 
@@ -98,6 +97,7 @@ void GLFWRenderWindow::unloadImplementation() {
     glfwSetWindowPosCallback(window, nullptr);
     glfwSetWindowFocusCallback(window, nullptr);
 
+    glfwDestroyWindow(window);
     glfwTerminate();
 
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,

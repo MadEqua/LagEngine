@@ -9,7 +9,6 @@
 #include "Entity.h"
 #include "PointLight.h"
 #include "DirectionalLIght.h"
-#include "Color.h"
 #include "Keys.h"
 
 TestScene::TestScene(bool isScene1) :

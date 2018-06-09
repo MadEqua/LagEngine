@@ -2,13 +2,9 @@
 
 #include "Renderer.h"
 #include "Keys.h"
-#include "Root.h"
 #include "Scene.h"
-#include "SceneGraph.h"
 #include "SceneNode.h"
 #include "InputManager.h"
-
-#include "glm/vec3.hpp"
 
 using namespace Lag;
 

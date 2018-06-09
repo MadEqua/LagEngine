@@ -1,7 +1,6 @@
 #include "RenderTarget.h"
 
 #include "LogManager.h"
-#include "Viewport.h"
 
 using namespace Lag;
 
@@ -27,8 +26,7 @@ void RenderTarget::clearViewports() {
 
 void RenderTarget::addRenderablesToQueue(RenderQueue &renderQueue, SceneManager &sceneManager) {
     if (viewports.isEmpty()) {
-        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL,
-                                      "RenderTarget",
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "RenderTarget",
                                       "RenderTarget " + name + " does not contain Viewports. At least one is needed.");
         return;
     }

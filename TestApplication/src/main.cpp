@@ -1,8 +1,5 @@
 #include "TestApplication.h"
 
-//Visual Leak Detector
-//#include "vld.h"
-
 int main() {
     TestApplication app;
 

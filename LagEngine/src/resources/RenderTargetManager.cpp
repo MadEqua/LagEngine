@@ -10,7 +10,7 @@ RenderTargetBuilder::RenderTargetBuilder() :
 }
 
 void RenderTargetBuilder::setBuildRenderWindow(const InitializationParameters &parameters) {
-    initializationParameters = parameters;
+    initializationParameters = &parameters;
 }
 
 void RenderTargetBuilder::setBuildRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase) {

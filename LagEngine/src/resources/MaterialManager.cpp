@@ -1,7 +1,5 @@
 #include "MaterialManager.h"
 
-#include "Material.h"
-
 using namespace Lag;
 
 MaterialManager::MaterialManager(MaterialBuilder *builder) :

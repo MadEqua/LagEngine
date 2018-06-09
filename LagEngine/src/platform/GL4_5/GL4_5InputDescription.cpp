@@ -1,5 +1,4 @@
 #include "GL4_5InputDescription.h"
-#include "VertexDescription.h"
 #include "GL4_5GpuBuffer.h"
 
 using namespace Lag;

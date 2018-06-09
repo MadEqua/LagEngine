@@ -1,11 +1,5 @@
 #include "GpuProgramStageManager.h"
 
-#include "tinyxml/tinyxml.h"
-
-#include "LogManager.h"
-#include "GpuProgramStage.h"
-#include "Constants.h"
-
 using namespace Lag;
 
 GpuProgramStageManager::GpuProgramStageManager(GpuProgramStageBuilder *builder) :

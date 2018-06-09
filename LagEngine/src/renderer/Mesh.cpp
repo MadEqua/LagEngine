@@ -4,14 +4,9 @@
 
 #include "GpuBufferManager.h"
 #include "InputDescriptionManager.h"
-#include "Root.h"
 
-#include "Types.h"
-
-#include "GpuBuffer.h"
 #include "IndexData.h"
 #include "VertexData.h"
-#include "VertexDescription.h"
 
 #include "SubMesh.h"
 

@@ -1,5 +1,4 @@
 #include "LogManager.h"
-#include "Types.h"
 
 #include <iostream>
 #include <ctime>

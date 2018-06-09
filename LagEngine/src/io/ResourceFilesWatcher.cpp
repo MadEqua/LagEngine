@@ -7,14 +7,9 @@
 #include "MaterialManager.h"
 #include "ImageManager.h"
 #include "TextureManager.h"
-#include "MeshManager.h"
 #include "GpuProgramStageManager.h"
 #include "GpuProgramManager.h"
 #include "Renderer.h"
-
-#include "Utils.h"
-
-#include "LogManager.h"
 
 using namespace Lag;
 

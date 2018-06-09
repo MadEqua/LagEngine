@@ -47,28 +47,17 @@ namespace Lag {
         void reloadResourcesFile();
 
         inline InputManager &getInputManager() const { return *inputManager; }
-
         inline Renderer &getRenderer() const { return *renderer; }
-
         inline SceneManager &getSceneManager() const { return *sceneManager; }
-
         inline RenderTargetManager &getRenderTargetManager() const { return *renderTargetManager; }
         //inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
-
         inline GpuProgramStageManager &getGpuProgramStageManager() const { return *gpuProgramStageManager; }
-
         inline GpuProgramManager &getGpuProgramManager() const { return *gpuProgramManager; }
-
         inline MaterialManager &getMaterialManager() const { return *materialManager; }
-
         inline MeshManager &getMeshManager() const { return *meshManager; }
-
         inline ImageManager &getImageManager() const { return *imageManager; }
-
         inline TextureManager &getTextureManager() const { return *textureManager; }
-
         inline GpuBufferManager &getGpuBufferManager() const { return *gpuBufferManager; }
-
         inline InputDescriptionManager &getInputDescriptionManager() const { return *inputDescriptionManager; }
 
     private:
@@ -92,7 +81,7 @@ namespace Lag {
 
         IGraphicsAPI *graphicsAPI;
 
-        InitializationParameters initializationParameters;
+        InitializationParameters *initializationParameters;
         TiXmlDocument *appResourcesFile;
         TiXmlDocument *lagResourcesFile;
 
@@ -113,9 +102,7 @@ namespace Lag {
         class KeyboardListener : public IKeyboardListener {
         public:
             void onKeyPress(int key, int modifier) override;
-
             void onKeyRelease(int key, int modifier) override {}
-
             void onKeyRepeat(int key, int modifier) override {}
         };
 
@@ -125,9 +112,7 @@ namespace Lag {
         class WindowListener : public IWindowListener {
         public:
             void onMove(RenderWindow &notifier, uint32 x, uint32 y) override {}
-
             void onFocusChange(RenderWindow &notifier, bool focused) override {}
-
             void onClose(RenderWindow &notifier) override;
         };
 

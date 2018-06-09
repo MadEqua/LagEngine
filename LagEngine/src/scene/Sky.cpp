@@ -1,16 +1,11 @@
 #include "Sky.h"
 
 #include "Renderer.h"
-#include "RenderQueue.h"
-#include "Root.h"
 #include "Material.h"
 #include "GpuBufferManager.h"
-#include "GpuBuffer.h"
 #include "VertexDescription.h"
 #include "InputDescriptionManager.h"
 #include "MaterialManager.h"
-#include "Types.h"
-#include "RenderTarget.h"
 
 using namespace Lag;
 

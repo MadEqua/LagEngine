@@ -1,6 +1,5 @@
 #include "SceneManager.h"
 
-#include "Scene.h"
 #include "Root.h"
 #include "LogManager.h"
 #include "InputManager.h"
@@ -33,8 +32,7 @@ void SceneManager::registerObservers() {
     root.getInputManager().registerObserver(static_cast<Lag::ICursorListener &>(*this));
 }
 
-void
-SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const {
+void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const {
     if (hasActiveScene())
         getActiveScene().addRenderablesToQueue(renderQueue, viewport, renderTarget);
     else
