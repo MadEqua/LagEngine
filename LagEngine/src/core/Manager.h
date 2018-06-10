@@ -174,7 +174,7 @@ namespace Lag {
     template<class K, class V>
     void Manager<K, V>::clearUnused() {
         int count = 0;
-        for (auto it = objects.begin(); it != objects.end();) {
+        for (auto it = objects.begin(); it != objects.end(); ) {
             auto &objectPair = *it;
             ControlBlock<V> *controlBlock = controlBlocks[objectPair.first];
 

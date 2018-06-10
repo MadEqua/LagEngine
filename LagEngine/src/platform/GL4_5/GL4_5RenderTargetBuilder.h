@@ -7,7 +7,7 @@ namespace Lag {
     class GL4_5RenderTargetBuilder : public RenderTargetBuilder {
     public:
         RenderTarget *build(const uint32 &name) const override {
-            return new GL4RenderToTexture(width, height, renderPhase);
+            return new GL4_5RenderToTexture(width, height, renderPhase);
         }
     };
 }

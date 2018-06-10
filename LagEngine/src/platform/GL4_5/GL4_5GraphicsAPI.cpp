@@ -131,29 +131,29 @@ void GL4_5GraphicsAPI::clearDepthAndStencilBuffer(float depth, int32 stencil) {
 }
 
 void GL4_5GraphicsAPI::bindVertexBuffer(const GpuBuffer &vertexBuffer) {
-    GLuint handle = dynamic_cast<const GL4GpuBuffer &>(vertexBuffer).getHandle();
+    GLuint handle = dynamic_cast<const GL4_5GpuBuffer &>(vertexBuffer).getHandle();
     glBindBuffer(GL_ARRAY_BUFFER, handle);
 }
 
 void GL4_5GraphicsAPI::bindIndexBuffer(const GpuBuffer &indexBuffer) {
-    GLuint handle = dynamic_cast<const GL4GpuBuffer &>(indexBuffer).getHandle();
+    GLuint handle = dynamic_cast<const GL4_5GpuBuffer &>(indexBuffer).getHandle();
     glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, handle);
 }
 
 void GL4_5GraphicsAPI::bindGpuProgram(const GpuProgram &gpuProgram) {
-    GLuint handle = dynamic_cast<const GL4GpuProgram &>(gpuProgram).getHandle();
+    GLuint handle = dynamic_cast<const GL4_5GpuProgram &>(gpuProgram).getHandle();
     glUseProgram(handle);
 }
 
 void GL4_5GraphicsAPI::bindInputDescription(const InputDescription &inputDescription) {
-    GLuint handle = dynamic_cast<const GL4InputDescription &>(inputDescription).getHandle();
+    GLuint handle = dynamic_cast<const GL4_5InputDescription &>(inputDescription).getHandle();
     glBindVertexArray(handle);
 }
 
 void GL4_5GraphicsAPI::bindRenderTarget(const RenderTarget &renderTarget) {
     GLuint handle = 0;
     if (!renderTarget.isMainWindow())
-        handle = dynamic_cast<const GL4RenderToTexture &>(renderTarget).getHandle();
+        handle = dynamic_cast<const GL4_5RenderToTexture &>(renderTarget).getHandle();
     glBindFramebuffer(GL_FRAMEBUFFER, handle);
 }
 

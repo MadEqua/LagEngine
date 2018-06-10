@@ -5,9 +5,9 @@
 #include "GL/glew.h"
 
 namespace Lag {
-    class GL4RenderToTexture : public RenderToTexture {
+    class GL4_5RenderToTexture : public RenderToTexture {
     public:
-        GL4RenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase = RenderPhase::COLOR);
+        GL4_5RenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase = RenderPhase::COLOR);
 
         void attachColorTexture(const ImageData &imageData, const TextureData &textureData, uint8 layer = 0,
                                 uint8 attachment = 0, uint8 mipmapLevel = 0) override;

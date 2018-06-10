@@ -284,4 +284,9 @@ target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_FOLDER}/glm-0.9.9.0/i
 ###############################################
 install(FILES ${ASSIMP_LIBRARY_DYN_DEBUG} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS debug)
 install(FILES ${ASSIMP_LIBRARY_DYN_RELEASE} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS release)
-install(DIRECTORY resources/ DESTINATION ${INSTALL_FOLDER}/LagResources)
+
+#On Release builds we copy the resources
+install(DIRECTORY resources/ DESTINATION ${INSTALL_FOLDER}/LagResources CONFIGURATIONS release)
+
+#On Debug builds we create a symlink for working hot reloading (not working on Windows)
+#install(CODE "execute_process(COMMAND ${CMAKE_COMMAND} -E create_symlink resources ${INSTALL_FOLDER}/LagResources)" CONFIGURATIONS debug)

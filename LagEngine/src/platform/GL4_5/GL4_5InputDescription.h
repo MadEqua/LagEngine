@@ -4,7 +4,7 @@
 #include "GL/glew.h"
 
 namespace Lag {
-    class GL4InputDescription : public InputDescription {
+    class GL4_5InputDescription : public InputDescription {
     public:
         bool loadImplementation() override;
         void unloadImplementation() override;
@@ -14,7 +14,7 @@ namespace Lag {
     private:
         friend class GL4_5InputDescriptionBuilder;
 
-        GL4InputDescription(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer);
+        GL4_5InputDescription(const VertexDescription &vertexDescription, const Handle<GpuBuffer> vertexBuffer);
 
         void setupVertexAttributtes() const;
         GLenum convertAttributeTypeToGL(VertexAttributeType type) const;

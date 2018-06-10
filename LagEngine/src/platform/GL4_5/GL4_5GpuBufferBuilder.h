@@ -8,8 +8,8 @@ namespace Lag {
 
     class GL4_5GpuBufferBuilder : public GpuBufferBuilder {
     public:
-        virtual GL4GpuBuffer *build(const uint32 &name) const override {
-            return new GL4GpuBuffer(itemCount * itemSizeBytes, flags, contents, useMirrorBuffer);
+        virtual GL4_5GpuBuffer *build(const uint32 &name) const override {
+            return new GL4_5GpuBuffer(itemCount * itemSizeBytes, flags, contents, useMirrorBuffer);
         }
     };
 }

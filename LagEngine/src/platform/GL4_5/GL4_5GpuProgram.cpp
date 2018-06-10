@@ -7,25 +7,25 @@
 
 using namespace Lag;
 
-GL4GpuProgram::GL4GpuProgram(const std::string &name, const std::vector<std::string> &names) :
+GL4_5GpuProgram::GL4_5GpuProgram(const std::string &name, const std::vector<std::string> &names) :
         GpuProgram(name, names) {
 }
 
-bool GL4GpuProgram::link() {
+bool GL4_5GpuProgram::link() {
     for (auto &stage : stages)
-        glAttachShader(handle, dynamic_cast<GL4GpuProgramStage *>(stage.get())->getHandle());
+        glAttachShader(handle, dynamic_cast<GL4_5GpuProgramStage *>(stage.get())->getHandle());
 
     glLinkProgram(handle);
     return checkLinking();
 }
 
-bool GL4GpuProgram::checkLinking() const {
+bool GL4_5GpuProgram::checkLinking() const {
     GLint result;
     glGetProgramiv(handle, GL_LINK_STATUS, &result);
 
     if (!result) {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "GL4GpuProgram", "Failed to link shader: " + name);
+                                      "GL4_5GpuProgram", "Failed to link shader: " + name);
 
         GLint logLength;
         glGetProgramiv(handle, GL_INFO_LOG_LENGTH, &logLength);
@@ -34,27 +34,27 @@ bool GL4GpuProgram::checkLinking() const {
         glGetProgramInfoLog(handle, logLength, nullptr, log);
 
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "GL4GpuProgram", std::string("Linking Log:\n") + log);
+                                      "GL4_5GpuProgram", std::string("Linking Log:\n") + log);
 
         delete[] log;
         return false;
     }
 
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
-                                  "GL4GpuProgram", "Shader linked succesfully: " + name);
+                                  "GL4_5GpuProgram", "Shader linked succesfully: " + name);
     return true;
 }
 
-bool GL4GpuProgram::loadImplementation() {
+bool GL4_5GpuProgram::loadImplementation() {
     handle = glCreateProgram();
     return GpuProgram::loadImplementation();
 }
 
-void GL4GpuProgram::unloadImplementation() {
+void GL4_5GpuProgram::unloadImplementation() {
     glDeleteProgram(handle);
     return GpuProgram::unloadImplementation();
 }
 
-GpuProgramUniform *GL4GpuProgram::createUniform(const GpuProgramUniformDescription &description) const {
-    return new GL4GpuProgramUniform(description, *this);
+GpuProgramUniform *GL4_5GpuProgram::createUniform(const GpuProgramUniformDescription &description) const {
+    return new GL4_5GpuProgramUniform(description, *this);
 }

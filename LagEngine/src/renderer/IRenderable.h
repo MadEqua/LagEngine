@@ -3,7 +3,6 @@
 namespace Lag {
     class RenderQueue;
     class Renderer;
-    class Material;
     class Viewport;
     struct RenderOperation;
     class RenderTarget;

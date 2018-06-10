@@ -10,7 +10,7 @@ namespace Lag {
                 GpuProgramStageBuilder(xmlResourceData) {}
 
         GpuProgramStage *parseAndCreate(const std::string &path, const TiXmlElement &element) const override {
-            GL4GpuProgramStage *stage = new GL4GpuProgramStage(path + '/' + parseFileAttribute(element),
+            GL4_5GpuProgramStage *stage = new GL4_5GpuProgramStage(path + '/' + parseFileAttribute(element),
                                                                parseTypeAttribute(element));
             parseUniforms(*stage, element);
             return stage;

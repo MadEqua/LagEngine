@@ -4,7 +4,7 @@
 #include "GpuBuffer.h"
 
 namespace Lag {
-    class GL4GpuBuffer : public GpuBuffer {
+    class GL4_5GpuBuffer : public GpuBuffer {
     public:
         void lockImplementation(uint32 offset, uint32 length) override;
         void unlockImplementation() override;
@@ -23,8 +23,8 @@ namespace Lag {
     private:
         friend class GL4_5GpuBufferBuilder;
 
-        //GL4GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
-        GL4GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
+        //GL4_5GpuBuffer(uint32 sizeBytes, byte* data, uint32 flags, GpuBufferContents contents, bool useMirror);
+        GL4_5GpuBuffer(uint32 sizeBytes, uint32 flags, GpuBufferContents contents, bool useMirror);
 
         GLuint handle;
         GLbitfield convertFlagsToGL(uint32 flags);

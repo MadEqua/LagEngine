@@ -20,13 +20,14 @@ ResourceFilesWatcher::ResourceFilesWatcher(const InitializationParameters &initi
 
     Root::getInstance().getRenderer().registerObserver(*this);
 
+    //Filter bursts of callbacks. Happens a lot on Windows.
     timer.start();
 
+    //This lambda will be called on a worker thread from filewatch
     fileWatcher = new filewatch::FileWatch<std::string>(initializationParameters.appResourcesFolder,
             [this, &initializationParameters](const std::string &path, const filewatch::Event change_type) {
-                uint32 timeSinceLast = timer.getElapsedMillis();
-                if (timeSinceLast > 100 &&
-                    change_type == filewatch::Event::modified) {
+                float timeSinceLast = timer.getElapsedSeconds();
+                if (timeSinceLast > TIME_TO_DEBOUNCE_CALLBACK_S && change_type == filewatch::Event::modified) {
                     timer.start();
                     handleResourceChange(initializationParameters, path);
                 }
@@ -37,9 +38,10 @@ ResourceFilesWatcher::~ResourceFilesWatcher() {
     delete fileWatcher;
 }
 
+//Runs on worker thread from filewatch
 void ResourceFilesWatcher::handleResourceChange(const InitializationParameters &initializationParameters,
                                                 const std::string &path) {
-    LogManager::getInstance().log(LogType::INFO, LogVerbosity::MINIMAL, "ResourceFilesWatcher",
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "ResourceFilesWatcher",
                                   "Resource file change detected: " + path);
 
     ReloadType type = ReloadType::UNKNOWN;
@@ -57,48 +59,55 @@ void ResourceFilesWatcher::handleResourceChange(const InitializationParameters &
 
     if (type != ReloadType::UNKNOWN) {
         ReloadData data;
-        data.type = type;
+        data.timeLeftToExecute = TIME_TO_WAIT_FOR_RELOAD_S;
         data.dir = Utils::getDirNameFromPath(path, Utils::getPathSeparator());
         data.file = Utils::getFileNameFromPath(path, Utils::getPathSeparator());
 
-        std::lock_guard<std::mutex> lock(mutexSet);
-        pendingReloads.insert(data);
+        std::lock_guard<std::mutex> lock(mutexMap);
+        pendingReloads[type] = data;
     }
 }
 
+//Runs on Rendering thread
 void ResourceFilesWatcher::onFrameEnd(float timePassed) {
-    Root &root = Root::getInstance();
+    std::lock_guard<std::mutex> lock(mutexMap);
 
-    std::lock_guard<std::mutex> lock(mutexSet);
+    for (auto it = pendingReloads.begin(); it != pendingReloads.end(); ) {
+        auto &pair = *it;
+        pair.second.timeLeftToExecute -= timePassed;
 
-    for (auto &reloadData : pendingReloads) {
-        switch (reloadData.type) {
-            case ReloadType::RESOURCES_FILE:
-                reloadResourcesFile(reloadData);
-                break;
-            case ReloadType::IMAGE:
-                reloadImage(reloadData);
-                break;
-            case ReloadType::SHADER:
-                reloadShader(reloadData);
-                break;
-            case ReloadType::MATERIAL:
-                reloadMaterial(reloadData);
-                break;
-            case ReloadType::MESH:
-                //TODO
-                break;
-            default:
-                break;
+        if(pair.second.timeLeftToExecute <= 0.0f) {
+            switch (pair.first) {
+                case ReloadType::RESOURCES_FILE:
+                    reloadResourcesFile(pair.second);
+                    break;
+                case ReloadType::IMAGE:
+                    reloadImage(pair.second);
+                    break;
+                case ReloadType::SHADER:
+                    reloadShader(pair.second);
+                    break;
+                case ReloadType::MATERIAL:
+                    reloadMaterial(pair.second);
+                    break;
+                case ReloadType::MESH:
+                    //TODO
+                    break;
+                default:
+                    break;
+            }
+
+            it = pendingReloads.erase(it);
+        }
+        else {
+            it++;
         }
     }
-
-    pendingReloads.clear();
 }
 
 
 //On Windows sometimes we don't get a correct path for the changed file. On those cases we force a reloadAll() on the manager.
-//It seems that the issue is related on how programs save the files to disk. Happens frequently saving files with VS but not with Notepad.
+//It seems that the issue is related on how programs save the files to disk. Happens frequently saving files with IDEs but not with Notepad.
 void ResourceFilesWatcher::reloadMaterial(const ReloadData &reloadData) const {
     MaterialManager &mm = Root::getInstance().getMaterialManager();
     std::string name = mm.getNameByFileName(reloadData.file);
@@ -106,6 +115,9 @@ void ResourceFilesWatcher::reloadMaterial(const ReloadData &reloadData) const {
         mm.reload(name);
     else
         mm.reloadAll();
+
+    //Force rebinds of the GPU objects
+    Root::getInstance().getRenderer().resetToBasicState();
 }
 
 void ResourceFilesWatcher::reloadImage(const ReloadData &reloadData) const {
@@ -129,6 +141,9 @@ void ResourceFilesWatcher::reloadImage(const ReloadData &reloadData) const {
     else {
         tm.reloadAll();
     }
+
+    //Force rebinds of the GPU objects
+    Root::getInstance().getRenderer().resetToBasicState();
 }
 
 void ResourceFilesWatcher::reloadShader(const ReloadData &reloadData) const {
@@ -152,6 +167,9 @@ void ResourceFilesWatcher::reloadShader(const ReloadData &reloadData) const {
     else {
         pm.reloadAll();
     }
+
+    //Force rebinds of the GPU objects
+    Root::getInstance().getRenderer().resetToBasicState();
 }
 
 void ResourceFilesWatcher::reloadResourcesFile(const ReloadData &reloadData) const {

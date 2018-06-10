@@ -4,20 +4,20 @@
 
 using namespace Lag;
 
-GL4GpuProgramUniform::GL4GpuProgramUniform(const GpuProgramUniformDescription &description,
+GL4_5GpuProgramUniform::GL4_5GpuProgramUniform(const GpuProgramUniformDescription &description,
                                            const GpuProgram &gpuProgram) :
         GpuProgramUniform(description, gpuProgram) {
 
-    GLuint programHandle = dynamic_cast<const GL4GpuProgram &>(gpuProgram).getHandle();
+    GLuint programHandle = dynamic_cast<const GL4_5GpuProgram &>(gpuProgram).getHandle();
     location = glGetUniformLocation(programHandle, description.name.c_str());
 
     if (location == -1)
         LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL,
-                                      "GL4GpuProgramUniform",
+                                      "GL4_5GpuProgramUniform",
                                       "Could not locate an Uniform with name: " + description.name);
 }
 
-void GL4GpuProgramUniform::setValue(const void *value, uint32 arraySize) const {
+void GL4_5GpuProgramUniform::setValue(const void *value, uint32 arraySize) const {
     switch (description.type) {
         case GpuProgramUniformType::BOOL:
             switch (description.size) {

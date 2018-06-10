@@ -1,7 +1,7 @@
 #pragma once
 
 #include <string>
-#include <unordered_set>
+#include <unordered_map>
 #include <mutex>
 
 #include "Types.h"
@@ -15,6 +15,9 @@ namespace filewatch {
 
 namespace Lag {
     class InitializationParameters;
+
+    constexpr float TIME_TO_WAIT_FOR_RELOAD_S = 0.1f;
+    constexpr float TIME_TO_DEBOUNCE_CALLBACK_S = 0.1f;
 
     class ResourceFilesWatcher : public IFrameListener {
     public:
@@ -32,25 +35,18 @@ namespace Lag {
         };
 
         struct ReloadData {
-            ReloadType type;
             std::string dir, file;
 
-            inline bool operator==(const ReloadData &other) const {
-                return type == other.type;
-            }
-
-            struct Hash {
-                inline size_t operator()(const ReloadData &data) const {
-                    return static_cast<size_t>(data.type);
-                }
-            };
+            //We will wait a little bit before applying the reload.
+            //It seems to be more stable and getting no resource file opening errors (especially when using symlinks).
+            float timeLeftToExecute;
         };
 
         filewatch::FileWatch<std::string> *fileWatcher;
         Timer timer;
 
-        std::mutex mutexSet;
-        std::unordered_set<ReloadData, ReloadData::Hash> pendingReloads;
+        std::mutex mutexMap;
+        std::unordered_map<ReloadType, ReloadData> pendingReloads;
 
         void handleResourceChange(const InitializationParameters &initializationParameters, const std::string &path);
         void reloadMaterial(const ReloadData &reloadData) const;

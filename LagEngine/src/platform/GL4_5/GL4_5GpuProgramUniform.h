@@ -4,9 +4,9 @@
 #include "GL/glew.h"
 
 namespace Lag {
-    class GL4GpuProgramUniform : public GpuProgramUniform {
+    class GL4_5GpuProgramUniform : public GpuProgramUniform {
     public:
-        GL4GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
+        GL4_5GpuProgramUniform(const GpuProgramUniformDescription &description, const GpuProgram &gpuProgram);
 
         void setValue(const void *value, uint32 arraySize) const override;
 

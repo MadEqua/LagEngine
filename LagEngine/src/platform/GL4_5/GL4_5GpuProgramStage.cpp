@@ -4,24 +4,24 @@
 
 using namespace Lag;
 
-GL4GpuProgramStage::GL4GpuProgramStage(const std::string &path, GpuProgramStageType type) :
+GL4_5GpuProgramStage::GL4_5GpuProgramStage(const std::string &path, GpuProgramStageType type) :
         GpuProgramStage(path, type) {
 }
 
-bool GL4GpuProgramStage::compile() {
+bool GL4_5GpuProgramStage::compile() {
     const char *c_str = code.c_str();
     glShaderSource(handle, 1, &c_str, nullptr);
     glCompileShader(handle);
     return checkCompilation();
 }
 
-bool GL4GpuProgramStage::checkCompilation() const {
+bool GL4_5GpuProgramStage::checkCompilation() const {
     GLint result;
     glGetShaderiv(handle, GL_COMPILE_STATUS, &result);
 
     if (!result) {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "GL4GpuProgramStage", "Failed to compile shader: " + path);
+                                      "GL4_5GpuProgramStage", "Failed to compile shader: " + path);
 
         GLint logLength;
         glGetShaderiv(handle, GL_INFO_LOG_LENGTH, &logLength);
@@ -30,19 +30,19 @@ bool GL4GpuProgramStage::checkCompilation() const {
         glGetShaderInfoLog(handle, logLength, nullptr, log);
 
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "GL4GpuProgramStage", std::string("Compilation Log:\n") + log);
+                                      "GL4_5GpuProgramStage", std::string("Compilation Log:\n") + log);
 
         delete[] log;
         return false;
     }
 
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
-                                  "GL4GpuProgramStage", "Shader compiled succesfully: " + path);
+                                  "GL4_5GpuProgramStage", "Shader compiled succesfully: " + path);
 
     return true;
 }
 
-GLenum GL4GpuProgramStage::convertTypeToGL() {
+GLenum GL4_5GpuProgramStage::convertTypeToGL() {
     switch (type) {
         case GpuProgramStageType::VERTEX:
             return GL_VERTEX_SHADER;
@@ -60,12 +60,12 @@ GLenum GL4GpuProgramStage::convertTypeToGL() {
     }
 }
 
-bool GL4GpuProgramStage::loadImplementation() {
+bool GL4_5GpuProgramStage::loadImplementation() {
     handle = glCreateShader(convertTypeToGL());
     return GpuProgramStage::loadImplementation();
 }
 
-void GL4GpuProgramStage::unloadImplementation() {
+void GL4_5GpuProgramStage::unloadImplementation() {
     glDeleteShader(handle);
     GpuProgramStage::unloadImplementation();
 }

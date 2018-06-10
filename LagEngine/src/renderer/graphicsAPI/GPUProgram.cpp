@@ -2,11 +2,7 @@
 
 #include <algorithm>
 
-#include "GpuProgramStage.h"
-#include "GpuProgramUniform.h"
 #include "GpuProgramStageManager.h"
-#include "Root.h"
-#include "LogManager.h"
 
 using namespace Lag;
 

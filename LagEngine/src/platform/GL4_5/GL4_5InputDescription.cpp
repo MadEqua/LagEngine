@@ -3,24 +3,24 @@
 
 using namespace Lag;
 
-GL4InputDescription::GL4InputDescription(const VertexDescription &vertexDescription,
+GL4_5InputDescription::GL4_5InputDescription(const VertexDescription &vertexDescription,
                                          const Handle<GpuBuffer> vertexBuffer) :
         InputDescription(vertexDescription, vertexBuffer) {
 }
 
-bool Lag::GL4InputDescription::loadImplementation() {
+bool Lag::GL4_5InputDescription::loadImplementation() {
     glCreateVertexArrays(1, &handle);
     setupVertexAttributtes();
     return true;
 }
 
-void Lag::GL4InputDescription::unloadImplementation() {
+void Lag::GL4_5InputDescription::unloadImplementation() {
     glDeleteVertexArrays(1, &handle);
 }
 
-void GL4InputDescription::setupVertexAttributtes() const {
+void GL4_5InputDescription::setupVertexAttributtes() const {
     //Bind the VBO to VBO binding point 0 (of this VAO) and describes how to get vertex data from the VBO
-    glVertexArrayVertexBuffer(handle, 0, dynamic_cast<const GL4GpuBuffer &>(*vertexBuffer).getHandle(),
+    glVertexArrayVertexBuffer(handle, 0, dynamic_cast<const GL4_5GpuBuffer &>(*vertexBuffer).getHandle(),
 
             //Not sending an offset within the VBO itself.
             //Relying on draw calls to use an offset (getting it from vertexStart on VertexData)
@@ -48,7 +48,7 @@ void GL4InputDescription::setupVertexAttributtes() const {
     }
 }
 
-GLenum GL4InputDescription::convertAttributeTypeToGL(VertexAttributeType type) const {
+GLenum GL4_5InputDescription::convertAttributeTypeToGL(VertexAttributeType type) const {
     switch (type) {
         case VertexAttributeType::HALF_FLOAT:
             return GL_HALF_FLOAT;

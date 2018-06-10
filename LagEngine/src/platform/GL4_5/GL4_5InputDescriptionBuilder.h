@@ -8,8 +8,8 @@ namespace Lag {
 
     class GL4_5InputDescriptionBuilder : public InputDescriptionBuilder {
     public:
-        GL4InputDescription *build(const InputDescriptionMapKey &name) const override {
-            return new GL4InputDescription(vertexDescription, vertexBuffer);
+        GL4_5InputDescription *build(const InputDescriptionMapKey &name) const override {
+            return new GL4_5InputDescription(vertexDescription, vertexBuffer);
         }
     };
 }
