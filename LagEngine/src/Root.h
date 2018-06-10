@@ -59,6 +59,8 @@ namespace Lag {
         inline TextureManager &getTextureManager() const { return *textureManager; }
         inline GpuBufferManager &getGpuBufferManager() const { return *gpuBufferManager; }
         inline InputDescriptionManager &getInputDescriptionManager() const { return *inputDescriptionManager; }
+        inline const TiXmlDocument& getAppResourcesFile() const { return *appResourcesFile; }
+        inline const TiXmlDocument& getLagResourcesFile() const { return *lagResourcesFile; }
 
     private:
         Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it

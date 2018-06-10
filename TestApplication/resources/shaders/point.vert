@@ -14,7 +14,7 @@ out VertexShaderOut
 
 void main()
 {
-	gl_PointSize = 40.0;
+	gl_PointSize = 30.0;
 	gl_Position = mvpMatrix * vec4(position, 1.0);
 	
 	vs_out.texCoord = texCoord;

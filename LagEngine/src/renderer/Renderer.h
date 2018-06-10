@@ -89,8 +89,7 @@ namespace Lag {
 
         //High-level render calls
         void renderVertices(RenderMode renderMode, const VertexData &vertexData);
-        void renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData,
-                           uint32 baseVertex = 0);
+        void renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData);
 
         /*void renderMultiVertices(const VertexData *vertexData[], uint32 drawCount);
         void renderMultiIndexed(const VertexData *vertexData[], const IndexData *indexData[], uint32 drawCount);

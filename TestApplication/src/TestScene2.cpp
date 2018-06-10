@@ -11,9 +11,12 @@ void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
 
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
+    root.getRenderer().setClearColor(Lag::Color(0.0f));
 
     Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("main");
-    Lag::Entity *ent = createEntity("piano", "objectMaterial");
+    mainNode.setScale(glm::vec3(20.0f));
+
+    Lag::Entity *ent = createEntity("bunny", "objectMaterial");
     ent->setRenderMode(Lag::RenderMode::POINTS);
     ent->attachToSceneNode(mainNode);
 }

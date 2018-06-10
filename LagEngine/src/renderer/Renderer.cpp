@@ -204,11 +204,10 @@ void Renderer::renderVertices(RenderMode renderMode, const VertexData &vertexDat
     graphicsAPI.renderVertices(renderMode, vertexData.vertexStart, vertexData.vertexCount);
 }
 
-void Renderer::renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData,
-                             uint32 baseVertex) {
+void Renderer::renderIndexed(RenderMode renderMode, const VertexData &vertexData, const IndexData &indexData) {
     bindInputDescription(*vertexData.inputDescription);
     bindIndexBuffer(*indexData.indexBuffer);
-    graphicsAPI.renderIndexed(renderMode, indexData.indexStart, indexData.indexType, indexData.indexCount, baseVertex);
+    graphicsAPI.renderIndexed(renderMode, indexData.indexStart, indexData.indexType, indexData.indexCount, vertexData.vertexStart);
 }
 
 /*void Renderer::renderMultiVertices(const VertexData *vertexData[], uint32 drawCount)

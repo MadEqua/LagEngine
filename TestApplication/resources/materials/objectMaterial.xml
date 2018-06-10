@@ -4,7 +4,7 @@
   <shader name="pointVertex"/>
   <shader name="pointFragment"/>
   
-  <texture name="piano"/>
+  <texture name="circleSprite"/>
 		<!-- </pass>
 	</technique> -->
 </material>

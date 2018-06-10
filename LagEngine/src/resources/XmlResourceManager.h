@@ -7,6 +7,7 @@
 #include "Manager.h"
 #include "Utils.h"
 #include "Constants.h"
+#include "Root.h"
 
 class TiXmlElement;
 
@@ -14,17 +15,14 @@ namespace Lag {
     class XmlResource;
 
     struct XmlResourceBuilderData {
-        const TiXmlDocument &appResourcesFile;
-        const TiXmlDocument &lagResourcesFile;
         const std::string appResourceFolderPath;
         const std::string lagResourceFolderPath;
         const std::string tagToParse;
 
-        XmlResourceBuilderData(const TiXmlDocument &appResourcesFile, const TiXmlDocument &lagResourcesFile,
-                               const std::string &appResourceFolderPath, const std::string &lagResourceFolderPath,
-                               const std::string tagToParse) :
-                appResourcesFile(appResourcesFile), lagResourcesFile(lagResourcesFile),
-                appResourceFolderPath(appResourceFolderPath), lagResourceFolderPath(lagResourceFolderPath),
+        XmlResourceBuilderData(const std::string &appResourceFolderPath, const std::string &lagResourceFolderPath,
+                               const std::string &tagToParse) :
+                appResourceFolderPath(appResourceFolderPath),
+                lagResourceFolderPath(lagResourceFolderPath),
                 tagToParse(tagToParse) {}
     };
 
@@ -67,7 +65,8 @@ namespace Lag {
     V *XmlResourceBuilder<V>::build(const std::string &name) const {
         const TiXmlElement *element = findResourceNameOnXml(name);
         if (element != nullptr) {
-            const std::string &path = element->GetDocument() == &xmlResourceData.appResourcesFile ?
+            auto &appResourcesFile = Root::getInstance().getAppResourcesFile();
+            const std::string &path = element->GetDocument() == &appResourcesFile ?
                                       xmlResourceData.appResourceFolderPath : xmlResourceData.lagResourceFolderPath;
             return parseAndCreate(path, *element);
         }
@@ -77,14 +76,17 @@ namespace Lag {
 
     template<class V>
     const TiXmlElement *XmlResourceBuilder<V>::findResourceNameOnXml(const std::string &name) const {
-        for (const TiXmlElement *elem = xmlResourceData.appResourcesFile.FirstChildElement()->FirstChildElement();
+        auto &appResourcesFile = Root::getInstance().getAppResourcesFile();
+        auto &lagResourcesFile = Root::getInstance().getLagResourcesFile();
+
+        for (const TiXmlElement *elem = appResourcesFile.FirstChildElement()->FirstChildElement();
              elem != NULL;
              elem = elem->NextSiblingElement()) {
             if (xmlResourceData.tagToParse == elem->ValueStr() && name == elem->Attribute(NAME_XML_ATTR))
                 return elem;
         }
 
-        for (const TiXmlElement *elem = xmlResourceData.lagResourcesFile.FirstChildElement()->FirstChildElement();
+        for (const TiXmlElement *elem = lagResourcesFile.FirstChildElement()->FirstChildElement();
              elem != NULL;
              elem = elem->NextSiblingElement()) {
             if (xmlResourceData.tagToParse == elem->ValueStr() && name == elem->Attribute(NAME_XML_ATTR))

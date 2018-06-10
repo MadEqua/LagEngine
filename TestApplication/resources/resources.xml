@@ -26,7 +26,7 @@
     </shader>
 
     <shader name="pointFragment" file="point.frag" type="Fragment">
-        <uniform name="diffuseTexture" semantic="TextureDiffuse"/>
+        <uniform name="circleSprite" semantic="TextureDiffuse"/>
     </shader>
 
     <shader name="skyVertex" file="sky.vert" type="Vertex">
@@ -46,6 +46,10 @@
 
     <mesh name="piano" file="piano.obj"/>
     <mesh name="cube" file="cube.obj"/>
+    <mesh name="tree1" file="tree01.obj"/>
+    <mesh name="tree2" file="tree02.obj"/>
+    <mesh name="tree3" file="tree03.obj"/>
+    <mesh name="bunny" file="bunny.obj"/>
 
 
     <image name="test" file="test.jpg" components="RGB"
@@ -67,6 +71,9 @@
     <image name="sky5" file="PondWinter/5.jpg" components="RGB"
            componentType="UINT8" normalized="true" sRGB="true"/>
 
+    <image name="circleSprite" file="circleSprite.jpg" components="RGB"
+           componentType="UINT8" normalized="true" sRGB="true"/>
+
 
     <texture name="test" image="test" semantic="DiffuseColor"
              type="2D" mipmaps="8"
@@ -85,6 +92,11 @@
              semantic="DiffuseColor"
              type="Cube" mipmaps="8"
              minFilter="Nearest" magFilter="Nearest"
+             wrappingAll="ClampEdge"/>
+
+    <texture name="circleSprite" image="circleSprite" semantic="DiffuseColor"
+             type="2D" mipmaps="8"
+             minFilter="LinearMipmapLinear" magFilter="Linear"
              wrappingAll="ClampEdge"/>
 
 </resources>

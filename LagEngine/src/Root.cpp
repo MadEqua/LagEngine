@@ -176,26 +176,22 @@ bool Root::initResources(const IPlatformFactory *platformFactory) {
         return false;
 
     textureManager = new TextureManager(platformFactory->getTextureBuilder(
-            XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile, "", "", TEXTURE_XML_TAG)));
+            XmlResourceBuilderData("", "", TEXTURE_XML_TAG)));
 
     gpuProgramStageManager = new GpuProgramStageManager(platformFactory->getGpuProgramStageBuilder(
-            XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                   initializationParameters->getShadersFolder(false),
+            XmlResourceBuilderData(initializationParameters->getShadersFolder(false),
                                    initializationParameters->getShadersFolder(true),
                                    SHADER_XML_TAG)));
 
-    imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                                            initializationParameters->getImagesFolder(false),
+    imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(initializationParameters->getImagesFolder(false),
                                                                             initializationParameters->getImagesFolder(true),
                                                                             IMAGE_XML_TAG)));
 
-    meshManager = new MeshManager(new MeshBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                                         initializationParameters->getMeshesFolder(false),
+    meshManager = new MeshManager(new MeshBuilder(XmlResourceBuilderData(initializationParameters->getMeshesFolder(false),
                                                                          initializationParameters->getMeshesFolder(true),
                                                                          MESH_XML_TAG)));
 
-    materialManager = new MaterialManager(new MaterialBuilder(XmlResourceBuilderData(*appResourcesFile, *lagResourcesFile,
-                                                       initializationParameters->getMaterialsFolder(false),
+    materialManager = new MaterialManager(new MaterialBuilder(XmlResourceBuilderData(initializationParameters->getMaterialsFolder(false),
                                                        initializationParameters->getMaterialsFolder(true),
                                                        MATERIAL_XML_TAG)));
 
