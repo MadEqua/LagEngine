@@ -46,7 +46,6 @@ namespace Lag {
     class Image : public XmlResource {
     public:
         inline const ImageData &getImageData() const { return imageData; }
-
         inline const byte *getRawDataPointer() const { return dataPtr; }
 
         bool loadImplementation() override;

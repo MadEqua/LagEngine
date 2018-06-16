@@ -11,11 +11,11 @@
 #include "DepthSettings.h"
 #include "BlendingSettings.h"
 
+class TiXmlElement;
+
 namespace Lag {
     class GpuProgram;
-
     class Texture;
-
     enum class TextureSemantic : uint8;
 
     /*
@@ -27,9 +27,10 @@ namespace Lag {
     class Material : public XmlResource {
     public:
         inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
-        const std::vector<Texture *>* getTexturesBySemantic(TextureSemantic semantic) const;
+
         void bind() const;
 
+        const std::vector<Texture *>* getTexturesBySemantic(TextureSemantic semantic) const;
         inline const DepthSettings& getDepthSettings() const { return depthSettings; }
         inline const BlendingSettings& getBlendingSettings() const { return blendingSettings; }
 
@@ -57,6 +58,10 @@ namespace Lag {
         std::vector<Handle<Texture>> textures;
 
         bool parse();
+        bool parseBlendingSettings(const TiXmlElement *blendingNode);
+
+        static BlendingFunction parseBlendingFunction(const std::string &function);
+        static BlendingEquation parseBlendingEquation(const std::string &equation);
     };
 }
 

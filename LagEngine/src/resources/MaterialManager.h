@@ -11,7 +11,6 @@ namespace Lag {
         Material *parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
     };
 
-
     class MaterialManager : public XmlResourceManager<Material> {
     public:
         explicit MaterialManager(MaterialBuilder *builder);

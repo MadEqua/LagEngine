@@ -49,3 +49,15 @@ void Utils::copyTinyXmlNode(TiXmlNode *dest, const TiXmlNode *src) {
     for (const TiXmlNode *node = src->FirstChild(); node != nullptr; node = node->NextSibling())
         copyTinyXmlNode(copy, node);
 }
+
+bool Utils::parseBool(const std::string &str) {
+    return str == "true" || str == "TRUE" || str == "1";
+}
+
+int Utils::parseInt(const std::string &str) {
+    return std::stoi(str);
+}
+
+float Utils::parseFloat(const std::string &str) {
+    return std::stof(str);
+}

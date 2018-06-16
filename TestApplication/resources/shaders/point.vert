@@ -10,6 +10,7 @@ uniform mat4 mvpMatrix;
 out VertexShaderOut
 {
 	vec2 texCoord;
+	vec3 vertexPos;
 } vs_out;
 
 void main()
@@ -18,4 +19,5 @@ void main()
 	gl_Position = mvpMatrix * vec4(position, 1.0);
 	
 	vs_out.texCoord = texCoord;
+	vs_out.vertexPos = position;
 }

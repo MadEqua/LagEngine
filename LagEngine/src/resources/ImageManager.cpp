@@ -30,9 +30,9 @@ ImageData ImageBuilder::parseImageData(const TiXmlElement &element) {
     if (componentTypeStr != nullptr)
         data.componentType = parseComponentType(componentTypeStr);
     if (normalizedStr != nullptr)
-        data.normalized = parseBool(normalizedStr);
+        data.normalized = Utils::parseBool(normalizedStr);
     if (sRgbStr != nullptr)
-        data.sRGB = parseBool(sRgbStr);
+        data.sRGB = Utils::parseBool(sRgbStr);
     return data;
 }
 
@@ -57,8 +57,4 @@ ImageComponentType ImageBuilder::parseComponentType(const std::string &type) {
     else if (type == "UINT32") return ImageComponentType::UINT32;
 
     else return ImageComponentType::UINT8;
-}
-
-bool ImageBuilder::parseBool(const std::string &str) {
-    return str == "true" || str == "TRUE" || str == "1";
 }

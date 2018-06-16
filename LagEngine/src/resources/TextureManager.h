@@ -29,7 +29,6 @@ namespace Lag {
         static TextureSemantic parseSemantic(const std::string &sem);
         static TextureFilteringMode parseFilteringMode(const std::string &mode);
         static TexturewWrappingMode parseWrappingMode(const std::string &mode);
-        static int parseInt(const std::string &str);
 
         bool buildingFromXml;
         ImageData imageData;

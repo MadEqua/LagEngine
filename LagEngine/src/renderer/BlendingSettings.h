@@ -41,7 +41,7 @@ namespace Lag {
 
     //Final Color = BlendingEquation(SourceBlendingFunction * SourceColor, DestinationBlendingFunction * DestinationColor)
     struct BlendingSetting {
-        BlendingSetting() {}
+        BlendingSetting() = default;
         BlendingSetting(BlendingFunction sourceBlendingFunction, BlendingFunction destinationBlendingFunction, BlendingEquation blendingEquation);
 
         bool operator==(const BlendingSetting &rhs) const;

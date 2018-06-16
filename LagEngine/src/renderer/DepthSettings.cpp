@@ -2,7 +2,7 @@
 
 using namespace Lag;
 
-DepthSettings::DepthSettings() : enableDepthTest(true),
+DepthSettings::DepthSettings() : enableDepthTest(false),
                                  enableDepthWriting(true),
                                  enableDepthClamping(false),
                                  comparisionFunction(ComparisionFunction::LESS) {}

@@ -202,7 +202,7 @@ void GL4_5GraphicsAPI::setBlendingSettings(const Lag::BlendingSettings &blending
 
         if(blendingSettings.needsConstantColor()) {
             const Color &cc = blendingSettings.constantColor;
-            glBlendColor(cc.r(), cc.g(), cc.b(), cc.a());
+            glBlendColor(cc.r(), cc.g(), cc.b(), cc.alpha());
         }
     }
     else {

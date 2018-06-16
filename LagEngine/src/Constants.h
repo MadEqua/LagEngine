@@ -10,6 +10,8 @@ namespace Lag
 	constexpr const char* const MESH_XML_TAG = "mesh";
 	constexpr const char* const IMAGE_XML_TAG = "image";
 	constexpr const char* const TEXTURE_XML_TAG = "texture";
+	constexpr const char* const BLENDING_XML_TAG = "blending";
+	constexpr const char* const DEPTH_XML_TAG = "depth";
 
 	constexpr const char* const NAME_XML_ATTR = "name";
 	constexpr const char* const FILE_XML_ATTR = "file";

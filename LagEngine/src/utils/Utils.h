@@ -30,5 +30,9 @@ namespace Lag {
         std::string getExtensionFromFile(const std::string &file);
 
         void copyTinyXmlNode(TiXmlNode *dest, const TiXmlNode *src);
+
+        bool parseBool(const std::string &str);
+        int parseInt(const std::string &str);
+        float parseFloat(const std::string &str);
     }
 }
