@@ -2,6 +2,9 @@
 
 namespace Lag
 {
+	constexpr uint8 MAX_POINT_LIGHTS = 8;
+	constexpr uint8 MAX_DIRECTIONAL_LIGHTS = 4;
+
 	constexpr const char* const SHADER_XML_TAG = "shader";
 	constexpr const char* const MATERIAL_XML_TAG = "material";
 	constexpr const char* const MESH_XML_TAG = "mesh";

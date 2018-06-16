@@ -6,6 +6,7 @@
 #include "RenderPhase.h"
 #include "NamedContainer.h"
 #include "Types.h"
+#include "Constants.h"
 #include "RenderQueue.h"
 #include "Color.h"
 #include "IRenderTargetListener.h"
@@ -16,16 +17,6 @@
 #include "IFrameListener.h"
 
 namespace Lag {
-    enum class RenderMode : uint8 {
-        TRIANGLES,
-        TRIANGLE_STRIP,
-        TRIANGLE_FAN,
-        LINES,
-        LINE_STRIP,
-        LINE_LOOP,
-        POINTS,
-        PATCHES
-    };
 
     class RenderTarget;
     class RenderWindow;
@@ -38,7 +29,10 @@ namespace Lag {
     class InputDescription;
     class Viewport;
     class Texture;
+    struct BlendingSettings;
+    struct DepthSettings;
     enum class TextureType : uint8;
+    enum class RenderMode : uint8;
 
     /*
     * Encapsulating all the texture bindings to the various binding points.
@@ -67,9 +61,6 @@ namespace Lag {
         Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager);
         ~Renderer() override;
 
-        static const uint8 MAX_POINT_LIGHTS = 8;
-        static const uint8 MAX_DIRECTIONAL_LIGHTS = 4;
-
         //Entry points for rendering
         void startRenderingLoop(uint32 maxFps);
         void stopRenderingLoop();
@@ -83,6 +74,8 @@ namespace Lag {
         void bindRenderTarget(const RenderTarget &renderTarget);
         void bindViewport(const Viewport &viewport);
         void bindTexture(const Texture &texture, uint8 unit = 0);
+        void bindDepthSettings(const DepthSettings &depthSettings);
+        void bindBlendingSettings(const BlendingSettings &blendingSettings);
 
         void resetToBasicState();
 
@@ -105,9 +98,6 @@ namespace Lag {
         void clearDepthBuffer();
         void clearStencilBuffer();
         void clearDepthAndStencilBuffer();
-
-        void setDepthTestEnabled(bool enabled);
-        void setDepthWritingEnabled(bool enabled);
 
         void setPointSizeFromGpuProgramEnabled(bool enabled);
 
@@ -143,6 +133,8 @@ namespace Lag {
         const InputDescription *boundInputDescription;
         const RenderTarget *boundRenderTarget;
         const Viewport *boundViewport;
+        const DepthSettings *boundDepthSettings;
+        const BlendingSettings *boundBlendingSettings;
         TextureBindings boundTextures;
 
         //This exists for the case where a frame finishes with the same GpuProgram than the next one will start

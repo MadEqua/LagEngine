@@ -8,6 +8,8 @@
 #include "Texture.h"
 #include "XmlResource.h"
 #include "Types.h"
+#include "DepthSettings.h"
+#include "BlendingSettings.h"
 
 namespace Lag {
     class GpuProgram;
@@ -24,15 +26,18 @@ namespace Lag {
     */
     class Material : public XmlResource {
     public:
-        inline GpuProgram &getGpuProgram() const { return *gpuProgram; }
-        const std::vector<Texture *> *getTexturesBySemantic(TextureSemantic semantic) const;
+        inline GpuProgram& getGpuProgram() const { return *gpuProgram; }
+        const std::vector<Texture *>* getTexturesBySemantic(TextureSemantic semantic) const;
         void bind() const;
+
+        inline const DepthSettings& getDepthSettings() const { return depthSettings; }
+        inline const BlendingSettings& getBlendingSettings() const { return blendingSettings; }
 
     private:
         friend class MaterialBuilder;
 
         explicit Material(const std::string &filePath);
-        Material(const std::vector<std::string> &shaderStageNames, const std::vector<std::string> &textureNames);
+        //Material(const std::vector<std::string> &shaderStageNames, const std::vector<std::string> &textureNames);
 
         bool loadImplementation() override;
         void unloadImplementation() override;
@@ -41,6 +46,9 @@ namespace Lag {
 
         std::vector<std::string> shaderStageNames;
         std::vector<std::string> textureNames;
+
+        DepthSettings depthSettings;
+        BlendingSettings blendingSettings;
 
         Handle<GpuProgram> gpuProgram;
 

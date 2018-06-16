@@ -2,18 +2,21 @@
 
 #include <string>
 #include "Types.h"
+#include "RenderMode.h"
 
 namespace Lag {
     class GpuProgram;
     class Texture;
-    enum class RenderMode : uint8;
-    enum class BufferType : uint8;
-    enum class IndexType : uint8;
     class GpuBuffer;
     class InputDescription;
     class Color;
     struct ImageData;
     class RenderTarget;
+    struct BlendingSettings;
+    struct DepthSettings;
+    enum class RenderMode : uint8;
+    enum class BufferType : uint8;
+    enum class IndexType : uint8;
 
     /*
     * Abstracting the calls of a Graphics API. A class implementing this interface is used
@@ -46,9 +49,9 @@ namespace Lag {
         virtual void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) = 0;
         virtual void bindTexture(const Texture &texture, uint8 unit = 0) = 0;
 
-        virtual void setDepthTestEnabled(bool enabled) = 0;
-        virtual void setDepthWritingEnabled(bool enabled) = 0;
-
         virtual void setPointSizeFromGpuProgramEnabled(bool enabled) = 0;
+
+        virtual void setBlendingSettings(const BlendingSettings &blendingSettings) = 0;
+        virtual void setDepthSettings(const DepthSettings &depthSettings) = 0;
     };
 }

@@ -50,3 +50,14 @@ Color::Color(float r, float g, float b, float a) {
     channels[2] = b;
     channels[3] = a;
 }
+
+bool Color::operator==(const Color &rhs) const {
+    return channels[0] == rhs.channels[0] &&
+            channels[1] == rhs.channels[1] &&
+            channels[2] == rhs.channels[2] &&
+            channels[3] == rhs.channels[3];
+}
+
+bool Color::operator!=(const Color &rhs) const {
+    return !(rhs == *this);
+}

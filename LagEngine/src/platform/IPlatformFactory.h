@@ -31,8 +31,7 @@ namespace Lag {
         virtual TextureBuilder *getTextureBuilder(const XmlResourceBuilderData &xmlResourceData) const = 0;
         virtual GpuBufferBuilder *getGpuBufferBuilder() const = 0;
         virtual GpuProgramBuilder *getGpuProgramBuilder() const = 0;
-        virtual GpuProgramStageBuilder *
-        getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const = 0;
+        virtual GpuProgramStageBuilder *getGpuProgramStageBuilder(const XmlResourceBuilderData &xmlResourceData) const = 0;
         virtual InputDescriptionBuilder *getInputDescriptionBuilder() const = 0;
     };
 }

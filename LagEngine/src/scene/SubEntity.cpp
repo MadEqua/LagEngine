@@ -46,7 +46,7 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation) {
                                                    parent.getNormalTransform(),
                                                    *renderOperation.viewport);
 
-    if(renderOperation.renderMode == Lag::RenderMode::POINTS) {
+    if(renderOperation.renderMode == RenderMode::POINTS) {
         renderer.renderVertices(renderOperation.renderMode, *renderOperation.vertexData);
     }
     else {

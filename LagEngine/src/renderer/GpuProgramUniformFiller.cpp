@@ -77,10 +77,10 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) 
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::POINT_LIGHT_COUNT, &pointLightCount);
 
     if (pointLightCount > 0) {
-        glm::vec3 ppos[Renderer::MAX_POINT_LIGHTS];
-        glm::vec3 pcols[Renderer::MAX_POINT_LIGHTS];
-        glm::vec3 patten[Renderer::MAX_POINT_LIGHTS];
-        for (uint32 i = 0; i < Renderer::MAX_POINT_LIGHTS && i < pointLightCount; ++i) {
+        glm::vec3 ppos[MAX_POINT_LIGHTS];
+        glm::vec3 pcols[MAX_POINT_LIGHTS];
+        glm::vec3 patten[MAX_POINT_LIGHTS];
+        for (uint32 i = 0; i < MAX_POINT_LIGHTS && i < pointLightCount; ++i) {
             ppos[i] = pointLights[i]->getWorldPosition();
             const float *floatColors = pointLights[i]->getColor().getRGBAfloat();
             pcols[i].r = floatColors[0];
@@ -102,9 +102,9 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) 
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::DIR_LIGHT_COUNT, &dirLightCount);
 
     if (dirLightCount > 0) {
-        glm::vec3 ddir[Renderer::MAX_DIRECTIONAL_LIGHTS];
-        glm::vec3 dcols[Renderer::MAX_DIRECTIONAL_LIGHTS];
-        for (uint32 i = 0; i < Renderer::MAX_DIRECTIONAL_LIGHTS && i < dirLightCount; ++i) {
+        glm::vec3 ddir[MAX_DIRECTIONAL_LIGHTS];
+        glm::vec3 dcols[MAX_DIRECTIONAL_LIGHTS];
+        for (uint32 i = 0; i < MAX_DIRECTIONAL_LIGHTS && i < dirLightCount; ++i) {
             ddir[i] = directionalLights[i]->getDirection();
             const float *floatColors = directionalLights[i]->getColor().getRGBAfloat();
             dcols[i].r = floatColors[0];

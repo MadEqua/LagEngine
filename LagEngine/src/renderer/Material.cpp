@@ -13,10 +13,10 @@ Material::Material(const std::string &filePath) :
         XmlResource(filePath) {
 }
 
-Material::Material(const std::vector<std::string> &shaderStageNames, const std::vector<std::string> &textureNames) :
+/*Material::Material(const std::vector<std::string> &shaderStageNames, const std::vector<std::string> &textureNames) :
         shaderStageNames(shaderStageNames),
         textureNames(textureNames) {
-}
+}*/
 
 void Material::bind() const {
     Renderer &renderer = Root::getInstance().getRenderer();
@@ -24,6 +24,9 @@ void Material::bind() const {
     uint8 i = 0;
     for (auto &tex : textures)
         renderer.bindTexture(*tex, i++);
+
+    renderer.bindDepthSettings(depthSettings);
+    renderer.bindBlendingSettings(blendingSettings);
 }
 
 const std::vector<Texture *> *Material::getTexturesBySemantic(TextureSemantic semantic) const {

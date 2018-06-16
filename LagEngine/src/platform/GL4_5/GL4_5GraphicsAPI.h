@@ -5,6 +5,10 @@
 #include "GL/glew.h"
 
 namespace Lag {
+    enum class BlendingFunction : uint8;
+    enum class BlendingEquation : uint8;
+    enum class ComparisionFunction : uint8;
+
     class GL4_5GraphicsAPI : public IGraphicsAPI {
     public:
         bool initialize() override;
@@ -25,12 +29,15 @@ namespace Lag {
         void bindViewport(uint32 x, uint32 y, uint32 width, uint32 height) override;
         void bindTexture(const Texture &texture, uint8 unit = 0) override;
 
-        void setDepthTestEnabled(bool enabled) override;
-        void setDepthWritingEnabled(bool enabled) override;
-
         void setPointSizeFromGpuProgramEnabled(bool enabled) override;
+
+        void setBlendingSettings(const BlendingSettings &blendingSettings) override;
+        void setDepthSettings(const DepthSettings &depthSettings) override ;
 
     private:
         static GLenum convertRenderModeToGLenum(RenderMode renderMode);
+        static GLenum convertComparisionFunctionToGLenum(ComparisionFunction comparisionFunction);
+        static GLenum convertBlendingFunctionToGLenum(BlendingFunction blendingFunction);
+        static GLenum convertBlendingEquationToGLenum(BlendingEquation blendingEquation);
     };
 }

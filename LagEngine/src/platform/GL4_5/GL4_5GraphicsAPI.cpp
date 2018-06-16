@@ -1,6 +1,8 @@
 #include "GL4_5GraphicsAPI.h"
 
 #include <sstream>
+#include <DepthSettings.h>
+#include "BlendingSettings.h"
 
 #include "LogManager.h"
 #include "Renderer.h"
@@ -71,9 +73,6 @@ bool GL4_5GraphicsAPI::initialize() {
                                       "GL4_5GraphicsAPI", "Non-Multisampled Default Framebuffer.");
     }
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LESS);
-
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
@@ -90,8 +89,7 @@ void GL4_5GraphicsAPI::renderVertices(RenderMode mode, uint32 first, uint32 coun
     glDrawArrays(convertRenderModeToGLenum(mode), first, count);
 }
 
-void
-GL4_5GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex) {
+void GL4_5GraphicsAPI::renderIndexed(RenderMode mode, uint32 first, IndexType indexType, uint32 count, uint32 baseVertex) {
     uint32 indexByteSize;
     GLenum type;
     switch (indexType) {
@@ -166,22 +164,50 @@ void GL4_5GraphicsAPI::bindTexture(const Texture &texture, uint8 unit) {
     glBindTextureUnit(unit, GL4Tex.getHandle());
 }
 
-void GL4_5GraphicsAPI::setDepthTestEnabled(bool enabled) {
-    if (enabled)
-        glEnable(GL_DEPTH_TEST);
-    else
-        glDisable(GL_DEPTH_TEST);
-}
-
-void GL4_5GraphicsAPI::setDepthWritingEnabled(bool enabled) {
-    glDepthMask(enabled ? GL_TRUE : GL_FALSE);
-}
-
 void GL4_5GraphicsAPI::setPointSizeFromGpuProgramEnabled(bool enabled) {
     if (enabled)
         glEnable(GL_PROGRAM_POINT_SIZE);
     else
         glDisable(GL_PROGRAM_POINT_SIZE);
+}
+
+void GL4_5GraphicsAPI::setDepthSettings(const DepthSettings &depthSettings) {
+    if(depthSettings.enableDepthTest) {
+        glEnable(GL_DEPTH_TEST);
+        glDepthMask(depthSettings.enableDepthWriting ? GL_TRUE : GL_FALSE);
+        glDepthFunc(convertComparisionFunctionToGLenum(depthSettings.comparisionFunction));
+        if(depthSettings.enableDepthClamping)
+            glEnable(GL_DEPTH_CLAMP);
+        else
+            glDisable(GL_DEPTH_CLAMP);
+    }
+    else {
+        glDisable(GL_DEPTH_TEST);
+    }
+}
+
+void GL4_5GraphicsAPI::setBlendingSettings(const Lag::BlendingSettings &blendingSettings) {
+    if(blendingSettings.enableBlending) {
+        glEnable(GL_BLEND);
+
+        const BlendingSetting &rgbSetting = blendingSettings.settingRGB;
+        const BlendingSetting &alphaSetting = blendingSettings.settingAlpha;
+
+        glBlendFuncSeparate(convertBlendingFunctionToGLenum(rgbSetting.sourceBlendingFunction),
+                            convertBlendingFunctionToGLenum(rgbSetting.destinationBlendingFunction),
+                            convertBlendingFunctionToGLenum(alphaSetting.sourceBlendingFunction),
+                            convertBlendingFunctionToGLenum(alphaSetting.destinationBlendingFunction));
+        glBlendEquationSeparate(convertBlendingEquationToGLenum(rgbSetting.blendingEquation),
+                                convertBlendingEquationToGLenum(alphaSetting.blendingEquation));
+
+        if(blendingSettings.needsConstantColor()) {
+            const Color &cc = blendingSettings.constantColor;
+            glBlendColor(cc.r(), cc.g(), cc.b(), cc.a());
+        }
+    }
+    else {
+        glDisable(GL_BLEND);
+    }
 }
 
 GLenum GL4_5GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode) {
@@ -202,6 +228,91 @@ GLenum GL4_5GraphicsAPI::convertRenderModeToGLenum(RenderMode renderMode) {
             return GL_POINTS;
         case RenderMode::PATCHES:
             return GL_PATCHES;
+        default:
+            return 0;
+    }
+}
+
+GLenum GL4_5GraphicsAPI::convertComparisionFunctionToGLenum(ComparisionFunction comparisionFunction) {
+    switch(comparisionFunction) {
+        case ComparisionFunction::NEVER:
+            return GL_NEVER;
+        case ComparisionFunction::ALWAYS:
+            return GL_ALWAYS;
+        case ComparisionFunction::LESS:
+            return GL_LESS;
+        case ComparisionFunction::LESS_OR_EQUAL:
+            return GL_LEQUAL;
+        case ComparisionFunction::GREATER:
+            return GL_GREATER;
+        case ComparisionFunction::GREATER_OR_EQUAL:
+            return GL_GEQUAL;
+        case ComparisionFunction::EQUAL:
+            return GL_EQUAL;
+        case ComparisionFunction::NOT_EQUAL:
+            return GL_NOTEQUAL;
+        default:
+            return 0;
+    }
+}
+
+GLenum GL4_5GraphicsAPI::convertBlendingFunctionToGLenum(BlendingFunction blendingFunction) {
+    switch (blendingFunction) {
+        case BlendingFunction::ZERO:
+            return GL_ZERO;
+        case BlendingFunction::ONE:
+            return GL_ONE;
+        case BlendingFunction::SOURCE_COLOR:
+            return GL_SRC_COLOR;
+        case BlendingFunction::ONE_MINUS_SOURCE_COLOR:
+            return GL_ONE_MINUS_SRC_COLOR;
+        case BlendingFunction::DESTINATION_COLOR:
+            return GL_DST_COLOR;
+        case BlendingFunction::ONE_MINUS_DESTINATION_COLOR:
+            return GL_ONE_MINUS_DST_COLOR;
+        case BlendingFunction::SOURCE_ALPHA:
+            return GL_SRC_ALPHA;
+        case BlendingFunction::ONE_MINUS_SOURCE_ALPHA:
+            return GL_ONE_MINUS_SRC_ALPHA;
+        case BlendingFunction::DESTINATION_ALPHA:
+            return GL_DST_ALPHA;
+        case BlendingFunction::ONE_MINUS_DESTINATION_ALPHA:
+            return GL_ONE_MINUS_DST_ALPHA;
+        case BlendingFunction::CONSTANT_COLOR:
+            return GL_CONSTANT_COLOR;
+        case BlendingFunction::ONE_MINUS_CONSTANT_COLOR:
+            return GL_ONE_MINUS_CONSTANT_COLOR;
+        case BlendingFunction::CONSTANT_ALPHA:
+            return GL_CONSTANT_ALPHA;
+        case BlendingFunction::ONE_MINUS_CONSTANT_ALPHA:
+            return GL_ONE_MINUS_CONSTANT_ALPHA;
+        case BlendingFunction::ALPHA_SATURATE:
+            return GL_SRC_ALPHA_SATURATE;
+        case BlendingFunction::SOURCE_1_COLOR:
+            return GL_SRC1_COLOR;
+        case BlendingFunction::ONE_MINUS_SOURCE_1_COLOR:
+            return GL_ONE_MINUS_SRC1_COLOR;
+        case BlendingFunction::SOURCE_1_ALPHA:
+            return GL_SRC1_ALPHA;
+        case BlendingFunction::ONE_MINUS_SOURCE_1_ALPHA:
+            return GL_ONE_MINUS_SRC1_ALPHA;
+        default:
+            return 0;
+    }
+}
+
+GLenum GL4_5GraphicsAPI::convertBlendingEquationToGLenum(BlendingEquation blendingEquation) {
+    switch (blendingEquation) {
+        case BlendingEquation::ADD:
+            return GL_FUNC_ADD;
+        case BlendingEquation::SOURCE_MINUS_DESTINATION:
+            return GL_FUNC_SUBTRACT;
+        case BlendingEquation::DESTINATION_MINUS_SOURCE:
+            return GL_FUNC_REVERSE_SUBTRACT;
+        case BlendingEquation::MIN:
+            return GL_MIN;
+        case BlendingEquation::MAX:
+            return GL_MAX;
         default:
             return 0;
     }

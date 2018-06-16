@@ -112,7 +112,5 @@ void Sky::render(Renderer &renderer, RenderOperation &renderOperation) {
     renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
                                                    model, nor, *renderOperation.viewport);
 
-    renderer.setDepthWritingEnabled(false);
     renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData);
-    renderer.setDepthWritingEnabled(true);
 }

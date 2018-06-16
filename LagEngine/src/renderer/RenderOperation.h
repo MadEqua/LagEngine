@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include "RenderMode.h"
 
 namespace Lag {
     class VertexData;

@@ -187,6 +187,20 @@ void Renderer::bindTexture(const Texture &texture, uint8 unit) {
     }
 }
 
+void Renderer::bindDepthSettings(const DepthSettings &depthSettings) {
+    if(boundDepthSettings == nullptr || *boundDepthSettings != depthSettings) {
+        boundDepthSettings = &depthSettings;
+        graphicsAPI.setDepthSettings(depthSettings);
+    }
+}
+
+void Renderer::bindBlendingSettings(const BlendingSettings &blendingSettings) {
+    if(boundBlendingSettings == nullptr || *boundBlendingSettings != blendingSettings) {
+        boundBlendingSettings = &blendingSettings;
+        graphicsAPI.setBlendingSettings(blendingSettings);
+    }
+}
+
 void Renderer::resetToBasicState() {
     boundGpuProgram = nullptr;
     boundIndexBuffer = nullptr;
@@ -195,6 +209,8 @@ void Renderer::resetToBasicState() {
     boundVertexBuffer = nullptr;
     boundViewport = nullptr;
     boundTextures.reset();
+    boundDepthSettings = nullptr;
+    boundBlendingSettings = nullptr;
 
     lastUsedGpuProgramOnFrame = nullptr;
 }
@@ -258,17 +274,10 @@ void Renderer::clearDepthAndStencilBuffer() {
     graphicsAPI.clearDepthAndStencilBuffer(depthClearValue, stencilClearValue);
 }
 
-void Renderer::setDepthTestEnabled(bool enabled) {
-    graphicsAPI.setDepthTestEnabled(enabled);
-}
-
-void Renderer::setDepthWritingEnabled(bool enabled) {
-    graphicsAPI.setDepthWritingEnabled(enabled);
-}
-
 void Renderer::setPointSizeFromGpuProgramEnabled(bool enabled) {
     graphicsAPI.setPointSizeFromGpuProgramEnabled(enabled);
 }
+
 
 //Listening to resizes. A resize may invalidate the current bound Viewport.
 void Renderer::onResize(RenderTarget &notifier, uint32 width, uint32 height) {

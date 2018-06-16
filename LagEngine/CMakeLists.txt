@@ -98,8 +98,6 @@ set(SOURCES
         ${SRC_FOLDER}/renderer/Material.h
         ${SRC_FOLDER}/renderer/Mesh.cpp
         ${SRC_FOLDER}/renderer/Mesh.h
-        ${SRC_FOLDER}/renderer/Pass.cpp
-        ${SRC_FOLDER}/renderer/Pass.h
         ${SRC_FOLDER}/renderer/Renderer.cpp
         ${SRC_FOLDER}/renderer/Renderer.h
         ${SRC_FOLDER}/renderer/RenderOperation.h
@@ -112,13 +110,17 @@ set(SOURCES
         ${SRC_FOLDER}/renderer/RenderWindow.h
         ${SRC_FOLDER}/renderer/SubMesh.cpp
         ${SRC_FOLDER}/renderer/SubMesh.h
-        ${SRC_FOLDER}/renderer/Technique.cpp
-        ${SRC_FOLDER}/renderer/Technique.h
         ${SRC_FOLDER}/renderer/VertexData.h
         ${SRC_FOLDER}/renderer/VertexDescription.cpp
         ${SRC_FOLDER}/renderer/VertexDescription.h
         ${SRC_FOLDER}/renderer/Viewport.cpp
         ${SRC_FOLDER}/renderer/Viewport.h
+        ${SRC_FOLDER}/renderer/ComparisionFunction.h
+        ${SRC_FOLDER}/renderer/RenderMode.h
+        ${SRC_FOLDER}/renderer/DepthSettings.h
+        ${SRC_FOLDER}/renderer/DepthSettings.cpp
+        ${SRC_FOLDER}/renderer/BlendingSettings.h
+        ${SRC_FOLDER}/renderer/BlendingSettings.cpp
         ${SRC_FOLDER}/resources/GpuBufferManager.cpp
         ${SRC_FOLDER}/resources/GpuBufferManager.h
         ${SRC_FOLDER}/resources/GpuProgramManager.cpp
