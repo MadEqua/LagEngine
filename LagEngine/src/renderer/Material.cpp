@@ -136,10 +136,16 @@ bool Material::parse() {
             if(testEnabled) {
                 depthSettings.enableDepthTest = Utils::parseBool(testEnabled);
 
-                if(depthSettings.enableDepthTest && writingEnabled && clamping && function) {
-                    depthSettings.enableDepthWriting = Utils::parseBool(writingEnabled);
-                    depthSettings.enableDepthClamping = Utils::parseBool(clamping);
-                    depthSettings.comparisionFunction = parseComparisionFunction(function);
+                if (depthSettings.enableDepthTest) {
+                    if (writingEnabled && clamping && function) {
+                        depthSettings.enableDepthWriting = Utils::parseBool(writingEnabled);
+                        depthSettings.enableDepthClamping = Utils::parseBool(clamping);
+                        depthSettings.comparisionFunction = parseComparisionFunction(function);
+                    }
+                    else {
+                        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Material",
+                                                      "Material file: " + path + " has a <" + DEPTH_XML_TAG + "> element with \"testEnabled=true\"  but there are missing attributes.");
+                    }
                 }
             }
             else {
@@ -170,14 +176,14 @@ bool Material::parseBlendingSettings(const TiXmlElement *blendingNode) {
                 return false;
             }
 
-            bool isRgb = type == std::string("rgb");
-            bool isRgba = type == std::string("rgba");
-            bool isAlpha = type == std::string("alpha");
+            bool isRgb = type == std::string("RGB");
+            bool isRgba = type == std::string("RGBA");
+            bool isAlpha = type == std::string("Alpha");
 
             if(isRgb || isRgba) {
                 if(hasRgbSettings) {
                     LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Material",
-                                                  "Material file: " + path + R"( has multiple <setting> elements of type "rgb". Only using the first one.)");
+                                                  "Material file: " + path + R"( has multiple <setting> elements of type "RGB". Only using the first one.)");
                     continue;
                 }
                 hasRgbSettings = true;
@@ -189,7 +195,7 @@ bool Material::parseBlendingSettings(const TiXmlElement *blendingNode) {
             if(isAlpha || isRgba) {
                 if(hasAlphaSettings) {
                     LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Material",
-                                                  "Material file: " + path + R"( has multiple <setting> elements of type "alpha". Only using the first one.)");
+                                                  "Material file: " + path + R"( has multiple <setting> elements of type "Alpha". Only using the first one.)");
                     continue;
                 }
                 hasAlphaSettings = true;
@@ -199,10 +205,10 @@ bool Material::parseBlendingSettings(const TiXmlElement *blendingNode) {
             }
         }
         else if(child->ValueStr() == "constantColor") {
-            const char *r = child->Attribute("r");
-            const char *g = child->Attribute("g");
-            const char *b = child->Attribute("b");
-            const char *a = child->Attribute("a");
+            const char *r = child->Attribute("R");
+            const char *g = child->Attribute("G");
+            const char *b = child->Attribute("B");
+            const char *a = child->Attribute("A");
             bool okColor = false;
 
             if(r && g && b) {
@@ -245,25 +251,25 @@ void Material::unloadImplementation() {
 }
 
 BlendingFunction Material::parseBlendingFunction(const std::string &function) {
-    if(function == "zero") return BlendingFunction::ZERO;
-    else if(function == "one") return BlendingFunction::ONE;
-    else if(function == "sourceColor" || function == "srcColor") return BlendingFunction::SOURCE_COLOR;
-    else if(function == "oneMinusSourceColor" || function == "oneMinusSrcColor") return BlendingFunction::ONE_MINUS_SOURCE_COLOR;
-    else if(function == "destinationColor" || function == "dstColor") return BlendingFunction::DESTINATION_COLOR;
-    else if(function == "oneMinusDestinationColor" || function == "oneMinusDstColor") return BlendingFunction::ONE_MINUS_DESTINATION_COLOR;
-    else if(function == "sourceAlpha" || function == "srcAlpha") return BlendingFunction::SOURCE_ALPHA;
-    else if(function == "oneMinusSourceAlpha" || function == "oneMinusSrcAlpha") return BlendingFunction::ONE_MINUS_SOURCE_ALPHA;
-    else if(function == "destinationAlpha" || function == "dstAlpha") return BlendingFunction::DESTINATION_ALPHA;
-    else if(function == "oneMinusDestinationAlpha" || function == "oneMinusDstAlpha") return BlendingFunction::ONE_MINUS_DESTINATION_ALPHA;
-    else if(function == "constantColor") return BlendingFunction::CONSTANT_COLOR;
-    else if(function == "oneMinusConstantColor") return BlendingFunction::ONE_MINUS_CONSTANT_COLOR;
-    else if(function == "constantAlpha") return BlendingFunction::CONSTANT_ALPHA;
-    else if(function == "oneMinusConstantAlpha") return BlendingFunction::ONE_MINUS_CONSTANT_ALPHA;
-    else if(function == "alphaSaturate") return BlendingFunction::ALPHA_SATURATE;
-    else if(function == "source1Color" || function == "src1Color") return BlendingFunction::SOURCE_1_COLOR;
-    else if(function == "oneMinusSource1Color" || function == "oneMinusSrc1Color") return BlendingFunction::ONE_MINUS_SOURCE_1_COLOR;
-    else if(function == "source1Alpha" || function == "src1Alpha") return BlendingFunction::SOURCE_1_ALPHA;
-    else if(function == "oneMinusSource1Alpha" || function == "oneMinusSrc1Alpha") return BlendingFunction::ONE_MINUS_SOURCE_1_ALPHA;
+    if(function == "Zero") return BlendingFunction::ZERO;
+    else if(function == "One") return BlendingFunction::ONE;
+    else if(function == "SourceColor" || function == "SrcColor") return BlendingFunction::SOURCE_COLOR;
+    else if(function == "OneMinusSourceColor" || function == "OneMinusSrcColor") return BlendingFunction::ONE_MINUS_SOURCE_COLOR;
+    else if(function == "DestinationColor" || function == "DstColor") return BlendingFunction::DESTINATION_COLOR;
+    else if(function == "OneMinusDestinationColor" || function == "OneMinusDstColor") return BlendingFunction::ONE_MINUS_DESTINATION_COLOR;
+    else if(function == "SourceAlpha" || function == "SrcAlpha") return BlendingFunction::SOURCE_ALPHA;
+    else if(function == "OneMinusSourceAlpha" || function == "OneMinusSrcAlpha") return BlendingFunction::ONE_MINUS_SOURCE_ALPHA;
+    else if(function == "DestinationAlpha" || function == "DstAlpha") return BlendingFunction::DESTINATION_ALPHA;
+    else if(function == "OneMinusDestinationAlpha" || function == "OneMinusDstAlpha") return BlendingFunction::ONE_MINUS_DESTINATION_ALPHA;
+    else if(function == "ConstantColor") return BlendingFunction::CONSTANT_COLOR;
+    else if(function == "OneMinusConstantColor") return BlendingFunction::ONE_MINUS_CONSTANT_COLOR;
+    else if(function == "ConstantAlpha") return BlendingFunction::CONSTANT_ALPHA;
+    else if(function == "OneMinusConstantAlpha") return BlendingFunction::ONE_MINUS_CONSTANT_ALPHA;
+    else if(function == "AlphaSaturate") return BlendingFunction::ALPHA_SATURATE;
+    else if(function == "Source1Color" || function == "Src1Color") return BlendingFunction::SOURCE_1_COLOR;
+    else if(function == "OneMinusSource1Color" || function == "OneMinusSrc1Color") return BlendingFunction::ONE_MINUS_SOURCE_1_COLOR;
+    else if(function == "Source1Alpha" || function == "Src1Alpha") return BlendingFunction::SOURCE_1_ALPHA;
+    else if(function == "OneMinusSource1Alpha" || function == "OneMinusSrc1Alpha") return BlendingFunction::ONE_MINUS_SOURCE_1_ALPHA;
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing BlendingFunction: " + function);
         return BlendingFunction::ZERO;
@@ -272,11 +278,11 @@ BlendingFunction Material::parseBlendingFunction(const std::string &function) {
 }
 
 BlendingEquation Material::parseBlendingEquation(const std::string &equation) {
-    if(equation == "add") return BlendingEquation::ADD;
-    else if(equation == "sourceMinusDestination" || equation == "srcMinusDst") return BlendingEquation::SOURCE_MINUS_DESTINATION;
-    else if(equation == "destinationMinusSource" || equation == "dstMinusSrc") return BlendingEquation::DESTINATION_MINUS_SOURCE;
-    else if(equation == "min") return BlendingEquation::MIN;
-    else if(equation == "max") return BlendingEquation::MAX;
+    if(equation == "Add") return BlendingEquation::ADD;
+    else if(equation == "SourceMinusDestination" || equation == "SrcMinusDst") return BlendingEquation::SOURCE_MINUS_DESTINATION;
+    else if(equation == "DestinationMinusSource" || equation == "DstMinusSrc") return BlendingEquation::DESTINATION_MINUS_SOURCE;
+    else if(equation == "Min") return BlendingEquation::MIN;
+    else if(equation == "Max") return BlendingEquation::MAX;
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing BlendingEquation: " + equation);
         return BlendingEquation::ADD;
@@ -284,14 +290,14 @@ BlendingEquation Material::parseBlendingEquation(const std::string &equation) {
 }
 
 ComparisionFunction Material::parseComparisionFunction(const std::string &function) {
-    if(function == "never") return ComparisionFunction::NEVER;
-    else if(function == "always") return ComparisionFunction::ALWAYS;
-    else if(function == "less") return ComparisionFunction::LESS;
-    else if(function == "lessOrEqual" || function == "lEqual") return ComparisionFunction::LESS_OR_EQUAL;
-    else if(function == "greater") return ComparisionFunction::GREATER;
-    else if(function == "greaterOrEqual" || function == "gEqual") return ComparisionFunction::GREATER_OR_EQUAL;
-    else if(function == "equal") return ComparisionFunction::EQUAL;
-    else if(function == "notEqual" || function == "nEqual") return ComparisionFunction::NOT_EQUAL;
+    if(function == "Never") return ComparisionFunction::NEVER;
+    else if(function == "Always") return ComparisionFunction::ALWAYS;
+    else if(function == "Less") return ComparisionFunction::LESS;
+    else if(function == "LessOrEqual" || function == "LEqual") return ComparisionFunction::LESS_OR_EQUAL;
+    else if(function == "Greater") return ComparisionFunction::GREATER;
+    else if(function == "GreaterOrEqual" || function == "GEqual") return ComparisionFunction::GREATER_OR_EQUAL;
+    else if(function == "Equal") return ComparisionFunction::EQUAL;
+    else if(function == "NotEqual" || function == "NEqual") return ComparisionFunction::NOT_EQUAL;
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing ComparisionFunction: " + function);
         return ComparisionFunction::NEVER;

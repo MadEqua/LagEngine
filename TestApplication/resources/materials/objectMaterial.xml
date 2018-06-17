@@ -5,10 +5,10 @@
     <texture name="circleSprite"/>
 
     <blending enabled="true">
-        <setting type="rgba"
-                 sourceFunction="one"
-                 destinationFunction="one"
-                 equation="add"/>
+        <setting type="RGBA"
+                 sourceFunction="One"
+                 destinationFunction="One"
+                 equation="Add"/>
     </blending>
 	
     <depth testEnabled="false"/>

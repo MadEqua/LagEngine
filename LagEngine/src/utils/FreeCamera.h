@@ -7,6 +7,7 @@
 
 namespace Lag {
     class Scene;
+    class RenderWindow;
 
     /*
     * Utility class for a classic free movement camera using WASD and mouse.
@@ -40,5 +41,8 @@ namespace Lag {
         SceneNode *cameraYawNode;
         SceneNode *cameraPitchNode;
         SceneNode *cameraTranslationNode;
+
+        bool lastFrameVirtualCursor;
+        RenderWindow *renderWindow;
     };
 }

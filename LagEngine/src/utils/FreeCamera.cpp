@@ -5,6 +5,7 @@
 #include "Scene.h"
 #include "SceneNode.h"
 #include "InputManager.h"
+#include "RenderWindow.h"
 
 using namespace Lag;
 
@@ -27,6 +28,9 @@ FreeCamera::FreeCamera(Scene &scene, float fovy, float nearPlane, float farPlane
     root.getRenderer().registerObserver(*this);
     root.getInputManager().registerObserver(static_cast<Lag::IKeyboardListener &>(*this));
     root.getInputManager().registerObserver(static_cast<Lag::ICursorListener &>(*this));
+
+    renderWindow = root.getRenderTargetManager().getRenderWindow();
+    lastFrameVirtualCursor = renderWindow->isVirtualCursorEnabled();
 }
 
 FreeCamera::~FreeCamera() {
@@ -74,6 +78,12 @@ void FreeCamera::onKeyRepeat(int key, int modifier) {
 }
 
 void FreeCamera::onCursorMove(int x, int y) {
+    if(renderWindow->isVirtualCursorEnabled() != lastFrameVirtualCursor) {
+        lastFrameVirtualCursor = renderWindow->isVirtualCursorEnabled();
+        lastCursor[0] = -1;
+        lastCursor[1] = -1;
+    }
+
     int dx, dy;
 
     if (lastCursor[0] != -1) {
@@ -97,9 +107,6 @@ void FreeCamera::onButtonReleased(int x, int y, int button, int modifiers) {
 }
 
 void FreeCamera::onFrameStart(float timePassed) {
-}
-
-void FreeCamera::onFrameRenderingQueued(float timePassed) {
     if (keyVector[0])
         cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed), TransformSpace::PARENT);
     else if (keyVector[2])
@@ -109,6 +116,9 @@ void FreeCamera::onFrameRenderingQueued(float timePassed) {
         cameraTranslationNode->translate(glm::vec3(-moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::PARENT);
     else if (keyVector[3])
         cameraTranslationNode->translate(glm::vec3(moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::PARENT);
+}
+
+void FreeCamera::onFrameRenderingQueued(float timePassed) {
 }
 
 void FreeCamera::onFrameEnd(float timePassed) {

@@ -40,7 +40,6 @@ Handle<RenderTarget> RenderTargetManager::getRenderWindow(const InitializationPa
 }
 
 RenderWindow *RenderTargetManager::getRenderWindow() {
-    builder = renderWindowBuilder;
     return dynamic_cast<RenderWindow *>(RenderTargetManager::get(0).get());
 }
 
