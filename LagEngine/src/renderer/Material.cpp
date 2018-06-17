@@ -120,11 +120,9 @@ bool Material::parse() {
         else if (child->ValueStr() == BLENDING_XML_TAG) {
             const char *enabled = child->Attribute("enabled");
             if(enabled) {
-                if(Utils::parseBool(enabled)) {
-                    if (parseBlendingSettings(child)) {
-                        blendingSettings.enableBlending = true;
-                    }
-                    else
+                blendingSettings.enableBlending = Utils::parseBool(enabled);
+                if(blendingSettings.enableBlending) {
+                    if (!parseBlendingSettings(child))
                         return false;
                 }
             }
@@ -254,6 +252,10 @@ void Material::unloadImplementation() {
     textureNames.clear();
     texturesBySemantic.clear();
     textures.clear();
+
+    depthSettings = DepthSettings();
+    blendingSettings = BlendingSettings();
+    renderMode = RenderMode::TRIANGLES;
 }
 
 BlendingFunction Material::parseBlendingFunction(const std::string &function) {

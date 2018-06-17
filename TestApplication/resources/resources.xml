@@ -41,7 +41,8 @@
 
 
     <material name="baseMaterial" file="baseMaterial.xml"/>
-    <material name="objectMaterial" file="objectMaterial.xml"/>
+    <material name="pianoMaterial" file="pianoMaterial.xml"/>
+    <material name="pointMaterial" file="pointMaterial.xml"/>
     <material name="skyMaterial" file="skyMaterial.xml"/>
 
 
@@ -76,6 +77,9 @@
     <image name="circleSprite" file="circleSprite.jpg" components="Grayscale"
            componentType="UINT8" normalized="true"/>
 
+    <image name="perlinNoise" file="perlin.png" components="Grayscale"
+           componentType="UINT8" normalized="true"/>
+
 
     <texture name="test" image="test" semantic="DiffuseColor"
              type="2D" mipmaps="8"
@@ -101,4 +105,8 @@
              minFilter="LinearMipmapLinear" magFilter="Linear"
              wrappingAll="ClampEdge"/>
 
+    <texture name="perlinNoise" image="perlinNoise" semantic="DiffuseColor"
+             type="2D" mipmaps="8"
+             minFilter="LinearMipmapLinear" magFilter="Linear"
+             wrappingAll="MirrorRepeat"/>
 </resources>

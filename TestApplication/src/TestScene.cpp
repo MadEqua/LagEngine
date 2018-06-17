@@ -47,7 +47,7 @@ void TestScene::onStart() {
 
     Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("main");
     mainNode.setScale(glm::vec3(0.9f));
-    Lag::Entity *ent = createEntity("piano", "objectMaterial");
+    Lag::Entity *ent = createEntity("piano", "pianoMaterial");
     ent->attachToSceneNode(mainNode);
 
     Lag::SceneNode &floorNode = getSceneGraph().getRootSceneNode().createChildSceneNode("floor");
@@ -86,7 +86,7 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
         periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::PARENT);
         periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::TransformSpace::LOCAL);
 
-        Lag::Entity *periferyEnt = createEntity("piano", "objectMaterial");
+        Lag::Entity *periferyEnt = createEntity("piano", "pianoMaterial");
 
         periferyEnt->attachToSceneNode(periferyNode);
 

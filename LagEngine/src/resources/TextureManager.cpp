@@ -142,7 +142,7 @@ TextureFilteringMode TextureBuilder::parseFilteringMode(const std::string &mode)
 
 TexturewWrappingMode TextureBuilder::parseWrappingMode(const std::string &mode) {
     if (mode == "Repeat") return TexturewWrappingMode::REPEAT;
-    else if (mode == "MirroredRepeat") return TexturewWrappingMode::MIRRORED_REPEAT;
+    else if (mode == "MirroredRepeat" || mode == "MirrorRepeat") return TexturewWrappingMode::MIRRORED_REPEAT;
     else if (mode == "ClampEdge" || mode == "ClampToEdge") return TexturewWrappingMode::CLAMP_TO_EDGE;
     else if (mode == "ClampBorder" || mode == "ClampToBorder") return TexturewWrappingMode::CLAMP_TO_BORDER;
     else return TexturewWrappingMode::REPEAT;

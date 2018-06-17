@@ -13,11 +13,20 @@ void TestScene2::onStart() {
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
     root.getRenderer().setClearColor(Lag::Color(0.0f));
 
-    Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("main");
-    mainNode.setScale(glm::vec3(20.0f));
+    Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("mainNode");
 
-    Lag::Entity *ent = createEntity("bunny", "objectMaterial");
-    ent->attachToSceneNode(mainNode);
+    Lag::SceneNode &bunnyNode = mainNode.createChildSceneNode("bunnyNode");
+    bunnyNode.setScale(glm::vec3(20.0f));
+    Lag::Entity *bunny = createEntity("bunny", "pointMaterial");
+    bunny->attachToSceneNode(bunnyNode);
+
+    Lag::SceneNode &treeNode = mainNode.createChildSceneNode("treeNode");
+    treeNode.setPosition(glm::vec3(5.0f, 0.0f, 0.0f));
+    Lag::Entity *tree = createEntity("tree1", "pointMaterial");
+    tree->attachToSceneNode(treeNode);
+
+    //Lag::Entity *sponza = createEntity("sponza", "baseMaterial");
+    //sponza->attachToSceneNode(mainNode);
 }
 
 void TestScene2::onEnd() {

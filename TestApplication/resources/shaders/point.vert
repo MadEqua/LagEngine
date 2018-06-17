@@ -29,12 +29,11 @@ void wavingAnim() {
 
 	vec3 newPos = position + disp;
 
-	//gl_PointSize = 10.0 * (random(position.xy) + 0.5);
 	gl_PointSize = 10.0 * (t.x * 0.5 + 1.0);
 	gl_Position = mvpMatrix * vec4(newPos, 1.0);
 
-	//float depth = (gl_Position.z / gl_Position.w) * 0.5 + 0.5;
-	//gl_PointSize = 10.0 * exp(depth);
+	//gl_PointSize = 15.0;
+    //gl_Position = mvpMatrix * vec4(position, 1.0);
 
 	vs_out.texCoord = texCoord;
 	vs_out.vertexPos = position;

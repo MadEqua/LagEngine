@@ -4,6 +4,7 @@
     <shader name="pointFragment"/>
 
     <texture name="circleSprite"/>
+    <texture name="perlinNoise"/>
 
     <blending enabled="true">
         <setting type="RGBA"
