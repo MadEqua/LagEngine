@@ -62,6 +62,7 @@ namespace Lag {
 
         static BlendingFunction parseBlendingFunction(const std::string &function);
         static BlendingEquation parseBlendingEquation(const std::string &equation);
+        static ComparisionFunction parseComparisionFunction(const std::string &function);
     };
 }
 

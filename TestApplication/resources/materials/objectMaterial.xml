@@ -10,4 +10,6 @@
                  destinationFunction="one"
                  equation="add"/>
     </blending>
+	
+    <depth testEnabled="false"/>
 </material>

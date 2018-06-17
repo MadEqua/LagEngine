@@ -103,8 +103,7 @@ bool Material::parse() {
                 LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Material",
                                               "Material file: " + path + " has a <" + SHADER_XML_TAG + "> element with no name");
         }
-
-        if (child->ValueStr() == TEXTURE_XML_TAG) {
+        else if (child->ValueStr() == TEXTURE_XML_TAG) {
             const char *name = child->Attribute(NAME_XML_ATTR);
             if (name)
                 textureNames.emplace_back(name);
@@ -112,8 +111,7 @@ bool Material::parse() {
                 LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Material",
                                               "Material file: " + path + " has a <" + TEXTURE_XML_TAG +"> element with no name");
         }
-
-        if (child->ValueStr() == BLENDING_XML_TAG) {
+        else if (child->ValueStr() == BLENDING_XML_TAG) {
             const char *enabled = child->Attribute("enabled");
             if(enabled) {
                 if(Utils::parseBool(enabled)) {
@@ -127,6 +125,26 @@ bool Material::parse() {
             else {
                 LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material",
                                               "Material file: " + path + " has a <" + BLENDING_XML_TAG + "> element with no child with no \"enabled\" attribute.");
+                return false;
+            }
+        }
+        else if (child->ValueStr() == DEPTH_XML_TAG) {
+            const char *testEnabled = child->Attribute("testEnabled");
+            const char *writingEnabled = child->Attribute("writingEnabled");
+            const char *clamping = child->Attribute("clamping");
+            const char *function = child->Attribute("function");
+            if(testEnabled) {
+                depthSettings.enableDepthTest = Utils::parseBool(testEnabled);
+
+                if(depthSettings.enableDepthTest && writingEnabled && clamping && function) {
+                    depthSettings.enableDepthWriting = Utils::parseBool(writingEnabled);
+                    depthSettings.enableDepthClamping = Utils::parseBool(clamping);
+                    depthSettings.comparisionFunction = parseComparisionFunction(function);
+                }
+            }
+            else {
+                LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material",
+                                              "Material file: " + path + " has a <" + DEPTH_XML_TAG + "> element with missing \"testEnabled\" attribute.");
                 return false;
             }
         }
@@ -262,5 +280,20 @@ BlendingEquation Material::parseBlendingEquation(const std::string &equation) {
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing BlendingEquation: " + equation);
         return BlendingEquation::ADD;
+    }
+}
+
+ComparisionFunction Material::parseComparisionFunction(const std::string &function) {
+    if(function == "never") return ComparisionFunction::NEVER;
+    else if(function == "always") return ComparisionFunction::ALWAYS;
+    else if(function == "less") return ComparisionFunction::LESS;
+    else if(function == "lessOrEqual" || function == "lEqual") return ComparisionFunction::LESS_OR_EQUAL;
+    else if(function == "greater") return ComparisionFunction::GREATER;
+    else if(function == "greaterOrEqual" || function == "gEqual") return ComparisionFunction::GREATER_OR_EQUAL;
+    else if(function == "equal") return ComparisionFunction::EQUAL;
+    else if(function == "notEqual" || function == "nEqual") return ComparisionFunction::NOT_EQUAL;
+    else {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing ComparisionFunction: " + function);
+        return ComparisionFunction::NEVER;
     }
 }
