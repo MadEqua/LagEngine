@@ -1,4 +1,5 @@
-<material>
+<material renderMode="Points">
+
     <shader name="pointVertex"/>
     <shader name="pointFragment"/>
 

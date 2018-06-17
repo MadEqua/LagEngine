@@ -10,6 +10,7 @@
 #include "Types.h"
 #include "DepthSettings.h"
 #include "BlendingSettings.h"
+#include "RenderMode.h"
 
 class TiXmlElement;
 
@@ -33,6 +34,7 @@ namespace Lag {
         const std::vector<Texture *>* getTexturesBySemantic(TextureSemantic semantic) const;
         inline const DepthSettings& getDepthSettings() const { return depthSettings; }
         inline const BlendingSettings& getBlendingSettings() const { return blendingSettings; }
+        inline const RenderMode getRenderMode() const { return renderMode; }
 
     private:
         friend class MaterialBuilder;
@@ -50,6 +52,7 @@ namespace Lag {
 
         DepthSettings depthSettings;
         BlendingSettings blendingSettings;
+        RenderMode renderMode;
 
         Handle<GpuProgram> gpuProgram;
 
@@ -63,6 +66,7 @@ namespace Lag {
         static BlendingFunction parseBlendingFunction(const std::string &function);
         static BlendingEquation parseBlendingEquation(const std::string &equation);
         static ComparisionFunction parseComparisionFunction(const std::string &function);
+        static RenderMode parseRenderMode(const std::string &mode);
     };
 }
 

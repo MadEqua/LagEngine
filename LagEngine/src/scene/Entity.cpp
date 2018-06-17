@@ -9,8 +9,7 @@ using namespace Lag;
 Entity::Entity(uint32 name, Handle<Material> defaultMaterial, Handle<Mesh> mesh) :
         SceneObject(name),
         defaultMaterial(defaultMaterial),
-        mesh(mesh),
-        renderMode(RenderMode::TRIANGLES) {
+        mesh(mesh) {
     for (SubMesh *sm : mesh->getSubMeshes()) {
         auto *se = new SubEntity(*this, *defaultMaterial, *sm);
         subEntities.push_back(se);

@@ -1,7 +1,6 @@
 #pragma once
 
 #include "Types.h"
-#include "RenderMode.h"
 
 namespace Lag {
     class VertexData;
@@ -18,7 +17,6 @@ namespace Lag {
     * which it uses for sorting and posterior render call dispatching.
     */
     struct RenderOperation {
-        RenderMode renderMode;
         RenderTarget *renderTarget;
         VertexData *vertexData;
         IndexData *indexData;

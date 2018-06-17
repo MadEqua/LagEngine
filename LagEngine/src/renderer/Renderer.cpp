@@ -65,8 +65,11 @@ void Renderer::startRenderingLoop(uint32 maxFps) {
         return;
     }
 
+    totalTimer.start();
+
     while (shouldLoop) {
         wholeFrameTimer.start();
+        totalSeconds = totalTimer.getElapsedSeconds();
 
         renderWindow->processEvents();
 

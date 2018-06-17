@@ -22,9 +22,6 @@ void GpuProgramUniformFiller::onGpuProgramBind(const GpuProgram *gpuProgram, con
     if (!gpuProgram || !viewport) return;
     updateLightUniforms(*gpuProgram);
     updateViewportUniforms(*gpuProgram, *viewport);
-
-    /*for (auto binding : textureBindings.bindings)
-        updateTextureUniforms(*gpuProgram, *binding.second, binding.first);*/
 }
 
 void GpuProgramUniformFiller::onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport) {
@@ -33,17 +30,13 @@ void GpuProgramUniformFiller::onViewportBind(const GpuProgram *gpuProgram, const
 }
 
 void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const Texture *texture, uint8 unit) {
-    /*if (!gpuProgram || !texture) return;
-    updateTextureUniforms(*gpuProgram, *texture, unit);*/
 }
 
 void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix,
                                                  const glm::mat3 &normalMatrix, const Viewport &viewport) {
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MODEL_MATRIX, &modelMatrix);
-    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX,
-                        &viewport.getCamera().getInverseTransform());
-    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::PROJECTION_MATRIX,
-                        &viewport.getCamera().getProjectionMatrix());
+    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX, &viewport.getCamera().getInverseTransform());
+    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::PROJECTION_MATRIX, &viewport.getCamera().getProjectionMatrix());
 
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::NORMAL_WORLD_MATRIX, &normalMatrix);
 
@@ -68,6 +61,9 @@ void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, c
                         modelMatrix;
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MVP_MATRIX, &mvp);
     }
+
+    float secs = Root::getInstance().getRenderer().getTotalSeconds();
+    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::TIMER, &secs);
 }
 
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) {
@@ -130,29 +126,7 @@ void GpuProgramUniformFiller::updateViewportUniforms(const GpuProgram &gpuProgra
     }
 }
 
-void GpuProgramUniformFiller::updateTextureUniforms(const GpuProgram &gpuProgram, const Texture &texture, uint8 unit) {
-    GpuProgramUniformSemantic uniformSemantic;
-    switch (texture.getTextureData().semantic) {
-        case TextureSemantic::DIFFUSE:
-            uniformSemantic = GpuProgramUniformSemantic::TEXTURE_DIFFUSE;
-            break;
-        case TextureSemantic::NORMAL:
-            uniformSemantic = GpuProgramUniformSemantic::TEXTURE_NORMAL;
-            break;
-        default:
-            uniformSemantic = GpuProgramUniformSemantic::TEXTURE_DIFFUSE;
-            break;
-    }
-
-    auto uniformList = gpuProgram.getUniformBySemantic(uniformSemantic);
-    if (uniformList != nullptr && unit < uniformList->size()) {
-        auto u = static_cast<uint32>(unit);
-        uniformList->at(unit)->setValue(static_cast<void *>(&u));
-    }
-}
-
-bool GpuProgramUniformFiller::programContainsUniform(const GpuProgram &gpuProgram,
-                                                     GpuProgramUniformSemantic semantic) {
+bool GpuProgramUniformFiller::programContainsUniform(const GpuProgram &gpuProgram, GpuProgramUniformSemantic semantic) {
     return gpuProgram.getUniformBySemantic(semantic) != nullptr;
 }
 

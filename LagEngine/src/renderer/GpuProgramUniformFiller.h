@@ -31,7 +31,6 @@ namespace Lag {
     private:
         void updateLightUniforms(const GpuProgram &gpuProgram);
         void updateViewportUniforms(const GpuProgram &gpuProgram, const Viewport &viewport);
-        void updateTextureUniforms(const GpuProgram &gpuProgram, const Texture &texture, uint8 unit);
 
         bool programContainsUniform(const GpuProgram &gpuProgram,
                                     GpuProgramUniformSemantic semantic);

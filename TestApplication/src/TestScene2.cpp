@@ -17,7 +17,6 @@ void TestScene2::onStart() {
     mainNode.setScale(glm::vec3(20.0f));
 
     Lag::Entity *ent = createEntity("bunny", "objectMaterial");
-    ent->setRenderMode(Lag::RenderMode::POINTS);
     ent->attachToSceneNode(mainNode);
 }
 

@@ -57,7 +57,7 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
 
                 case GpuProgramUniformSemantic::POINT_LIGHT_POSITIONS:
                 case GpuProgramUniformSemantic::DIR_LIGHT_DIRECTIONS:
-                case GpuProgramUniformSemantic::POINT_LIGHT_COLORS: //TODO: colors need to be floats??
+                case GpuProgramUniformSemantic::POINT_LIGHT_COLORS: //TODO: colors don't need to be floats
                 case GpuProgramUniformSemantic::DIR_LIGHT_COLORS:
                 case GpuProgramUniformSemantic::POINT_LIGHT_ATTENUATIONS:
                     size = GpuProgramUniformSize::SIZE_3;
@@ -69,6 +69,11 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
                 case GpuProgramUniformSemantic::NORMAL_VIEW_MATRIX:
                     size = GpuProgramUniformSize::SIZE_3;
                     type = GpuProgramUniformType::MATRIX;
+                    break;
+
+                case GpuProgramUniformSemantic::TIMER:
+                    size = GpuProgramUniformSize::SIZE_1;
+                    type = GpuProgramUniformType::FLOAT;
                     break;
 
                 case GpuProgramUniformSemantic::CUSTOM: {
@@ -131,6 +136,8 @@ GpuProgramUniformSemantic GpuProgramStageBuilder::parseUniformSemanticFromString
 
     else if (semantic == "TextureDiffuse") return GpuProgramUniformSemantic::TEXTURE_DIFFUSE;
     else if (semantic == "TextureNormal") return GpuProgramUniformSemantic::TEXTURE_NORMAL;
+
+    else if (semantic == "Timer") return GpuProgramUniformSemantic::TIMER;
 
     else if (semantic == "Custom") return GpuProgramUniformSemantic::CUSTOM;
     else return GpuProgramUniformSemantic::CUSTOM;

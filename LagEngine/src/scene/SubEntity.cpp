@@ -20,7 +20,6 @@ SubEntity::SubEntity(Entity &parent, Material &material, SubMesh &subMesh) :
 
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) {
     RenderOperation &ro = renderQueue.addRenderOperation();
-    ro.renderMode = parent.getRenderMode();
     ro.renderTarget = &renderTarget;
     ro.vertexData = const_cast<VertexData *>(&subMesh.getVertexData());
     ro.indexData = const_cast<IndexData *>(&subMesh.getIndexData());
@@ -46,10 +45,11 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation) {
                                                    parent.getNormalTransform(),
                                                    *renderOperation.viewport);
 
-    if(renderOperation.renderMode == RenderMode::POINTS) {
-        renderer.renderVertices(renderOperation.renderMode, *renderOperation.vertexData);
+    RenderMode renderMode = renderOperation.material->getRenderMode();
+    if(renderMode == RenderMode::POINTS) {
+        renderer.renderVertices(renderMode, *renderOperation.vertexData);
     }
     else {
-        renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData);
+        renderer.renderIndexed(renderMode, *renderOperation.vertexData, *renderOperation.indexData);
 }
 }

@@ -41,6 +41,8 @@ namespace Lag {
         DIR_LIGHT_DIRECTIONS,
         DIR_LIGHT_COLORS,
 
+        TIMER,
+
         TEXTURE_DIFFUSE,
         TEXTURE_NORMAL,
         TEXTURE_CUSTOM,

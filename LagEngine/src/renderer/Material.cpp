@@ -10,7 +10,8 @@
 using namespace Lag;
 
 Material::Material(const std::string &filePath) :
-        XmlResource(filePath) {
+        XmlResource(filePath),
+        renderMode(RenderMode::TRIANGLES) {
 }
 
 /*Material::Material(const std::vector<std::string> &shaderStageNames, const std::vector<std::string> &textureNames) :
@@ -88,6 +89,11 @@ bool Material::parse() {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material",
                                       "Material file: " + path + " does not contain <material> element.");
         return false;
+    }
+
+    const char *renderMode = materialElement->Attribute("renderMode");
+    if(renderMode) {
+        this->renderMode = parseRenderMode(renderMode);
     }
 
     //TODO: check for techniques and passes, not shaders
@@ -301,5 +307,20 @@ ComparisionFunction Material::parseComparisionFunction(const std::string &functi
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing ComparisionFunction: " + function);
         return ComparisionFunction::NEVER;
+    }
+}
+
+RenderMode Material::parseRenderMode(const std::string &mode) {
+    if(mode == "Triangles") return RenderMode::TRIANGLES;
+    else if(mode == "TriangleStrip") return RenderMode::TRIANGLE_STRIP;
+    else if(mode == "TriangleFan") return RenderMode::TRIANGLE_FAN;
+    else if(mode == "Lines") return RenderMode::LINES;
+    else if(mode == "LineStrip") return RenderMode::LINE_STRIP;
+    else if(mode == "LineLoop") return RenderMode::LINE_LOOP;
+    else if(mode == "Points") return RenderMode::POINTS;
+    else if(mode == "Patches") return RenderMode::PATCHES;
+    else {
+        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Material", "Error parsing RenderMode: " + mode);
+        return RenderMode::TRIANGLES;
     }
 }

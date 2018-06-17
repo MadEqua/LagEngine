@@ -37,7 +37,7 @@ ImageData ImageBuilder::parseImageData(const TiXmlElement &element) {
 }
 
 ImageComponents ImageBuilder::parseComponents(const std::string &c) {
-    if (c == "R") return ImageComponents::R;
+    if (c == "R" || c == "Grayscale" || c == "Greyscale") return ImageComponents::R;
     else if (c == "RG") return ImageComponents::RG;
     else if (c == "RGB") return ImageComponents::RGB;
     else if (c == "RGBA") return ImageComponents::RGBA;

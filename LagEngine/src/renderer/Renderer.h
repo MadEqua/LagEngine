@@ -102,6 +102,7 @@ namespace Lag {
         void setPointSizeFromGpuProgramEnabled(bool enabled);
 
         inline GpuProgramUniformFiller &getUniformFiller() { return uniformFiller; }
+        inline float getTotalSeconds() { return totalSeconds; }
 
     private:
         bool shouldLoop;
@@ -112,6 +113,10 @@ namespace Lag {
         Timer frameStartTimer;
         Timer frameEndTimer;
         Timer frameQueuedTimer;
+
+        //To pass to Shaders with an animation timer
+        Timer totalTimer;
+        float totalSeconds;
 
         SceneManager &sceneManager;
         IGraphicsAPI &graphicsAPI;

@@ -97,7 +97,6 @@ Sky::Sky(const std::string &materialName) :
 void Sky::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) {
     if (renderTarget.getRenderPhase() == RenderPhase::COLOR) {
         RenderOperation &ro = renderQueue.addRenderOperation();
-        ro.renderMode = RenderMode::TRIANGLES;
         ro.renderTarget = &renderTarget;
         ro.vertexData = &vertexData;
         ro.indexData = &indexData;
@@ -112,5 +111,5 @@ void Sky::render(Renderer &renderer, RenderOperation &renderOperation) {
     renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
                                                    model, nor, *renderOperation.viewport);
 
-    renderer.renderIndexed(renderOperation.renderMode, *renderOperation.vertexData, *renderOperation.indexData);
+    renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
 }

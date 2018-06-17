@@ -23,6 +23,7 @@
 
     <shader name="pointVertex" file="point.vert" type="Vertex">
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+        <uniform name="time" semantic="Timer"/>
     </shader>
 
     <shader name="pointFragment" file="point.frag" type="Fragment">
@@ -50,6 +51,7 @@
     <mesh name="tree2" file="tree02.obj"/>
     <mesh name="tree3" file="tree03.obj"/>
     <mesh name="bunny" file="bunny.obj"/>
+    <mesh name="sponza" file="sponza.obj"/>
 
 
     <image name="test" file="test.jpg" components="RGB"
@@ -71,8 +73,8 @@
     <image name="sky5" file="PondWinter/5.jpg" components="RGB"
            componentType="UINT8" normalized="true" sRGB="true"/>
 
-    <image name="circleSprite" file="circleSprite.jpg" components="RGB"
-           componentType="UINT8" normalized="true" sRGB="true"/>
+    <image name="circleSprite" file="circleSprite.jpg" components="Grayscale"
+           componentType="UINT8" normalized="true"/>
 
 
     <texture name="test" image="test" semantic="DiffuseColor"
