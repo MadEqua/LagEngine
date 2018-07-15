@@ -1,6 +1,7 @@
 #pragma once
 
 #include <string>
+#include <memory>
 
 #include "InitializationParameters.h"
 
@@ -50,7 +51,6 @@ namespace Lag {
         inline Renderer &getRenderer() const { return *renderer; }
         inline SceneManager &getSceneManager() const { return *sceneManager; }
         inline RenderTargetManager &getRenderTargetManager() const { return *renderTargetManager; }
-        //inline const InitializationParameters& getInitializationParameters() const { return initializationParameters; }
         inline GpuProgramStageManager &getGpuProgramStageManager() const { return *gpuProgramStageManager; }
         inline GpuProgramManager &getGpuProgramManager() const { return *gpuProgramManager; }
         inline MaterialManager &getMaterialManager() const { return *materialManager; }
@@ -63,40 +63,38 @@ namespace Lag {
         inline const TiXmlDocument& getLagResourcesFile() const { return *lagResourcesFile; }
 
     private:
+        bool initialized;
+
+        //This order of declarations is important for the destruction.
+        std::unique_ptr<RenderTargetManager> renderTargetManager;
         Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
 
-        InputManager *inputManager;
-        Renderer *renderer;
-        SceneManager *sceneManager;
+        std::unique_ptr<InputManager> inputManager;
+        std::unique_ptr<Renderer> renderer;
+        std::unique_ptr<IGraphicsAPI> graphicsAPI;
 
-        RenderTargetManager *renderTargetManager;
+        std::unique_ptr<InputDescriptionManager> inputDescriptionManager;
+        std::unique_ptr<GpuBufferManager> gpuBufferManager;
+        std::unique_ptr<MeshManager> meshManager;
+        std::unique_ptr<ImageManager> imageManager;
+        std::unique_ptr<GpuProgramStageManager> gpuProgramStageManager;
+        std::unique_ptr<TextureManager> textureManager;
+        std::unique_ptr<GpuProgramManager> gpuProgramManager;
+        std::unique_ptr<MaterialManager> materialManager;
+        std::unique_ptr<SceneManager> sceneManager;
 
-        GpuProgramStageManager *gpuProgramStageManager;
-        GpuProgramManager *gpuProgramManager;
-        MaterialManager *materialManager;
-        MeshManager *meshManager;
-        ImageManager *imageManager;
-        TextureManager *textureManager;
-
-        GpuBufferManager *gpuBufferManager;
-        InputDescriptionManager *inputDescriptionManager;
-
-        IGraphicsAPI *graphicsAPI;
-
-        InitializationParameters *initializationParameters;
-        TiXmlDocument *appResourcesFile;
-        TiXmlDocument *lagResourcesFile;
+        std::unique_ptr<InitializationParameters> initializationParameters;
+        std::unique_ptr<TiXmlDocument> appResourcesFile;
+        std::unique_ptr<TiXmlDocument> lagResourcesFile;
 
 #ifdef ENABLE_DEBUG_MACRO
-        ResourceFilesWatcher *resourceFilesWatcher;
+        std::unique_ptr<ResourceFilesWatcher> resourceFilesWatcher;
 #endif
 
-        void destroy();
-
-        bool internalInit(const IPlatformFactory *platformFactory);
-        bool initResources(const IPlatformFactory *platformFactory);
+        bool internalInit(const IPlatformFactory &platformFactory);
+        bool initResources(const IPlatformFactory &platformFactory);
         bool initResourcesFiles();
-        bool checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const;
+        bool checkResourcesFile(const std::string &filePath, TiXmlDocument &resourcesFile) const;
 
         /*
         * Listen for toggle virtual cursor and escape.

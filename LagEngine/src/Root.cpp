@@ -1,5 +1,4 @@
 #include "Root.h"
-
 #include "tinyxml/tinyxml.h"
 
 #include "GLFW_GL4_5Factory.h"
@@ -28,170 +27,89 @@
     #include "io/ResourceFilesWatcher.h"
 #endif
 
+
 using namespace Lag;
 
-Root::Root() :
-        inputManager(nullptr),
-        renderer(nullptr),
-        sceneManager(nullptr),
-        renderTargetManager(nullptr),
-        gpuProgramStageManager(nullptr),
-        gpuProgramManager(nullptr),
-        materialManager(nullptr),
-        meshManager(nullptr),
-        imageManager(nullptr),
-        textureManager(nullptr),
-        gpuBufferManager(nullptr),
-        graphicsAPI(nullptr),
-        inputDescriptionManager(nullptr),
-        appResourcesFile(nullptr),
-        lagResourcesFile(nullptr),
-#ifdef ENABLE_DEBUG_MACRO
-        resourceFilesWatcher(nullptr),
-#endif
-        initializationParameters(nullptr) {
+Root::Root() : initialized(false) {
 
     //Initialize other singletons
     LogManager::getInstance();
 }
 
-Root::~Root() {
-    destroy();
-}
-
-void Root::destroy() {
-    delete sceneManager;
-    sceneManager = nullptr;
-
-    delete materialManager;
-    materialManager = nullptr;
-
-    delete gpuProgramManager;
-    gpuProgramManager = nullptr;
-
-    delete gpuProgramStageManager;
-    gpuProgramStageManager = nullptr;
-
-    delete textureManager;
-    textureManager = nullptr;
-
-    delete imageManager;
-    imageManager = nullptr;
-
-    delete meshManager;
-    meshManager = nullptr;
-
-    delete gpuBufferManager;
-    gpuBufferManager = nullptr;
-
-    delete inputDescriptionManager;
-    inputDescriptionManager = nullptr;
-
-    delete graphicsAPI;
-    graphicsAPI = nullptr;
-
-    delete renderer;
-    renderer = nullptr;
-
-    delete inputManager;
-    inputManager = nullptr;
-
-    if(renderWindow.isValid())
-        renderWindow.invalidate();
-
-    delete renderTargetManager;
-    renderTargetManager = nullptr;
-
-#ifdef ENABLE_DEBUG_MACRO
-    delete resourceFilesWatcher;
-    resourceFilesWatcher = nullptr;
-#endif
-
-    delete initializationParameters;
-    initializationParameters = nullptr;
-
-    delete appResourcesFile;
-    appResourcesFile = nullptr;
-
-    delete lagResourcesFile;
-    lagResourcesFile = nullptr;
-}
+Root::~Root() = default;
 
 bool Root::initializeLag(const std::string &iniFile) {
-    //in case of reinitialization
-    destroy();
+    if(initialized) return true;
 
-    initializationParameters = new InitializationParameters(iniFile);
+    initializationParameters = std::make_unique<InitializationParameters>(iniFile);
 
-    IPlatformFactory *platformFactory = nullptr;
+    std::unique_ptr<IPlatformFactory> platformFactory;
     if (initializationParameters->platformType == PlatformType::GLFW_GL4_5)
-        platformFactory = new GLFW_GL4_5Factory();
+        platformFactory = std::make_unique<GLFW_GL4_5Factory>();
     else {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Root",
                                       "Cannot find a suitable platform factory. Double check the chosen platform on the .ini file.");
         return false;
     }
 
-    bool result = internalInit(platformFactory);
-    delete platformFactory;
+    bool result = internalInit(*platformFactory);
+    initialized = result;
     return result;
 }
 
-bool Root::internalInit(const IPlatformFactory *platformFactory) {
-    renderTargetManager = new RenderTargetManager(platformFactory->getWindowRenderTargetBuilder(),
-                                                  platformFactory->getTextureRenderTargetBuilder());
+bool Root::internalInit(const IPlatformFactory &platformFactory) {
+    renderTargetManager = std::make_unique<RenderTargetManager>(platformFactory.getWindowRenderTargetBuilder(), platformFactory.getTextureRenderTargetBuilder());
     renderWindow = renderTargetManager->getRenderWindow(*initializationParameters);
     if (!renderWindow.isValid())
         return false;
 
-    inputManager = platformFactory->getInputManager(dynamic_cast<RenderWindow &>(*renderWindow));
+    inputManager = std::unique_ptr<InputManager>(platformFactory.getInputManager(dynamic_cast<RenderWindow &>(*renderWindow)));
 
-    graphicsAPI = platformFactory->getGraphicsAPI();
+    graphicsAPI = std::unique_ptr<IGraphicsAPI>(platformFactory.getGraphicsAPI());
     if (!graphicsAPI->initialize())
         return false;
 
-    gpuBufferManager = new GpuBufferManager(platformFactory->getGpuBufferBuilder());
-    gpuProgramManager = new GpuProgramManager(platformFactory->getGpuProgramBuilder());
-    inputDescriptionManager = new InputDescriptionManager(platformFactory->getInputDescriptionBuilder());
+    gpuBufferManager = std::make_unique<GpuBufferManager>(platformFactory.getGpuBufferBuilder());
+    gpuProgramManager = std::make_unique<GpuProgramManager>(platformFactory.getGpuProgramBuilder());
+    inputDescriptionManager = std::make_unique<InputDescriptionManager>(platformFactory.getInputDescriptionBuilder());
 
     if (!initResources(platformFactory))
         return false;
 
-    sceneManager = new SceneManager();
-    renderer = new Renderer(*graphicsAPI, *sceneManager, *renderTargetManager);
+    sceneManager = std::make_unique<SceneManager>();
+    renderer = std::make_unique<Renderer>(*graphicsAPI, *sceneManager, *renderTargetManager);
     sceneManager->registerObservers(); //Needs to be called after Renderer creation
 
     dynamic_cast<RenderWindow *>(renderWindow.get())->registerObserver(windowListener);
     inputManager->registerObserver(keyboardListener);
 
 #ifdef ENABLE_DEBUG_MACRO
-    resourceFilesWatcher = new ResourceFilesWatcher(*initializationParameters);
+    resourceFilesWatcher = std::make_unique<ResourceFilesWatcher>(*initializationParameters);
 #endif
 
     return true;
 }
 
-bool Root::initResources(const IPlatformFactory *platformFactory) {
+bool Root::initResources(const IPlatformFactory &platformFactory) {
     if (!initResourcesFiles())
         return false;
 
-    textureManager = new TextureManager(platformFactory->getTextureBuilder(
-            XmlResourceBuilderData("", "", TEXTURE_XML_TAG)));
+    textureManager = std::make_unique<TextureManager>(platformFactory.getTextureBuilder(XmlResourceBuilderData("", "", TEXTURE_XML_TAG)));
 
-    gpuProgramStageManager = new GpuProgramStageManager(platformFactory->getGpuProgramStageBuilder(
+    gpuProgramStageManager = std::make_unique<GpuProgramStageManager>(platformFactory.getGpuProgramStageBuilder(
             XmlResourceBuilderData(initializationParameters->getShadersFolder(false),
                                    initializationParameters->getShadersFolder(true),
                                    SHADER_XML_TAG)));
 
-    imageManager = new ImageManager(new ImageBuilder(XmlResourceBuilderData(initializationParameters->getImagesFolder(false),
+    imageManager = std::make_unique<ImageManager>(new ImageBuilder(XmlResourceBuilderData(initializationParameters->getImagesFolder(false),
                                                                             initializationParameters->getImagesFolder(true),
                                                                             IMAGE_XML_TAG)));
 
-    meshManager = new MeshManager(new MeshBuilder(XmlResourceBuilderData(initializationParameters->getMeshesFolder(false),
+    meshManager = std::make_unique<MeshManager>(new MeshBuilder(XmlResourceBuilderData(initializationParameters->getMeshesFolder(false),
                                                                          initializationParameters->getMeshesFolder(true),
                                                                          MESH_XML_TAG)));
 
-    materialManager = new MaterialManager(new MaterialBuilder(XmlResourceBuilderData(initializationParameters->getMaterialsFolder(false),
+    materialManager = std::make_unique<MaterialManager>(new MaterialBuilder(XmlResourceBuilderData(initializationParameters->getMaterialsFolder(false),
                                                        initializationParameters->getMaterialsFolder(true),
                                                        MATERIAL_XML_TAG)));
 
@@ -208,32 +126,29 @@ bool Root::initResourcesFiles() {
     std::string lagResourcesFilePath = initializationParameters->lagResourcesFolder + '/' + initializationParameters->resourcesFile;
     std::string resourcesFilePath = initializationParameters->appResourcesFolder + '/' + initializationParameters->resourcesFile;
 
-    auto *lagResourcesFile = new TiXmlDocument(lagResourcesFilePath);
-    if (!checkResourcesFile(lagResourcesFilePath, lagResourcesFile)) {
-        delete lagResourcesFile;
+    auto lagResourcesFile = std::make_unique<TiXmlDocument>(lagResourcesFilePath);
+    if (!checkResourcesFile(lagResourcesFilePath, *lagResourcesFile)) {
         return false;
     }
 
-    auto *appResourcesFile = new TiXmlDocument(resourcesFilePath);
-    if (!checkResourcesFile(resourcesFilePath, appResourcesFile)) {
-        delete lagResourcesFile;
-        delete appResourcesFile;
+    auto appResourcesFile = std::make_unique<TiXmlDocument>(resourcesFilePath);
+    if (!checkResourcesFile(resourcesFilePath, *appResourcesFile)) {
         return false;
     }
 
-    this->appResourcesFile = appResourcesFile;
-    this->lagResourcesFile = lagResourcesFile;
+    this->appResourcesFile = std::move(appResourcesFile);
+    this->lagResourcesFile = std::move(lagResourcesFile);
     return true;
 }
 
-bool Root::checkResourcesFile(const std::string &filePath, TiXmlDocument *resourcesFile) const {
-    if (!resourcesFile->LoadFile()) {
+bool Root::checkResourcesFile(const std::string &filePath, TiXmlDocument &resourcesFile) const {
+    if (!resourcesFile.LoadFile()) {
         LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "Root",
                                       "Resources file: " + filePath + " does not exist or is malformed.");
         return false;
     }
 
-    const TiXmlElement *resourcesElement = resourcesFile->FirstChildElement();
+    const TiXmlElement *resourcesElement = resourcesFile.FirstChildElement();
     if (!resourcesElement) {
         LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "Root",
                                       "Resources file: " + filePath + " does not contain <resources> element.");
@@ -244,12 +159,7 @@ bool Root::checkResourcesFile(const std::string &filePath, TiXmlDocument *resour
 }
 
 void Root::reloadResourcesFile() {
-    auto oldAppResourcesFile = appResourcesFile;
-    auto oldLagResourcesFile = lagResourcesFile;
-    if (initResourcesFiles()) {
-        delete oldAppResourcesFile;
-        delete oldLagResourcesFile;
-    }
+    initResourcesFiles();
 }
 
 void Root::startRenderingLoop() {

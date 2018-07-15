@@ -1,10 +1,7 @@
-cmake_minimum_required(VERSION 3.10)
 project(LagEngine)
-set(CMAKE_CXX_STANDARD 11)
 
 set(SRC_FOLDER src)
 set(DEPENDENCIES_FOLDER dependencies)
-
 
 set(SOURCES
         ${SRC_FOLDER}/core/Buffer.cpp
