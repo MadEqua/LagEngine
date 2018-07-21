@@ -12,6 +12,7 @@
 #include "Root.h"
 
 namespace Lag {
+
     template<class K, class V>
     class IManagedObjectBuilder {
     public:
@@ -52,7 +53,6 @@ namespace Lag {
 
     protected:
         bool load(V *object) const;
-
         void unload(V *object) const;
 
         //Deletes and removes the item from the map and returns a proper iterator to continue iteration

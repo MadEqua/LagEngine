@@ -65,7 +65,7 @@ namespace Lag {
     private:
         bool initialized;
 
-        //This order of declarations is important for the destruction.
+        //This order of definitions is important for the destruction.
         std::unique_ptr<RenderTargetManager> renderTargetManager;
         Handle<RenderTarget> renderWindow; //Since this is mandatory, Root will hold into it
 

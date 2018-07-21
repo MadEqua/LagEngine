@@ -1,6 +1,8 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+
 #include "Types.h"
 
 namespace Lag {
@@ -14,84 +16,86 @@ namespace Lag {
     template<class T>
     class NamedContainer {
     public:
-        ~NamedContainer();
-
         uint32 add(T *value);
         void set(uint32 name, T *value);
         void remove(uint32 name);
-        T *get(uint32 name) const;
+        T* get(uint32 name) const;
 
         void clear();
 
         bool contains(uint32 name) const;
 
+        uint32 getSize() const;
+        bool isEmpty() const;
+
         uint32 getNextName() const;
 
-        inline uint32 getSize() const { return static_cast<uint32>(data.size()); }
-        inline bool isEmpty() const { return data.empty(); }
-
     private:
-        std::vector<T *> data;
+        std::vector<std::unique_ptr<T>> data;
     };
-
-
-    template<class T>
-    NamedContainer<T>::~NamedContainer() {
-        clear();
-    }
 
     template<class T>
     uint32 NamedContainer<T>::add(T *value) {
         uint32 index = getNextName();
 
         if (index < data.size())
-            data[index] = value;
+            set(index, value);
         else
-            data.push_back(value);
+            data.push_back(std::unique_ptr<T>(value));
 
         return index;
     }
 
     template<class T>
     void NamedContainer<T>::set(uint32 name, T *value) {
-        if (name < data.size())
-            data[name] = value;
+        if (name < data.size()) {
+            data[name] = std::unique_ptr<T>(value);
+        }
     }
 
     template<class T>
     void NamedContainer<T>::remove(uint32 name) {
         if (name < data.size()) {
-            delete data[name];
-            data[name] = nullptr;
+            data[name].reset();
         }
     }
 
     template<class T>
     T *NamedContainer<T>::get(uint32 name) const {
         if (name < data.size())
-            return data[name];
+            return data[name].get();
         else
             return nullptr;
     }
 
     template<class T>
     void NamedContainer<T>::clear() {
-        for (T *value : data)
-            if (value != nullptr)
-                delete value;
-
         data.clear();
     }
 
     template<class T>
     bool NamedContainer<T>::contains(uint32 name) const {
-        return name < data.size() && data[name] != nullptr;
+        return name < data.size() && data[name];
+    }
+
+    template<class T>
+    uint32 NamedContainer<T>::getSize() const {
+        uint32 count = 0;
+        for(auto &up : data) {
+            if(up) count++;
+        }
+        return count;
+    }
+
+    template<class T>
+    bool NamedContainer<T>::isEmpty() const {
+        return getSize() == 0;
     }
 
     template<class T>
     uint32 NamedContainer<T>::getNextName() const {
         for (uint32 i = 0; i < data.size(); ++i)
-            if (data[i] == nullptr)
+            if (!data[i])
                 return i;
 
         return static_cast<uint32>(data.size());
