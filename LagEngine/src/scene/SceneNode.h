@@ -38,7 +38,6 @@ namespace Lag {
         void removeChildSceneNode(SceneNode &node);
 
         inline bool hasParent() const { return parent != nullptr; }
-
         inline SceneNode *getParentSceneNode() const { return parent; }
 
         //Transforms

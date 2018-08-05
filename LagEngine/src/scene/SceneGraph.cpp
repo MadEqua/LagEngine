@@ -1,50 +1,38 @@
 #include "SceneGraph.h"
 
 #include "LogManager.h"
-#include "SceneNode.h"
 
 using namespace Lag;
 
-SceneGraph::~SceneGraph() {
-    clear();
-}
-
 void SceneGraph::clear() {
-    for (auto &pair : nodes)
-        delete pair.second;
-
     nodes.clear();
 }
 
 SceneNode &SceneGraph::createSceneNode(const std::string &name) {
-    auto *newNode = new SceneNode(*this);
-
     auto it = nodes.find(name);
     if (it != nodes.end()) {
-        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL,
-                                      "SceneGraph", "Creating a SceneNode with an already taken name: " + name +
-                                                    ". Replacing the already existent one.");
-        delete it->second;
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "SceneGraph",
+                                      "Creating a SceneNode with an already taken name: " + name +
+                                      ". Replacing the already existent one.");
     }
 
-    nodes[name] = newNode;
-    return *newNode;
+    nodes[name] = std::unique_ptr<SceneNode>(new SceneNode(*this));
+    return *nodes[name];
 }
 
 SceneNode *SceneGraph::getSceneNode(const std::string &name) const {
     auto it = nodes.find(name);
     if (it != nodes.end())
-        return it->second;
+        return it->second.get();
     else
         return nullptr;
 }
 
 SceneNode &SceneGraph::getRootSceneNode() {
-    auto it = nodes.find("root");
+    auto it = nodes.find(ROOT_SCENE_NODE);
     if (it == nodes.end()) {
-        auto *root = new SceneNode(*this);
-        nodes["root"] = root;
-        return *root;
+        nodes[ROOT_SCENE_NODE] = std::unique_ptr<SceneNode>(new SceneNode(*this));
+        return *nodes[ROOT_SCENE_NODE];
     }
     else
         return *it->second;

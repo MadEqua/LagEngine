@@ -35,8 +35,7 @@ bool Texture::loadImplementation() {
                 images.push_back(image);
             }
             else {
-                LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                              "Texture", "Cannot get Image: " + name);
+                LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "Texture", "Cannot get Image: " + name);
                 return false;
             }
             i++;

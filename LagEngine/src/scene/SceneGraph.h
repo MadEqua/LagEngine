@@ -1,12 +1,12 @@
 #pragma once
 
+#include "SceneNode.h"
+
 #include <unordered_map>
 #include <string>
+#include <memory>
 
 namespace Lag {
-    class SceneNode;
-
-    class SceneObject;
 
     /*
     * Hierarchical representation of a scene.
@@ -16,8 +16,6 @@ namespace Lag {
     */
     class SceneGraph {
     public:
-        ~SceneGraph();
-
         void clear();
 
         SceneNode &createSceneNode(const std::string &name);
@@ -27,6 +25,6 @@ namespace Lag {
 
     private:
         //All created nodes by name
-        std::unordered_map<std::string, SceneNode *> nodes;
+        std::unordered_map<std::string, std::unique_ptr<SceneNode>> nodes;
     };
 }

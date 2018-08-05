@@ -10,18 +10,14 @@ using namespace Lag;
 
 SceneManager::SceneManager() :
         activeSceneName("") {
-    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
-                                  "Created successfully.");
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager", "Created successfully.");
 }
 
 SceneManager::~SceneManager() {
     if (hasActiveScene())
-        getActiveScene().end();
+        getActiveScene()->end();
 
-    clear();
-
-    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
-                                  "Destroyed successfully.");
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager", "Destroyed successfully.");
 }
 
 void SceneManager::registerObservers() {
@@ -34,13 +30,13 @@ void SceneManager::registerObservers() {
 
 void SceneManager::addRenderablesToQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) const {
     if (hasActiveScene())
-        getActiveScene().addRenderablesToQueue(renderQueue, viewport, renderTarget);
+        getActiveScene()->addRenderablesToQueue(renderQueue, viewport, renderTarget);
     else
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "SceneManager",
                                       "Trying to fill the Render Queue when there is not an active Scene.");
 }
 
-void SceneManager::addScene(const std::string &name, Scene &scene) {
+void SceneManager::addScene(const std::string &name, Scene *scene) {
     auto it = sceneMap.find(name);
     if (it != sceneMap.end()) {
         LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "SceneManager",
@@ -50,7 +46,7 @@ void SceneManager::addScene(const std::string &name, Scene &scene) {
 
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
                                   "Added scene with name: " + name + ".");
-    sceneMap[name] = &scene;
+    sceneMap[name] = std::unique_ptr<Scene>(scene);
 
     if (!hasActiveScene()) {
         LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
@@ -64,7 +60,6 @@ void SceneManager::removeScene(const std::string &name) {
     if (it != sceneMap.end()) {
         LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
                                       "Removed scene with name: " + name + ".");
-        delete it->second;
         sceneMap.erase(it);
     }
     else {
@@ -79,24 +74,22 @@ void SceneManager::removeScene(const std::string &name) {
     }
 }
 
-Scene &SceneManager::getActiveScene() const {
-    if (!hasActiveScene())
+Scene* SceneManager::getActiveScene() const {
+    if (!hasActiveScene()) {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "SceneManager",
                                       "Trying to get the active Scene, but none is set.");
+        return nullptr;
+    }
 
-    return *sceneMap.at(activeSceneName);
+    return sceneMap.at(activeSceneName).get();
 }
 
 
 void SceneManager::clear() {
-    for (auto &pair : sceneMap)
-        delete pair.second;
-
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "SceneManager",
                                   "Cleared " + std::to_string(sceneMap.size()) + " Scenes.");
 
     sceneMap.clear();
-
     activeSceneName = "";
 }
 
@@ -115,7 +108,7 @@ void SceneManager::setActiveScene(const std::string &name) {
     }
 
     if (hasActiveScene())
-        getActiveScene().end();
+        getActiveScene()->end();
 
     activeSceneName = name;
 
@@ -134,45 +127,45 @@ void SceneManager::setActiveScene(const std::string &name) {
 ///////////////////////////
 void SceneManager::onFrameStart(float timePassed) {
     if (hasActiveScene())
-        getActiveScene().onFrameStart(timePassed);
+        getActiveScene()->onFrameStart(timePassed);
 }
 
 void SceneManager::onFrameRenderingQueued(float timePassed) {
     if (hasActiveScene())
-        getActiveScene().onFrameRenderingQueued(timePassed);
+        getActiveScene()->onFrameRenderingQueued(timePassed);
 }
 
 void SceneManager::onFrameEnd(float timePassed) {
     if (hasActiveScene())
-        getActiveScene().onFrameEnd(timePassed);
+        getActiveScene()->onFrameEnd(timePassed);
 }
 
 void SceneManager::onKeyPress(int key, int modifier) {
     if (hasActiveScene())
-        getActiveScene().onKeyPress(key, modifier);
+        getActiveScene()->onKeyPress(key, modifier);
 }
 
 void SceneManager::onKeyRelease(int key, int modifier) {
     if (hasActiveScene())
-        getActiveScene().onKeyRelease(key, modifier);
+        getActiveScene()->onKeyRelease(key, modifier);
 }
 
 void SceneManager::onKeyRepeat(int key, int modifier) {
     if (hasActiveScene())
-        getActiveScene().onKeyRepeat(key, modifier);
+        getActiveScene()->onKeyRepeat(key, modifier);
 }
 
 void SceneManager::onCursorMove(int x, int y) {
     if (hasActiveScene())
-        getActiveScene().onCursorMove(x, y);
+        getActiveScene()->onCursorMove(x, y);
 }
 
 void SceneManager::onButtonPressed(int x, int y, int button, int modifiers) {
     if (hasActiveScene())
-        getActiveScene().onButtonPressed(x, y, button, modifiers);
+        getActiveScene()->onButtonPressed(x, y, button, modifiers);
 }
 
 void SceneManager::onButtonReleased(int x, int y, int button, int modifiers) {
     if (hasActiveScene())
-        getActiveScene().onButtonReleased(x, y, button, modifiers);
+        getActiveScene()->onButtonReleased(x, y, button, modifiers);
 }

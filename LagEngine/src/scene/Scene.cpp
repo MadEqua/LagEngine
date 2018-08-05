@@ -27,9 +27,7 @@ Scene::Scene() :
 }
 
 void Scene::start() {
-    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
-                                  "Scene", "Scene starting.");
-
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "Scene", "Scene starting.");
     onStart();
 }
 
@@ -40,8 +38,7 @@ void Scene::initializeViewports() {
 }
 
 void Scene::end() {
-    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,
-                                  "Scene", "Scene ending.");
+    LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "Scene", "Scene ending.");
 
     onEnd();
 

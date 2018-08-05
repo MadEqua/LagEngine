@@ -56,9 +56,7 @@ void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, c
     }
     if (programContainsUniform(gpuProgram, GpuProgramUniformSemantic::MVP_MATRIX)) {
         const Camera &camera = viewport.getCamera();
-        glm::mat4 mvp = camera.getProjectionMatrix() *
-                        camera.getInverseTransform() *
-                        modelMatrix;
+        glm::mat4 mvp = camera.getProjectionMatrix() * camera.getInverseTransform() * modelMatrix;
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MVP_MATRIX, &mvp);
     }
 
@@ -68,7 +66,7 @@ void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, c
 
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) {
     //PointLights
-    auto &pointLights = Root::getInstance().getSceneManager().getActiveScene().getPointLights();
+    auto &pointLights = Root::getInstance().getSceneManager().getActiveScene()->getPointLights();
     auto pointLightCount = static_cast<uint32>(pointLights.size());
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::POINT_LIGHT_COUNT, &pointLightCount);
 
@@ -93,7 +91,7 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) 
     }
 
     //DirectionalLights
-    auto &directionalLights = Root::getInstance().getSceneManager().getActiveScene().getDirectionalLights();
+    auto &directionalLights = Root::getInstance().getSceneManager().getActiveScene()->getDirectionalLights();
     auto dirLightCount = static_cast<uint32>(directionalLights.size());
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::DIR_LIGHT_COUNT, &dirLightCount);
 
