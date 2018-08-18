@@ -41,7 +41,7 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
 
 void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation) {
     renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
-                                                   parent.getTransform(),
+                                                   parent.getLocalToWorldTransform(),
                                                    parent.getNormalTransform(),
                                                    *renderOperation.viewport);
 

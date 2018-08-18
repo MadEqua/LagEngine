@@ -25,18 +25,18 @@ namespace Lag {
         glm::quat inheritedOrientation;
         glm::vec3 inheritedScale;
 
-        //Final transform in World coordinates. Cache, may be dirty.
-        glm::mat4 finalTransform;
-        bool finalTransformOutOfDate;
+        //Cache, may be dirty.
+        glm::mat4 localToWorldTransform;
+        bool localToWorldTransformDirty;
 
-        //Final inverse transform in World coordinates. Cache, may be dirty.
-        glm::mat4 finalInverseTransform;
-        bool finalInverseTransformOutOfDate;
+        //Cache, may be dirty.
+        glm::mat4 worldToLocalTransform;
+        bool worldToLocalTransformDirty;
 
         //Appropriate matrix to transform normals
-        //(equals finalTransform if the scale is uniform)
-        glm::mat3 normalTransform;
-        bool normalTransformOutOfDate;
+        //(equals localToWorldTransform if the scale is uniform)
+        glm::mat3 localToWorldNormalTransform;
+        bool localToWorldNormalTransformDirty;
 
         //for returning
         glm::vec3 tempVec3;

@@ -3,7 +3,6 @@
 #include "Root.h"
 #include "SceneManager.h"
 #include "PointLight.h"
-#include "DirectionalLight.h"
 #include "Camera.h"
 
 #include "Renderer.h"
@@ -35,28 +34,28 @@ void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const 
 void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix,
                                                  const glm::mat3 &normalMatrix, const Viewport &viewport) {
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MODEL_MATRIX, &modelMatrix);
-    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX, &viewport.getCamera().getInverseTransform());
+    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX, &viewport.getCamera().getWorldToLocalTransform());
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::PROJECTION_MATRIX, &viewport.getCamera().getProjectionMatrix());
 
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::NORMAL_WORLD_MATRIX, &normalMatrix);
 
     if (programContainsUniform(gpuProgram, GpuProgramUniformSemantic::NORMAL_VIEW_MATRIX)) {
-        glm::mat3 n = glm::mat3(viewport.getCamera().getInverseTransform()) * normalMatrix;
+        glm::mat3 n = glm::mat3(viewport.getCamera().getWorldToLocalTransform()) * normalMatrix;
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::NORMAL_VIEW_MATRIX, &n);
     }
 
     if (programContainsUniform(gpuProgram, GpuProgramUniformSemantic::MODELVIEW_MATRIX)) {
-        glm::mat4 mv = viewport.getCamera().getInverseTransform() * modelMatrix;
+        glm::mat4 mv = viewport.getCamera().getWorldToLocalTransform() * modelMatrix;
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MODELVIEW_MATRIX, &mv);
     }
     if (programContainsUniform(gpuProgram, GpuProgramUniformSemantic::VIEWPROJECTION_MATRIX)) {
         const Camera &cam = viewport.getCamera();
-        glm::mat4 vp = cam.getProjectionMatrix() * cam.getInverseTransform();
+        glm::mat4 vp = cam.getProjectionMatrix() * cam.getWorldToLocalTransform();
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEWPROJECTION_MATRIX, &vp);
     }
     if (programContainsUniform(gpuProgram, GpuProgramUniformSemantic::MVP_MATRIX)) {
         const Camera &camera = viewport.getCamera();
-        glm::mat4 mvp = camera.getProjectionMatrix() * camera.getInverseTransform() * modelMatrix;
+        glm::mat4 mvp = camera.getProjectionMatrix() * camera.getWorldToLocalTransform() * modelMatrix;
         setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MVP_MATRIX, &mvp);
     }
 
@@ -112,7 +111,7 @@ void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) 
 
 void GpuProgramUniformFiller::updateViewportUniforms(const GpuProgram &gpuProgram, const Viewport &viewport) {
     //Camera-only related matrices
-    const glm::mat4 &view = viewport.getCamera().getInverseTransform();
+    const glm::mat4 &view = viewport.getCamera().getWorldToLocalTransform();
     const glm::mat4 &proj = viewport.getCamera().getProjectionMatrix();
 
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX, static_cast<const void *>(&view));

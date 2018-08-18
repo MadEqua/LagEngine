@@ -31,8 +31,8 @@ namespace Lag {
         //Convenience methods, transforms belong to SceneNodes
         const glm::vec3 &getWorldPosition() const;
 
-        const glm::mat4 &getTransform() const;
-        const glm::mat4 &getInverseTransform() const;
+        const glm::mat4 &getLocalToWorldTransform() const;
+        const glm::mat4 &getWorldToLocalTransform() const;
         const glm::mat3 &getNormalTransform() const;
 
     protected:

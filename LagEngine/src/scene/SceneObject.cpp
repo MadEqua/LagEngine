@@ -18,17 +18,17 @@ const glm::vec3 &SceneObject::getWorldPosition() const {
            parentSceneNode->getWorldPosition() : defaultVec;
 }
 
-const glm::mat4 &SceneObject::getTransform() const {
+const glm::mat4 &SceneObject::getLocalToWorldTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getFinalTransform() : defaultMat4;
+           parentSceneNode->getLocalToWorldTransform() : defaultMat4;
 }
 
-const glm::mat4 &SceneObject::getInverseTransform() const {
+const glm::mat4 &SceneObject::getWorldToLocalTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getFinalInverseTransform() : defaultMat4;
+           parentSceneNode->getWorldToLocalTransform() : defaultMat4;
 }
 
 const glm::mat3 &SceneObject::getNormalTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getNormalTransform() : defaultMat3;
+           parentSceneNode->getLocalToWorldNormalTransform() : defaultMat3;
 }

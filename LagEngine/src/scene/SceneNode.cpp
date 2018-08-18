@@ -3,8 +3,6 @@
 #include "SceneGraph.h"
 #include "SceneObject.h"
 
-#include "glm/gtc/matrix_transform.hpp"
-
 using namespace Lag;
 
 SceneNode::SceneNode(SceneGraph &sceneGraph) :
@@ -164,9 +162,9 @@ void SceneNode::lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm:
 }
 
 void SceneNode::localChangeOccured() {
-    transform.finalTransformOutOfDate = true;
-    transform.finalInverseTransformOutOfDate = true;
-    transform.normalTransformOutOfDate = true;
+    transform.localToWorldTransformDirty = true;
+    transform.worldToLocalTransformDirty = true;
+    transform.localToWorldNormalTransformDirty = true;
     notifyChildrenOfDataChange();
 }
 
@@ -183,10 +181,10 @@ void SceneNode::updateInheritedData() {
     localChangeOccured();
 }
 
-const glm::mat4 &SceneNode::getFinalTransform() {
-    if (transform.finalTransformOutOfDate) {
-        transform.finalTransform = glm::mat4(1.0f);
-        transform.finalTransform = glm::translate(transform.finalTransform,
+const glm::mat4 &SceneNode::getLocalToWorldTransform() {
+    if (transform.localToWorldTransformDirty) {
+        transform.localToWorldTransform = glm::mat4(1.0f);
+        transform.localToWorldTransform = glm::translate(transform.localToWorldTransform,
                                                   transform.position + transform.inheritedPosition);
 
         glm::mat4 rot(1.0f);
@@ -195,27 +193,27 @@ const glm::mat4 &SceneNode::getFinalTransform() {
         else
             rot = glm::mat4(transform.orientation);
 
-        transform.finalTransform = transform.finalTransform * rot;
+        transform.localToWorldTransform = transform.localToWorldTransform * rot;
 
         if (inheritScale)
-            transform.finalTransform = glm::scale(transform.finalTransform, transform.scale * transform.inheritedScale);
+            transform.localToWorldTransform = glm::scale(transform.localToWorldTransform, transform.scale * transform.inheritedScale);
         else
-            transform.finalTransform = glm::scale(transform.finalTransform, transform.scale);
+            transform.localToWorldTransform = glm::scale(transform.localToWorldTransform, transform.scale);
 
-        transform.finalTransformOutOfDate = false;
+        transform.localToWorldTransformDirty = false;
     }
-    return transform.finalTransform;
+    return transform.localToWorldTransform;
 }
 
-const glm::mat4 &SceneNode::getFinalInverseTransform() {
-    if (transform.finalInverseTransformOutOfDate) {
-        transform.finalInverseTransform = glm::mat4(1.0f);
+const glm::mat4 &SceneNode::getWorldToLocalTransform() {
+    if (transform.worldToLocalTransformDirty) {
+        transform.worldToLocalTransform = glm::mat4(1.0f);
 
         if (inheritScale)
-            transform.finalInverseTransform = glm::scale(transform.finalInverseTransform,
+            transform.worldToLocalTransform = glm::scale(transform.worldToLocalTransform,
                                                          1.0f / (transform.scale * transform.inheritedScale));
         else
-            transform.finalInverseTransform = glm::scale(transform.finalInverseTransform, 1.0f / transform.scale);
+            transform.worldToLocalTransform = glm::scale(transform.worldToLocalTransform, 1.0f / transform.scale);
 
         glm::mat4 rot;
         if (inheritOrientation)
@@ -224,25 +222,25 @@ const glm::mat4 &SceneNode::getFinalInverseTransform() {
             rot = glm::mat4(transform.orientation);
 
         rot = glm::transpose(rot);
-        transform.finalInverseTransform = transform.finalInverseTransform * rot;
+        transform.worldToLocalTransform = transform.worldToLocalTransform * rot;
 
-        transform.finalInverseTransform = glm::translate(transform.finalInverseTransform,
+        transform.worldToLocalTransform = glm::translate(transform.worldToLocalTransform,
                                                          -transform.position - transform.inheritedPosition);
-        transform.finalInverseTransformOutOfDate = false;
+        transform.worldToLocalTransformDirty = false;
     }
-    return transform.finalInverseTransform;
+    return transform.worldToLocalTransform;
 }
 
-const glm::mat3 &SceneNode::getNormalTransform() {
-    if (transform.normalTransformOutOfDate) {
+const glm::mat3 &SceneNode::getLocalToWorldNormalTransform() {
+    if (transform.localToWorldNormalTransformDirty) {
         if (transform.scale.x == transform.scale.y && transform.scale.x == transform.scale.z)
-            transform.normalTransform = glm::mat3(getFinalTransform());
+            transform.localToWorldNormalTransform = glm::mat3(getLocalToWorldTransform());
         else
-            transform.normalTransform = glm::transpose(glm::mat3(getFinalInverseTransform()));
+            transform.localToWorldNormalTransform = glm::transpose(glm::mat3(getWorldToLocalTransform()));
 
-        transform.normalTransformOutOfDate = false;
+        transform.localToWorldNormalTransformDirty = false;
     }
-    return transform.normalTransform;
+    return transform.localToWorldNormalTransform;
 }
 
 const glm::vec3 &SceneNode::getWorldPosition() {

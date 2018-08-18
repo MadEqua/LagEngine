@@ -3,9 +3,9 @@
 using namespace Lag;
 
 Transform::Transform() :
-        finalTransformOutOfDate(true),
-        finalInverseTransformOutOfDate(true),
-        normalTransformOutOfDate(true),
+        localToWorldTransformDirty(true),
+        worldToLocalTransformDirty(true),
+        localToWorldNormalTransformDirty(true),
 
         position(0.0f),
         orientation(1.0f, 0.0f, 0.0f, 0.0f),

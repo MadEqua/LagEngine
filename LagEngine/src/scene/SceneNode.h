@@ -70,9 +70,9 @@ namespace Lag {
         const glm::quat &getWorldOrientation();
         const glm::vec3 &getWorldScale();
 
-        const glm::mat4 &getFinalTransform(); //Full transform, traversing the graph world coordinates
-        const glm::mat4 &getFinalInverseTransform();
-        const glm::mat3 &getNormalTransform(); //Appropriate transform for transforming normals
+        const glm::mat4 &getLocalToWorldTransform(); //Full transform, traversing the graph
+        const glm::mat4 &getWorldToLocalTransform();
+        const glm::mat3 &getLocalToWorldNormalTransform(); //Appropriate transform for transforming normals
 
         inline void setInheritOrientation(bool b) { inheritOrientation = b; }
         inline void setInheritScale(bool b) { inheritScale = b; }
