@@ -6,8 +6,7 @@
 
 using namespace Lag;
 
-Entity::Entity(uint32 name, Handle<Material> defaultMaterial, Handle<Mesh> mesh) :
-        SceneObject(name),
+Entity::Entity(Handle<Material> defaultMaterial, Handle<Mesh> mesh) :
         defaultMaterial(defaultMaterial),
         mesh(mesh) {
     for (SubMesh *sm : mesh->getSubMeshes()) {

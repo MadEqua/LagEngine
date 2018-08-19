@@ -173,6 +173,8 @@ set(SOURCES
         ${SRC_FOLDER}/scene/SubEntity.h
         ${SRC_FOLDER}/scene/Transform.cpp
         ${SRC_FOLDER}/scene/Transform.h
+        ${SRC_FOLDER}/scene/AxisGizmo.cpp
+        ${SRC_FOLDER}/scene/AxisGizmo.h
         ${SRC_FOLDER}/utils/FreeCamera.cpp
         ${SRC_FOLDER}/utils/FreeCamera.h
         ${SRC_FOLDER}/utils/Utils.cpp

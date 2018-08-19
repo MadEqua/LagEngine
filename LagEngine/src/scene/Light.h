@@ -8,10 +8,9 @@ namespace Lag {
 
     class Light : public SceneObject {
     public:
-        Light(uint32 name, const Color &color, bool castShadow = true);
+        Light(const Color &color, bool castShadow = true);
 
         inline const Color &getColor() const { return color; }
-
         inline bool getCastShadow() const { return castShadow; }
 
     protected:

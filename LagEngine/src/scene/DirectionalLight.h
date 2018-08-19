@@ -6,7 +6,7 @@
 namespace Lag {
     class DirectionalLight : public Light {
     public:
-        DirectionalLight(uint32 name, const glm::vec3 &direction, const Color &color, bool castShadow = true);
+        DirectionalLight(const glm::vec3 &direction, const Color &color, bool castShadow = true);
 
         inline const glm::vec3 &getDirection() const { return direction; }
 

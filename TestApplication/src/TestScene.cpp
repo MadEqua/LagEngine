@@ -53,7 +53,7 @@ void TestScene::onStart() {
     Lag::Entity *floor = createEntity("cube", "baseMaterial");
     floor->attachToSceneNode(floorNode);
 
-    createSceneAux(mainNode, 10.0f, 8, 0, 3);
+    createSceneAux(mainNode, 10.0f, 8, 0, 1);
 
     enableSky("skyMaterial");
 }

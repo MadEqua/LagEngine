@@ -31,8 +31,8 @@ void GpuProgramUniformFiller::onViewportBind(const GpuProgram *gpuProgram, const
 void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const Texture *texture, uint8 unit) {
 }
 
-void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix,
-                                                 const glm::mat3 &normalMatrix, const Viewport &viewport) {
+void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const Viewport &viewport,
+                                                 const glm::mat4 &modelMatrix, const glm::mat3 &normalMatrix) {
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MODEL_MATRIX, &modelMatrix);
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEW_MATRIX, &viewport.getCamera().getWorldToLocalTransform());
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::PROJECTION_MATRIX, &viewport.getCamera().getProjectionMatrix());

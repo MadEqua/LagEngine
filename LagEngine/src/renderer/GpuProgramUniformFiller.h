@@ -25,8 +25,9 @@ namespace Lag {
         void onViewportBind(const GpuProgram *gpuProgram, const Viewport *viewport);
         void onTextureBind(const GpuProgram *gpuProgram, const Texture *texture, uint8 unit);
 
-        void onRenderableRender(const GpuProgram &gpuProgram, const glm::mat4 &modelMatrix,
-                                const glm::mat3 &normalMatrix, const Viewport &viewport);
+        void onRenderableRender(const GpuProgram &gpuProgram, const Viewport &viewportconst,
+                                const glm::mat4 &modelMatrix = glm::mat4(1.0f),
+                                const glm::mat3 &normalMatrix = glm::mat3(1.0f));
 
     private:
         void updateLightUniforms(const GpuProgram &gpuProgram);

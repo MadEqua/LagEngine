@@ -1,8 +1,13 @@
 #include "SceneGraph.h"
 
 #include "LogManager.h"
+#include "AxisGizmo.h"
+#include "Scene.h"
 
 using namespace Lag;
+
+SceneGraph::SceneGraph(Scene &scene) : scene(scene) {
+}
 
 void SceneGraph::clear() {
     nodes.clear();
@@ -16,8 +21,15 @@ SceneNode &SceneGraph::createSceneNode(const std::string &name) {
                                       ". Replacing the already existent one.");
     }
 
-    nodes[name] = std::unique_ptr<SceneNode>(new SceneNode(*this));
-    return *nodes[name];
+    auto sn = new SceneNode(*this);
+
+#ifdef ENABLE_DEBUG_MACRO
+    auto gizmo = scene.createDebugGizmo();
+    gizmo->attachToSceneNode(*sn);
+#endif
+
+    nodes[name] = std::unique_ptr<SceneNode>(sn);
+    return *sn;
 }
 
 SceneNode *SceneGraph::getSceneNode(const std::string &name) const {

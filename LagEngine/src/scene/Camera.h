@@ -11,7 +11,7 @@ namespace Lag {
     */
     class Camera : public SceneObject {
     public:
-        Camera(uint32 name, float aspectRatio, float nearPlane, float farPlane);
+        Camera(float aspectRatio, float nearPlane, float farPlane);
 
         void setAspectRatio(float aspectRatio);
 

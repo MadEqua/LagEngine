@@ -3,8 +3,13 @@
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
     </shader>
 
-    <shader name="depthPassFragment" file="depthPass.frag" type="Fragment">
+    <shader name="depthPassFragment" file="depthPass.frag" type="Fragment"/>
+
+    <shader name="axisGizmoVertex" file="axisGizmo.vert" type="Vertex">
+        <uniform name="mvpMatrix" semantic="MvpMatrix"/>
     </shader>
+
+    <shader name="axisGizmoFragment" file="axisGizmo.frag" type="Fragment"/>
 
     <material name="depthPassMaterial" file="depthPassMaterial.xml"/>
 
@@ -12,10 +17,11 @@
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
     </shader>
 
-    <shader name="defaultFragment" file="default.frag" type="Fragment">
-    </shader>
+    <shader name="defaultFragment" file="default.frag" type="Fragment"/>
 
     <material name="defaultMaterial" file="defaultMaterial.xml"/>
+
+    <material name="axisGizmoMaterial" file="axisGizmoMaterial.xml"/>
 
     <image name="defaultImage" file="defaultImage.jpg" components="RGB"
            componentType="UINT8" normalized="true" sRGB="true"/>

@@ -2,8 +2,7 @@
 
 using namespace Lag;
 
-Light::Light(uint32 name, const Color &color, bool castShadow) :
-        SceneObject(name),
+Light::Light(const Color &color, bool castShadow) :
         color(color),
         castShadow(castShadow) {
 }

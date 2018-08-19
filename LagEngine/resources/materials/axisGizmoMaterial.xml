@@ -1,0 +1,4 @@
+<material>
+    <shader name="axisGizmoVertex"/>
+    <shader name="axisGizmoFragment"/>
+</material>

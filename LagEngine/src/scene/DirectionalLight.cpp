@@ -1,13 +1,12 @@
 #include "DirectionalLight.h"
 
-#include "OrthographicCamera.h"
 #include "SceneNode.h"
 #include "SceneManager.h"
 
 using namespace Lag;
 
-DirectionalLight::DirectionalLight(uint32 name, const glm::vec3 &direction, const Color &color, bool castShadow) :
-        Light(name, color, castShadow),
+DirectionalLight::DirectionalLight(const glm::vec3 &direction, const Color &color, bool castShadow) :
+        Light(color, castShadow),
         direction(direction) {
     /*if (castShadow)
     {

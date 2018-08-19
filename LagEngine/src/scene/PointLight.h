@@ -6,7 +6,7 @@
 namespace Lag {
     class PointLight : public Light {
     public:
-        PointLight(uint32 name, const Color &color, const glm::vec3 &attenuation, bool castShadow = true);
+        PointLight(const Color &color, const glm::vec3 &attenuation, bool castShadow = true);
 
         void setAttenuation(float constant, float linear, float quadratic);
 

@@ -24,6 +24,7 @@ namespace Lag {
     class Sky;
     class RenderTarget;
     class RenderWindow;
+    class AxisGizmo;
 
     /*
     * Set of Entities, Cameras, Lights and all that represnt an unique "state" of the application.
@@ -44,6 +45,7 @@ namespace Lag {
         void initializeViewports();
 
         Entity *createEntity(const std::string &meshName, const std::string &materialName);
+        AxisGizmo *createDebugGizmo();
 
         PerspectiveCamera &createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane);
         OrthographicCamera &createOrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane);
@@ -105,7 +107,7 @@ namespace Lag {
         bool shouldChangeScene;
         std::string sceneToChange;
 
-        //All SceneObjects organized by name. Main repository.
+        //All SceneObjects organized by name. Main repository that owns the memory.
         NamedContainer<SceneObject> sceneObjectMap;
 
         //SceneObjects organized by specific types

@@ -2,7 +2,6 @@
 
 #include <string>
 
-
 #include "IRenderable.h"
 #include "VertexData.h"
 #include "IndexData.h"
@@ -27,8 +26,5 @@ namespace Lag {
         Handle<Material> material;
         VertexData vertexData;
         IndexData indexData;
-
-        glm::mat3 nor;
-        glm::mat4 model;
     };
 }

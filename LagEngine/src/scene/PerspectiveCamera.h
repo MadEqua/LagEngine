@@ -5,7 +5,7 @@
 namespace Lag {
     class PerspectiveCamera : public Camera {
     public:
-        PerspectiveCamera(uint32 name, float aspectRatio, float fieldOfViewY, float nearPlane, float farPlane);
+        PerspectiveCamera(float aspectRatio, float fieldOfViewY, float nearPlane, float farPlane);
 
     protected:
         float fieldOfViewY;

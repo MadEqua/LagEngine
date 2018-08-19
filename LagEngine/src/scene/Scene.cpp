@@ -1,7 +1,5 @@
 #include "Scene.h"
 
-#include <algorithm>
-
 #include "Handle.h"
 #include "SceneManager.h"
 #include "LogManager.h"
@@ -18,10 +16,12 @@
 #include "OrthographicCamera.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
+#include "AxisGizmo.h"
 
 using namespace Lag;
 
 Scene::Scene() :
+        sceneGraph(*this),
         sky(nullptr),
         shouldChangeScene(false) {
 }
@@ -70,15 +70,22 @@ Entity *Scene::createEntity(const std::string &meshName, const std::string &mate
         return nullptr;
     }
 
-    Entity *e = new Entity(sceneObjectMap.getNextName(), material, mesh);
+    Entity *e = new Entity(material, mesh);
     sceneObjectMap.add(e);
     entityVector.push_back(e);
     renderableVector.push_back(e);
     return e;
 }
 
+AxisGizmo *Scene::createDebugGizmo() {
+    auto gizmo = new AxisGizmo();
+    sceneObjectMap.add(gizmo);
+    renderableVector.push_back(gizmo);
+    return gizmo;
+}
+
 PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane) {
-    auto *cam = new PerspectiveCamera(sceneObjectMap.getNextName(), aspectRatio, fovy, nearPlane, farPlane);
+    auto *cam = new PerspectiveCamera(aspectRatio, fovy, nearPlane, farPlane);
     sceneObjectMap.add(cam);
     cameraVector.push_back(cam);
     return *cam;
@@ -86,21 +93,21 @@ PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy,
 
 OrthographicCamera &Scene::createOrthographicCamera(float left, float right, float bottom, float top,
                                                     float nearPlane, float farPlane) {
-    auto *cam = new OrthographicCamera(sceneObjectMap.getNextName(), left, right, bottom, top, nearPlane, farPlane);
+    auto *cam = new OrthographicCamera(left, right, bottom, top, nearPlane, farPlane);
     sceneObjectMap.add(cam);
     cameraVector.push_back(cam);
     return *cam;
 }
 
 PointLight &Scene::createPointLight(const Color &color, const glm::vec3 &attenuation, bool castShadow) {
-    auto *pl = new PointLight(sceneObjectMap.getNextName(), color, attenuation, castShadow);
+    auto *pl = new PointLight(color, attenuation, castShadow);
     sceneObjectMap.add(pl);
     pointLightVector.push_back(pl);
     return *pl;
 }
 
 DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::vec3 &direction, bool castShadow) {
-    auto *dl = new DirectionalLight(sceneObjectMap.getNextName(), direction, color, castShadow);
+    auto *dl = new DirectionalLight(direction, color, castShadow);
     sceneObjectMap.add(dl);
     directionalLightVector.push_back(dl);
     return *dl;

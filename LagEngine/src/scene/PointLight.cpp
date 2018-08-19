@@ -2,8 +2,8 @@
 
 using namespace Lag;
 
-PointLight::PointLight(uint32 name, const Color &color, const glm::vec3 &attenuation, bool castShadow) :
-        Light(name, color, castShadow),
+PointLight::PointLight(const Color &color, const glm::vec3 &attenuation, bool castShadow) :
+        Light(color, castShadow),
         attenuation(attenuation) {
 }
 

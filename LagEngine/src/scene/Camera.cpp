@@ -2,8 +2,7 @@
 
 using namespace Lag;
 
-Camera::Camera(uint32 name, float aspectRatio, float nearPlane, float farPlane) :
-        SceneObject(name),
+Camera::Camera(float aspectRatio, float nearPlane, float farPlane) :
         projectionMatrix(1.0f),
         aspectRatio(aspectRatio),
         nearPlane(nearPlane),

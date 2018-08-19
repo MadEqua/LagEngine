@@ -8,9 +8,7 @@ glm::mat4 SceneObject::defaultMat4 = glm::mat4(1.0f);
 glm::mat3 SceneObject::defaultMat3 = glm::mat3(1.0f);
 glm::vec3 SceneObject::defaultVec = glm::vec3(1.0f);
 
-SceneObject::SceneObject(uint32 name) :
-        name(name),
-        parentSceneNode(nullptr) {
+SceneObject::SceneObject() : parentSceneNode(nullptr) {
 }
 
 const glm::vec3 &SceneObject::getWorldPosition() const {

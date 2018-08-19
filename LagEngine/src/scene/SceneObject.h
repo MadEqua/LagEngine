@@ -14,13 +14,10 @@ namespace Lag {
     */
     class SceneObject {
     public:
-        explicit SceneObject(uint32 name);
+        SceneObject();
         virtual ~SceneObject() = default;
 
-        inline uint32 getName() const { return name; }
-
         inline SceneNode *getParentSceneNode() const { return parentSceneNode; }
-
         inline bool isAttachedToSceneNode() const { return parentSceneNode != nullptr; }
 
         inline void attachToSceneNode(SceneNode &node) { parentSceneNode = &node; }
@@ -36,8 +33,6 @@ namespace Lag {
         const glm::mat3 &getNormalTransform() const;
 
     protected:
-        uint32 name;
-
         SceneNode *parentSceneNode;
 
         static glm::mat4 defaultMat4;
