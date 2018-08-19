@@ -1,9 +1,7 @@
 #include "FreeCamera.h"
 
 #include "Renderer.h"
-#include "Keys.h"
 #include "Scene.h"
-#include "SceneNode.h"
 #include "InputManager.h"
 #include "RenderWindow.h"
 
@@ -18,12 +16,10 @@ FreeCamera::FreeCamera(Scene &scene, float fovy, float nearPlane, float farPlane
     Root &root = Root::getInstance();
 
     SceneNode &rootNode = scene.getSceneGraph().getRootSceneNode();
-    cameraYawNode = &rootNode.createChildSceneNode("cameraYawNode");
-    cameraPitchNode = &cameraYawNode->createChildSceneNode("cameraPitchNode");
-    cameraTranslationNode = &cameraPitchNode->createChildSceneNode("cameraTranslationNode");
+    sceneNode = &rootNode.createChildSceneNode("cameraSceneNode");
 
     camera = &scene.createPerspectiveCamera(1.0f, fovy, nearPlane, farPlane);
-    camera->attachToSceneNode(*cameraTranslationNode);
+    camera->attachToSceneNode(*sceneNode);
 
     root.getRenderer().registerObserver(*this);
     root.getInputManager().registerObserver(static_cast<Lag::IKeyboardListener &>(*this));
@@ -88,12 +84,12 @@ void FreeCamera::onCursorMove(int x, int y) {
 
     if (lastCursor[0] != -1) {
         dx = lastCursor[0] - x;
-        cameraYawNode->yaw(static_cast<float>(dx) * 0.1f, TransformSpace::LOCAL);
+        sceneNode->yaw(static_cast<float>(dx) * 0.1f, TransformSpace::WORLD);
     }
 
     if (lastCursor[1] != -1) {
         dy = lastCursor[1] - y;
-        cameraPitchNode->pitch(static_cast<float>(dy) * 0.1f, TransformSpace::LOCAL);
+        sceneNode->pitch(static_cast<float>(dy) * 0.1f, TransformSpace::LOCAL);
     }
 
     lastCursor[0] = x;
@@ -108,14 +104,14 @@ void FreeCamera::onButtonReleased(int x, int y, int button, int modifiers) {
 
 void FreeCamera::onFrameStart(float timePassed) {
     if (keyVector[0])
-        cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed), TransformSpace::PARENT);
+        sceneNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed), TransformSpace::LOCAL);
     else if (keyVector[2])
-        cameraTranslationNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed * timePassed), TransformSpace::PARENT);
+        sceneNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed * timePassed), TransformSpace::LOCAL);
 
     if (keyVector[1])
-        cameraTranslationNode->translate(glm::vec3(-moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::PARENT);
+        sceneNode->translate(glm::vec3(-moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::LOCAL);
     else if (keyVector[3])
-        cameraTranslationNode->translate(glm::vec3(moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::PARENT);
+        sceneNode->translate(glm::vec3(moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::LOCAL);
 }
 
 void FreeCamera::onFrameRenderingQueued(float timePassed) {

@@ -19,7 +19,9 @@ namespace Lag {
     class SceneGraph;
 
     enum class TransformSpace : uint8 {
-        LOCAL, PARENT, WORLD
+        LOCAL, //Node Space
+        PARENT,
+        WORLD
     };
 
     /*
@@ -37,20 +39,20 @@ namespace Lag {
         void removeChildSceneNode(const std::string &name);
         void removeChildSceneNode(SceneNode &node);
 
-        inline bool hasParent() const { return parent != nullptr; }
+        inline bool isAttached() const { return parent != nullptr; }
         inline SceneNode *getParentSceneNode() const { return parent; }
 
         //Transforms
-        void yaw(float angle, TransformSpace space);
-        void pitch(float angle, TransformSpace space);
-        void roll(float angle, TransformSpace space);
+        void yaw(float angle, TransformSpace relativeTo = TransformSpace::PARENT);
+        void pitch(float angle, TransformSpace relativeTo = TransformSpace::PARENT);
+        void roll(float angle, TransformSpace relativeTo = TransformSpace::PARENT);
 
-        void rotate(float angle, const glm::vec3 &axis, TransformSpace space);
-        void rotate(const glm::quat &quaternion, TransformSpace space);
+        void rotate(float angle, const glm::vec3 &axis, TransformSpace relativeTo = TransformSpace::PARENT);
+        void rotate(const glm::quat &quaternion, TransformSpace relativeTo = TransformSpace::PARENT);
 
         void scale(const glm::vec3 &scale);
 
-        void translate(const glm::vec3 &trans, TransformSpace space);
+        void translate(const glm::vec3 &trans, TransformSpace relativeTo = TransformSpace::PARENT);
 
         void setOrientation(const glm::quat &quaternion);
         void setOrientation(float w, float x, float y, float z);

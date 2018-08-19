@@ -3,19 +3,34 @@
 #include "Root.h"
 #include "RenderWindow.h"
 #include "Renderer.h"
+#include "PerspectiveCamera.h"
 #include "FreeCamera.h"
-#include "SceneNode.h"
 #include "Entity.h"
 
 void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
 
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
-    root.getRenderer().setClearColor(Lag::Color(0.0f));
+    root.getRenderer().setClearColor(Lag::Color(0.1f));
 
-    Lag::SceneNode &mainNode = getSceneGraph().getRootSceneNode().createChildSceneNode("mainNode");
+    Lag::SceneNode &rootNode = getSceneGraph().getRootSceneNode();
 
-    Lag::SceneNode &bunnyNode = mainNode.createChildSceneNode("bunnyNode");
+    Lag::SceneNode &boardNode = rootNode.createChildSceneNode("board");
+    Lag::SceneNode &boardBaseNode = boardNode.createChildSceneNode("boardBase");
+    Lag::SceneNode &boardLeftNode = rootNode.createChildSceneNode("boardLeft");
+    Lag::SceneNode &boardRightNode = boardNode.createChildSceneNode("boardRight");
+    Lag::SceneNode &boardTopNode = boardNode.createChildSceneNode("boardTop");
+    Lag::SceneNode &boardBottomNode = boardNode.createChildSceneNode("boardBottom");
+
+
+    boardBaseNode.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
+    boardBaseNode.setScale(glm::vec3(10.0f, 1.0f, 20.0f));
+
+    Lag::Entity *baseCube = createEntity("cube", "pointMaterial");
+    baseCube->attachToSceneNode(boardBaseNode);
+
+
+    /*Lag::SceneNode &bunnyNode = mainNode.createChildSceneNode("bunnyNode");
     bunnyNode.setScale(glm::vec3(20.0f));
     Lag::Entity *bunny = createEntity("bunny", "pointMaterial");
     bunny->attachToSceneNode(bunnyNode);
@@ -23,7 +38,7 @@ void TestScene2::onStart() {
     Lag::SceneNode &treeNode = mainNode.createChildSceneNode("treeNode");
     treeNode.setPosition(glm::vec3(5.0f, 0.0f, 0.0f));
     Lag::Entity *tree = createEntity("tree1", "pointMaterial");
-    tree->attachToSceneNode(treeNode);
+    tree->attachToSceneNode(treeNode);*/
 
     //Lag::Entity *sponza = createEntity("sponza", "baseMaterial");
     //sponza->attachToSceneNode(mainNode);

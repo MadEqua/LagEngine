@@ -7,7 +7,7 @@
 
 namespace Lag {
     /*
-    * Container for SceneNode spatial data. Orientation, Postition and Scale.
+    * Container for SceneNode spatial data. Orientation, Position and Scale.
     */
     class Transform {
     private:

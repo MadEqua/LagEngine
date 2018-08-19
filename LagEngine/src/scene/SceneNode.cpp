@@ -2,6 +2,7 @@
 
 #include "SceneGraph.h"
 #include "SceneObject.h"
+#include "LogManager.h"
 
 using namespace Lag;
 
@@ -25,7 +26,7 @@ void SceneNode::addChildSceneNode(const std::string &name) {
 }
 
 void SceneNode::addChildSceneNode(SceneNode &node) {
-    if (node.hasParent())
+    if (node.isAttached())
         node.parent->removeChildSceneNode(node);
     node.parent = this;
     children.push_front(&node);
@@ -60,69 +61,77 @@ void SceneNode::detachSceneObject(SceneObject &sceneObject)
 //Transforms
 /////////////////////////////////
 
-void SceneNode::yaw(float angle, TransformSpace space) {
-    rotate(angle, glm::vec3(0, 1, 0), space);
+void SceneNode::yaw(float angle, TransformSpace relativeTo) {
+    rotate(angle, glm::vec3(0, 1, 0), relativeTo);
 }
 
-void SceneNode::pitch(float angle, TransformSpace space) {
-    rotate(angle, glm::vec3(1, 0, 0), space);
+void SceneNode::pitch(float angle, TransformSpace relativeTo) {
+    rotate(angle, glm::vec3(1, 0, 0), relativeTo);
 }
 
-void SceneNode::roll(float angle, TransformSpace space) {
-    rotate(angle, glm::vec3(0, 0, 1), space);
+void SceneNode::roll(float angle, TransformSpace relativeTo) {
+    rotate(angle, glm::vec3(0, 0, 1), relativeTo);
 }
 
-void SceneNode::rotate(float angle, const glm::vec3 &axis, TransformSpace space) {
+void SceneNode::rotate(float angle, const glm::vec3 &axis, TransformSpace relativeTo) {
     glm::quat q = glm::angleAxis(glm::radians(angle), axis);
-    rotate(q, space);
+    rotate(q, relativeTo);
 }
 
-void SceneNode::rotate(const glm::quat &quaternion, TransformSpace space) {
-    //avoid drift
-    glm::quat normQuat = glm::normalize(quaternion);
+void SceneNode::rotate(const glm::quat &quaternion, TransformSpace relativeTo) {
+    if(isAttached()) {
+        //avoid drift
+        glm::quat normQuat = glm::normalize(quaternion);
 
-    switch (space) {
-        case TransformSpace::PARENT:
-            transform.orientation = normQuat * transform.orientation;
-            break;
-        case TransformSpace::WORLD:
-            transform.orientation = transform.orientation *
-                                    glm::inverse(transform.inheritedOrientation) *
-                                    normQuat * transform.inheritedOrientation;
-            break;
-        case TransformSpace::LOCAL:
-            transform.orientation = transform.orientation * normQuat;
-            break;
+        switch (relativeTo) {
+            case TransformSpace::LOCAL:
+                transform.orientation = transform.orientation * normQuat;
+                break;
+            case TransformSpace::WORLD:
+                transform.orientation = glm::inverse(transform.inheritedOrientation) *
+                                        normQuat * transform.inheritedOrientation *
+                                        transform.orientation;
+                break;
+            case TransformSpace::PARENT:
+                transform.orientation = normQuat * transform.orientation;
+                break;
+        }
+
+        localChangeOccured();
     }
-
-    localChangeOccured();
+    else {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "SceneNode", "Trying to rotate a non-attached node. Ignoring.");
+    }
 }
 
 void SceneNode::scale(const glm::vec3 &scale) {
-    transform.scale *= scale;
-    localChangeOccured();
+    if (isAttached()) {
+        transform.scale *= scale;
+        localChangeOccured();
+    }
+    else {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "SceneNode", "Trying to scale a non-attached node. Ignoring.");
+    }
 }
 
-void SceneNode::translate(const glm::vec3 &trans, TransformSpace space) {
-    switch (space) {
-        case TransformSpace::LOCAL:
-            transform.position += transform.orientation * trans;
-            break;
-        case TransformSpace::WORLD:
-            if (parent != nullptr) {
-                transform.position += (glm::inverse(parent->transform.inheritedOrientation) * trans)
-                                      / parent->transform.inheritedScale;
-            }
-            else {
+void SceneNode::translate(const glm::vec3 &trans, TransformSpace relativeTo) {
+    if(isAttached()) {
+        switch (relativeTo) {
+            case TransformSpace::LOCAL:
+                transform.position += transform.orientation * trans;
+                break;
+            case TransformSpace::WORLD:
+                transform.position += glm::inverse(parent->transform.inheritedOrientation) * trans;
+                break;
+            case TransformSpace::PARENT:
                 transform.position += trans;
-            }
-            break;
-        case TransformSpace::PARENT:
-            //Are this semantics OK? Or only: transform.position += trans;?
-            transform.position += transform.inheritedOrientation * trans;
-            break;
+                break;
+        }
+        localChangeOccured();
     }
-    localChangeOccured();
+    else {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "SceneNode", "Trying to scale a non-attached node. Ignoring.");
+    }
 }
 
 void SceneNode::setOrientation(const glm::quat &quaternion) {
@@ -184,8 +193,7 @@ void SceneNode::updateInheritedData() {
 const glm::mat4 &SceneNode::getLocalToWorldTransform() {
     if (transform.localToWorldTransformDirty) {
         transform.localToWorldTransform = glm::mat4(1.0f);
-        transform.localToWorldTransform = glm::translate(transform.localToWorldTransform,
-                                                  transform.position + transform.inheritedPosition);
+        transform.localToWorldTransform = glm::translate(transform.localToWorldTransform, transform.position + transform.inheritedPosition);
 
         glm::mat4 rot(1.0f);
         if (inheritOrientation)

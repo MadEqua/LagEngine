@@ -1,13 +1,17 @@
 #pragma once
 
 #include "PerspectiveCamera.h"
+
 #include "IKeyboardListener.h"
 #include "ICursorListener.h"
 #include "IFrameListener.h"
 
+
 namespace Lag {
     class Scene;
     class RenderWindow;
+    class PerspectiveCamera;
+    class SceneNode;
 
     /*
     * Utility class for a classic free movement camera using WASD and mouse.
@@ -18,7 +22,7 @@ namespace Lag {
         FreeCamera(Scene &scene, float fovy, float nearPlane, float farPlane, float moveSpeed);
         ~FreeCamera() override;
 
-        inline Camera &getCamera() const { return *camera; }
+        inline Camera& getCamera() const { return *camera; }
 
         void onKeyPress(int key, int modifier) override;
         void onKeyRelease(int key, int modifier) override;
@@ -38,9 +42,7 @@ namespace Lag {
         int lastCursor[2]; //xy
 
         PerspectiveCamera *camera;
-        SceneNode *cameraYawNode;
-        SceneNode *cameraPitchNode;
-        SceneNode *cameraTranslationNode;
+        SceneNode *sceneNode;
 
         bool lastFrameVirtualCursor;
         RenderWindow *renderWindow;

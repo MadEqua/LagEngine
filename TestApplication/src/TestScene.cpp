@@ -4,12 +4,9 @@
 #include "RenderTargetManager.h"
 #include "RenderWindow.h"
 #include "FreeCamera.h"
-#include "OrthographicCamera.h"
-#include "SceneNode.h"
 #include "Entity.h"
 #include "PointLight.h"
-#include "DirectionalLIght.h"
-#include "Keys.h"
+#include "DirectionalLight.h"
 
 TestScene::TestScene(bool isScene1) :
         isScene1(isScene1),
@@ -83,7 +80,7 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
 
         periferyNode.scale(glm::vec3(0.5f));
 
-        periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::PARENT);
+        periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::WORLD);
         periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::TransformSpace::LOCAL);
 
         Lag::Entity *periferyEnt = createEntity("piano", "pianoMaterial");
