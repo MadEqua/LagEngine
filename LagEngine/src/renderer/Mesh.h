@@ -1,14 +1,20 @@
 #pragma once
 
 #include "XmlResource.h"
+#include "SubMesh.h"
+#include "Types.h"
+
+#include <memory>
 #include <vector>
 #include <string>
 
 namespace Lag {
     class SubMesh;
+    class VertexDescription;
+    class MemoryBuffer;
 
     /*
-    * Class that loads a mesh file using the Assimp library.
+    * Can be loaded using the Assimp library or manually created.
     * It depends on the SubMesh class which contains all the actual data. A mesh has at least one SubMesh.
     * Usually associated with any number of Entities.
     *
@@ -16,16 +22,31 @@ namespace Lag {
     */
     class Mesh : public XmlResource {
     public:
-        inline const std::vector<SubMesh *> &getSubMeshes() const { return subMeshes; }
+        inline const std::vector<std::unique_ptr<SubMesh>> &getSubMeshes() const { return subMeshes; }
+
+        /*
+         * Use lock to edit the vertices and indices. Unlock to finalize.
+         * Lock will reset all the current submeshes.
+         */
+        void lock();
+        void unlock();
+        void setVertices(const MemoryBuffer &vertices, uint32 vertexCount, const VertexDescription &vertexDescription);
+        template <typename T> void setIndices(const std::vector<T> &indices);
 
     private:
         friend class MeshBuilder;
 
+        Mesh();
         explicit Mesh(const std::string &file);
 
         bool loadImplementation() override;
         void unloadImplementation() override;
 
-        std::vector<SubMesh *> subMeshes;
+        void setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription, uint32 subMeshIndex);
+        void setIndices(const byte *indices, uint32 indexCount, uint32 subMeshIndex);
+
+        std::vector<std::unique_ptr<SubMesh>> subMeshes;
+
+        bool isLocked;
     };
 }

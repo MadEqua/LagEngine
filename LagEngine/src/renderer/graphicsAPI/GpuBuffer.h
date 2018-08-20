@@ -37,7 +37,7 @@ namespace Lag {
         byte *map() override;
         void unmap() override;
 
-        void write(uint32 offset, uint32 length, byte *src) override;
+        void write(uint32 offset, uint32 length, const byte *src) override;
         void read(uint32 offset, uint32 length, byte *dst) override;
 
         bool checkForFlag(GpuBufferUsage flagToCheck);

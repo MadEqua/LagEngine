@@ -12,6 +12,8 @@ namespace Lag {
         explicit MemoryBuffer(uint32 sizeBytes);
         ~MemoryBuffer() override;
 
+        const byte *getData() const;
+
     protected:
         void lockImplementation(uint32 offset, uint32 length) override;
         void unlockImplementation() override;
@@ -19,7 +21,7 @@ namespace Lag {
         byte *mapImplementation() override;
         void unmapImplementation() override;
 
-        void writeImplementation(uint32 offset, uint32 length, byte *src) override;
+        void writeImplementation(uint32 offset, uint32 length, const byte *src) override;
         void readImplementation(uint32 offset, uint32 length, byte *dst) override;
 
         byte *data;

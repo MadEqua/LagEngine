@@ -20,7 +20,7 @@ namespace Lag {
         virtual byte *map();
         virtual void unmap();
 
-        virtual void write(uint32 offset, uint32 length, byte *src);
+        virtual void write(uint32 offset, uint32 length, const byte *src);
         virtual void read(uint32 offset, uint32 length, byte *dst);
 
         inline uint32 getSize() const { return sizeBytes; }
@@ -32,7 +32,7 @@ namespace Lag {
         virtual byte *mapImplementation() = 0;
         virtual void unmapImplementation() = 0;
 
-        virtual void writeImplementation(uint32 offset, uint32 length, byte *src) = 0;
+        virtual void writeImplementation(uint32 offset, uint32 length, const byte *src) = 0;
         virtual void readImplementation(uint32 offset, uint32 length, byte *dst) = 0;
 
         bool isMapped;

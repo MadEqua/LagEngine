@@ -11,7 +11,7 @@ namespace Lag {
         GpuBufferBuilder();
 
         GpuBufferContents contents;
-        int32 itemCount;
+        uint32 itemCount;
         uint32 itemSizeBytes, flags;
         bool useMirrorBuffer;
     };

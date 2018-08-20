@@ -27,7 +27,7 @@ void GL4_5InputDescription::setupVertexAttributtes() const {
             //This allows more VAO reutilization, because there is no need for different
             //VAOs when different offsets should be used. (eg: Submeshes of a Mesh sharing the same VBO)
                               0,
-                              vertexDescription.getByteSize());
+                              vertexDescription.getVertexByteSize());
 
     for (uint32 i = 0; i < vertexDescription.getAttributeCount(); ++i) {
         const VertexAttribute &vxAttr = vertexDescription.getAttribute(i);

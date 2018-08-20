@@ -16,8 +16,7 @@ namespace Lag {
     * Collects together all the index-related information used to render geometry.
     * Allows the same IndexBuffer to contain many different objects data (and/or formats) at different points.
     */
-    class IndexData {
-    public:
+    struct IndexData {
         //How to interpret the indices
         IndexType indexType;
 

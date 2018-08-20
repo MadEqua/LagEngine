@@ -76,7 +76,7 @@ void GpuBuffer::unmap() {
         this->Buffer::unmap();
 }
 
-void GpuBuffer::write(uint32 offset, uint32 length, byte *src) {
+void GpuBuffer::write(uint32 offset, uint32 length, const byte *src) {
     if (useMirror)
         mirrorBuffer->write(offset, length, src);
     else

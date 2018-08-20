@@ -3,8 +3,8 @@
 #include "Types.h"
 
 namespace Lag {
-    class VertexData;
-    class IndexData;
+    struct VertexData;
+    struct IndexData;
     class Material;
     class IRenderable;
     class Viewport;

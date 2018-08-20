@@ -76,7 +76,10 @@ namespace Lag {
         const VertexAttribute *getAttribute(VertexAttributeSemantic semantic, uint8 index = 0) const;
 
         //The size of a full vertex
-        uint32 getByteSize() const;
+        uint32 getVertexByteSize() const;
+
+        //The sum of  the lengths of all attributes
+        uint32 getVertexLength() const;
 
         void addAttribute(VertexAttributeSemantic semantic, uint8 length, VertexAttributeType type, uint8 index = 0,
                           bool isNormalized = false);

@@ -53,7 +53,7 @@ Sky::Sky(const std::string &materialName) {
     bufferBuilder.contents = GpuBufferContents::VERTICES;
     bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
     bufferBuilder.itemCount = VERTEX_COUNT;
-    bufferBuilder.itemSizeBytes = vxDesc.getByteSize();
+    bufferBuilder.itemSizeBytes = vxDesc.getVertexByteSize();
     bufferBuilder.useMirrorBuffer = false;
     Handle<GpuBuffer> vertexBuffer = gpuBufferManager.get();
 

@@ -9,8 +9,8 @@ using namespace Lag;
 Entity::Entity(Handle<Material> defaultMaterial, Handle<Mesh> mesh) :
         defaultMaterial(defaultMaterial),
         mesh(mesh) {
-    for (SubMesh *sm : mesh->getSubMeshes()) {
-        auto *se = new SubEntity(*this, *defaultMaterial, *sm);
+    for (auto &subMeshPtr : mesh->getSubMeshes()) {
+        auto *se = new SubEntity(*this, *defaultMaterial, *subMeshPtr);
         subEntities.push_back(se);
     }
 }

@@ -38,8 +38,7 @@ namespace Lag {
 
         //Convenience methods for the most common operations
         Handle<RenderTarget> getRenderWindow(const InitializationParameters &parameters);
-        RenderWindow *
-        getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
+        RenderWindow *getRenderWindow(); //This is meant to return the *only* RenderWindow. For creating use the overload with arguments.
 
         Handle<RenderTarget> getRenderToTexture(uint32 width, uint32 height, RenderPhase renderPhase);
 

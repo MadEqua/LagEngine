@@ -1,7 +1,5 @@
 #include "VertexDescription.h"
 
-#include <algorithm>
-
 using namespace Lag;
 
 VertexAttribute::VertexAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length,
@@ -87,11 +85,18 @@ const VertexAttribute *VertexDescription::getAttribute(VertexAttributeSemantic s
     return nullptr;
 }
 
-uint32 VertexDescription::getByteSize() const {
+uint32 VertexDescription::getVertexByteSize() const {
     uint32 size = 0;
     for (const VertexAttribute &attr : attributes)
         size += attr.getByteSize();
     return size;
+}
+
+uint32 VertexDescription::getVertexLength() const {
+    uint32 length = 0;
+    for (const VertexAttribute &attr : attributes)
+        length += attr.getLength();
+    return length;
 }
 
 bool VertexDescription::operator==(const VertexDescription &other) const {

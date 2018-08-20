@@ -10,8 +10,7 @@ namespace Lag {
     * Collects together the vertex-related information used to render geometry.
     * Allows the same VertexBuffer to contain many different objects data (and/or formats) at different points.
     */
-    class VertexData {
-    public:
+    struct VertexData {
         //InputDescription object that describes the vertex data. (Format and source)
         //Used to feed the pipeline entry-point.
         //May (and should) be reutilized between many VertexDatas

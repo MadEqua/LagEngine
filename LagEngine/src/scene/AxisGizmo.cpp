@@ -31,7 +31,7 @@ AxisGizmo::AxisGizmo() {
     bufferBuilder.contents = GpuBufferContents::VERTICES;
     bufferBuilder.flags = static_cast<uint32>(GpuBufferUsage::DYNAMIC);
     bufferBuilder.itemCount = VERTEX_COUNT;
-    bufferBuilder.itemSizeBytes = vxDesc.getByteSize();
+    bufferBuilder.itemSizeBytes = vxDesc.getVertexByteSize();
     bufferBuilder.useMirrorBuffer = false;
     Handle<GpuBuffer> vertexBuffer = gpuBufferManager.get();
 
@@ -43,7 +43,7 @@ AxisGizmo::AxisGizmo() {
     Handle<GpuBuffer> indexBuffer = gpuBufferManager.get();
 
     float vertices[] = {
-            0.0f, 0.0f, 0.0f, //pos
+            0.0f, 0.0f, 0.0f,
             1.0f, 0.0f, 0.0f,
             0.0f, 1.0f, 0.0f,
             0.0f, 0.0f, 1.0f

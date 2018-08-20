@@ -1,21 +1,21 @@
 #include "SubMesh.h"
 
-#include "VertexData.h"
-#include "IndexData.h"
-
 using namespace Lag;
 
 SubMesh::SubMesh(VertexData &vxData, IndexData &idxData) :
-        vertexData(vxData), indexData(&idxData) {
+        vertexData(&vxData), indexData(&idxData) {
 }
 
 SubMesh::SubMesh(VertexData &vxData) :
-        vertexData(vxData), indexData(nullptr) {
+        vertexData(&vxData) {
 }
 
-SubMesh::~SubMesh() {
-    delete &vertexData;
+const VertexData *SubMesh::getVertexData() const {
+    if(vertexData) return vertexData.get();
+    else return nullptr;
+}
 
-    if (indexData != nullptr)
-        delete indexData;
+const IndexData *SubMesh::getIndexData() const {
+    if(indexData) return indexData.get();
+    else return nullptr;
 }

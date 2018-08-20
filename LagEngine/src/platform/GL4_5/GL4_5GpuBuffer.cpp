@@ -31,9 +31,9 @@ void GL4_5GpuBuffer::unmapImplementation() {
     glUnmapNamedBuffer(handle);
 }
 
-void GL4_5GpuBuffer::writeImplementation(uint32 offset, uint32 length, byte *src) {
+void GL4_5GpuBuffer::writeImplementation(uint32 offset, uint32 length, const byte *src) {
     uint32 realOffset = offsetLocked + offset;
-    glNamedBufferSubData(handle, realOffset, length, static_cast<GLvoid *>(src));
+    glNamedBufferSubData(handle, realOffset, length, static_cast<const GLvoid *>(src));
 }
 
 void GL4_5GpuBuffer::readImplementation(uint32 offset, uint32 length, byte *dst) {

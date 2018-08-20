@@ -1,30 +1,29 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+
+#include "VertexData.h"
+#include "IndexData.h"
 
 namespace Lag {
-    class VertexData;
-    class IndexData;
-    class Texture;
-
     /*
     * A SubMesh contains all the geometry related data needed for rendering (encapsulated on VertexData and IndexData).
     * It belongs to a parent Mesh, and should be initialized by it.
     */
     class SubMesh {
     public:
-        inline const VertexData &getVertexData() const { return vertexData; }
-        inline const IndexData &getIndexData() const { return *indexData; }
+        const VertexData* getVertexData() const;
+        const IndexData* getIndexData() const;
 
     private:
         friend class Mesh;
 
+        SubMesh() = default;
         SubMesh(VertexData &vxData, IndexData &idxData);
         explicit SubMesh(VertexData &vxData);
-        ~SubMesh();
 
-        VertexData &vertexData;
-        IndexData *indexData; //optional
-        //std::vector<Texture*> textures;
+        std::unique_ptr<VertexData> vertexData;
+        std::unique_ptr<IndexData> indexData; //optional
     };
 }

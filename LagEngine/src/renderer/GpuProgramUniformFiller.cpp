@@ -3,6 +3,7 @@
 #include "Root.h"
 #include "SceneManager.h"
 #include "PointLight.h"
+#include "DirectionalLight.h"
 #include "Camera.h"
 
 #include "Renderer.h"

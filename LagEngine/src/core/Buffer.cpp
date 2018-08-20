@@ -80,7 +80,7 @@ void Buffer::unmap() {
     unmapImplementation();
 }
 
-void Buffer::write(uint32 offset, uint32 length, byte *src) {
+void Buffer::write(uint32 offset, uint32 length, const byte *src) {
     if (!isLocked) {
         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
                                       "Buffer", "Trying to write into a non-locked buffer.");

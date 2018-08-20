@@ -1,6 +1,7 @@
 #include "MemoryBuffer.h"
 
 #include <iostream>
+#include "LogManager.h"
 
 using namespace Lag;
 
@@ -31,12 +32,21 @@ byte *Lag::MemoryBuffer::mapImplementation() {
 void Lag::MemoryBuffer::unmapImplementation() {
 }
 
-void MemoryBuffer::writeImplementation(uint32 offset, uint32 length, byte *src) {
+void MemoryBuffer::writeImplementation(uint32 offset, uint32 length, const byte *src) {
     memcpy(data + offsetLocked + offset, src, length);
 }
 
 void MemoryBuffer::readImplementation(uint32 offset, uint32 length, byte *dst) {
     memcpy(dst, data + offsetLocked + offset, length);
+}
+
+const byte *MemoryBuffer::getData() const {
+    if(isLocked) {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "MemoryBuffer", "Trying to access data of a locked Buffer.");
+        return nullptr;
+    }
+    else
+        return data;
 }
 
 
