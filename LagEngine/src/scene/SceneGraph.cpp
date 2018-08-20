@@ -24,7 +24,7 @@ SceneNode &SceneGraph::createSceneNode(const std::string &name) {
     auto sn = new SceneNode(*this);
 
 #ifdef ENABLE_DEBUG_MACRO
-    auto gizmo = scene.createDebugGizmo();
+    auto gizmo = scene.createAxisGizmo();
     gizmo->attachToSceneNode(*sn);
 #endif
 

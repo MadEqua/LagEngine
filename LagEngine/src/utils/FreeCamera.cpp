@@ -4,6 +4,7 @@
 #include "Scene.h"
 #include "InputManager.h"
 #include "RenderWindow.h"
+#include "Keys.h"
 
 using namespace Lag;
 

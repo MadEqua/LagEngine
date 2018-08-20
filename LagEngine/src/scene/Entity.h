@@ -1,14 +1,16 @@
 #pragma once
 
 #include <vector>
+#include <memory>
+#include <string>
 
 #include "Types.h"
 #include "SceneObject.h"
 #include "IRenderable.h"
 #include "Handle.h"
+#include "SubEntity.h"
 
 namespace Lag {
-    class SubEntity;
     class Material;
     class Mesh;
 
@@ -23,18 +25,22 @@ namespace Lag {
     */
     class Entity : public SceneObject, public IRenderable {
     public:
-
-        //defaultMaterial will be used if the meshes contain no material information
-        Entity(Handle<Material> defaultMaterial, Handle<Mesh> mesh);
-        ~Entity() override;
+        Entity(const std::string &meshName, const std::string &materialName);
+        Entity();
 
         void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
         void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
-    private:
-        std::vector<SubEntity *> subEntities;
+        void setMaterial(const std::string &materialName);
+        void setMaterial(Handle<Material> material);
+        void setMesh(const std::string &meshName);
+        void setMesh(Handle<Mesh> mesh);
 
-        Handle<Material> defaultMaterial;
+    protected:
+        std::vector<std::unique_ptr<SubEntity>> subEntities;
+
+    private:
+        Handle<Material> material;
         Handle<Mesh> mesh;
     };
 }

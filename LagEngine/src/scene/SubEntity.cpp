@@ -12,20 +12,33 @@
 using namespace Lag;
 
 SubEntity::SubEntity(Entity &parent, Material &material, SubMesh &subMesh) :
-        material(material),
-        subMesh(subMesh),
+        material(&material),
+        subMesh(&subMesh),
         parent(parent) {
+}
+
+SubEntity::SubEntity(Entity &parent) :
+        material(nullptr),
+        subMesh(nullptr),
+        parent(parent) {
+}
+
+void SubEntity::setMaterial(Material &material) {
+    this->material = &material;
+}
+
+void SubEntity::setSubMesh(SubMesh &subMesh) {
+    this->subMesh = &subMesh;
 }
 
 void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) {
     RenderOperation &ro = renderQueue.addRenderOperation();
     ro.renderTarget = &renderTarget;
-    ro.vertexData = const_cast<VertexData *>(subMesh.getVertexData());
-    ro.indexData = const_cast<IndexData *>(subMesh.getIndexData());
+    ro.vertexData = const_cast<VertexData *>(subMesh->getVertexData());
+    ro.indexData = const_cast<IndexData *>(subMesh->getIndexData());
     ro.renderable = this;
     ro.viewport = &viewport;
     ro.passId = 0;
-
 
     if (renderTarget.getRenderPhase() == RenderPhase::DEPTH) {
         //TODO get this out of here
@@ -34,7 +47,7 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
         ro.material = depthPassMaterial;
     }
     else {
-        ro.material = &material;
+        ro.material = material;
     }
 }
 
@@ -50,5 +63,5 @@ void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation) {
     }
     else {
         renderer.renderIndexed(renderMode, *renderOperation.vertexData, *renderOperation.indexData);
-}
+    }
 }

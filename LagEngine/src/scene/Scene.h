@@ -45,7 +45,7 @@ namespace Lag {
         void initializeViewports();
 
         Entity *createEntity(const std::string &meshName, const std::string &materialName);
-        AxisGizmo *createDebugGizmo();
+        Entity *createAxisGizmo();
 
         PerspectiveCamera &createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane);
         OrthographicCamera &createOrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane);

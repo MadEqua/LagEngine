@@ -103,6 +103,9 @@ namespace Lag {
 
     template<class V>
     Handle<V> &Handle<V>::operator=(const Handle<V> &other) {
+        if (controlBlock != nullptr)
+            controlBlock->decrementRefCount();
+
         controlBlock = other.controlBlock;
         if (controlBlock != nullptr)
             controlBlock->incrementRefCount();

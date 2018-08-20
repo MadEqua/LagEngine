@@ -6,8 +6,14 @@
 #include "InputDescriptionManager.h"
 #include "MemoryBuffer.h"
 
+#include "IndexData.h"
+#include "VertexData.h"
+
+#include "SubMesh.h"
+
 #include "assimp/scene.h"
 #include "assimp/Importer.hpp"
+#include "assimp/postprocess.h"
 
 using namespace Lag;
 
@@ -169,6 +175,16 @@ void Mesh::setVertices(const MemoryBuffer &vertices, uint32 vertexCount, const V
     }
 }
 
+void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription) {
+    if (isLocked) {
+        setVertices(vertices, vertexCount, vertexDescription, 0);
+    }
+    else {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
+                                      "Trying to set vertices while not locked.");
+    }
+}
+
 template<typename T>
 void Mesh::setIndices(const std::vector<T> &indices) {
     if (isLocked) {
@@ -179,6 +195,17 @@ void Mesh::setIndices(const std::vector<T> &indices) {
                                       "Trying to set indices while not locked.");
     }
 }
+
+void Mesh::setIndices(const byte *indices, uint32 indexCount) {
+    if (isLocked) {
+        setIndices(indices, indexCount, 0);
+    }
+    else {
+        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
+                                      "Trying to set indices while not locked.");
+    }
+}
+
 
 void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription, uint32 subMeshIndex) {
     GpuBufferManager &bufferManager = Root::getInstance().getGpuBufferManager();

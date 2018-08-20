@@ -1,14 +1,12 @@
 #include "Scene.h"
 
+#include <algorithm>
+
 #include "Handle.h"
 #include "SceneManager.h"
 #include "LogManager.h"
 #include "Sky.h"
 #include "Root.h"
-#include "Mesh.h"
-#include "Material.h"
-#include "MeshManager.h"
-#include "MaterialManager.h"
 #include "RenderTargetManager.h"
 #include "RenderWindow.h"
 #include "Entity.h"
@@ -57,29 +55,17 @@ void Scene::end() {
 }
 
 Entity *Scene::createEntity(const std::string &meshName, const std::string &materialName) {
-    Root &root = Root::getInstance();
-
-    Handle<Mesh> mesh = root.getMeshManager().get(meshName);
-    Handle<Material> material = root.getMaterialManager().get(materialName);
-
-    if (!mesh.isValid() || !material.isValid()) {
-        LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
-                                      "Scene",
-                                      "Trying to build an Entity with invalid Mesh or Material: " + meshName + ", " +
-                                      materialName);
-        return nullptr;
-    }
-
-    Entity *e = new Entity(material, mesh);
+    auto e = new Entity(meshName, materialName);
     sceneObjectMap.add(e);
     entityVector.push_back(e);
     renderableVector.push_back(e);
     return e;
 }
 
-AxisGizmo *Scene::createDebugGizmo() {
+Entity *Scene::createAxisGizmo() {
     auto gizmo = new AxisGizmo();
     sceneObjectMap.add(gizmo);
+    entityVector.push_back(gizmo);
     renderableVector.push_back(gizmo);
     return gizmo;
 }

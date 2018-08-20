@@ -1,5 +1,7 @@
 #include "SceneNode.h"
 
+#include "glm/gtc/matrix_transform.hpp"
+
 #include "SceneGraph.h"
 #include "SceneObject.h"
 #include "LogManager.h"

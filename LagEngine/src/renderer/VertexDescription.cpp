@@ -1,5 +1,7 @@
 #include "VertexDescription.h"
 
+#include <algorithm>
+
 using namespace Lag;
 
 VertexAttribute::VertexAttribute(VertexAttributeSemantic semantic, uint32 offset, uint8 length,

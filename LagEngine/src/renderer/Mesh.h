@@ -30,8 +30,14 @@ namespace Lag {
          */
         void lock();
         void unlock();
+
         void setVertices(const MemoryBuffer &vertices, uint32 vertexCount, const VertexDescription &vertexDescription);
+        void setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription);
+
         template <typename T> void setIndices(const std::vector<T> &indices);
+        void setIndices(const byte *indices, uint32 indexCount);
+
+        inline bool hasData() const { return !subMeshes.empty(); }
 
     private:
         friend class MeshBuilder;

@@ -1,5 +1,7 @@
 #pragma once
 
+#include "Types.h"
+
 namespace Lag
 {
 	constexpr uint8 MAX_POINT_LIGHTS = 8;
