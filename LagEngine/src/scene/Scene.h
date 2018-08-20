@@ -2,11 +2,14 @@
 
 #include <vector>
 #include <string>
+#include <memory>
 
 #include "NamedContainer.h"
 #include "Types.h"
 #include "SceneGraph.h"
 #include "SceneObject.h"
+#include "Sky.h"
+
 #include "glm/vec3.hpp"
 
 namespace Lag {
@@ -21,7 +24,6 @@ namespace Lag {
     class PointLight;
     class DirectionalLight;
     class Color;
-    class Sky;
     class RenderTarget;
     class RenderWindow;
     class AxisGizmo;
@@ -53,7 +55,6 @@ namespace Lag {
         PointLight &createPointLight(const Color &color, const glm::vec3 &attenuation, bool castShadow = true);
         DirectionalLight &createDirectionalLight(const Color &color, const glm::vec3 &direction, bool castShadow = true);
 
-        //TODO: texture instead of material?
         void enableSky(const std::string &materialName);
         void disableSky();
 
@@ -102,10 +103,12 @@ namespace Lag {
         void scheduleSceneChange(const std::string &name);
 
         SceneGraph sceneGraph;
-        Sky *sky;
 
         bool shouldChangeScene;
         std::string sceneToChange;
+
+        //Sky is treated as a special Entity
+        std::unique_ptr<Sky> sky;
 
         //All SceneObjects organized by name. Main repository that owns the memory.
         NamedContainer<SceneObject> sceneObjectMap;

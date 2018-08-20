@@ -1,3 +1,5 @@
+#include <memory>
+
 #include "Scene.h"
 
 #include <algorithm>
@@ -20,7 +22,6 @@ using namespace Lag;
 
 Scene::Scene() :
         sceneGraph(*this),
-        sky(nullptr),
         shouldChangeScene(false) {
 }
 
@@ -100,18 +101,16 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 }
 
 void Scene::enableSky(const std::string &materialName) {
-    if (sky != nullptr)
-        disableSky();
-
-    sky = new Sky(materialName);
-    renderableVector.push_back(sky);
+    if(!sky) {
+        sky = std::make_unique<Sky>(materialName);
+        renderableVector.push_back(sky.get());
+    }
 }
 
 void Scene::disableSky() {
-    if (sky != nullptr) {
-        renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky));
-        delete sky;
-        sky = nullptr;
+    if (sky) {
+        renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky.get()));
+        sky.reset();
     }
 }
 
