@@ -4,7 +4,6 @@
 
 namespace Lag {
     class SceneNode;
-
     class FreeCamera;
 }
 

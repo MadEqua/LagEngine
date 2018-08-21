@@ -5,6 +5,8 @@
 #include "SceneManager.h"
 
 #include "TestScene.h"
+#include "TestScene3.h"
+#include "TestScene3.h"
 
 bool TestApplication::start() {
     Lag::Root &root = Lag::Root::getInstance();
@@ -32,7 +34,9 @@ bool TestApplication::start() {
     //SceneManager will own the Scene objects
     //root.getSceneManager().addScene("scene1", *testScene1); //will be auto-set as active
     //root.getSceneManager().addScene("scene2", *testScene2);
-    root.getSceneManager().addScene("scene", new TestScene(true));
+    //root.getSceneManager().addScene("scene", new TestScene(true));
+
+    root.getSceneManager().addScene("scene", new TestScene3());
 
     root.startRenderingLoop();
 

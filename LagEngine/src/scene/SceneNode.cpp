@@ -126,7 +126,7 @@ void SceneNode::translate(const glm::vec3 &trans, TransformSpace relativeTo) {
                 transform.position += glm::inverse(parent->transform.inheritedOrientation) * trans;
                 break;
             case TransformSpace::PARENT:
-                transform.position += trans;
+                transform.position += trans * transform.orientation;
                 break;
         }
         localChangeOccured();

@@ -8,7 +8,8 @@ set(SOURCES
         ${SRC_FOLDER}/main.cpp
         ${SRC_FOLDER}/TestApplication.cpp
         ${SRC_FOLDER}/TestScene.cpp
-        ${SRC_FOLDER}/TestScene2.cpp)
+        ${SRC_FOLDER}/TestScene3.cpp
+        ${SRC_FOLDER}/TestScene3.cpp)
 
 set(INCLUDE_FOLDERS ${SRC_FOLDER})
 

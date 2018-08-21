@@ -12,6 +12,8 @@ public:
     void onEnd() override;
     void onInitializeViewports(Lag::RenderWindow &renderWindow) override;
 
+    void onFrameStart(float timePassed) override;
+
 private:
     Lag::FreeCamera *camera;
 };

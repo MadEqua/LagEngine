@@ -62,7 +62,7 @@ void main()
 
 	for(int i = 0; i < directionalLightCount; ++i)
 	{
-		vec4 lightDirView = viewMatrix *s vec4(directionalLightDirections[i], 0.0);
+		vec4 lightDirView = viewMatrix * vec4(directionalLightDirections[i], 0.0);
 		vec3 L = normalize(lightDirView.xyz);
 		lightSum += computeBlinnPhong(-L, directionalLightColors[i]);
 	}
