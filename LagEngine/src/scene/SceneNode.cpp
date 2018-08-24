@@ -1,5 +1,6 @@
 #include "SceneNode.h"
 
+#include "glm/glm.hpp"
 #include "glm/gtc/matrix_transform.hpp"
 
 #include "SceneGraph.h"
@@ -47,58 +48,32 @@ void SceneNode::removeChildSceneNode(SceneNode &node) {
     node.parent = nullptr;
 }
 
-/*void SceneNode::attachSceneObject(SceneObject &sceneObject)
-{
-	sceneObject.attachToSceneNode(*this);
-	attachedObjects.push_front(&sceneObject);
-}
-
-void SceneNode::detachSceneObject(SceneObject &sceneObject)
-{
-	sceneObject.detachFromSceneNode();
-	attachedObjects.remove(&sceneObject);
-}*/
-
 //////////////////////////////////
 //Transforms
 /////////////////////////////////
 
-void SceneNode::yaw(float angle, TransformSpace relativeTo) {
-    rotate(angle, glm::vec3(0, 1, 0), relativeTo);
+void SceneNode::yaw(float angle, TransformSpace rotationSpace) {
+    rotate(angle, glm::vec3(0, 1, 0), rotationSpace);
 }
 
-void SceneNode::pitch(float angle, TransformSpace relativeTo) {
-    rotate(angle, glm::vec3(1, 0, 0), relativeTo);
+void SceneNode::pitch(float angle, TransformSpace rotationSpace) {
+    rotate(angle, glm::vec3(1, 0, 0), rotationSpace);
 }
 
-void SceneNode::roll(float angle, TransformSpace relativeTo) {
-    rotate(angle, glm::vec3(0, 0, 1), relativeTo);
+void SceneNode::roll(float angle, TransformSpace rotationSpace) {
+    rotate(angle, glm::vec3(0, 0, 1), rotationSpace);
 }
 
-void SceneNode::rotate(float angle, const glm::vec3 &axis, TransformSpace relativeTo) {
+void SceneNode::rotate(float angle, const glm::vec3 &axis, TransformSpace rotationSpace) {
     glm::quat q = glm::angleAxis(glm::radians(angle), axis);
-    rotate(q, relativeTo);
+    rotate(q, rotationSpace);
 }
 
-void SceneNode::rotate(const glm::quat &quaternion, TransformSpace relativeTo) {
+void SceneNode::rotate(const glm::quat &quaternion, TransformSpace rotationSpace) {
     if(isAttached()) {
-        //avoid drift
-        glm::quat normQuat = glm::normalize(quaternion);
-
-        switch (relativeTo) {
-            case TransformSpace::LOCAL:
-                transform.orientation = transform.orientation * normQuat;
-                break;
-            case TransformSpace::WORLD:
-                transform.orientation = glm::inverse(transform.inheritedOrientation) *
-                                        normQuat * transform.inheritedOrientation *
-                                        transform.orientation;
-                break;
-            case TransformSpace::PARENT:
-                transform.orientation = normQuat * transform.orientation;
-                break;
-        }
-
+        const glm::mat3 toParent = pickCorrectTransformToParentSpace(rotationSpace);
+        glm::vec3 newAxis = toParent * glm::axis(quaternion);
+        transform.orientation = glm::angleAxis(glm::angle(quaternion), newAxis) * transform.orientation;
         localChangeOccured();
     }
     else {
@@ -116,19 +91,10 @@ void SceneNode::scale(const glm::vec3 &scale) {
     }
 }
 
-void SceneNode::translate(const glm::vec3 &trans, TransformSpace relativeTo) {
+void SceneNode::translate(const glm::vec3 &trans, TransformSpace transSpace) {
     if(isAttached()) {
-        switch (relativeTo) {
-            case TransformSpace::LOCAL:
-                transform.position += transform.orientation * trans;
-                break;
-            case TransformSpace::WORLD:
-                transform.position += glm::inverse(parent->transform.inheritedOrientation) * trans;
-                break;
-            case TransformSpace::PARENT:
-                transform.position += trans * transform.orientation;
-                break;
-        }
+        const glm::mat3 toParent = pickCorrectTransformToParentSpace(transSpace);
+        transform.position += (toParent * trans);
         localChangeOccured();
     }
     else {
@@ -136,16 +102,10 @@ void SceneNode::translate(const glm::vec3 &trans, TransformSpace relativeTo) {
     }
 }
 
-void SceneNode::setOrientation(const glm::quat &quaternion) {
-    transform.orientation = quaternion;
-    localChangeOccured();
-}
-
-void SceneNode::setOrientation(float w, float x, float y, float z) {
-    transform.orientation.w = w;
-    transform.orientation.x = x;
-    transform.orientation.y = y;
-    transform.orientation.z = z;
+void SceneNode::setOrientation(const glm::quat &quaternion, TransformSpace rotationSpace) {
+    const glm::mat3 toParent = pickCorrectTransformToParentSpace(rotationSpace);
+    glm::vec3 newAxis = toParent * glm::axis(quaternion);
+    transform.orientation = glm::angleAxis(glm::angle(quaternion), newAxis);
     localChangeOccured();
 }
 
@@ -154,13 +114,14 @@ void SceneNode::setScale(const glm::vec3 &scale) {
     localChangeOccured();
 }
 
-void SceneNode::setPosition(const glm::vec3 &pos) {
-    transform.position = pos;
+void SceneNode::setPosition(const glm::vec3 &pos, TransformSpace positionSpace) {
+    const glm::mat3 toParent = pickCorrectTransformToParentSpace(positionSpace);
+    transform.position = (toParent * pos);
     localChangeOccured();
 }
 
-void SceneNode::lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm::vec3 &up) {
-    transform.position = pos;
+void SceneNode::lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm::vec3 &up, TransformSpace space) {
+    const glm::mat4 toParentMatrix = pickCorrectTransformToParentSpace(space);
 
     glm::vec3 dir = glm::normalize(pos - center);
     glm::vec3 side = glm::normalize(glm::cross(up, dir));
@@ -168,14 +129,16 @@ void SceneNode::lookAt(const glm::vec3 &pos, const glm::vec3 &center, const glm:
 
     glm::mat3 rot(side, newUp, dir);
 
-    transform.orientation = glm::quat(rot);
+    transform.orientation = glm::quat(toParentMatrix * glm::mat4(rot));
+    transform.position = toParentMatrix * glm::vec4(pos, 1.0f);
+
     localChangeOccured();
 }
 
 void SceneNode::localChangeOccured() {
-    transform.localToWorldTransformDirty = true;
-    transform.worldToLocalTransformDirty = true;
-    transform.localToWorldNormalTransformDirty = true;
+    transform.localToWorldTransform.setDirty();
+    transform.worldToLocalTransform.setDirty();
+    transform.localToWorldNormalTransform.setDirty();
     notifyChildrenOfDataChange();
 }
 
@@ -185,93 +148,107 @@ void SceneNode::notifyChildrenOfDataChange() {
 }
 
 void SceneNode::updateInheritedData() {
-    transform.inheritedPosition = parent->transform.inheritedPosition + parent->transform.position;
-    transform.inheritedOrientation = parent->transform.inheritedOrientation * parent->transform.orientation;
-    transform.inheritedScale = parent->transform.inheritedScale * parent->transform.scale;
-
+    transform.inheritedPosition = parent->getPositionWorldSpace();
+    transform.inheritedOrientation = parent->getOrientationWorldSpace();
+    transform.inheritedScale = parent->transform.inheritedScale * parent->getScaleLocalSpace();
     localChangeOccured();
 }
 
-const glm::mat4 &SceneNode::getLocalToWorldTransform() {
-    if (transform.localToWorldTransformDirty) {
-        transform.localToWorldTransform = glm::mat4(1.0f);
-        transform.localToWorldTransform = glm::translate(transform.localToWorldTransform, transform.position + transform.inheritedPosition);
-
-        glm::mat4 rot(1.0f);
-        if (inheritOrientation)
-            rot = glm::mat4(transform.inheritedOrientation * transform.orientation);
-        else
-            rot = glm::mat4(transform.orientation);
-
-        transform.localToWorldTransform = transform.localToWorldTransform * rot;
-
-        if (inheritScale)
-            transform.localToWorldTransform = glm::scale(transform.localToWorldTransform, transform.scale * transform.inheritedScale);
-        else
-            transform.localToWorldTransform = glm::scale(transform.localToWorldTransform, transform.scale);
-
-        transform.localToWorldTransformDirty = false;
-    }
-    return transform.localToWorldTransform;
+const glm::mat4& SceneNode::getLocalToWorldTransform() {
+    if (transform.localToWorldTransform.isDirty)
+        transform.localToWorldTransform.update(getParentToWorldTransform() * getLocalToParentTransform());
+    return *transform.localToWorldTransform;
 }
 
-const glm::mat4 &SceneNode::getWorldToLocalTransform() {
-    if (transform.worldToLocalTransformDirty) {
-        transform.worldToLocalTransform = glm::mat4(1.0f);
+const glm::mat4& SceneNode::getWorldToLocalTransform() {
+    if (transform.worldToLocalTransform.isDirty)
+        transform.worldToLocalTransform.update(getParentToLocalTransform() * getWorldToParentTransform());
+    return *transform.worldToLocalTransform;
+}
 
-        if (inheritScale)
-            transform.worldToLocalTransform = glm::scale(transform.worldToLocalTransform,
-                                                         1.0f / (transform.scale * transform.inheritedScale));
+const glm::mat3& SceneNode::getLocalToWorldNormalTransform() {
+    if(transform.localToWorldNormalTransform.isDirty) {
+        if(transform.scale.x == transform.scale.y && transform.scale.x == transform.scale.z)
+            transform.localToWorldNormalTransform.update(glm::mat3(getLocalToWorldTransform()));
         else
-            transform.worldToLocalTransform = glm::scale(transform.worldToLocalTransform, 1.0f / transform.scale);
-
-        glm::mat4 rot;
-        if (inheritOrientation)
-            rot = glm::mat4(transform.inheritedOrientation * transform.orientation);
-        else
-            rot = glm::mat4(transform.orientation);
-
-        rot = glm::transpose(rot);
-        transform.worldToLocalTransform = transform.worldToLocalTransform * rot;
-
-        transform.worldToLocalTransform = glm::translate(transform.worldToLocalTransform,
-                                                         -transform.position - transform.inheritedPosition);
-        transform.worldToLocalTransformDirty = false;
+            transform.localToWorldNormalTransform.update(glm::transpose(glm::mat3(getWorldToLocalTransform())));
     }
-    return transform.worldToLocalTransform;
+    return *transform.localToWorldNormalTransform;
 }
 
-const glm::mat3 &SceneNode::getLocalToWorldNormalTransform() {
-    if (transform.localToWorldNormalTransformDirty) {
-        if (transform.scale.x == transform.scale.y && transform.scale.x == transform.scale.z)
-            transform.localToWorldNormalTransform = glm::mat3(getLocalToWorldTransform());
-        else
-            transform.localToWorldNormalTransform = glm::transpose(glm::mat3(getWorldToLocalTransform()));
-
-        transform.localToWorldNormalTransformDirty = false;
-    }
-    return transform.localToWorldNormalTransform;
+void SceneNode::setInheritOrientation(bool b) {
+    inheritOrientation = b;
+    updateInheritedData();
 }
 
-const glm::vec3 &SceneNode::getWorldPosition() {
-    transform.tempVec3 = transform.position + transform.inheritedPosition;
-    return transform.tempVec3;
+void Lag::SceneNode::setInheritScale(bool b) {
+    inheritScale = b;
+    updateInheritedData();
+    notifyChildrenOfDataChange();
 }
 
-const glm::quat &SceneNode::getWorldOrientation() {
-    if (inheritOrientation) {
-        transform.tempQuat = transform.orientation * transform.inheritedOrientation;
-        return transform.tempQuat;
-    }
-    else
-        return transform.orientation;
+glm::mat4 SceneNode::getLocalToParentTransform() const {
+    glm::mat4 mat(1.0f);
+    mat = glm::translate(mat, transform.position);
+    mat *= glm::mat4(const_cast<glm::quat&>(transform.orientation));
+    mat = glm::scale(mat, transform.scale);
+    return mat;
 }
 
-const glm::vec3 &SceneNode::getWorldScale() {
-    if (inheritScale) {
-        transform.tempVec3 = transform.scale * transform.inheritedScale;
-        return transform.tempVec3;
+glm::mat4 SceneNode::getParentToLocalTransform() const {
+    glm::mat4 mat(1.0f);
+    mat = glm::scale(mat, 1.0f / transform.scale);
+    mat *= glm::transpose(glm::mat4(const_cast<glm::quat&>(transform.orientation)));
+    mat = glm::translate(mat, -transform.position);
+    return mat;
+}
+
+glm::mat4 SceneNode::getParentToWorldTransform() const {
+    glm::mat4 mat(1.0f);
+    mat = glm::translate(mat, transform.inheritedPosition);
+    if(inheritOrientation)
+        mat *= glm::mat4(const_cast<glm::quat&>(transform.inheritedOrientation));
+    if(inheritScale)
+        mat = glm::scale(mat, transform.inheritedScale);
+    return mat;
+}
+
+glm::mat4 SceneNode::getWorldToParentTransform() const {
+    glm::mat4 mat(1.0f);
+    if(inheritScale)
+        mat = glm::scale(mat, 1.0f / transform.inheritedScale);
+    if(inheritOrientation)
+        mat *= glm::transpose(glm::mat4(const_cast<glm::quat&>(transform.inheritedOrientation)));
+    mat = glm::translate(mat, -transform.inheritedPosition);
+    return mat;
+}
+
+glm::mat4 SceneNode::pickCorrectTransformToParentSpace(TransformSpace from) {
+    switch (from) {
+        case TransformSpace::PARENT:
+            return glm::mat4(1.0);
+        case TransformSpace::WORLD:
+            return getWorldToParentTransform();
+        case TransformSpace::LOCAL:
+            return getLocalToParentTransform();
     }
+    return glm::mat4(1.0f);
+}
+
+glm::vec3 Lag::SceneNode::getScaleLocalSpace() const {
+    if(inheritScale)
+        return transform.scale * transform.inheritedScale;
     else
         return transform.scale;
+}
+
+glm::vec3 SceneNode::getPositionWorldSpace() const {
+    return glm::vec3(getParentToWorldTransform() * glm::vec4(transform.position, 1.0f));
+}
+
+glm::quat SceneNode::getOrientationWorldSpace() const {
+    if(isAttached() && inheritOrientation)
+        return parent->transform.inheritedOrientation * transform.orientation;
+    else
+        return glm::quat(1.0f, 0.0f, 0.0f, 0.0f);
 }

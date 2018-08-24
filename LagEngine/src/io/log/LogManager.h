@@ -22,6 +22,7 @@ namespace Lag {
     };
 
 #undef ERROR
+#undef DEBUG
     enum class LogType : uint8 {
         DEBUG,
         INFO,

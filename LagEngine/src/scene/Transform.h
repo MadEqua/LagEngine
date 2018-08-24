@@ -13,33 +13,40 @@ namespace Lag {
     private:
         friend class SceneNode;
 
+        template<class T>
+        struct MatrixContainer {
+            MatrixContainer() : isDirty(true) {}
+
+            inline void setDirty() { isDirty = true; }
+            inline void update(T &newMatrix) { matrix = newMatrix; isDirty = false; }
+            bool isDirty;
+
+            inline T& operator*() { return matrix; }
+        private:
+            T matrix;
+        };
+
         Transform();
 
-        //Relative to parent, always up to date.
+        //In parent coordinates/space, always up to date.
         glm::vec3 position;
         glm::quat orientation;
-        glm::vec3 scale;
 
-        //Values computed from the node hierarchy, always up to date. Accumulate parent node data.
+        //In world coordinates/space, always up to date.
+        //Accumulated values from Root to Parent.
         glm::vec3 inheritedPosition;
         glm::quat inheritedOrientation;
+
+        //In local space, always up to date.
+        //Scale will always be interpreted in local space, even the value inherited from the parent.
+        glm::vec3 scale;
         glm::vec3 inheritedScale;
 
-        //Cache, may be dirty.
-        glm::mat4 localToWorldTransform;
-        bool localToWorldTransformDirty;
-
-        //Cache, may be dirty.
-        glm::mat4 worldToLocalTransform;
-        bool worldToLocalTransformDirty;
+        MatrixContainer<glm::mat4> localToWorldTransform;
+        MatrixContainer<glm::mat4> worldToLocalTransform;
 
         //Appropriate matrix to transform normals
         //(equals localToWorldTransform if the scale is uniform)
-        glm::mat3 localToWorldNormalTransform;
-        bool localToWorldNormalTransformDirty;
-
-        //for returning
-        glm::vec3 tempVec3;
-        glm::quat tempQuat;
+        MatrixContainer<glm::mat3> localToWorldNormalTransform;
     };
 }

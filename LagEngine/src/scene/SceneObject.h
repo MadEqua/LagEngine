@@ -26,17 +26,13 @@ namespace Lag {
         inline SceneNode *getParentSceneNode() { return parentSceneNode; }
 
         //Convenience methods, transforms belong to SceneNodes
-        const glm::vec3 &getWorldPosition() const;
+        glm::vec3 getWorldPosition() const;
 
-        const glm::mat4 &getLocalToWorldTransform() const;
-        const glm::mat4 &getWorldToLocalTransform() const;
-        const glm::mat3 &getNormalTransform() const;
+        glm::mat4 getLocalToWorldTransform() const;
+        glm::mat4 getWorldToLocalTransform() const;
+        glm::mat3 getNormalTransform() const;
 
     protected:
         SceneNode *parentSceneNode;
-
-        static glm::mat4 defaultMat4;
-        static glm::mat3 defaultMat3;
-        static glm::vec3 defaultVec;
     };
 }

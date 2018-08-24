@@ -6,7 +6,7 @@ namespace Lag {
     class FreeCamera;
 }
 
-class TestScene3 : public Lag::Scene {
+class TestScene2 : public Lag::Scene {
 public:
     void onStart() override;
     void onEnd() override;

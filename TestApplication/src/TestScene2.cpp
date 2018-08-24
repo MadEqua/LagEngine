@@ -1,4 +1,4 @@
-#include "TestScene3.h"
+#include "TestScene2.h"
 
 #include "Root.h"
 #include "RenderWindow.h"
@@ -7,7 +7,7 @@
 #include "FreeCamera.h"
 #include "Entity.h"
 
-void TestScene3::onStart() {
+void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
 
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
@@ -44,11 +44,11 @@ void TestScene3::onStart() {
     //sponza->attachToSceneNode(mainNode);
 }
 
-void TestScene3::onEnd() {
+void TestScene2::onEnd() {
     delete camera;
 }
 
-void TestScene3::onInitializeViewports(Lag::RenderWindow &renderWindow) {
+void TestScene2::onInitializeViewports(Lag::RenderWindow &renderWindow) {
     camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
     camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
 

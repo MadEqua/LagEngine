@@ -4,29 +4,26 @@
 
 using namespace Lag;
 
-glm::mat4 SceneObject::defaultMat4 = glm::mat4(1.0f);
-glm::mat3 SceneObject::defaultMat3 = glm::mat3(1.0f);
-glm::vec3 SceneObject::defaultVec = glm::vec3(1.0f);
 
 SceneObject::SceneObject() : parentSceneNode(nullptr) {
 }
 
-const glm::vec3 &SceneObject::getWorldPosition() const {
+glm::vec3 SceneObject::getWorldPosition() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getWorldPosition() : defaultVec;
+           parentSceneNode->getPositionWorldSpace() : glm::vec3(1.0f);
 }
 
-const glm::mat4 &SceneObject::getLocalToWorldTransform() const {
+glm::mat4 SceneObject::getLocalToWorldTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getLocalToWorldTransform() : defaultMat4;
+           parentSceneNode->getLocalToWorldTransform() : glm::mat4(1.0f);
 }
 
-const glm::mat4 &SceneObject::getWorldToLocalTransform() const {
+glm::mat4 SceneObject::getWorldToLocalTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getWorldToLocalTransform() : defaultMat4;
+           parentSceneNode->getWorldToLocalTransform() : glm::mat4(1.0f);
 }
 
-const glm::mat3 &SceneObject::getNormalTransform() const {
+glm::mat3 SceneObject::getNormalTransform() const {
     return parentSceneNode != nullptr ?
-           parentSceneNode->getLocalToWorldNormalTransform() : defaultMat3;
+           parentSceneNode->getLocalToWorldNormalTransform() : glm::mat3(1.0f);
 }

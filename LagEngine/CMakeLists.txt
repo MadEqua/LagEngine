@@ -222,11 +222,11 @@ target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_INCLUDE_FOLDERS})
 target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/glfw-3.2.1/include)
 
 find_library(GLFW_LIBRARY_DEBUG
-        NAMES libglfw3d.a
+        NAMES glfw3d.lib
         HINTS ${DEPENDENCIES_FOLDER}/glfw-3.2.1/lib)
 
 find_library(GLFW_LIBRARY_RELEASE
-        NAMES libglfw3.a
+        NAMES glfw3.lib
         HINTS ${DEPENDENCIES_FOLDER}/glfw-3.2.1/lib)
 
 target_link_libraries(LagEngine
@@ -240,11 +240,17 @@ target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/glew-2.1.0/i
 
 add_definitions(-DGLEW_STATIC)
 
-find_library(GLEW_LIBRARY
-        NAMES libglew32.a
+find_library(GLEW_LIBRARY_DEBUG
+        NAMES glew32sd.lib
         HINTS ${DEPENDENCIES_FOLDER}/glew-2.1.0/lib)
 
-target_link_libraries(LagEngine PRIVATE ${GLEW_LIBRARY})
+find_library(GLEW_LIBRARY_RELEASE
+        NAMES glew32s.lib
+        HINTS ${DEPENDENCIES_FOLDER}/glew-2.1.0/lib)
+
+target_link_libraries(LagEngine
+        PRIVATE debug ${GLEW_LIBRARY_DEBUG}
+        PRIVATE optimized ${GLEW_LIBRARY_RELEASE})
 
 find_package(OpenGL REQUIRED)
 target_link_libraries(LagEngine PRIVATE ${OPENGL_LIBRARIES})
@@ -255,19 +261,19 @@ target_link_libraries(LagEngine PRIVATE ${OPENGL_LIBRARIES})
 target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/assimp-4.1.0/include)
 
 find_library(ASSIMP_LIBRARY_DEBUG
-        NAMES libassimpd.dll.a
+        NAMES assimp-vc140-mtd.lib
         HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
 
 find_library(ASSIMP_LIBRARY_RELEASE
-        NAMES libassimp.dll.a
+        NAMES assimp-vc140-mt.lib
         HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
 
 find_library(ASSIMP_LIBRARY_DYN_DEBUG
-        NAMES libassimpd.dll
+        NAMES assimp-vc140-mtd.dll
         HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
 
 find_library(ASSIMP_LIBRARY_DYN_RELEASE
-        NAMES libassimp.dll
+        NAMES assimp-vc140-mt.dll
         HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
 
 target_link_libraries(LagEngine
@@ -283,7 +289,9 @@ target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_FOLDER}/glm-0.9.9.0/i
 ###############################################
 #Install
 ###############################################
-install(FILES ${ASSIMP_LIBRARY_DYN_DEBUG} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS debug)
+
+#Not working for some reason
+#install(FILES ${ASSIMP_LIBRARY_DYN_DEBUG} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS debug)
 install(FILES ${ASSIMP_LIBRARY_DYN_RELEASE} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS release)
 
 #On Release builds we copy the resources

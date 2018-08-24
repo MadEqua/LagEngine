@@ -54,7 +54,7 @@ void TestScene::onStart() {
     Lag::Entity *floor = createEntity("cube", "baseMaterial");
     floor->attachToSceneNode(floorNode);
 
-    createSceneAux(mainNode, 10.0f, 8, 0, 3);
+    createSceneAux(mainNode, 15.0f, 8, 0, 3);
 
     enableSky("skyMaterial");
 }
@@ -79,35 +79,34 @@ void TestScene::createSceneAux(Lag::SceneNode &center, float size, int count, in
                                                                    std::to_string(maxdepth) + "-" +
                                                                    std::to_string(nodeName++));
 
-        periferyNode.scale(glm::vec3(0.5f));
-
-        periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::WORLD);
+        periferyNode.yaw(static_cast<float>(i) * (360.0f / static_cast<float>(count)), Lag::TransformSpace::PARENT);
         periferyNode.translate(glm::vec3(size, 0.0f, 0.0f), Lag::TransformSpace::LOCAL);
+        periferyNode.scale(glm::vec3(0.8f));
 
         Lag::Entity *periferyEnt = createEntity("piano", "pianoMaterial");
 
         periferyEnt->attachToSceneNode(periferyNode);
 
-        createSceneAux(periferyNode, size * 0.3f, count, actualdepth + 1, maxdepth);
+        createSceneAux(periferyNode, size * 0.45f, count, actualdepth + 1, maxdepth);
     }
 }
 
 void TestScene::updateScene(float timePassed) {
     Lag::SceneNode *pl1SceneNode = sceneGraph.getSceneNode("pl1SceneNode");
     float cycle = glm::sin(time * glm::pi<float>() / 10.0f);
-    glm::vec3 posCpy = pl1SceneNode->getWorldPosition();
+    glm::vec3 posCpy = pl1SceneNode->getPositionWorldSpace();
     posCpy.x = cycle * 15.0f;
     pl1SceneNode->setPosition(posCpy);
 
     Lag::SceneNode *pl2SceneNode = sceneGraph.getSceneNode("pl2SceneNode");
     cycle = glm::sin(time * glm::pi<float>() / 11.0f);
-    posCpy = pl2SceneNode->getWorldPosition();
+    posCpy = pl2SceneNode->getPositionWorldSpace();
     posCpy.z = cycle * 11.0f;
     pl2SceneNode->setPosition(posCpy);
 
     /*Lag::SceneNode *mainNode = scene->getSceneGraph().getSceneNode("main");
     cycle = glm::sin(time * glm::pi<float>() / 15.0f);
-    posCpy = mainNode->getWorldPosition();
+    posCpy = mainNode->getPositionWorldSpace();
     posCpy.y = cycle * 0.2f;
     mainNode->setPosition(posCpy);
     mainNode->yaw(timePassed * 30.0f, Lag::TransformSpace::LOCAL);*/

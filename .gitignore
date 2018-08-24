@@ -6,6 +6,7 @@
 dependencies/
 Debug/
 Release/
+build/
 
 TestApplication/resources/images/
 TestApplication/resources/meshes/

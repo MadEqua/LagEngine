@@ -32,11 +32,11 @@ void TestScene3::onStart() {
 
     //To test Parent translations
     Lag::SceneNode &dummyNode2 = getSceneGraph().getRootSceneNode().createChildSceneNode("dummyNode2");
-    dummyNode2.translate(glm::vec3(0.0f, 2.0f, -10.0f), Lag::TransformSpace::WORLD);
+    dummyNode2.translate(glm::vec3(0.0f, 4.0f, -10.0f), Lag::TransformSpace::WORLD);
     dummyNode2.roll(-90.0f, Lag::TransformSpace::WORLD);
     Lag::SceneNode &objectNode2 = dummyNode2.createChildSceneNode("parentTranslation");
-    objectNode2.translate(glm::vec3(0.0f, -2.0f, 0.0f), Lag::TransformSpace::PARENT);
-    objectNode2.roll(90.0f, Lag::TransformSpace::PARENT);
+    objectNode2.translate(glm::vec3(0.0f, -2.0f, 0.0f), Lag::TransformSpace::WORLD);
+    objectNode2.roll(90.0f, Lag::TransformSpace::WORLD);
     Lag::Entity *object2 = createEntity("piano", "pianoMaterial");
     object2->attachToSceneNode(objectNode2);
 
