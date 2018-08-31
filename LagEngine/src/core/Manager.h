@@ -35,7 +35,8 @@ namespace Lag {
         Manager(const std::string &logTag, IManagedObjectBuilder<K, V> *builder);
         virtual ~Manager();
 
-        virtual void initializeFallbackObject() {}
+        //Some Managers may want to have a fallback object to be returned when there is a problem getting the requested one
+        virtual Handle<V> getFallbackObject() { return Handle<V>(); }
 
         Handle<V> get(const K &name);
         inline std::unordered_map<K, V *> getAll() const { return objects; }
@@ -59,9 +60,6 @@ namespace Lag {
         //The iterator is assumed to be from the objects map
         typename std::unordered_map<K, V *>::iterator deleteEntry(typename std::unordered_map<K, V *>::iterator item);
 
-        //Some Managers may want to have a fallback object to be returned when there is a problem getting the requested one
-        Handle<V> fallbackObject; //Handle stored here, avoiding the removal
-
         IManagedObjectBuilder<K, V> *builder;
 
         std::unordered_map<K, V *> objects;
@@ -83,8 +81,6 @@ namespace Lag {
 
     template<class K, class V>
     Manager<K, V>::~Manager() {
-        fallbackObject.invalidate();
-
         clear();
 
         delete builder;
@@ -107,7 +103,7 @@ namespace Lag {
             if (object == nullptr) {
                 LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL,
                                               logTag, "Error building Object " + Utils::toString(name));
-                return fallbackObject;
+                return getFallbackObject();
             }
 
             object->setName(Utils::toString(name));
@@ -134,7 +130,7 @@ namespace Lag {
         }
         else {
             deleteEntry(objects.find(name));
-            return fallbackObject;
+            return getFallbackObject();
         }
     }
 

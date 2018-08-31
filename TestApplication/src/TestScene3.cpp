@@ -6,10 +6,12 @@
 #include "PerspectiveCamera.h"
 #include "FreeCamera.h"
 #include "Entity.h"
+#include "MeshRepository.h"
 
 
 void TestScene3::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
+    auto &meshRepo = root.getMeshRepository();
 
     root.getRenderer().setClearColor(Lag::Color(0.1f));
 
@@ -20,7 +22,7 @@ void TestScene3::onStart() {
     Lag::SceneNode &floorNode = getSceneGraph().getRootSceneNode().createChildSceneNode("floor");
     floorNode.translate(glm::vec3(0.0f, -0.3f, 0.0f), Lag::TransformSpace::WORLD);
     floorNode.setScale(glm::vec3(30.0f, 0.3f, 30.0f));
-    Lag::Entity *floor = createEntity("cube", "baseMaterial");
+    Lag::Entity *floor = createEntity(meshRepo.getPlaneXZ(), "baseMaterial");
     floor->attachToSceneNode(floorNode);
 
     //To test Local translations

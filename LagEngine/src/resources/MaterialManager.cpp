@@ -6,8 +6,8 @@ MaterialManager::MaterialManager(MaterialBuilder *builder) :
         XmlResourceManager("MaterialManager", builder) {
 }
 
-void MaterialManager::initializeFallbackObject() {
-    fallbackObject = get("defaultMaterial");
+Handle<Material> MaterialManager::getFallbackObject() {
+    return get("defaultMaterial");
 }
 
 MaterialBuilder::MaterialBuilder(const XmlResourceBuilderData &xmlResourceData) :

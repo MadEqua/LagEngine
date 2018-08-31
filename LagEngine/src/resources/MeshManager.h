@@ -20,7 +20,7 @@ namespace Lag {
     class MeshManager : public XmlResourceManager<Mesh> {
     public:
         explicit MeshManager(MeshBuilder *builder);
-        void initializeFallbackObject() override;
+        Handle<Mesh> getFallbackObject() override;
 
         //Empty mesh, to be filled programmatically.
         Handle<Mesh> getEmpty(const std::string &name);

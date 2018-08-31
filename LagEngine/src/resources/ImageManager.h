@@ -26,6 +26,6 @@ namespace Lag {
     class ImageManager : public XmlResourceManager<Image> {
     public:
         explicit ImageManager(ImageBuilder *builder);
-        void initializeFallbackObject() override;
+        Handle<Image> getFallbackObject() override;
     };
 }

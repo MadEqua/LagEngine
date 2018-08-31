@@ -52,7 +52,6 @@
 
 
     <mesh name="piano" file="piano.obj"/>
-    <mesh name="cube" file="cube.obj"/>
     <mesh name="tree1" file="tree01.obj"/>
     <mesh name="tree2" file="tree02.obj"/>
     <mesh name="tree3" file="tree03.obj"/>

@@ -14,6 +14,6 @@ namespace Lag {
     class MaterialManager : public XmlResourceManager<Material> {
     public:
         explicit MaterialManager(MaterialBuilder *builder);
-        void initializeFallbackObject() override;
+        Handle<Material> getFallbackObject() override;
     };
 }

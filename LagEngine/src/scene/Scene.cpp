@@ -106,7 +106,7 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 void Scene::enableSky(const std::string &materialName) {
     if(!isSkyEnabled) {
         auto &meshRepository = Root::getInstance().getMeshRepository();
-        createEntity(meshRepository.getCube(), materialName);
+        createEntity(meshRepository.getCubeInsides(), materialName);
         isSkyEnabled = true;
     }
 }

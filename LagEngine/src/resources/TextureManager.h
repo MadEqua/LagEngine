@@ -39,7 +39,7 @@ namespace Lag {
     class TextureManager : public XmlResourceManager<Texture> {
     public:
         explicit TextureManager(TextureBuilder *builder);
-        void initializeFallbackObject() override;
+        Handle<Texture> getFallbackObject() override;
 
         std::vector<std::string> getTexturesWithImageName(const std::string &imageName) const;
     };

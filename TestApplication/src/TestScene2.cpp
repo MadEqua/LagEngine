@@ -6,9 +6,11 @@
 #include "PerspectiveCamera.h"
 #include "FreeCamera.h"
 #include "Entity.h"
+#include "MeshRepository.h"
 
 void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
+    auto &meshRepo = root.getMeshRepository();
 
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
     root.getRenderer().setClearColor(Lag::Color(0.1f));
@@ -26,7 +28,7 @@ void TestScene2::onStart() {
     boardBaseNode.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
     boardBaseNode.setScale(glm::vec3(10.0f, 10.0f, 10.0f));
 
-    Lag::Entity *baseCube = createEntity("cube", "pointMaterial");
+    Lag::Entity *baseCube = createEntity(meshRepo.getCube(), "pointMaterial");
     baseCube->attachToSceneNode(boardBaseNode);
 
 

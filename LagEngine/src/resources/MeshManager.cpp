@@ -23,9 +23,8 @@ MeshManager::MeshManager(MeshBuilder *builder) :
         XmlResourceManager("MeshManager", builder) {
 }
 
-void MeshManager::initializeFallbackObject() {
-    auto &meshRepo = Root::getInstance().getMeshRepository();
-    fallbackObject = meshRepo.getCube();
+Handle<Mesh> MeshManager::getFallbackObject() {
+    return Root::getInstance().getMeshRepository().getCube();
 }
 
 Handle<Mesh> MeshManager::getEmpty(const std::string &name) {

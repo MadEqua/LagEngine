@@ -69,8 +69,6 @@ void main()
 
 	vec3 ambient = vec3(0.01);
 
-	//outColor = vec4(lightSum, 1.0) * (0.5 * texture(diffuseTexture, fs_in.texCoord) + 0.5 * texture(diffuseTexture2, fs_in.texCoord));
 	outColor = vec4(ambient + lightSum, 1.0) * texture(diffuseTexture, fs_in.texCoord);
-	//outColor = vec4(ambient + lightSum, 1.0);
 	//outColor = vec4(fs_in.texCoord, 0.0, 1.0);
 }

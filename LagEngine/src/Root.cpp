@@ -115,13 +115,6 @@ bool Root::initResources(const IPlatformFactory &platformFactory) {
     materialManager = std::make_unique<MaterialManager>(new MaterialBuilder(XmlResourceBuilderData(initializationParameters->getMaterialsFolder(false),
                                                        initializationParameters->getMaterialsFolder(true),
                                                        MATERIAL_XML_TAG)));
-
-    imageManager->initializeFallbackObject();
-    gpuProgramManager->initializeFallbackObject();
-    textureManager->initializeFallbackObject();
-    materialManager->initializeFallbackObject();
-    meshManager->initializeFallbackObject();
-
     return true;
 }
 

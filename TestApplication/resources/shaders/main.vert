@@ -14,7 +14,7 @@ out VertexShaderOut
 {
 	vec3 positionView;
 	vec3 normalView;
-    vec2 texCoord;    
+    vec2 texCoord;
 } vs_out;
 
 void main()

@@ -6,8 +6,8 @@ TextureManager::TextureManager(TextureBuilder *builder) :
         XmlResourceManager("TextureManager", builder) {
 }
 
-void TextureManager::initializeFallbackObject() {
-    fallbackObject = get("defaultTexture");
+Handle<Texture> TextureManager::getFallbackObject() {
+    return get("defaultTexture");
 }
 
 std::vector<std::string> TextureManager::getTexturesWithImageName(const std::string &imageName) const {

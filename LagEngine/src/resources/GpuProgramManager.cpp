@@ -8,11 +8,11 @@ GpuProgramManager::GpuProgramManager(GpuProgramBuilder *builder) :
         Manager("GpuProgramManager", builder) {
 }
 
-void GpuProgramManager::initializeFallbackObject() {
+Handle<GpuProgram> GpuProgramManager::getFallbackObject() {
     std::vector<std::string> defaultStages;
     defaultStages.emplace_back("defaultVertex");
     defaultStages.emplace_back("defaultFragment");
-    fallbackObject = get(defaultStages);
+    return get(defaultStages);
 }
 
 std::vector<std::string> GpuProgramManager::getProgramsWithStageName(const std::string &stageName) const {

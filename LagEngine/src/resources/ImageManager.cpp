@@ -6,8 +6,8 @@ ImageManager::ImageManager(ImageBuilder *builder) :
         XmlResourceManager("ImageManager", builder) {
 }
 
-void ImageManager::initializeFallbackObject() {
-    fallbackObject = get("defaultImage");
+Handle<Image> ImageManager::getFallbackObject() {
+    return get("defaultImage");
 }
 
 ImageBuilder::ImageBuilder(const XmlResourceBuilderData &xmlResourceData) :

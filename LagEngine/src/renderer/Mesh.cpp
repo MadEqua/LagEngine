@@ -109,8 +109,8 @@ bool Mesh::loadImplementation() {
 
                         //Float [0.0, 1.0] to uint16 [0, MAX_UINT16]
                         uint16 texCoord[2];
-                        texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] *static_cast<float>(MAX_UINT16));
-                        texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] *static_cast<float>(MAX_UINT16));
+                        texCoord[0] = static_cast<uint16>(mesh->mTextureCoords[i][vx][0] * static_cast<float>(MAX_UINT16));
+                        texCoord[1] = static_cast<uint16>(mesh->mTextureCoords[i][vx][1] * static_cast<float>(MAX_UINT16));
 
                         vertices.write(vxBufferOffset, attrSize, reinterpret_cast<byte *>(texCoord));
                         vxBufferOffset += attrSize;

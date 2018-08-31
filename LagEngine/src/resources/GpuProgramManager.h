@@ -19,7 +19,7 @@ namespace Lag {
     public:
         explicit GpuProgramManager(GpuProgramBuilder *builder);
 
-        void initializeFallbackObject() override;
+        Handle<GpuProgram> getFallbackObject() override;
 
         std::vector<std::string> getProgramsWithStageName(const std::string &stageName) const;
 
