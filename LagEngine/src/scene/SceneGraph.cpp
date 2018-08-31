@@ -1,8 +1,8 @@
 #include "SceneGraph.h"
 
 #include "LogManager.h"
-#include "AxisGizmo.h"
 #include "Scene.h"
+#include "Entity.h"
 
 using namespace Lag;
 

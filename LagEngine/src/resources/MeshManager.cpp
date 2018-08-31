@@ -1,4 +1,6 @@
 #include "MeshManager.h"
+#include "Root.h"
+#include "MeshRepository.h"
 
 using namespace Lag;
 
@@ -22,7 +24,8 @@ MeshManager::MeshManager(MeshBuilder *builder) :
 }
 
 void MeshManager::initializeFallbackObject() {
-    fallbackObject = get("defaultMesh");
+    auto &meshRepo = Root::getInstance().getMeshRepository();
+    fallbackObject = meshRepo.getCube();
 }
 
 Handle<Mesh> MeshManager::getEmpty(const std::string &name) {

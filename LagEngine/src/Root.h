@@ -9,7 +9,6 @@
 #include "IWindowListener.h"
 
 #include "SingletonPattern.h"
-
 #include "Handle.h"
 
 class TiXmlDocument;
@@ -30,6 +29,7 @@ namespace Lag {
     class TextureManager;
     class GpuBufferManager;
     class InputDescriptionManager;
+    class MeshRepository;
 
     class IGraphicsAPI;
     class IPlatformFactory;
@@ -62,6 +62,8 @@ namespace Lag {
         inline const TiXmlDocument& getAppResourcesFile() const { return *appResourcesFile; }
         inline const TiXmlDocument& getLagResourcesFile() const { return *lagResourcesFile; }
 
+        inline MeshRepository& getMeshRepository() const { return *meshRepository; }
+
     private:
         bool initialized;
 
@@ -86,6 +88,8 @@ namespace Lag {
         std::unique_ptr<InitializationParameters> initializationParameters;
         std::unique_ptr<TiXmlDocument> appResourcesFile;
         std::unique_ptr<TiXmlDocument> lagResourcesFile;
+
+        std::unique_ptr<MeshRepository> meshRepository;
 
 #ifdef ENABLE_DEBUG_MACRO
         std::unique_ptr<ResourceFilesWatcher> resourceFilesWatcher;

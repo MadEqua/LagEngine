@@ -26,6 +26,7 @@ namespace Lag {
     class Entity : public SceneObject, public IRenderable {
     public:
         Entity(const std::string &meshName, const std::string &materialName);
+        Entity(Handle<Mesh> meshHandle, const std::string &materialName);
         Entity();
 
         void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;

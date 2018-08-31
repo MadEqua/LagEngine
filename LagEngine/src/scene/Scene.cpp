@@ -7,7 +7,6 @@
 #include "Handle.h"
 #include "SceneManager.h"
 #include "LogManager.h"
-#include "Sky.h"
 #include "Root.h"
 #include "RenderTargetManager.h"
 #include "RenderWindow.h"
@@ -16,13 +15,14 @@
 #include "OrthographicCamera.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
-#include "AxisGizmo.h"
+#include "MeshRepository.h"
 
 using namespace Lag;
 
 Scene::Scene() :
         sceneGraph(*this),
-        shouldChangeScene(false) {
+        shouldChangeScene(false),
+        isSkyEnabled(false) {
 }
 
 void Scene::start() {
@@ -40,8 +40,6 @@ void Scene::end() {
     LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL, "Scene", "Scene ending.");
 
     onEnd();
-
-    disableSky();
 
     sceneGraph.clear();
 
@@ -63,12 +61,17 @@ Entity *Scene::createEntity(const std::string &meshName, const std::string &mate
     return e;
 }
 
+Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName) {
+    auto e = new Entity(mesh, materialName);
+    sceneObjectMap.add(e);
+    entityVector.push_back(e);
+    renderableVector.push_back(e);
+    return e;
+}
+
 Entity *Scene::createAxisGizmo() {
-    auto gizmo = new AxisGizmo();
-    sceneObjectMap.add(gizmo);
-    entityVector.push_back(gizmo);
-    renderableVector.push_back(gizmo);
-    return gizmo;
+    auto &meshRepository = Root::getInstance().getMeshRepository();
+    return createEntity(meshRepository.getAxisGizmo(), "axisGizmoMaterial");
 }
 
 PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane) {
@@ -101,16 +104,10 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 }
 
 void Scene::enableSky(const std::string &materialName) {
-    if(!sky) {
-        sky = std::make_unique<Sky>(materialName);
-        renderableVector.push_back(sky.get());
-    }
-}
-
-void Scene::disableSky() {
-    if (sky) {
-        renderableVector.erase(std::find(renderableVector.begin(), renderableVector.end(), sky.get()));
-        sky.reset();
+    if(!isSkyEnabled) {
+        auto &meshRepository = Root::getInstance().getMeshRepository();
+        createEntity(meshRepository.getCube(), materialName);
+        isSkyEnabled = true;
     }
 }
 

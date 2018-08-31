@@ -14,6 +14,11 @@ Entity::Entity(const std::string &meshName, const std::string &materialName) {
     setMaterial(materialName);
 }
 
+Entity::Entity(Handle<Mesh> meshHandle, const std::string &materialName) {
+    setMesh(meshHandle);
+    setMaterial(materialName);
+}
+
 Entity::Entity() : Entity("defaultMesh", "defaultMaterial") {
 }
 

@@ -8,7 +8,8 @@
 #include "Types.h"
 #include "SceneGraph.h"
 #include "SceneObject.h"
-#include "Sky.h"
+
+#include "Handle.h"
 
 #include "glm/vec3.hpp"
 
@@ -26,7 +27,7 @@ namespace Lag {
     class Color;
     class RenderTarget;
     class RenderWindow;
-    class AxisGizmo;
+    class Mesh;
 
     /*
     * Set of Entities, Cameras, Lights and all that represnt an unique "state" of the application.
@@ -47,6 +48,7 @@ namespace Lag {
         void initializeViewports();
 
         Entity *createEntity(const std::string &meshName, const std::string &materialName);
+        Entity *createEntity(Handle<Mesh> mesh, const std::string &materialName);
         Entity *createAxisGizmo();
 
         PerspectiveCamera &createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane);
@@ -56,7 +58,6 @@ namespace Lag {
         DirectionalLight &createDirectionalLight(const Color &color, const glm::vec3 &direction, bool castShadow = true);
 
         void enableSky(const std::string &materialName);
-        void disableSky();
 
         SceneObject *getSceneObject(uint32 name) const;
 
@@ -107,8 +108,7 @@ namespace Lag {
         bool shouldChangeScene;
         std::string sceneToChange;
 
-        //Sky is treated as a special Entity
-        std::unique_ptr<Sky> sky;
+        bool isSkyEnabled;
 
         //All SceneObjects organized by name. Main repository that owns the memory.
         NamedContainer<SceneObject> sceneObjectMap;

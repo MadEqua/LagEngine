@@ -167,18 +167,16 @@ set(SOURCES
         ${SRC_FOLDER}/scene/SceneNode.h
         ${SRC_FOLDER}/scene/SceneObject.cpp
         ${SRC_FOLDER}/scene/SceneObject.h
-        ${SRC_FOLDER}/scene/Sky.cpp
-        ${SRC_FOLDER}/scene/Sky.h
         ${SRC_FOLDER}/scene/SubEntity.cpp
         ${SRC_FOLDER}/scene/SubEntity.h
         ${SRC_FOLDER}/scene/Transform.cpp
         ${SRC_FOLDER}/scene/Transform.h
-        ${SRC_FOLDER}/scene/AxisGizmo.cpp
-        ${SRC_FOLDER}/scene/AxisGizmo.h
         ${SRC_FOLDER}/utils/FreeCamera.cpp
         ${SRC_FOLDER}/utils/FreeCamera.h
         ${SRC_FOLDER}/utils/Utils.cpp
         ${SRC_FOLDER}/utils/Utils.h
+        ${SRC_FOLDER}/utils/MeshRepository.h
+        ${SRC_FOLDER}/utils/MeshRepository.cpp
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h

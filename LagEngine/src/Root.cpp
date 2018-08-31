@@ -20,6 +20,7 @@
 #include "ImageManager.h"
 #include "TextureManager.h"
 #include "GpuProgramStageManager.h"
+#include "MeshRepository.h"
 
 #include "io/Keys.h"
 
@@ -86,6 +87,8 @@ bool Root::internalInit(const IPlatformFactory &platformFactory) {
 #ifdef ENABLE_DEBUG_MACRO
     resourceFilesWatcher = std::make_unique<ResourceFilesWatcher>(*initializationParameters);
 #endif
+
+    meshRepository = std::make_unique<MeshRepository>(*meshManager);
 
     return true;
 }
