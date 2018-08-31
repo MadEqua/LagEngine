@@ -65,6 +65,8 @@ void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, c
 
     float secs = Root::getInstance().getRenderer().getTotalSeconds();
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::TIMER, &secs);
+
+    setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::VIEWPORT_SIZE, &viewport.getSize());
 }
 
 void GpuProgramUniformFiller::updateLightUniforms(const GpuProgram &gpuProgram) {

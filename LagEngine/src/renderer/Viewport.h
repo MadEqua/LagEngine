@@ -2,6 +2,8 @@
 
 #include "Types.h"
 #include "IRenderTargetListener.h"
+
+#include "glm/glm.hpp"
 #include <string>
 
 namespace Lag {
@@ -31,6 +33,9 @@ namespace Lag {
         uint32 getRealBottom() const;
         uint32 getRealWidth() const;
         uint32 getRealHeight() const;
+
+        //Width, Height
+        glm::u32vec2 getSize() const;
 
     private:
         uint16 name;

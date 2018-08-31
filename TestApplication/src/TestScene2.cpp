@@ -24,7 +24,7 @@ void TestScene2::onStart() {
 
 
     boardBaseNode.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    boardBaseNode.setScale(glm::vec3(10.0f, 1.0f, 20.0f));
+    boardBaseNode.setScale(glm::vec3(10.0f, 10.0f, 10.0f));
 
     Lag::Entity *baseCube = createEntity("cube", "pointMaterial");
     baseCube->attachToSceneNode(boardBaseNode);

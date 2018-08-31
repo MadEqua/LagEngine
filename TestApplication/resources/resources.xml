@@ -21,14 +21,19 @@
         <uniform name="diffuseTexture" semantic="TextureDiffuse"/>
     </shader>
 
-    <shader name="pointVertex" file="point.vert" type="Vertex">
+    <shader name="pointVertex" file="point.vert" type="Vertex"/>
+    <shader name="pointFragment" file="point.frag" type="Fragment"/>
+    <shader name="pointTessCtrl" file="point.tesc" type="TesselationControl"/>
+    <shader name="pointTessEval" file="point.tese" type="TesselationEvaluation">
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
         <uniform name="time" semantic="Timer"/>
     </shader>
 
-    <shader name="pointFragment" file="point.frag" type="Fragment">
-        <uniform name="circleSprite" semantic="TextureDiffuse"/>
+    <shader name="wireframeGeometry" file="wireframe.geom" type="Geometry">
+        <uniform name="viewportSize" semantic="ViewportSize"/>
     </shader>
+    <shader name="wireframeFragment" file="wireframe.frag" type="Fragment"/>
+
 
     <shader name="skyVertex" file="sky.vert" type="Vertex">
         <uniform name="viewMatrix" semantic="ViewMatrix"/>

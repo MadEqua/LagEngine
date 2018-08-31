@@ -1,6 +1,8 @@
-<material renderMode="Points">
+<material renderMode="Patches">
 
     <shader name="pointVertex"/>
+    <shader name="pointTessCtrl"/>
+    <shader name="pointTessEval"/>
     <shader name="pointFragment"/>
 
     <texture name="circleSprite"/>

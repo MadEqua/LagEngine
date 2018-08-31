@@ -1,5 +1,12 @@
 #include "LogManager.h"
 
+#ifdef _MSC_VER 
+    #include <Windows.h>
+    #include <WinBase.h>
+    #undef ERROR
+    #undef DEBUG
+#endif
+
 #include <iostream>
 #include <ctime>
 
@@ -97,8 +104,9 @@ void LogManager::printMessage(LogOutput whereTo, const std::string &formattedMes
         printToFile(formattedMessage);
     }
     else if (whereTo == LogOutput::IDE) {
-        //Only on Visual Studio
-        //OutputDebugString(formattedMessage.c_str());
+#ifdef _MSC_VER
+        OutputDebugString(formattedMessage.c_str());
+#endif
     }
 }
 

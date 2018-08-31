@@ -76,6 +76,11 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
                     type = GpuProgramUniformType::FLOAT;
                     break;
 
+                case GpuProgramUniformSemantic::VIEWPORT_SIZE:
+                    size = GpuProgramUniformSize::SIZE_2;
+                    type = GpuProgramUniformType::UINT32;
+                    break;
+
                 case GpuProgramUniformSemantic::CUSTOM: {
                     const char *typeString = element.Attribute("type");
                     const char *sizeString = element.Attribute("size");
@@ -103,6 +108,7 @@ GpuProgramUniformType GpuProgramStageBuilder::parseUniformTypeFromString(const s
     if (type == "bool") return GpuProgramUniformType::BOOL;
     else if (type == "float") return GpuProgramUniformType::FLOAT;
     else if (type == "int32") return GpuProgramUniformType::INT32;
+    else if (type == "uint32") return GpuProgramUniformType::UINT32;
     else if (type == "matrix") return GpuProgramUniformType::MATRIX;
     else return GpuProgramUniformType::UNKNOWN;
 }
@@ -138,6 +144,8 @@ GpuProgramUniformSemantic GpuProgramStageBuilder::parseUniformSemanticFromString
     else if (semantic == "TextureNormal") return GpuProgramUniformSemantic::TEXTURE_NORMAL;
 
     else if (semantic == "Timer") return GpuProgramUniformSemantic::TIMER;
+
+    else if (semantic == "ViewportSize") return GpuProgramUniformSemantic::VIEWPORT_SIZE;
 
     else if (semantic == "Custom") return GpuProgramUniformSemantic::CUSTOM;
     else return GpuProgramUniformSemantic::CUSTOM;

@@ -47,6 +47,8 @@ namespace Lag {
         TEXTURE_NORMAL,
         TEXTURE_CUSTOM,
 
+        VIEWPORT_SIZE,
+
         CUSTOM
     };
 

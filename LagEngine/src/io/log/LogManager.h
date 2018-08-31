@@ -8,6 +8,11 @@
 #include "Constants.h"
 #include "SingletonPattern.h"
 
+#ifdef _MSC_VER 
+    #undef ERROR
+    #undef DEBUG
+#endif _MSC_VER 
+
 namespace Lag {
     enum class LogOutput : uint8 {
         CONSOLE,
@@ -21,8 +26,6 @@ namespace Lag {
         MINIMAL
     };
 
-#undef ERROR
-#undef DEBUG
     enum class LogType : uint8 {
         DEBUG,
         INFO,

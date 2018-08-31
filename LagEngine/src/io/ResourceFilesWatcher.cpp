@@ -107,7 +107,7 @@ void ResourceFilesWatcher::onFrameEnd(float timePassed) {
 
 
 //On Windows sometimes we don't get a correct path for the changed file. On those cases we force a reloadAll() on the manager.
-//It seems that the issue is related on how programs save the files to disk. Happens frequently saving files with IDEs but not with Notepad.
+//It seems to be caused by the way programs save the files to disk. Happens frequently saving files with IDEs but not with Notepad.
 void ResourceFilesWatcher::reloadMaterial(const ReloadData &reloadData) const {
     MaterialManager &mm = Root::getInstance().getMaterialManager();
     std::string name = mm.getNameByFileName(reloadData.file);

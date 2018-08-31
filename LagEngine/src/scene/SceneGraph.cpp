@@ -41,11 +41,9 @@ SceneNode *SceneGraph::getSceneNode(const std::string &name) const {
 }
 
 SceneNode &SceneGraph::getRootSceneNode() {
-    auto it = nodes.find(ROOT_SCENE_NODE);
-    if (it == nodes.end()) {
-        nodes[ROOT_SCENE_NODE] = std::unique_ptr<SceneNode>(new SceneNode(*this));
-        return *nodes[ROOT_SCENE_NODE];
-    }
+    auto root = getSceneNode(ROOT_SCENE_NODE);
+    if (!root)
+        return createSceneNode(ROOT_SCENE_NODE);
     else
-        return *it->second;
+        return *root;
 }

@@ -41,6 +41,10 @@ uint32 Viewport::getRealHeight() const {
                                           0.0f, static_cast<float>(renderTarget.getHeight())));
 }
 
+glm::u32vec2 Viewport::getSize() const {
+    return glm::u32vec2(getRealWidth(), getRealHeight());
+}
+
 void Viewport::computeCameraAspectRatio() const {
     camera.setAspectRatio(static_cast<float>(getRealWidth()) / static_cast<float>(getRealHeight()));
 }
