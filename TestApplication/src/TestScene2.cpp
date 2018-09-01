@@ -19,31 +19,42 @@ void TestScene2::onStart() {
 
     Lag::SceneNode &boardNode = rootNode.createChildSceneNode("board");
     Lag::SceneNode &boardBaseNode = boardNode.createChildSceneNode("boardBase");
-    Lag::SceneNode &boardLeftNode = rootNode.createChildSceneNode("boardLeft");
+    Lag::SceneNode &boardLeftNode = boardNode.createChildSceneNode("boardLeft");
     Lag::SceneNode &boardRightNode = boardNode.createChildSceneNode("boardRight");
     Lag::SceneNode &boardTopNode = boardNode.createChildSceneNode("boardTop");
     Lag::SceneNode &boardBottomNode = boardNode.createChildSceneNode("boardBottom");
 
+    const float SIZE = 50.0f;
+    const float HALF_SIZE = SIZE / 2.0f;
 
-    boardBaseNode.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
-    boardBaseNode.setScale(glm::vec3(10.0f, 10.0f, 10.0f));
+    boardBaseNode.setScale(glm::vec3(SIZE, 1.0f, SIZE));
 
-    Lag::Entity *baseCube = createEntity(meshRepo.getCube(), "pointMaterial");
-    baseCube->attachToSceneNode(boardBaseNode);
+    boardLeftNode.setPosition(glm::vec3(-HALF_SIZE, 0.0f, 0.0f));
+    boardLeftNode.setScale(glm::vec3(1.0f, 2.0f, SIZE));
 
+    boardRightNode.setPosition(glm::vec3(HALF_SIZE, 0.0f, 0.0f));
+    boardRightNode.setScale(glm::vec3(1.0f, 2.0f, SIZE));
 
-    /*Lag::SceneNode &bunnyNode = mainNode.createChildSceneNode("bunnyNode");
-    bunnyNode.setScale(glm::vec3(20.0f));
-    Lag::Entity *bunny = createEntity("bunny", "pointMaterial");
-    bunny->attachToSceneNode(bunnyNode);
+    boardTopNode.setPosition(glm::vec3(0.0f, 0.0f, -HALF_SIZE));
+    boardTopNode.setScale(glm::vec3(SIZE, 2.0f, 1.0f));
 
-    Lag::SceneNode &treeNode = mainNode.createChildSceneNode("treeNode");
-    treeNode.setPosition(glm::vec3(5.0f, 0.0f, 0.0f));
-    Lag::Entity *tree = createEntity("tree1", "pointMaterial");
-    tree->attachToSceneNode(treeNode);*/
+    boardBottomNode.setPosition(glm::vec3(0.0f, 0.0f, HALF_SIZE));
+    boardBottomNode.setScale(glm::vec3(SIZE, 2.0f, 1.0f));
 
-    //Lag::Entity *sponza = createEntity("sponza", "baseMaterial");
-    //sponza->attachToSceneNode(mainNode);
+    Lag::Entity *basePlane = createEntity(meshRepo.getPlaneXZ(), "pointMaterial");
+    basePlane->attachToSceneNode(boardBaseNode);
+
+    Lag::Entity *leftCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    leftCube->attachToSceneNode(boardLeftNode);
+
+    Lag::Entity *rightCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    rightCube->attachToSceneNode(boardRightNode);
+
+    Lag::Entity *topCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    topCube->attachToSceneNode(boardTopNode);
+
+    Lag::Entity *bottomCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    bottomCube->attachToSceneNode(boardBottomNode);
 }
 
 void TestScene2::onEnd() {

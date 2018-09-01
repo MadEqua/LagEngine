@@ -6,14 +6,13 @@ layout (location = 2) in vec3 tangent;
 layout (location = 3) in vec2 texCoord;
 
 out VertexShaderOut {
-	vec3 position;
     vec3 normal;
     vec3 tangent;
     vec2 texCoord;
 } vs_out;
 
 void main() {
-    vs_out.position = position;
+    gl_Position = vec4(position, 1.0);
     vs_out.normal = normal;
     vs_out.tangent = tangent;
     vs_out.texCoord = texCoord;

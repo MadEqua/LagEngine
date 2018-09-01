@@ -6,7 +6,6 @@ uniform mat4 mvpMatrix;
 uniform float time;
 
 in TesCtrlShaderOut {
-	vec3 position;
     vec3 normal;
     vec3 tangent;
     vec2 texCoord;
@@ -32,16 +31,15 @@ float random(vec2 v) {
 
 vec3 wavingAnim(vec3 position) {
 
-    float time = time * 10;
-    vec3 t = vec3(sin(time + random(position.xz) * 13.2),
-                  sin(time + random(position.zx) * 11.1),
-                  sin(time + random(position.yx) * 18.7));
+    vec3 t = vec3(sin(time + random(position.xz) * 103.2),
+                  sin(time + random(position.zx) * 101.1),
+                  sin(time + random(position.yx) * 108.7));
 
-    vec3 disp = vec3(0.04 * random(position.zy),
-                     0.03 * random(position.xz),
-                     0.02 * random(position.yz)) * t;
+    vec3 disp = vec3(0.021 * random(position.zy),
+                     0.025 * random(position.xz),
+                     0.027 * random(position.yz)) * t;
 
-    gl_PointSize = 10.0;//10.0 * (t.x * 0.5 + 1.0);
+    gl_PointSize = 5.0 * (t.x * 0.5 + 1.0);
     return position + disp;
 }
 
@@ -53,7 +51,7 @@ vec3 growingAnim(vec3 position) {
 
 void main() {
     tese_out.texCoord = applyBaricentrics(gl_TessCoord, tese_in[0].texCoord, tese_in[1].texCoord, tese_in[2].texCoord);
-    tese_out.position = applyBaricentrics(gl_TessCoord, tese_in[0].position, tese_in[1].position, tese_in[2].position);
+    tese_out.position = applyBaricentrics(gl_TessCoord, gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
 
     gl_Position = mvpMatrix * vec4(wavingAnim(tese_out.position), 1.0);
 }
