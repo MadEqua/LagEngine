@@ -88,8 +88,6 @@ bool Root::internalInit(const IPlatformFactory &platformFactory) {
     resourceFilesWatcher = std::make_unique<ResourceFilesWatcher>(*initializationParameters);
 #endif
 
-    meshRepository = std::make_unique<MeshRepository>(*meshManager);
-
     return true;
 }
 

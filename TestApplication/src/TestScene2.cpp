@@ -6,11 +6,11 @@
 #include "PerspectiveCamera.h"
 #include "FreeCamera.h"
 #include "Entity.h"
-#include "MeshRepository.h"
+#include "MeshManager.h"
 
 void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
-    auto &meshRepo = root.getMeshRepository();
+    auto &meshManager = root.getMeshManager();
 
     root.getRenderer().setPointSizeFromGpuProgramEnabled(true);
     root.getRenderer().setClearColor(Lag::Color(0.1f));
@@ -41,19 +41,19 @@ void TestScene2::onStart() {
     boardBottomNode.setPosition(glm::vec3(0.0f, 0.0f, HALF_SIZE));
     boardBottomNode.setScale(glm::vec3(SIZE, 2.0f, 1.0f));
 
-    Lag::Entity *basePlane = createEntity(meshRepo.getPlaneXZ(), "pointMaterial");
+    Lag::Entity *basePlane = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
     basePlane->attachToSceneNode(boardBaseNode);
 
-    Lag::Entity *leftCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    Lag::Entity *leftCube = createEntity(meshManager.getCube(), "pointMaterial");
     leftCube->attachToSceneNode(boardLeftNode);
 
-    Lag::Entity *rightCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    Lag::Entity *rightCube = createEntity(meshManager.getCube(), "pointMaterial");
     rightCube->attachToSceneNode(boardRightNode);
 
-    Lag::Entity *topCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    Lag::Entity *topCube = createEntity(meshManager.getCube(), "pointMaterial");
     topCube->attachToSceneNode(boardTopNode);
 
-    Lag::Entity *bottomCube = createEntity(meshRepo.getCube(), "pointMaterial");
+    Lag::Entity *bottomCube = createEntity(meshManager.getCube(), "pointMaterial");
     bottomCube->attachToSceneNode(boardBottomNode);
 }
 

@@ -1,6 +1,6 @@
 #include "MeshManager.h"
 #include "Root.h"
-#include "MeshRepository.h"
+#include "MeshManager.h"
 
 using namespace Lag;
 
@@ -20,11 +20,12 @@ Mesh *MeshBuilder::parseAndCreate(const std::string &path, const TiXmlElement &e
 }
 
 MeshManager::MeshManager(MeshBuilder *builder) :
-        XmlResourceManager("MeshManager", builder) {
+        XmlResourceManager("MeshManager", builder),
+        meshRepository(*this) {
 }
 
 Handle<Mesh> MeshManager::getFallbackObject() {
-    return Root::getInstance().getMeshRepository().getCube();
+    return Root::getInstance().getMeshManager().getCube();
 }
 
 Handle<Mesh> MeshManager::getEmpty(const std::string &name) {

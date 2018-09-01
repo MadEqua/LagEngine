@@ -43,8 +43,8 @@ Handle<Mesh> MeshRepository::getCube() const {
                 1, 0, 4,
                 2, 1, 5,
                 6, 2, 5,
-                9, 3, 4,
-                3, 7, 5
+                0, 3, 4,
+                3, 7, 4
         };
 
         handle->lock();

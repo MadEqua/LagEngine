@@ -15,7 +15,7 @@
 #include "OrthographicCamera.h"
 #include "PointLight.h"
 #include "DirectionalLight.h"
-#include "MeshRepository.h"
+#include "MeshManager.h"
 
 using namespace Lag;
 
@@ -70,8 +70,8 @@ Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName) 
 }
 
 Entity *Scene::createAxisGizmo() {
-    auto &meshRepository = Root::getInstance().getMeshRepository();
-    return createEntity(meshRepository.getAxisGizmo(), "axisGizmoMaterial");
+    auto &meshManager = Root::getInstance().getMeshManager();
+    return createEntity(meshManager.getAxisGizmo(), "axisGizmoMaterial");
 }
 
 PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane) {
@@ -105,8 +105,8 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 
 void Scene::enableSky(const std::string &materialName) {
     if(!isSkyEnabled) {
-        auto &meshRepository = Root::getInstance().getMeshRepository();
-        createEntity(meshRepository.getCubeInsides(), materialName);
+        auto &meshManager = Root::getInstance().getMeshManager();
+        createEntity(meshManager.getCubeInsides(), materialName);
         isSkyEnabled = true;
     }
 }

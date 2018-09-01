@@ -141,6 +141,8 @@ set(SOURCES
         ${SRC_FOLDER}/resources/XmlResource.cpp
         ${SRC_FOLDER}/resources/XmlResource.h
         ${SRC_FOLDER}/resources/XmlResourceManager.h
+        ${SRC_FOLDER}/resources/MeshRepository.h
+        ${SRC_FOLDER}/resources/MeshRepository.cpp
         ${SRC_FOLDER}/scene/Camera.cpp
         ${SRC_FOLDER}/scene/Camera.h
         ${SRC_FOLDER}/scene/DirectionalLight.cpp
@@ -175,8 +177,6 @@ set(SOURCES
         ${SRC_FOLDER}/utils/FreeCamera.h
         ${SRC_FOLDER}/utils/Utils.cpp
         ${SRC_FOLDER}/utils/Utils.h
-        ${SRC_FOLDER}/utils/MeshRepository.h
-        ${SRC_FOLDER}/utils/MeshRepository.cpp
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h
@@ -212,7 +212,7 @@ target_sources(LagEngine
         PRIVATE ${DEPENDENCIES_INCLUDE_FOLDERS}/tinyxml/tinyxmlerror.cpp
         PRIVATE ${DEPENDENCIES_INCLUDE_FOLDERS}/tinyxml/tinyxmlparser.cpp)
 
-target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_INCLUDE_FOLDERS})
+target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_INCLUDE_FOLDERS})
 
 ###############################################
 #GLFW
