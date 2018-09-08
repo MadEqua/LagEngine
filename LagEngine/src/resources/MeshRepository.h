@@ -17,7 +17,6 @@ namespace Lag {
     protected:
         explicit MeshRepository(MeshManager &meshManager);
 
-        Handle<Mesh> getCube() const;
         Handle<Mesh> getCubeInsides() const;
         Handle<Mesh> getAxisGizmo() const; //To render as Lines
         Handle<Mesh> getPlaneXZ() const;

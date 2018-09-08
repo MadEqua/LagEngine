@@ -1,6 +1,6 @@
 #include "TestApplication.h"
 
-int main() {
+ int main() {
     TestApplication app;
 
     if (!app.start())

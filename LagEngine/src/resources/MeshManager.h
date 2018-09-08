@@ -27,7 +27,6 @@ namespace Lag {
         Handle<Mesh> getEmpty(const std::string &name);
         Handle<Mesh> get(const std::string &name); //Hiding the Manager get() on purpose.
 
-        inline Handle<Mesh> getCube() const { return meshRepository.getCube(); }
         inline Handle<Mesh> getCubeInsides() const { return meshRepository.getCubeInsides(); }
         inline Handle<Mesh> getAxisGizmo() const { return meshRepository.getAxisGizmo(); }
         inline Handle<Mesh> getPlaneXZ() const { return meshRepository.getPlaneXZ(); }

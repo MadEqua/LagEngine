@@ -22,12 +22,19 @@
     </shader>
 
     <shader name="pointVertex" file="point.vert" type="Vertex"/>
-    <shader name="pointFragment" file="point.frag" type="Fragment"/>
+    <shader name="pointFragment" file="point.frag" type="Fragment">
+        <uniform name="pointLightCount" semantic="PointLightCount"/>
+        <uniform name="pointLightPositions" semantic="PointLightPositions"/>
+        <uniform name="pointLightColors" semantic="PointLightColors"/>
+        <uniform name="pointLightAttenuations" semantic="PointLightAttenuations"/>
+    </shader>
     <shader name="pointTessCtrl" file="point.tesc" type="TesselationControl">
-        <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+        <uniform name="modelMatrix" semantic="ModelMatrix"/>
     </shader>
     <shader name="pointTessEval" file="point.tese" type="TesselationEvaluation">
+        <uniform name="modelMatrix" semantic="ModelMatrix"/>
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+        <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
         <uniform name="time" semantic="Timer"/>
     </shader>
 
@@ -60,7 +67,7 @@
     <mesh name="bunny" file="bunny.obj"/>
     <mesh name="sponza" file="sponza.obj"/>
 
-
+    
     <image name="test" file="test.jpg" components="RGB"
            componentType="UINT8" normalized="true" sRGB="true"/>
 

@@ -29,7 +29,7 @@ void TestScene3::onStart() {
     Lag::SceneNode &objectNode = getSceneGraph().getRootSceneNode().createChildSceneNode("localTranslation");
     objectNode.translate(glm::vec3(-10.0f, 0.0f, -10.0f), Lag::TransformSpace::WORLD);
     objectNode.yaw(45.0f, Lag::TransformSpace::WORLD);
-    Lag::Entity *object = createEntity(meshManager.getCube(), "pianoMaterial");
+    Lag::Entity *object = createEntity("piano", "pianoMaterial");
     object->attachToSceneNode(objectNode);
 
     //To test Parent translations

@@ -11,56 +11,6 @@ MeshRepository::MeshRepository(MeshManager &meshManager) :
     meshManager(meshManager) {
 }
 
-//TODO: add normals and texCoords
-Handle<Mesh> MeshRepository::getCube() const {
-    if(!meshManager.contains(MESH_CUBE)) {
-        auto handle = meshManager.getEmpty(MESH_CUBE);
-
-        const uint32 VERTEX_COUNT = 8;
-        const uint32 INDEX_COUNT = 12 * 3;
-        
-        //-64 and 64 will be normalized to -0.5 and 0.5 floats
-        const int8 v = 64;
-        int8 vertices[] = {
-                -v, v, v,
-                -v, -v, v,
-                v, -v, v,
-                v, v, v,
-                -v, v, -v,
-                -v, -v, -v,
-                v, -v, -v,
-                v, v, -v
-        };
-
-        uint8 indicesCcw[INDEX_COUNT] = {
-                0, 1, 2,
-                2, 3, 0,
-                6, 5, 4,
-                4, 7, 6,
-                7, 2, 6,
-                7, 3, 2,
-                5, 1, 4,
-                1, 0, 4,
-                2, 1, 5,
-                6, 2, 5,
-                0, 3, 4,
-                3, 7, 4
-        };
-
-        handle->lock();
-        VertexDescription vxDesc;
-        vxDesc.addAttribute(VertexAttributeSemantic::POSITION, 3, VertexAttributeType::INT8, 0, true);
-
-        handle->setVertices(reinterpret_cast<const byte *>(vertices), VERTEX_COUNT, vxDesc);
-        handle->setIndices(static_cast<const byte *>(indicesCcw), INDEX_COUNT);
-
-        handle->unlock();
-        return handle;
-    }
-
-    return meshManager.get(MESH_CUBE);
-}
-
 Handle<Mesh> MeshRepository::getCubeInsides() const {
     if(!meshManager.contains(MESH_CUBE_INSIDES)) {
         auto handle = meshManager.getEmpty(MESH_CUBE_INSIDES);
@@ -107,7 +57,7 @@ Handle<Mesh> MeshRepository::getCubeInsides() const {
         return handle;
     }
 
-    return meshManager.get(MESH_CUBE);
+    return meshManager.get(MESH_CUBE_INSIDES);
 }
 
 Handle<Mesh> MeshRepository::getAxisGizmo() const {
@@ -160,16 +110,10 @@ Handle<Mesh> MeshRepository::getPlaneXZ() const {
 
         uint8 normals[] = {
             0, 1, 0,
-            0, 1, 0,
-            0, 1, 0,
-            0, 1, 0,
         };
 
         uint8 tangents[] = {
-            1, 0, 1,
-            1, 0, 1,
-            1, 0, 1,
-            1, 0, 1,
+            1, 0, 0,
         };
 
         uint8 texCoords[] = {
@@ -204,10 +148,10 @@ Handle<Mesh> MeshRepository::getPlaneXZ() const {
             vertices.write(vxBufferOffset, posSize, reinterpret_cast<byte*>(&positions[vx * 3]));
             vxBufferOffset += posSize;
 
-            vertices.write(vxBufferOffset, normalSize, reinterpret_cast<byte*>(&normals[vx * 3]));
+            vertices.write(vxBufferOffset, normalSize, reinterpret_cast<byte*>(&normals));
             vxBufferOffset += normalSize;
 
-            vertices.write(vxBufferOffset, tangentSize, reinterpret_cast<byte*>(&tangents[vx * 3]));
+            vertices.write(vxBufferOffset, tangentSize, reinterpret_cast<byte*>(&tangents));
             vxBufferOffset += tangentSize;
 
             vertices.write(vxBufferOffset, texCoordSize, reinterpret_cast<byte*>(&texCoords[vx * 2]));
@@ -224,5 +168,5 @@ Handle<Mesh> MeshRepository::getPlaneXZ() const {
         return handle;
     }
 
-    return meshManager.get(MESH_AXIS_GIZMO);
+    return meshManager.get(MESH_PLANE_XZ);
 }

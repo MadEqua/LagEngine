@@ -27,4 +27,6 @@
              wrappingAll="Repeat"/>
 
     <material name="axisGizmoMaterial" file="axisGizmoMaterial.xml"/>
+
+    <mesh name="cube" file="cube.obj"/>
 </resources>

@@ -123,12 +123,12 @@ GpuProgramUniformSize GpuProgramStageBuilder::parseUniformSizeFromString(const s
 
 GpuProgramUniformSemantic GpuProgramStageBuilder::parseUniformSemanticFromString(const std::string &semantic) {
     if (semantic == "ModelMatrix") return GpuProgramUniformSemantic::MODEL_MATRIX;
-    else if (semantic == "ModelViewMatrix") return GpuProgramUniformSemantic::MODELVIEW_MATRIX;
+    else if (semantic == "ModelViewMatrix" || semantic ==  "MvMatrix") return GpuProgramUniformSemantic::MODELVIEW_MATRIX;
     else if (semantic == "MvpMatrix") return GpuProgramUniformSemantic::MVP_MATRIX;
     else if (semantic == "ViewMatrix") return GpuProgramUniformSemantic::VIEW_MATRIX;
-    else if (semantic == "ViewProjectionMatrix") return GpuProgramUniformSemantic::VIEWPROJECTION_MATRIX;
+    else if (semantic == "ViewProjectionMatrix" || semantic == "VpMatrix") return GpuProgramUniformSemantic::VIEWPROJECTION_MATRIX;
     else if (semantic == "ProjectionMatrix") return GpuProgramUniformSemantic::PROJECTION_MATRIX;
-    else if (semantic == "NormalWorldMatrix") return GpuProgramUniformSemantic::NORMAL_WORLD_MATRIX;
+    else if (semantic == "NormalWorldMatrix" || semantic == "NormalMatrix") return GpuProgramUniformSemantic::NORMAL_WORLD_MATRIX;
     else if (semantic == "NormalViewMatrix") return GpuProgramUniformSemantic::NORMAL_VIEW_MATRIX;
 
     else if (semantic == "PointLightCount") return GpuProgramUniformSemantic::POINT_LIGHT_COUNT;

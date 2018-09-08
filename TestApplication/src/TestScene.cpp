@@ -30,7 +30,7 @@ void TestScene::onStart() {
     Lag::PointLight &pl = createPointLight(isScene1 ? Lag::Color(0.0f, 1.0f, 0.0f) : Lag::Color(0.0f, 0.0f, 1.0f),
                                            glm::vec3(0.01f, 0.01f, 0.01f));
     Lag::SceneNode &pl1SceneNode = sceneGraph.getRootSceneNode().createChildSceneNode("pl1SceneNode");
-    createEntity(meshManager.getCube(), "baseMaterial")->attachToSceneNode(pl1SceneNode);
+    createEntity("cube", "baseMaterial")->attachToSceneNode(pl1SceneNode);
     pl1SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
     pl1SceneNode.setScale(glm::vec3(0.1f));
     pl.attachToSceneNode(pl1SceneNode);
@@ -38,7 +38,7 @@ void TestScene::onStart() {
     Lag::PointLight &pl2 = createPointLight(isScene1 ? Lag::Color(1.0f, 0.0f, 0.0f) : Lag::Color(0.5f, 0.5f, 0.0f),
                                             glm::vec3(0.01f, 0.01f, 0.01f));
     Lag::SceneNode &pl2SceneNode = sceneGraph.getRootSceneNode().createChildSceneNode("pl2SceneNode");
-    createEntity(meshManager.getCube(), "baseMaterial")->attachToSceneNode(pl2SceneNode);
+    createEntity("cube", "baseMaterial")->attachToSceneNode(pl2SceneNode);
     pl2SceneNode.setPosition(glm::vec3(0.0f, 1.0f, 0.0f));
     pl2SceneNode.setScale(glm::vec3(0.1f));
     pl2.attachToSceneNode(pl2SceneNode);

@@ -25,7 +25,7 @@ MeshManager::MeshManager(MeshBuilder *builder) :
 }
 
 Handle<Mesh> MeshManager::getFallbackObject() {
-    return Root::getInstance().getMeshManager().getCube();
+    return get("cube");
 }
 
 Handle<Mesh> MeshManager::getEmpty(const std::string &name) {

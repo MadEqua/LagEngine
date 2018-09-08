@@ -3,6 +3,8 @@
 layout (triangles, equal_spacing, point_mode) in;
 
 uniform mat4 mvpMatrix;
+uniform mat4 modelMatrix;
+uniform mat3 normalMatrix;
 uniform float time;
 
 in TesCtrlShaderOut {
@@ -12,8 +14,8 @@ in TesCtrlShaderOut {
 } tese_in[];
 
 out TesEvaShaderOut {
-	vec3 position;
-    vec2 texCoord;
+    vec3 normalWorld;
+	vec3 positionWorld;
 } tese_out;
 
 
@@ -50,8 +52,11 @@ vec3 growingAnim(vec3 position) {
 }
 
 void main() {
-    tese_out.texCoord = applyBaricentrics(gl_TessCoord, tese_in[0].texCoord, tese_in[1].texCoord, tese_in[2].texCoord);
-    tese_out.position = applyBaricentrics(gl_TessCoord, gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
+    vec3 positionLocal = applyBaricentrics(gl_TessCoord, gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
+    vec3 normalLocal = applyBaricentrics(gl_TessCoord, tese_in[0].normal, tese_in[1].normal, tese_in[2].normal);
+    vec3 positionDisplaced = wavingAnim(positionLocal);
 
-    gl_Position = mvpMatrix * vec4(wavingAnim(tese_out.position), 1.0);
+    tese_out.positionWorld = vec3(modelMatrix * vec4(positionDisplaced, 1.0));
+    tese_out.normalWorld = normalize(normalMatrix * normalLocal);
+    gl_Position = mvpMatrix * vec4(positionDisplaced, 1.0);
 }

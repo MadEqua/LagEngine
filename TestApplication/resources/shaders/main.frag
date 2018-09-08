@@ -40,6 +40,14 @@ vec3 computeBlinnPhong(vec3 L, vec3 lightColor)
 	return diffuse * lightColor + specular * vec3(1.0);
 }
 
+float computeAttenuation(vec3 L, vec3 attenuationFactors)
+{
+		float lightDistance = length(L);
+		return 1.0 / (attenuationFactors.x + 
+			attenuationFactors.y * lightDistance + 
+			attenuationFactors.z * lightDistance * lightDistance);
+}
+
 void main()
 {
 	vec3 lightSum = vec3(0);
@@ -47,17 +55,8 @@ void main()
 	for(int i = 0; i < pointLightCount; ++i)
 	{
 		vec4 lightPosView = viewMatrix * vec4(pointLightPositions[i], 1.0f);
-		
-		vec3 L = lightPosView.xyz - fs_in.positionView;
-		float lightDistance = length(L);
-
-		vec3 attenuationFactors = pointLightAttenuations[i];
-		float attenuation = 1.0 / 
-			(attenuationFactors.x + 
-			attenuationFactors.y * lightDistance + 
-			attenuationFactors.z * lightDistance * lightDistance);
-
-		lightSum += attenuation * computeBlinnPhong(normalize(L), pointLightColors[i]);
+        vec3 L = lightPosView.xyz - fs_in.positionView;
+		lightSum += computeAttenuation(L, pointLightAttenuations[i]) * computeBlinnPhong(normalize(L), pointLightColors[i]);
 	}
 
 	for(int i = 0; i < directionalLightCount; ++i)
