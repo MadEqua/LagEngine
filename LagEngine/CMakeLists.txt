@@ -177,6 +177,8 @@ set(SOURCES
         ${SRC_FOLDER}/utils/FreeCamera.h
         ${SRC_FOLDER}/utils/Utils.cpp
         ${SRC_FOLDER}/utils/Utils.h
+        ${SRC_FOLDER}/collisions/AABB.h
+        ${SRC_FOLDER}/collisions/AABB.cpp
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h
@@ -197,6 +199,7 @@ set(INCLUDE_FOLDERS
         ${SRC_FOLDER}/resources/
         ${SRC_FOLDER}/scene/
         ${SRC_FOLDER}/utils/
+        ${SRC_FOLDER}/collisions/
         ${SRC_FOLDER}/)
 
 add_library(LagEngine STATIC ${SOURCES})
@@ -290,7 +293,7 @@ target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_FOLDER}/glm-0.9.9.0/i
 
 #Not working for some reason
 #install(FILES ${ASSIMP_LIBRARY_DYN_DEBUG} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS debug)
-install(FILES ${ASSIMP_LIBRARY_DYN_RELEASE} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS release)
+#install(FILES ${ASSIMP_LIBRARY_DYN_RELEASE} DESTINATION ${INSTALL_FOLDER} CONFIGURATIONS release)
 
 #On Release builds we copy the resources
 install(DIRECTORY resources/ DESTINATION ${INSTALL_FOLDER}/LagResources CONFIGURATIONS release)

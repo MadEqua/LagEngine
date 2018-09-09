@@ -27,5 +27,6 @@ namespace Lag
 	constexpr const char* const MESH_CUBE = "MESH_CUBE";
 	constexpr const char* const MESH_CUBE_INSIDES = "MESH_CUBE_INSIDES";
 	constexpr const char* const MESH_AXIS_GIZMO = "MESH_AXIS_GIZMO";
+	constexpr const char* const MESH_AABB_GIZMO = "MESH_AABB_GIZMO";
 	constexpr const char* const MESH_PLANE_XZ = "MESH_PLANE_XZ";
 }

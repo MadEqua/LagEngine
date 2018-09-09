@@ -13,7 +13,7 @@ uniform vec3 pointLightAttenuations[MAX_POINT_LIGHTS];
 
 in TesEvaShaderOut {
     vec3 normalWorld;
-	vec3 positionWorld;
+    vec3 positionWorld;
 } fs_in;
 
 float perlinNoise(vec2 st) {
@@ -21,16 +21,16 @@ float perlinNoise(vec2 st) {
 }
 
 vec3 computeBlinnPhongForPoints(vec3 L, vec3 lightColor) {
-	vec3 N = normalize(fs_in.normalWorld);
-	float diffuse = max(dot(N, L), dot(-N, L));
-	return diffuse * lightColor;
+    vec3 N = normalize(fs_in.normalWorld);
+    float diffuse = max(dot(N, L), dot(-N, L));
+    return diffuse * lightColor;
 }
 
 float computeAttenuation(vec3 L, vec3 attenuationFactors) {
-		float lightDistance = length(L);
-		return 1.0 / (attenuationFactors.x + 
-			attenuationFactors.y * lightDistance + 
-			attenuationFactors.z * lightDistance * lightDistance);
+        float lightDistance = length(L);
+        return 1.0 / (attenuationFactors.x + 
+            attenuationFactors.y * lightDistance + 
+            attenuationFactors.z * lightDistance * lightDistance);
 }
 
 vec3 lighting() {
@@ -43,23 +43,23 @@ vec3 lighting() {
     return min(l, 1.0);*/
 
     vec3 lightSum = vec3(0);
-	for(int i = 0; i < pointLightCount; ++i) {
+    for(int i = 0; i < pointLightCount; ++i) {
         vec3 L = pointLightPositions[i].xyz - fs_in.positionWorld;
-		lightSum += computeAttenuation(L, pointLightAttenuations[i]) * computeBlinnPhongForPoints(normalize(L), pointLightColors[i]);
-	}
+        lightSum += computeAttenuation(L, pointLightAttenuations[i]) * computeBlinnPhongForPoints(normalize(L), pointLightColors[i]);
+    }
     return lightSum;
 }
 
 
 void main() {
-	float mask = texture2D(spriteMask, gl_PointCoord).r;
+    float mask = texture2D(spriteMask, gl_PointCoord).r;
     if(mask < 0.1) discard;
 
-    const vec3 C1 =  vec3(0.08, 0.06, 0.9);
-    const vec3 C2 =  vec3(0.01, 0.04, 0.4);
+    const vec3 C1 = vec3(0.08, 0.06, 0.9);
+    const vec3 C2 = vec3(0.01, 0.04, 0.4);
 
     float n = perlinNoise(fs_in.positionWorld.xy * 100.0);
-	vec3 color = mix(C1, C2, n) * lighting();
+    vec3 color = mix(C1, C2, n) * lighting();
 
-	outColor = mask * vec4(color, 1.0);
+    outColor = mask * vec4(color, 1.0);
 }

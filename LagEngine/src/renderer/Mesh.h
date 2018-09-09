@@ -3,6 +3,7 @@
 #include "XmlResource.h"
 #include "SubMesh.h"
 #include "Types.h"
+#include "AABB.h"
 
 #include <memory>
 #include <vector>
@@ -51,8 +52,10 @@ namespace Lag {
         void setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription, uint32 subMeshIndex);
         void setIndices(const byte *indices, uint32 indexCount, uint32 subMeshIndex);
 
-        std::vector<std::unique_ptr<SubMesh>> subMeshes;
+        void updateAABB();
 
+        std::vector<std::unique_ptr<SubMesh>> subMeshes;
         bool isLocked;
+        AABB aabb;
     };
 }

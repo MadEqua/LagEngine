@@ -41,4 +41,7 @@ namespace Lag
 	constexpr uint64 MAX_UINT64 = 18446744073709551615u;
 	//constexpr int64 MIN_INT64 = -9223372036854775808;
 	constexpr uint64 MAX_INT64 = 9223372036854775807u;
+
+    constexpr float MIN_FLOAT = -3.40282e+038f;
+    constexpr float MAX_FLOAT = 3.40282e+038f;
 }

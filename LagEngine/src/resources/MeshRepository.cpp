@@ -92,6 +92,55 @@ Handle<Mesh> MeshRepository::getAxisGizmo() const {
     return meshManager.get(MESH_AXIS_GIZMO);
 }
 
+Handle<Mesh> MeshRepository::getAABBGizmo() const {
+    if(!meshManager.contains(MESH_AABB_GIZMO)) {
+        auto handle = meshManager.getEmpty(MESH_AABB_GIZMO);
+
+        const int VERTEX_COUNT = 8;
+        const int INDEX_COUNT = 12 * 2;
+
+        //-64 and 64 will be normalized to -0.5 and 0.5 floats
+        const int8 v = 64;
+        int8 vertices[] = {
+                -v, v, v,
+                -v, -v, v,
+                v, -v, v,
+                v, v, v,
+                -v, v, -v,
+                -v, -v, -v,
+                v, -v, -v,
+                v, v, -v
+        };
+
+        uint8 indicesCw[INDEX_COUNT] = {
+                0, 1,
+                1, 2,
+                2, 3,
+                3, 0,
+                4, 5,
+                5, 6,
+                6, 7,
+                7, 4,
+                0, 4,
+                3, 7,
+                2, 6,
+                1, 5
+        };
+
+        handle->lock();
+        VertexDescription vxDesc;
+        vxDesc.addAttribute(VertexAttributeSemantic::POSITION, 3, VertexAttributeType::INT8, 0, true);
+
+        handle->setVertices(reinterpret_cast<const byte *>(vertices), VERTEX_COUNT, vxDesc);
+        handle->setIndices(static_cast<const byte *>(indicesCw), INDEX_COUNT);
+
+        handle->unlock();
+        return handle;
+    }
+
+    return meshManager.get(MESH_AABB_GIZMO);
+}
+
 Handle<Mesh> MeshRepository::getPlaneXZ() const {
     if(!meshManager.contains(MESH_PLANE_XZ)) {
         auto handle = meshManager.getEmpty(MESH_PLANE_XZ);

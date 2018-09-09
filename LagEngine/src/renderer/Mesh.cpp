@@ -57,8 +57,7 @@ bool Mesh::loadImplementation() {
 
         for (uint32 i = 0; i < AI_MAX_NUMBER_OF_TEXTURECOORDS; ++i) {
             if (firstMesh->HasTextureCoords(i))
-                vxDesc.addAttribute(VertexAttributeSemantic::TEXCOORD, 2, VertexAttributeType::UINT16,
-                                    static_cast<uint8>(i), true);
+                vxDesc.addAttribute(VertexAttributeSemantic::TEXCOORD, 2, VertexAttributeType::UINT16, static_cast<uint8>(i), true);
             else break;
         }
 
@@ -139,6 +138,7 @@ bool Mesh::loadImplementation() {
         }
     }
 
+    updateAABB();
     return true;
 }
 
@@ -158,6 +158,8 @@ void Mesh::unlock() {
     if (isLocked) {
         isLocked = false;
 
+        updateAABB();
+
         if(subMeshes[0]->vertexData->vertexCount <= 0) {
             LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
                                           "Unlocking a Mesh with no vertices.");
@@ -166,13 +168,7 @@ void Mesh::unlock() {
 }
 
 void Mesh::setVertices(const MemoryBuffer &vertices, uint32 vertexCount, const VertexDescription &vertexDescription) {
-    if (isLocked) {
-        setVertices(vertices.getData(), vertexCount, vertexDescription, 0);
-    }
-    else {
-        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
-                                      "Trying to set vertices while not locked.");
-    }
+    setVertices(vertices.getData(), vertexCount, vertexDescription, 0);
 }
 
 void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription) {
@@ -187,13 +183,7 @@ void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDes
 
 template<typename T>
 void Mesh::setIndices(const std::vector<T> &indices) {
-    if (isLocked) {
-        setIndices(indices.data(), static_cast<uint32>(indices.size()), 0);
-    }
-    else {
-        LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
-                                      "Trying to set indices while not locked.");
-    }
+    setIndices(indices.data(), static_cast<uint32>(indices.size()), 0)
 }
 
 void Mesh::setIndices(const byte *indices, uint32 indexCount) {
@@ -234,6 +224,7 @@ void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDes
     //Give the submesh the ownership of the VertexData
     auto &subMesh = *subMeshes[subMeshIndex];
     subMesh.vertexData = std::unique_ptr<VertexData>(vertexData);
+    subMesh.updateAABB(vertices, vertexCount, vertexDescription);
 }
 
 void Mesh::setIndices(const byte *indices, uint32 indexCount, uint32 subMeshIndex) {
@@ -282,4 +273,10 @@ void Mesh::setIndices(const byte *indices, uint32 indexCount, uint32 subMeshInde
     //Give the submesh the ownership of the IndexData
     auto &subMesh = *subMeshes[subMeshIndex];
     subMesh.indexData = std::unique_ptr<IndexData>(indexData);
+}
+
+void Mesh::updateAABB() {
+    for(auto &subMesh : subMeshes) {
+        aabb.enclose(subMesh->aabb);
+    }
 }

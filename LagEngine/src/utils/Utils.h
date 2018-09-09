@@ -3,10 +3,14 @@
 #include <string>
 #include <sstream>
 
+#include "Types.h"
+ 
+
 class TiXmlNode;
 
 namespace Lag {
     struct InputDescriptionMapKey;
+    enum class VertexAttributeType : uint8;
 
     namespace Utils {
         template<class T>
@@ -34,5 +38,8 @@ namespace Lag {
         bool parseBool(const std::string &str);
         int parseInt(const std::string &str);
         float parseFloat(const std::string &str);
+
+        float convertNormalizedIntegerToFloat(const byte *integerPointer, VertexAttributeType type);
+        float convertValueToFloat(const byte *valuePointer, VertexAttributeType type);
     }
 }

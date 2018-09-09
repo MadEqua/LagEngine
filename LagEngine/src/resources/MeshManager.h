@@ -29,6 +29,7 @@ namespace Lag {
 
         inline Handle<Mesh> getCubeInsides() const { return meshRepository.getCubeInsides(); }
         inline Handle<Mesh> getAxisGizmo() const { return meshRepository.getAxisGizmo(); }
+        inline Handle<Mesh> getAABBGizmo() const { return meshRepository.getAABBGizmo(); }
         inline Handle<Mesh> getPlaneXZ() const { return meshRepository.getPlaneXZ(); }
 
     private:

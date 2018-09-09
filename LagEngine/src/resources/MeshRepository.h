@@ -19,6 +19,7 @@ namespace Lag {
 
         Handle<Mesh> getCubeInsides() const;
         Handle<Mesh> getAxisGizmo() const; //To render as Lines
+        Handle<Mesh> getAABBGizmo() const; //To render as Lines
         Handle<Mesh> getPlaneXZ() const;
 
     private:
