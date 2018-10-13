@@ -53,16 +53,18 @@ void Scene::end() {
     renderableVector.clear();
 }
 
-Entity *Scene::createEntity(const std::string &meshName, const std::string &materialName) {
+Entity *Scene::createEntity(const std::string &meshName, const std::string &materialName, bool hasAABB) {
     auto e = new Entity(meshName, materialName);
+    e->setHasAABB(hasAABB);
     sceneObjectMap.add(e);
     entityVector.push_back(e);
     renderableVector.push_back(e);
     return e;
 }
 
-Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName) {
+Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName, bool hasAABB) {
     auto e = new Entity(mesh, materialName);
+    e->setHasAABB(hasAABB);
     sceneObjectMap.add(e);
     entityVector.push_back(e);
     renderableVector.push_back(e);
@@ -71,7 +73,7 @@ Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName) 
 
 Entity *Scene::createAxisGizmo() {
     auto &meshManager = Root::getInstance().getMeshManager();
-    return createEntity(meshManager.getAxisGizmo(), "axisGizmoMaterial");
+    return createEntity(meshManager.getAxisGizmo(), "axisGizmoMaterial", false);
 }
 
 PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane) {
@@ -106,7 +108,7 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 void Scene::enableSky(const std::string &materialName) {
     if(!isSkyEnabled) {
         auto &meshManager = Root::getInstance().getMeshManager();
-        createEntity(meshManager.getCubeInsides(), materialName);
+        createEntity(meshManager.getCubeInsides(), materialName, false);
         isSkyEnabled = true;
     }
 }

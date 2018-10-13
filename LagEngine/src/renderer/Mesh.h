@@ -40,6 +40,8 @@ namespace Lag {
 
         inline bool hasData() const { return !subMeshes.empty(); }
 
+        inline const AABB& getAABB() const { return aabb; }
+
     private:
         friend class MeshBuilder;
 

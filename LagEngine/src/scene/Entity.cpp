@@ -6,6 +6,7 @@
 #include "Renderer.h"
 #include "SubEntity.h"
 #include "Mesh.h"
+#include "SceneNode.h"
 
 using namespace Lag;
 
@@ -27,7 +28,7 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
         ptr->addToRenderQueue(renderQueue, viewport, renderTarget);
 
 #ifdef ENABLE_AABB_GIZMOS
-    if(renderTarget.getRenderPhase() == RenderPhase::COLOR) {
+    if(hasAABB && renderTarget.getRenderPhase() == RenderPhase::COLOR) {
         RenderOperation &ro = renderQueue.addRenderOperation();
         ro.renderTarget = &renderTarget;
         ro.vertexData = const_cast<VertexData *>(aabbMesh->getSubMeshes()[0]->getVertexData());
@@ -41,11 +42,21 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
 }
 
 void Entity::render(Renderer &renderer, RenderOperation &renderOperation) {
-    for (auto &ptr : subEntities)
-        ptr->render(renderer, renderOperation);
-
 #ifdef ENABLE_AABB_GIZMOS
-    renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
+    if(hasAABB) {
+        AABB worldSpaceAABB = getWorldSpaceAABB();
+        glm::vec3 pos = worldSpaceAABB.getCenter();
+        glm::vec3 scale = worldSpaceAABB.getDimensions();
+        glm::mat4 transform(scale.x, 0.0f, 0.0f, 0.0f,
+                            0.0f, scale.y, 0.0f, 0.0f,
+                            0.0f, 0.0f, scale.z, 0.0f,
+                            pos.x, pos.y, pos.z, 1.0f);
+
+        renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
+                                                       *renderOperation.viewport,
+                                                       transform);
+        renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
+    }
 #endif
 }
 
@@ -61,7 +72,8 @@ void Entity::setMaterial(Handle<Material> material) {
     this->material = material;
 
 #ifdef ENABLE_AABB_GIZMOS
-    aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
+    if(hasAABB)
+        aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
 #endif
 }
 
@@ -82,6 +94,14 @@ void Entity::setMesh(Handle<Mesh> mesh) {
     this->mesh = mesh;
 
 #ifdef ENABLE_AABB_GIZMOS
-    aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
+    if(hasAABB)
+        aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
 #endif
+}
+
+AABB Entity::getWorldSpaceAABB() const {
+    if(hasAABB && isAttachedToSceneNode()) {
+        return mesh->getAABB().transform(getLocalToWorldTransform());
+    }
+    return AABB();
 }

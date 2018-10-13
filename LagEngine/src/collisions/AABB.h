@@ -21,13 +21,13 @@ namespace Lag {
         void enclose(const AABB &other);
 
         //Transforms itself by the matrix and recompute the bounds.
-        void transform(const glm::mat4 &transform);
+        AABB transform(const glm::mat4 &transform) const;
 
         bool intersects(const AABB &other) const;
 
         inline glm::vec3 getMin() const { return glm::vec3(min[0], min[1], min[2]); }
         inline glm::vec3 getMax() const { return glm::vec3(max[0], max[1], max[2]); }
-        inline glm::vec3 getDimensions() const { return getMax() + getMin(); }
+        inline glm::vec3 getDimensions() const { return getMax() - getMin(); }
         inline glm::vec3 getCenter() const { return (getMin() + getMax()) / 2.0f; }
 
     private:

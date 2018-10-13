@@ -69,99 +69,123 @@ bool AABB::intersects(const AABB &other) const {
 *
 * Ex for the computing the new min: if m00 > 0 then the minimum x' is achieved by replacing x for min.x.
 * Naturally the new maximum is achieved by replacing x for max.x.
-* if m00 < 0 then the minimum x' is achieved by replacing x for max.x and the new maximum is achieved by replacing x for min.x.
+* If m00 < 0 then the minimum x' is achieved by replacing x for max.x and the new maximum is achieved by replacing x for min.x.
 *
 * Repeat for y' and z' to have the new min and max.
 */
-void AABB::transform(const glm::mat4 &transform) {
-    AABB initial(*this);
+AABB AABB::transform(const glm::mat4 &transform) const {
+    AABB result;
 
     glm::vec3 translation = transform[3];
-    min[0] = max[0] = translation.x;
-    min[1] = max[1] = translation.y;
-    min[2] = max[2] = translation.z;
+    result.min[0] = result.max[0] = translation.x;
+    result.min[1] = result.max[1] = translation.y;
+    result.min[2] = result.max[2] = translation.z;
 
     //x'
     if(transform[0][0] > 0.0f) {
-        min[0] += transform[0][0] * initial.min[0];
-        max[0] += transform[0][0] * initial.max[0];
+        result.min[0] += transform[0][0] * min[0];
+        result.max[0] += transform[0][0] * max[0];
     }
     else {
-        min[0] += transform[0][0] * initial.max[0];
-        max[0] += transform[0][0] * initial.min[0];
+        result.min[0] += transform[0][0] * max[0];
+        result.max[0] += transform[0][0] * min[0];
     }
 
-    if(transform[0][1] > 0.0f) {
-        min[0] += transform[0][1] * initial.min[1];
-        max[0] += transform[0][1] * initial.max[1];
+    if(transform[1][0] > 0.0f) {
+        result.min[0] += transform[1][0] * min[1];
+        result.max[0] += transform[1][0] * max[1];
     }
     else {
-        min[0] += transform[0][1] * initial.max[1];
-        max[0] += transform[0][1] * initial.min[1];
+        result.min[0] += transform[1][0] * max[1];
+        result.max[0] += transform[1][0] * min[1];
     }
 
-    if(transform[0][2] > 0.0f) {
-        min[0] += transform[0][2] * initial.min[2];
-        max[0] += transform[0][2] * initial.max[2];
+    if(transform[2][0] > 0.0f) {
+        result.min[0] += transform[2][0] * min[2];
+        result.max[0] += transform[2][0] * max[2];
     }
     else {
-        min[0] += transform[0][2] * initial.max[2];
-        max[0] += transform[0][2] * initial.min[2];
+        result.min[0] += transform[2][0] * max[2];
+        result.max[0] += transform[2][0] * min[2];
     }
 
     //y'
-    if(transform[1][0] > 0.0f) {
-        min[1] += transform[1][0] * initial.min[0];
-        max[1] += transform[1][0] * initial.max[0];
+    if(transform[0][1] > 0.0f) {
+        result.min[1] += transform[0][1] * min[0];
+        result.max[1] += transform[0][1] * max[0];
     }
     else {
-        min[1] += transform[1][0] * initial.max[0];
-        max[1] += transform[1][0] * initial.min[0];
+        result.min[1] += transform[0][1] * max[0];
+        result.max[1] += transform[0][1] * min[0];
     }
 
     if(transform[1][1] > 0.0f) {
-        min[1] += transform[1][1] * initial.min[1];
-        max[1] += transform[1][1] * initial.max[1];
+        result.min[1] += transform[1][1] * min[1];
+        result.max[1] += transform[1][1] * max[1];
     }
     else {
-        min[1] += transform[1][1] * initial.max[1];
-        max[1] += transform[1][1] * initial.min[1];
-    }
-
-    if(transform[1][2] > 0.0f) {
-        min[1] += transform[1][2] * initial.min[2];
-        max[1] += transform[1][2] * initial.max[2];
-    }
-    else {
-        min[1] += transform[1][2] * initial.max[2];
-        max[1] += transform[1][2] * initial.min[2];
-    }
-
-    //z'
-    if(transform[2][0] > 0.0f) {
-        min[2] += transform[2][0] * initial.min[0];
-        max[2] += transform[2][0] * initial.max[0];
-    }
-    else {
-        min[2] += transform[2][0] * initial.max[0];
-        max[2] += transform[2][0] * initial.min[0];
+        result.min[1] += transform[1][1] * max[1];
+        result.max[1] += transform[1][1] * min[1];
     }
 
     if(transform[2][1] > 0.0f) {
-        min[2] += transform[2][1] * initial.min[1];
-        max[2] += transform[2][1] * initial.max[1];
+        result.min[1] += transform[2][1] * min[2];
+        result.max[1] += transform[2][1] * max[2];
     }
     else {
-        min[2] += transform[2][1] * initial.max[1];
-        max[2] += transform[2][1] * initial.min[1];
+        result.min[1] += transform[2][1] * max[2];
+        result.max[1] += transform[2][1] * min[2];
+    }
+
+    //z'
+    if(transform[0][2] > 0.0f) {
+        result.min[2] += transform[0][2] * min[0];
+        result.max[2] += transform[0][2] * max[0];
+    }
+    else {
+        result.min[2] += transform[0][2] * max[0];
+        result.max[2] += transform[0][2] * min[0];
+    }
+
+    if(transform[1][2] > 0.0f) {
+        result.min[2] += transform[1][2] * min[1];
+        result.max[2] += transform[1][2] * max[1];
+    }
+    else {
+        result.min[2] += transform[1][2] * max[1];
+        result.max[2] += transform[1][2] * min[1];
     }
 
     if(transform[2][2] > 0.0f) {
-        min[2] += transform[2][2] * initial.min[2];
-        max[2] += transform[2][2] * initial.max[2];
+        result.min[2] += transform[2][2] * min[2];
+        result.max[2] += transform[2][2] * max[2];
     }
     else {
-        min[2] += transform[2][2] * initial.max[2];
-        max[2] += transform[2][2] * initial.min[2];
+        result.min[2] += transform[2][2] * max[2];
+        result.max[2] += transform[2][2] * min[2];
     }
+        
+    //The naive way
+    /*glm::vec3 dimen = getDimensions();
+
+    glm::vec3 a = glm::vec3(min[0], min[1], min[2]);
+    glm::vec3 b = glm::vec3(min[0], min[1] + dimen.y, min[2]);
+    glm::vec3 c = glm::vec3(min[0], min[1], min[2] + dimen.z);
+    glm::vec3 d = glm::vec3(min[0], min[1] + dimen.y, min[2] + dimen.z);
+
+    glm::vec3 e = glm::vec3(max[0], max[1], max[2]);
+    glm::vec3 f = glm::vec3(max[0], max[1] - dimen.y, max[2]);
+    glm::vec3 g = glm::vec3(max[0], max[1], max[2] - dimen.z);
+    glm::vec3 h = glm::vec3(max[0], max[1] - dimen.y, max[2] - dimen.z);
+
+    result.enclose(transform * glm::vec4(a, 1.0f));
+    result.enclose(transform * glm::vec4(b, 1.0f));
+    result.enclose(transform * glm::vec4(c, 1.0f));
+    result.enclose(transform * glm::vec4(d, 1.0f));
+    result.enclose(transform * glm::vec4(e, 1.0f));
+    result.enclose(transform * glm::vec4(f, 1.0f));
+    result.enclose(transform * glm::vec4(g, 1.0f));
+    result.enclose(transform * glm::vec4(h, 1.0f));*/
+
+    return result;
 }

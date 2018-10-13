@@ -23,9 +23,10 @@ void SubMesh::updateAABB(const byte *vertices, uint32 vertexCount, const VertexD
 
         //The byte size of the type of a vertex position (eg: 4 if a position is in floats)
         uint8 typeSize = posAttribute->getTypeByteSize();
-
+        uint8 vxSize = vertexDescription.getVertexByteSize();
+       
         for(uint32 vx = 0; vx < vertexCount; ++vx) {
-            uint32 vxOffset = vx * posAttribute->getByteSize();
+            uint32 vxOffset = vx * vxSize;
 
             for(uint32 component = 0; component < 3; ++component) {
                 uint32 componentOffset = component * typeSize;

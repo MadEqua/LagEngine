@@ -29,6 +29,7 @@ namespace Lag {
     class TextureManager;
     class GpuBufferManager;
     class InputDescriptionManager;
+    class CollisionManager;
 
     class IGraphicsAPI;
     class IPlatformFactory;
@@ -60,6 +61,7 @@ namespace Lag {
         inline InputDescriptionManager &getInputDescriptionManager() const { return *inputDescriptionManager; }
         inline const TiXmlDocument& getAppResourcesFile() const { return *appResourcesFile; }
         inline const TiXmlDocument& getLagResourcesFile() const { return *lagResourcesFile; }
+        inline const CollisionManager& getCollisionManager() const { return *collisionManager; }
 
     private:
         bool initialized;
@@ -81,6 +83,8 @@ namespace Lag {
         std::unique_ptr<GpuProgramManager> gpuProgramManager;
         std::unique_ptr<MaterialManager> materialManager;
         std::unique_ptr<SceneManager> sceneManager;
+
+        std::unique_ptr<CollisionManager> collisionManager;
 
         std::unique_ptr<InitializationParameters> initializationParameters;
         std::unique_ptr<TiXmlDocument> appResourcesFile;

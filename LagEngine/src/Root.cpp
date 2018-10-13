@@ -21,6 +21,7 @@
 #include "TextureManager.h"
 #include "GpuProgramStageManager.h"
 #include "MeshRepository.h"
+#include "CollisionManager.h"
 
 #include "io/Keys.h"
 
@@ -87,6 +88,8 @@ bool Root::internalInit(const IPlatformFactory &platformFactory) {
 #ifdef ENABLE_DEBUG
     resourceFilesWatcher = std::make_unique<ResourceFilesWatcher>(*initializationParameters);
 #endif
+
+    collisionManager = std::make_unique<CollisionManager>();
 
     return true;
 }
