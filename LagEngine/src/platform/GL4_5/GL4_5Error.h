@@ -9,7 +9,7 @@ namespace Lag {
                                            const GLchar *message, const void *userParam);
 }
 
-/*#ifdef ENABLE_DEBUG_MACRO
+/*#ifdef ENABLE_DEBUG
 #define GL_ERROR_PRINT(stmt)\
 			stmt;\
 			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);
@@ -17,7 +17,7 @@ namespace Lag {
 #define GL_ERROR_PRINT(stmt) stmt;
 #endif
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
 #define GL_ERROR_PRINT_BLOCK(stmt) {\
 			stmt;\
 			Lag::printOpenGLErrors(#stmt, __FILE__, __LINE__);\

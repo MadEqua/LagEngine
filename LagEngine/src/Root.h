@@ -86,7 +86,7 @@ namespace Lag {
         std::unique_ptr<TiXmlDocument> appResourcesFile;
         std::unique_ptr<TiXmlDocument> lagResourcesFile;
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
         std::unique_ptr<ResourceFilesWatcher> resourceFilesWatcher;
 #endif
 

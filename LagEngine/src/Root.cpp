@@ -24,7 +24,7 @@
 
 #include "io/Keys.h"
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
     #include "io/ResourceFilesWatcher.h"
 #endif
 
@@ -84,7 +84,7 @@ bool Root::internalInit(const IPlatformFactory &platformFactory) {
     dynamic_cast<RenderWindow *>(renderWindow.get())->registerObserver(windowListener);
     inputManager->registerObserver(keyboardListener);
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
     resourceFilesWatcher = std::make_unique<ResourceFilesWatcher>(*initializationParameters);
 #endif
 

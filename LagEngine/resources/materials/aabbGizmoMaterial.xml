@@ -1,0 +1,4 @@
+<material renderMode="Lines">
+    <shader name="aabbGizmoVertex"/>
+    <shader name="aabbGizmoFragment"/>
+</material>

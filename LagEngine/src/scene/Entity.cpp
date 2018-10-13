@@ -25,11 +25,28 @@ Entity::Entity() : Entity("defaultMesh", "defaultMaterial") {
 void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) {
     for (auto &ptr : subEntities)
         ptr->addToRenderQueue(renderQueue, viewport, renderTarget);
+
+#ifdef ENABLE_AABB_GIZMOS
+    if(renderTarget.getRenderPhase() == RenderPhase::COLOR) {
+        RenderOperation &ro = renderQueue.addRenderOperation();
+        ro.renderTarget = &renderTarget;
+        ro.vertexData = const_cast<VertexData *>(aabbMesh->getSubMeshes()[0]->getVertexData());
+        ro.indexData = const_cast<IndexData *>(aabbMesh->getSubMeshes()[0]->getIndexData());
+        ro.renderable = this;
+        ro.viewport = &viewport;
+        ro.passId = 0;
+        ro.material = aabbMaterial.get();
+    }
+#endif
 }
 
 void Entity::render(Renderer &renderer, RenderOperation &renderOperation) {
     for (auto &ptr : subEntities)
         ptr->render(renderer, renderOperation);
+
+#ifdef ENABLE_AABB_GIZMOS
+    renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
+#endif
 }
 
 void Entity::setMaterial(const std::string &materialName) {
@@ -42,6 +59,10 @@ void Entity::setMaterial(Handle<Material> material) {
     }
 
     this->material = material;
+
+#ifdef ENABLE_AABB_GIZMOS
+    aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
+#endif
 }
 
 void Entity::setMesh(const std::string &meshName) {
@@ -59,4 +80,8 @@ void Entity::setMesh(Handle<Mesh> mesh) {
     };
 
     this->mesh = mesh;
+
+#ifdef ENABLE_AABB_GIZMOS
+    aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
+#endif
 }

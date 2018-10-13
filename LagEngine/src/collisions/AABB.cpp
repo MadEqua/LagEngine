@@ -46,15 +46,15 @@ void AABB::enclose(const AABB &other) {
 }
 
 bool AABB::intersects(const AABB &other) const {
-    if(min[0] < other.max[0]) return true;
-    if(min[1] < other.max[1]) return true;
-    if(min[2] < other.max[2]) return true;
+    if(min[0] >= other.max[0]) return false;
+    if(min[1] >= other.max[1]) return false;
+    if(min[2] >= other.max[2]) return false;
 
-    if(max[0] > other.min[0]) return true;
-    if(max[1] > other.min[1]) return true;
-    if(max[2] > other.min[2]) return true;
+    if(max[0] <= other.min[0]) return false;
+    if(max[1] <= other.min[1]) return false;
+    if(max[2] <= other.min[2]) return false;
 
-    return false;
+    return true;
 }
 
 /*

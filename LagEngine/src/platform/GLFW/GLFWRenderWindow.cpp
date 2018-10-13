@@ -54,7 +54,7 @@ bool GLFWRenderWindow::loadImplementation() {
         glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 5);
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
 #else
         glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);

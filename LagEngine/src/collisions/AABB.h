@@ -13,7 +13,7 @@ namespace Lag {
         //Will enclose all points.
         explicit AABB(const std::vector<glm::vec3> &points);
 
-        //Will enclose the transformed other AABB.
+        //Will enclose the other transformed AABB.
         AABB(const AABB &other, const glm::mat4 &transform);
 
         void empty();

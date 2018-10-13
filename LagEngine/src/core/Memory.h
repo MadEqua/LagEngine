@@ -2,7 +2,7 @@
 
 //In debug mode we may want an helping hand finding memory leaks
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
     #define _CRTDBG_MAP_ALLOC
 
     #include <stdlib.h>

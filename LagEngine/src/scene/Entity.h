@@ -43,5 +43,10 @@ namespace Lag {
     private:
         Handle<Material> material;
         Handle<Mesh> mesh;
+
+#ifdef ENABLE_AABB_GIZMOS
+        Handle<Mesh> aabbMesh;
+        Handle<Material> aabbMaterial;
+#endif 
     };
 }

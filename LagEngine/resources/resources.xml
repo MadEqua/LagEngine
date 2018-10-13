@@ -9,6 +9,11 @@
     </shader>
     <shader name="axisGizmoFragment" file="axisGizmo.frag" type="Fragment"/>
 
+    <shader name="aabbGizmoVertex" file="aabbGizmo.vert" type="Vertex">
+        <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+    </shader>
+    <shader name="aabbGizmoFragment" file="aabbGizmo.frag" type="Fragment"/>
+
     <material name="depthPassMaterial" file="depthPassMaterial.xml"/>
     
     <shader name="defaultVertex" file="default.vert" type="Vertex">
@@ -27,6 +32,7 @@
              wrappingAll="Repeat"/>
 
     <material name="axisGizmoMaterial" file="axisGizmoMaterial.xml"/>
+    <material name="aabbGizmoMaterial" file="aabbGizmoMaterial.xml"/>
 
     <mesh name="cube" file="cube.obj"/>
 </resources>

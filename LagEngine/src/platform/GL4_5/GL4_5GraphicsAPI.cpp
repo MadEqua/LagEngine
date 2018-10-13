@@ -76,7 +76,7 @@ bool GL4_5GraphicsAPI::initialize() {
     glEnable(GL_CULL_FACE);
     glCullFace(GL_BACK);
 
-#ifdef ENABLE_DEBUG_MACRO
+#ifdef ENABLE_DEBUG
     glEnable(GL_DEBUG_OUTPUT);
     glDebugMessageCallback(openglCallbackFunction, nullptr);
     glDebugMessageControl(GL_DONT_CARE, GL_DONT_CARE, GL_DONT_CARE, 0, nullptr, GL_TRUE); //Enable all messages
