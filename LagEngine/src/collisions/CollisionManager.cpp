@@ -7,34 +7,39 @@
 #include "SceneManager.h"
 #include "Entity.h"
 #include "Mesh.h"
-#include "ICollider.h"
 
 using namespace Lag;
 
-void CollisionManager::checkCollisions() {
+void CollisionManager::checkCollisions() const {
 
-    std::vector<ICollider*> colliding;
+    std::vector<std::pair<Entity*, Entity*>> colliding;
 
     auto &sm = Root::getInstance().getSceneManager();
     if(sm.hasActiveScene()) {
         auto &entityList = sm.getActiveScene()->getEntities();
         for(auto entity1 : entityList) {
-            if(std::find(colliding.begin(), colliding.end(), entity1) == colliding.end()) {
+            if(entity1->isCollider()) {
                 for(auto entity2 : entityList) {
-                    if(entity1 != entity2) {
+                    if(entity2->isCollider() && entity1 != entity2) {
                         auto &aabb1 = entity1->getWorldSpaceAABB();
                         auto &aabb2 = entity2->getWorldSpaceAABB();
-                        if(aabb1.intersects(aabb2)) {
-                            colliding.push_back(dynamic_cast<ICollider*>(entity1));
-                            colliding.push_back(dynamic_cast<ICollider*>(entity2));
+
+                        auto pair1 = std::make_pair(entity1, entity2);
+                        auto pair2 = std::make_pair(entity2, entity1);
+
+                        if(aabb1.intersects(aabb2) && std::find(colliding.begin(), colliding.end(), pair2) == colliding.end()) {
+                            colliding.push_back(pair1);
                         }
                     }
                 }
             }
         }
 
-        for(auto collider : colliding) {
-            collider->onCollision();
+        for(auto colliderPair : colliding) {
+            onCollisionNotify(*colliderPair.first, *colliderPair.second);
+
+            colliderPair.first->onCollision(*colliderPair.second);
+            colliderPair.second->onCollision(*colliderPair.first);
         }
     }
 }

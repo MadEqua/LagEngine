@@ -7,10 +7,10 @@
 #include "Types.h"
 #include "SceneObject.h"
 #include "IRenderable.h"
-#include "ICollider.h"
 #include "Handle.h"
 #include "SubEntity.h"
 #include "Mesh.h"
+#include "ICollisionListener.h"
 
 namespace Lag {
     class Material;
@@ -25,7 +25,7 @@ namespace Lag {
     * This implies that there's always at least one SubEntity.
     * Attach to a SceneNode to add to the scene.
     */
-    class Entity : public SceneObject, public IRenderable, public ICollider {
+    class Entity : public SceneObject, public IRenderable {
     public:
         Entity(const std::string &meshName, const std::string &materialName);
         Entity(Handle<Mesh> meshHandle, const std::string &materialName);
@@ -34,15 +34,32 @@ namespace Lag {
         void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
         void render(Renderer &renderer, RenderOperation &renderOperation) override;
 
-        void onCollision() override {}
-
         void setMaterial(const std::string &materialName);
         void setMaterial(Handle<Material> material);
         void setMesh(const std::string &meshName);
         void setMesh(Handle<Mesh> mesh);
 
         AABB getWorldSpaceAABB() const;
-        inline void setHasAABB(bool has) { hasAABB = has; }
+
+        inline const std::string& getColliderName() const { return colliderName; }
+        inline bool isCollider() const { return collider; }
+        void setNonCollider();
+        void setAsCollider(const std::string &colliderName);
+
+        virtual void onCollision(Entity &other);
+
+        //Callbacks coming from Scene
+        virtual void onFrameStart(float timePassed);
+        virtual void onFrameRenderingQueued(float timePassed);
+        virtual void onFrameEnd(float timePassed);
+
+        virtual void onKeyPress(int key, int modifier);
+        virtual void onKeyRelease(int key, int modifier);
+        virtual void onKeyRepeat(int key, int modifier);
+
+        virtual void onCursorMove(int x, int y);
+        virtual void onButtonPressed(int x, int y, int button, int modifiers);
+        virtual void onButtonReleased(int x, int y, int button, int modifiers);
 
     protected:
         std::vector<std::unique_ptr<SubEntity>> subEntities;
@@ -51,7 +68,8 @@ namespace Lag {
         Handle<Material> material;
         Handle<Mesh> mesh;
 
-        bool hasAABB;
+        bool collider;
+        std::string colliderName;
 
 #ifdef ENABLE_AABB_GIZMOS
         Handle<Mesh> aabbMesh;

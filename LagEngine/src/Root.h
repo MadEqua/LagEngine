@@ -61,7 +61,7 @@ namespace Lag {
         inline InputDescriptionManager &getInputDescriptionManager() const { return *inputDescriptionManager; }
         inline const TiXmlDocument& getAppResourcesFile() const { return *appResourcesFile; }
         inline const TiXmlDocument& getLagResourcesFile() const { return *lagResourcesFile; }
-        inline const CollisionManager& getCollisionManager() const { return *collisionManager; }
+        inline CollisionManager& getCollisionManager() const { return *collisionManager; }
 
     private:
         bool initialized;

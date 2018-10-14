@@ -53,27 +53,27 @@ void Scene::end() {
     renderableVector.clear();
 }
 
-Entity *Scene::createEntity(const std::string &meshName, const std::string &materialName, bool hasAABB) {
+Entity *Scene::createEntity(const std::string &meshName, const std::string &materialName) {
     auto e = new Entity(meshName, materialName);
-    e->setHasAABB(hasAABB);
-    sceneObjectMap.add(e);
-    entityVector.push_back(e);
-    renderableVector.push_back(e);
+    addEntity(e);
     return e;
 }
 
-Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName, bool hasAABB) {
+Entity *Scene::createEntity(Handle<Mesh> mesh, const std::string &materialName) {
     auto e = new Entity(mesh, materialName);
-    e->setHasAABB(hasAABB);
-    sceneObjectMap.add(e);
-    entityVector.push_back(e);
-    renderableVector.push_back(e);
+    addEntity(e);
     return e;
 }
 
 Entity *Scene::createAxisGizmo() {
     auto &meshManager = Root::getInstance().getMeshManager();
-    return createEntity(meshManager.getAxisGizmo(), "axisGizmoMaterial", false);
+    return createEntity(meshManager.getAxisGizmo(), "axisGizmoMaterial");
+}
+
+void Scene::addEntity(Entity *entity) {
+    sceneObjectMap.add(entity);
+    entityVector.push_back(entity);
+    renderableVector.push_back(entity);
 }
 
 PerspectiveCamera &Scene::createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane) {
@@ -108,7 +108,7 @@ DirectionalLight &Scene::createDirectionalLight(const Color &color, const glm::v
 void Scene::enableSky(const std::string &materialName) {
     if(!isSkyEnabled) {
         auto &meshManager = Root::getInstance().getMeshManager();
-        createEntity(meshManager.getCubeInsides(), materialName, false);
+        createEntity(meshManager.getCubeInsides(), materialName);
         isSkyEnabled = true;
     }
 }
@@ -133,32 +133,46 @@ void Scene::scheduleSceneChange(const std::string &name) {
 // Callbacks from SceneManager
 /////////////////////////////////
 void Scene::onFrameStart(float timePassed) {
+    for(Entity *e : entityVector)
+        e->onFrameStart(timePassed);
 }
 
 void Scene::onFrameRenderingQueued(float timePassed) {
+    for(Entity *e : entityVector)
+        e->onFrameRenderingQueued(timePassed);
 }
 
 void Scene::onFrameEnd(float timePassed) {
-    if (shouldChangeScene) {
-        shouldChangeScene = false;
-        Root::getInstance().getSceneManager().setActiveScene(sceneToChange);
-    }
+    for(Entity *e : entityVector)
+        e->onFrameEnd(timePassed);
 }
 
 void Scene::onKeyPress(int key, int modifier) {
+    for(Entity *e : entityVector)
+        e->onKeyPress(key, modifier);
 }
 
 void Scene::onKeyRelease(int key, int modifier) {
+    for(Entity *e : entityVector)
+        e->onKeyRelease(key, modifier);
 }
 
 void Scene::onKeyRepeat(int key, int modifier) {
+    for(Entity *e : entityVector)
+        e->onKeyRepeat(key, modifier);
 }
 
 void Scene::onCursorMove(int x, int y) {
+    for(Entity *e : entityVector)
+        e->onCursorMove(x, y);
 }
 
 void Scene::onButtonPressed(int x, int y, int button, int modifiers) {
+    for(Entity *e : entityVector)
+        e->onButtonPressed(x, y, button, modifiers);
 }
 
 void Scene::onButtonReleased(int x, int y, int button, int modifiers) {
+    for(Entity *e : entityVector)
+        e->onButtonReleased(x, y, button, modifiers);
 }

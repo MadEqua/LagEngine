@@ -6,10 +6,16 @@ set(SRC_FOLDER src)
 
 set(SOURCES
         ${SRC_FOLDER}/main.cpp
+        ${SRC_FOLDER}/TestApplication.h
         ${SRC_FOLDER}/TestApplication.cpp
+        ${SRC_FOLDER}/TestScene.h
         ${SRC_FOLDER}/TestScene.cpp
+        ${SRC_FOLDER}/TestScene2.h
         ${SRC_FOLDER}/TestScene2.cpp
-        ${SRC_FOLDER}/TestScene3.cpp)
+        ${SRC_FOLDER}/TestScene3.h
+        ${SRC_FOLDER}/TestScene3.cpp
+        ${SRC_FOLDER}/Ball.h
+        ${SRC_FOLDER}/Ball.cpp)
 
 set(INCLUDE_FOLDERS ${SRC_FOLDER})
 

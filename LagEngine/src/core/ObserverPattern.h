@@ -25,7 +25,7 @@ void unregisterObserver(Type &observer) { Type##Observers.remove(&observer); }
 //Example use: GENERATE_NOTIFY_METHOD(onFooEvent, ISomeListener, LAG_ARGS(int arg1, float arg2), LAG_ARGS(arg1, arg2))
 #define LAG_GENERATE_NOTIFY_METHOD(Name, Type, MethodArguments, CallbackArgs)\
 protected:\
-inline void Name##Notify(MethodArguments) { for (Type *obs : Type##Observers) obs->Name(CallbackArgs); }
+inline void Name##Notify(MethodArguments) const { for (Type *obs : Type##Observers) obs->Name(CallbackArgs); }
 
 
 //
@@ -40,4 +40,4 @@ void unregisterObserver(Type &observer) { Type##Observer = nullptr; }
 
 #define LAG_GENERATE_SINGLE_NOTIFY_METHOD(Name, Type, MethodArguments, CallbackArgs)\
 protected:\
-inline void Name##Notify(MethodArguments) { if(Type##Observer != nullptr) Type##Observer->Name(CallbackArgs); }
+inline void Name##Notify(MethodArguments) const { if(Type##Observer != nullptr) Type##Observer->Name(CallbackArgs); }

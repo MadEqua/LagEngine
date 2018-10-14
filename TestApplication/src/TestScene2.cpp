@@ -1,6 +1,7 @@
 #include "TestScene2.h"
 
-#include "glm/glm.hpp"
+#include <glm/gtc/random.hpp>
+#include <glm/glm.hpp>
 
 #include "Root.h"
 #include "RenderWindow.h"
@@ -10,6 +11,10 @@
 #include "Entity.h"
 #include "MeshManager.h"
 #include "PointLight.h"
+#include "CollisionManager.h"
+#include "Ball.h"
+
+
 
 void TestScene2::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
@@ -33,8 +38,6 @@ void TestScene2::onStart() {
     Lag::SceneNode &boardRightNode = boardNode.createChildSceneNode("boardRight");
     Lag::SceneNode &boardTopNode = boardNode.createChildSceneNode("boardTop");
     Lag::SceneNode &boardBottomNode = boardNode.createChildSceneNode("boardBottom");
-
-    Lag::SceneNode &ballNode = rootNode.createChildSceneNode("ball");
 
     Lag::SceneNode &tower1Node = boardNode.createChildSceneNode("tower1");
     Lag::SceneNode &tower2Node = boardNode.createChildSceneNode("tower2");
@@ -80,8 +83,6 @@ void TestScene2::onStart() {
     boardBottomNode.setPosition(glm::vec3(0.0f, HALF_WALL_HEIGHT, HALF_SIZE));
     boardBottomNode.setScale(glm::vec3(SIZE, WALL_HEIGHT, 1.0f));
 
-    ballNode.setPosition(glm::vec3(0.0f, 0.5f, 0.0f));
-
     tower1Node.setPosition(glm::vec3(-HALF_SIZE, HALF_TOWER_HEIGHT, -HALF_SIZE));
     tower1Node.setScale(glm::vec3(1.0f, TOWER_HEIGHT, 1.0f));
     tower2Node.setPosition(glm::vec3(HALF_SIZE, HALF_TOWER_HEIGHT, HALF_SIZE));
@@ -115,21 +116,19 @@ void TestScene2::onStart() {
 
     Lag::Entity *leftCube = createEntity("cube", "pointMaterial");
     leftCube->attachToSceneNode(boardLeftNode);
+    leftCube->setAsCollider("wall");
 
     Lag::Entity *rightCube = createEntity("cube", "pointMaterial");
     rightCube->attachToSceneNode(boardRightNode);
+    rightCube->setAsCollider("wall");
 
     Lag::Entity *topCube = createEntity("cube", "pointMaterial");
     topCube->attachToSceneNode(boardTopNode);
+    topCube->setAsCollider("wall");
 
     Lag::Entity *bottomCube = createEntity("cube", "pointMaterial");
     bottomCube->attachToSceneNode(boardBottomNode);
-
-    Lag::Entity *ballSphere = createEntity("cube", "pointMaterial");
-    ballSphere->attachToSceneNode(ballNode);
-
-    Lag::PointLight &ballLight = createPointLight(Lag::Color(10.0f), glm::vec3(1.0f, 0.1f, 0.1f));
-    ballLight.attachToSceneNode(ballNode);
+    bottomCube->setAsCollider("wall");
 
     Lag::Entity *tower1Cube = createEntity("cube", "pointMaterial");
     tower1Cube->attachToSceneNode(tower1Node);
@@ -144,7 +143,7 @@ void TestScene2::onStart() {
     tower4Cube->attachToSceneNode(tower4Node);
 
 
-    const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.05f, 0.05f);
+    const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.03f, 0.03f);
 
     Lag::PointLight &light1 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
     light1.attachToSceneNode(light1Node);
@@ -157,6 +156,10 @@ void TestScene2::onStart() {
 
     Lag::PointLight &light4 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
     light4.attachToSceneNode(light4Node);
+
+    initBalls(rootNode, 4);
+
+    Lag::Root::getInstance().getCollisionManager().registerObserver(*this);
 }
 
 void TestScene2::onEnd() {
@@ -166,18 +169,28 @@ void TestScene2::onEnd() {
 void TestScene2::onInitializeViewports(Lag::RenderWindow &renderWindow) {
     camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
     camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
-
     renderWindow.createViewport(camera->getCamera());
 }
 
 void TestScene2::onFrameStart(float timePassed) {
-    auto &sceneGraph = getSceneGraph();
-    auto ballNode = sceneGraph.getSceneNode("ball");
-    
-    static float time = 0.0f;
-    time += timePassed;
-    float x = glm::sin(time * 0.1f) * 20.0f;
-    float z = glm::sin(time * 1.0f) * 10.0f;
-    
-    ballNode->setPosition(glm::vec3(x, ballNode->getPositionWorldSpace().y, z), Lag::TransformSpace::WORLD);
+    Lag::Root::getInstance().getCollisionManager().checkCollisions();
+    Scene::onFrameStart(timePassed);
+}
+
+void TestScene2::onCollision(Lag::Entity &entity1, Lag::Entity &entity2) {
+}
+
+void TestScene2::initBalls(Lag::SceneNode &parentNode, int count) {
+    for(int i = 0; i < count; ++i) {
+        Lag::SceneNode &ballNode = parentNode.createChildSceneNode("ball" + i);
+
+        ballNode.setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.5f, glm::linearRand(-20.0f, 20.0f)));
+
+        Ball *ball = new Ball();
+        addEntity(ball);
+        ball->attachToSceneNode(ballNode);
+
+        Lag::PointLight &ballLight = createPointLight(Lag::Color(10.0f), glm::vec3(1.0f, 0.1f, 0.1f));
+        ballLight.attachToSceneNode(ballNode);
+    }
 }

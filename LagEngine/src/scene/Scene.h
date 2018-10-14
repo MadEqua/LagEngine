@@ -47,9 +47,11 @@ namespace Lag {
         void end();
         void initializeViewports();
 
-        Entity *createEntity(const std::string &meshName, const std::string &materialName, bool hasAABB = true);
-        Entity *createEntity(Handle<Mesh> mesh, const std::string &materialName, bool hasABB = true);
+        Entity *createEntity(const std::string &meshName, const std::string &materialName);
+        Entity *createEntity(Handle<Mesh> mesh, const std::string &materialName);
         Entity *createAxisGizmo();
+
+        void addEntity(Entity *entity);
 
         PerspectiveCamera &createPerspectiveCamera(float aspectRatio, float fovy, float nearPlane, float farPlane);
         OrthographicCamera &createOrthographicCamera(float left, float right, float bottom, float top, float nearPlane, float farPlane);

@@ -181,7 +181,7 @@ set(SOURCES
         ${SRC_FOLDER}/collisions/CollisionManager.cpp
         ${SRC_FOLDER}/collisions/AABB.h
         ${SRC_FOLDER}/collisions/AABB.cpp
-        ${SRC_FOLDER}/collisions/ICollider.h
+        ${SRC_FOLDER}/collisions/ICollisionListener.h
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h

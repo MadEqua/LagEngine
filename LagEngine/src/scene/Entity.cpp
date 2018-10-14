@@ -6,16 +6,19 @@
 #include "Renderer.h"
 #include "SubEntity.h"
 #include "Mesh.h"
+
 #include "SceneNode.h"
 
 using namespace Lag;
 
-Entity::Entity(const std::string &meshName, const std::string &materialName) {
+Entity::Entity(const std::string &meshName, const std::string &materialName) :
+    collider(false) {
     setMesh(meshName);
     setMaterial(materialName);
 }
 
-Entity::Entity(Handle<Mesh> meshHandle, const std::string &materialName) {
+Entity::Entity(Handle<Mesh> meshHandle, const std::string &materialName) :
+    collider(false) {
     setMesh(meshHandle);
     setMaterial(materialName);
 }
@@ -28,7 +31,7 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
         ptr->addToRenderQueue(renderQueue, viewport, renderTarget);
 
 #ifdef ENABLE_AABB_GIZMOS
-    if(hasAABB && renderTarget.getRenderPhase() == RenderPhase::COLOR) {
+    if(collider && renderTarget.getRenderPhase() == RenderPhase::COLOR) {
         RenderOperation &ro = renderQueue.addRenderOperation();
         ro.renderTarget = &renderTarget;
         ro.vertexData = const_cast<VertexData *>(aabbMesh->getSubMeshes()[0]->getVertexData());
@@ -43,7 +46,7 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
 
 void Entity::render(Renderer &renderer, RenderOperation &renderOperation) {
 #ifdef ENABLE_AABB_GIZMOS
-    if(hasAABB) {
+    if(collider) {
         AABB worldSpaceAABB = getWorldSpaceAABB();
         glm::vec3 pos = worldSpaceAABB.getCenter();
         glm::vec3 scale = worldSpaceAABB.getDimensions();
@@ -70,11 +73,6 @@ void Entity::setMaterial(Handle<Material> material) {
     }
 
     this->material = material;
-
-#ifdef ENABLE_AABB_GIZMOS
-    if(hasAABB)
-        aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
-#endif
 }
 
 void Entity::setMesh(const std::string &meshName) {
@@ -92,16 +90,65 @@ void Entity::setMesh(Handle<Mesh> mesh) {
     };
 
     this->mesh = mesh;
-
-#ifdef ENABLE_AABB_GIZMOS
-    if(hasAABB)
-        aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
-#endif
 }
 
 AABB Entity::getWorldSpaceAABB() const {
-    if(hasAABB && isAttachedToSceneNode()) {
+    if(collider && isAttachedToSceneNode()) {
         return mesh->getAABB().transform(getLocalToWorldTransform());
     }
     return AABB();
+}
+
+void Entity::setNonCollider() {
+#ifdef ENABLE_AABB_GIZMOS
+    if(collider) {
+        aabbMaterial.invalidate();
+        aabbMesh.invalidate();
+    }
+#endif
+    collider = false;
+}
+
+void Entity::setAsCollider(const std::string &colliderName) {
+#ifdef ENABLE_AABB_GIZMOS
+    if(!collider) {
+        aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
+        aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
+    }
+#endif
+    collider = true; 
+    this->colliderName = colliderName;
+}
+
+void Entity::onCollision(Entity &other) {
+}
+
+/////////////////////////////////
+// Callbacks from SceneManager
+/////////////////////////////////
+void Entity::onFrameStart(float timePassed) {
+}
+
+void Entity::onFrameRenderingQueued(float timePassed) {
+}
+
+void Entity::onFrameEnd(float timePassed) {
+}
+
+void Entity::onKeyPress(int key, int modifier) {
+}
+
+void Entity::onKeyRelease(int key, int modifier) {
+}
+
+void Entity::onKeyRepeat(int key, int modifier) {
+}
+
+void Entity::onCursorMove(int x, int y) {
+}
+
+void Entity::onButtonPressed(int x, int y, int button, int modifiers) {
+}
+
+void Entity::onButtonReleased(int x, int y, int button, int modifiers) {
 }
