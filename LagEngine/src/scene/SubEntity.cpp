@@ -43,7 +43,6 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
     if (renderTarget.getRenderPhase() == RenderPhase::DEPTH) {
         //TODO get this out of here
         Material *depthPassMaterial = Root::getInstance().getMaterialManager().get("depthPassMaterial").get();
-
         ro.material = depthPassMaterial;
     }
     else {
@@ -51,12 +50,15 @@ void SubEntity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, R
     }
 }
 
-void SubEntity::render(Renderer &renderer, RenderOperation &renderOperation) {
+void SubEntity::preRender(Renderer &renderer, const RenderOperation &renderOperation) {
     renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
                                                    *renderOperation.viewport,
                                                    parent.getLocalToWorldTransform(),
                                                    parent.getNormalTransform());
+}
 
+
+void SubEntity::render(Renderer &renderer, const RenderOperation &renderOperation) {
     RenderMode renderMode = renderOperation.material->getRenderMode();
     if(renderMode == RenderMode::POINTS) {
         renderer.renderVertices(renderMode, *renderOperation.vertexData);

@@ -44,7 +44,7 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
 #endif
 }
 
-void Entity::render(Renderer &renderer, RenderOperation &renderOperation) {
+void Entity::preRender(Renderer &renderer, const RenderOperation &renderOperation) {
 #ifdef ENABLE_AABB_GIZMOS
     if(collider) {
         AABB worldSpaceAABB = getWorldSpaceAABB();
@@ -58,6 +58,13 @@ void Entity::render(Renderer &renderer, RenderOperation &renderOperation) {
         renderer.getUniformFiller().onRenderableRender(renderOperation.material->getGpuProgram(),
                                                        *renderOperation.viewport,
                                                        transform);
+    }
+#endif
+}
+
+void Entity::render(Renderer &renderer, const RenderOperation &renderOperation) {
+#ifdef ENABLE_AABB_GIZMOS
+    if(collider) {
         renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
     }
 #endif

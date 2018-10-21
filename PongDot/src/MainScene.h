@@ -8,7 +8,7 @@ namespace Lag {
     class SceneNode;
 }
 
-class TestScene2 : public Lag::Scene, public Lag::ICollisionListener {
+class MainScene : public Lag::Scene, public Lag::ICollisionListener {
 public:
     void onStart() override;
     void onEnd() override;

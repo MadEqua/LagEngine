@@ -1,4 +1,4 @@
-set(APP_NAME TestApplication)
+set(APP_NAME PongDot)
 
 project(${APP_NAME})
 
@@ -6,12 +6,14 @@ set(SRC_FOLDER src)
 
 set(SOURCES
         ${SRC_FOLDER}/main.cpp
-        ${SRC_FOLDER}/TestApplication.h
-        ${SRC_FOLDER}/TestApplication.cpp
-        ${SRC_FOLDER}/TestScene.h
-        ${SRC_FOLDER}/TestScene.cpp
-        ${SRC_FOLDER}/TestScene3.h
-        ${SRC_FOLDER}/TestScene3.cpp)
+        ${SRC_FOLDER}/App.h
+        ${SRC_FOLDER}/App.cpp
+        ${SRC_FOLDER}/MainScene.h
+        ${SRC_FOLDER}/MainScene.cpp
+        ${SRC_FOLDER}/Ball.h
+        ${SRC_FOLDER}/Ball.cpp
+        ${SRC_FOLDER}/Paddle.h
+        ${SRC_FOLDER}/Paddle.cpp)
 
 set(INCLUDE_FOLDERS ${SRC_FOLDER})
 

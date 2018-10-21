@@ -21,7 +21,8 @@ namespace Lag {
         void setSubMesh(SubMesh &mesh);
 
         void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
-        void render(Renderer &renderer, RenderOperation &renderOperation) override;
+        void preRender(Renderer &renderer, const RenderOperation &renderOperation) override;
+        void render(Renderer &renderer, const RenderOperation &renderOperation) override;
 
         Material *material;
         SubMesh *subMesh;

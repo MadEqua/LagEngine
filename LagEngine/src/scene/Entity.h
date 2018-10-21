@@ -32,7 +32,8 @@ namespace Lag {
         Entity();
 
         void addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, RenderTarget &renderTarget) override;
-        void render(Renderer &renderer, RenderOperation &renderOperation) override;
+        void preRender(Renderer &renderer, const RenderOperation &renderOperation) override;
+        void render(Renderer &renderer, const RenderOperation &renderOperation) override;
 
         void setMaterial(const std::string &materialName);
         void setMaterial(Handle<Material> material);
@@ -64,7 +65,6 @@ namespace Lag {
     protected:
         std::vector<std::unique_ptr<SubEntity>> subEntities;
 
-    private:
         Handle<Material> material;
         Handle<Mesh> mesh;
 

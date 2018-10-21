@@ -5,7 +5,6 @@
 #include "SceneManager.h"
 
 #include "TestScene.h"
-#include "TestScene2.h"
 #include "TestScene3.h"
 
 bool TestApplication::start() {
@@ -36,7 +35,7 @@ bool TestApplication::start() {
     //root.getSceneManager().addScene("scene2", *testScene2);
     //root.getSceneManager().addScene("scene", new TestScene(true));
 
-    root.getSceneManager().addScene("scene", new TestScene2());
+    root.getSceneManager().addScene("scene", new TestScene3());
 
     root.startRenderingLoop();
 

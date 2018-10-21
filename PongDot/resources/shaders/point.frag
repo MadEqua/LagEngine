@@ -5,6 +5,8 @@ out vec4 outColor;
 layout (binding = 0) uniform sampler2D spriteMask;
 layout (binding = 1) uniform sampler2D perlinNoiseTexture;
 
+//uniform vec3 mainColor;
+
 const int MAX_POINT_LIGHTS = 8;
 uniform unsigned int pointLightCount;
 uniform vec3 pointLightPositions[MAX_POINT_LIGHTS];
@@ -58,7 +60,7 @@ void main() {
     const vec3 C1 = vec3(0.08, 0.06, 0.9);
     const vec3 C2 = vec3(0.01, 0.04, 0.4);
 
-    float n = perlinNoise(fs_in.positionWorld.xy * 100.0);
+    float n = perlinNoise(fs_in.positionWorld.xy) * 1.0;
     vec3 color = mix(C1, C2, n) * lighting();
 
     outColor = mask * vec4(color, 1.0);

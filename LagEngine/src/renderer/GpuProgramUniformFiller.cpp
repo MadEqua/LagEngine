@@ -34,6 +34,7 @@ void GpuProgramUniformFiller::onTextureBind(const GpuProgram *gpuProgram, const 
 
 void GpuProgramUniformFiller::onRenderableRender(const GpuProgram &gpuProgram, const Viewport &viewport,
                                                  const glm::mat4 &modelMatrix, const glm::mat3 &normalMatrix) {
+
     setUniformIfPresent(gpuProgram, GpuProgramUniformSemantic::MODEL_MATRIX, &modelMatrix);
 
     const glm::mat4 cameraMatrix = viewport.getCamera().getWorldToLocalTransform();

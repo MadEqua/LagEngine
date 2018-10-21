@@ -82,8 +82,8 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
                     break;
 
                 case GpuProgramUniformSemantic::CUSTOM: {
-                    const char *typeString = element.Attribute("type");
-                    const char *sizeString = element.Attribute("size");
+                    const char *typeString = child->Attribute("type");
+                    const char *sizeString = child->Attribute("size");
 
                     if (!typeString || !sizeString) {
                         LogManager::getInstance().log(LogType::ERROR, LogVerbosity::NORMAL, "GpuProgramStageBuilder",

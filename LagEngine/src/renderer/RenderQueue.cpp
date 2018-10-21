@@ -65,6 +65,7 @@ void RenderQueue::dispatchRenderOperations(Renderer &renderer) {
         //Bind GpuProgram and then the Textures
         ro.material->bind();
 
+        renderable->preRender(renderer, ro);
         renderable->render(renderer, ro);
     }
 }

@@ -1,0 +1,40 @@
+<resources>
+
+    <shader name="pointVertex" file="point.vert" type="Vertex"/>
+    <shader name="pointFragment" file="point.frag" type="Fragment">
+        <uniform name="pointLightCount" semantic="PointLightCount"/>
+        <uniform name="pointLightPositions" semantic="PointLightPositions"/>
+        <uniform name="pointLightColors" semantic="PointLightColors"/>
+        <uniform name="pointLightAttenuations" semantic="PointLightAttenuations"/>
+        <!--<uniform name="mainColor" semantic="Custom" type="float" size="3"/>-->
+    </shader>
+    <shader name="pointTessCtrl" file="point.tesc" type="TesselationControl">
+        <uniform name="modelMatrix" semantic="ModelMatrix"/>
+    </shader>
+    <shader name="pointTessEval" file="point.tese" type="TesselationEvaluation">
+        <uniform name="modelMatrix" semantic="ModelMatrix"/>
+        <uniform name="mvpMatrix" semantic="MvpMatrix"/>
+        <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
+        <uniform name="time" semantic="Timer"/>
+    </shader>
+
+    
+    <material name="pointMaterial" file="pointMaterial.xml"/>
+
+
+    <image name="circleSprite" file="circleSprite.jpg" components="Grayscale"
+           componentType="UINT8" normalized="true"/>
+
+    <image name="perlinNoise" file="perlin.png" components="Grayscale"
+           componentType="UINT8" normalized="true"/>
+
+    <texture name="circleSprite" image="circleSprite" semantic="DiffuseColor"
+             type="2D" mipmaps="8"
+             minFilter="LinearMipmapLinear" magFilter="Linear"
+             wrappingAll="ClampEdge"/>
+
+    <texture name="perlinNoise" image="perlinNoise" semantic="DiffuseColor"
+             type="2D" mipmaps="8"
+             minFilter="LinearMipmapLinear" magFilter="Linear"
+             wrappingAll="MirrorRepeat"/>
+</resources>

@@ -1,4 +1,4 @@
-#include "TestScene2.h"
+#include "MainScene.h"
 
 #include <glm/gtc/random.hpp>
 #include <glm/glm.hpp>
@@ -13,10 +13,10 @@
 #include "PointLight.h"
 #include "CollisionManager.h"
 #include "Ball.h"
+#include "Paddle.h"
 
 
-
-void TestScene2::onStart() {
+void MainScene::onStart() {
     Lag::Root &root = Lag::Root::getInstance();
     auto &meshManager = root.getMeshManager();
 
@@ -48,6 +48,7 @@ void TestScene2::onStart() {
     Lag::SceneNode &light3Node = tower3Node.createChildSceneNode("light3");
     Lag::SceneNode &light4Node = tower4Node.createChildSceneNode("light4");
 
+    Lag::SceneNode &paddle1Node = rootNode.createChildSceneNode("paddle1");
 
     const float SIZE = 50.0f;
     const float HALF_SIZE = SIZE * 0.5f;
@@ -101,6 +102,8 @@ void TestScene2::onStart() {
     light4Node.setInheritScale(false);
     light4Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);
 
+    paddle1Node.setPosition(glm::vec3(-HALF_SIZE + 1.0f, 0.5, 0.0f), Lag::TransformSpace::WORLD);
+    paddle1Node.setScale(glm::vec3(0.5f, 0.5f, 3.0f));
 
     Lag::Entity *basePlane1 = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
     basePlane1->attachToSceneNode(boardBaseNode1);
@@ -142,6 +145,10 @@ void TestScene2::onStart() {
     Lag::Entity *tower4Cube = createEntity("cube", "pointMaterial");
     tower4Cube->attachToSceneNode(tower4Node);
 
+    Paddle *paddle1 = new Paddle();
+    addEntity(paddle1);
+    paddle1->attachToSceneNode(paddle1Node);
+
 
     const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.03f, 0.03f);
 
@@ -162,25 +169,25 @@ void TestScene2::onStart() {
     Lag::Root::getInstance().getCollisionManager().registerObserver(*this);
 }
 
-void TestScene2::onEnd() {
+void MainScene::onEnd() {
     delete camera;
 }
 
-void TestScene2::onInitializeViewports(Lag::RenderWindow &renderWindow) {
+void MainScene::onInitializeViewports(Lag::RenderWindow &renderWindow) {
     camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
     camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
     renderWindow.createViewport(camera->getCamera());
 }
 
-void TestScene2::onFrameStart(float timePassed) {
+void MainScene::onFrameStart(float timePassed) {
     Lag::Root::getInstance().getCollisionManager().checkCollisions();
     Scene::onFrameStart(timePassed);
 }
 
-void TestScene2::onCollision(Lag::Entity &entity1, Lag::Entity &entity2) {
+void MainScene::onCollision(Lag::Entity &entity1, Lag::Entity &entity2) {
 }
 
-void TestScene2::initBalls(Lag::SceneNode &parentNode, int count) {
+void MainScene::initBalls(Lag::SceneNode &parentNode, int count) {
     for(int i = 0; i < count; ++i) {
         Lag::SceneNode &ballNode = parentNode.createChildSceneNode("ball" + i);
 
