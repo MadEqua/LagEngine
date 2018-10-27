@@ -27,12 +27,7 @@ void MainScene::onStart() {
 
     Lag::SceneNode &boardNode = rootNode.createChildSceneNode("board");
 
-    //TODO: instead of many planes, we should use a single tessellated plane (the GPU will further tesselate it)
-    //To achieve the desired result with a single plane we reach the GPU tessellation limit too easily.
-    Lag::SceneNode &boardBaseNode1 = boardNode.createChildSceneNode("boardBase1");
-    Lag::SceneNode &boardBaseNode2 = boardNode.createChildSceneNode("boardBase2");
-    Lag::SceneNode &boardBaseNode3 = boardNode.createChildSceneNode("boardBase3");
-    Lag::SceneNode &boardBaseNode4 = boardNode.createChildSceneNode("boardBase4");
+    Lag::SceneNode &boardBaseNode = boardNode.createChildSceneNode("boardBase");
 
     Lag::SceneNode &boardLeftNode = boardNode.createChildSceneNode("boardLeft");
     Lag::SceneNode &boardRightNode = boardNode.createChildSceneNode("boardRight");
@@ -43,10 +38,10 @@ void MainScene::onStart() {
     Lag::SceneNode &tower2Node = boardNode.createChildSceneNode("tower2");
     Lag::SceneNode &tower3Node = boardNode.createChildSceneNode("tower3");
     Lag::SceneNode &tower4Node = boardNode.createChildSceneNode("tower4");
-    Lag::SceneNode &light1Node = tower1Node.createChildSceneNode("light1");
+    /*Lag::SceneNode &light1Node = tower1Node.createChildSceneNode("light1");
     Lag::SceneNode &light2Node = tower2Node.createChildSceneNode("light2");
     Lag::SceneNode &light3Node = tower3Node.createChildSceneNode("light3");
-    Lag::SceneNode &light4Node = tower4Node.createChildSceneNode("light4");
+    Lag::SceneNode &light4Node = tower4Node.createChildSceneNode("light4");*/
 
     Lag::SceneNode &paddle1Node = rootNode.createChildSceneNode("paddle1");
 
@@ -60,18 +55,9 @@ void MainScene::onStart() {
     const float TOWER_HEIGHT = WALL_HEIGHT * 5.0f;
     const float HALF_TOWER_HEIGHT = TOWER_HEIGHT * 0.5f;
     
-    boardBaseNode1.setScale(glm::vec3(HALF_SIZE, 1.0f, HALF_SIZE));
-    boardBaseNode1.setPosition(glm::vec3(-QUARTER_SIZE, 0.0f, -QUARTER_SIZE));
+    boardBaseNode.setScale(glm::vec3(SIZE, 1.0f, SIZE));
+    boardBaseNode.setPosition(glm::vec3(0.0f, 0.0f, 0.0f));
 
-    boardBaseNode2.setScale(glm::vec3(HALF_SIZE, 1.0f, HALF_SIZE));
-    boardBaseNode2.setPosition(glm::vec3(QUARTER_SIZE, 0.0f, -QUARTER_SIZE));
-
-    boardBaseNode3.setScale(glm::vec3(HALF_SIZE, 1.0f, HALF_SIZE));
-    boardBaseNode3.setPosition(glm::vec3(-QUARTER_SIZE, 0.0f, QUARTER_SIZE));
-
-    boardBaseNode4.setScale(glm::vec3(HALF_SIZE, 1.0f, HALF_SIZE));
-    boardBaseNode4.setPosition(glm::vec3(QUARTER_SIZE, 0.0f, QUARTER_SIZE));
-    
     boardLeftNode.setPosition(glm::vec3(-HALF_SIZE, HALF_WALL_HEIGHT, 0.0f));
     boardLeftNode.setScale(glm::vec3(1.0f, WALL_HEIGHT, SIZE));
 
@@ -93,29 +79,20 @@ void MainScene::onStart() {
     tower4Node.setPosition(glm::vec3(-HALF_SIZE, HALF_TOWER_HEIGHT, HALF_SIZE));
     tower4Node.setScale(glm::vec3(1.0f, TOWER_HEIGHT, 1.0f));
 
-    light1Node.setInheritScale(false);
+    /*light1Node.setInheritScale(false);
     light1Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);
     light2Node.setInheritScale(false);
     light2Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);
     light3Node.setInheritScale(false);
     light3Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);
     light4Node.setInheritScale(false);
-    light4Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);
+    light4Node.setPosition(glm::vec3(0.0, HALF_TOWER_HEIGHT, 0.0), Lag::TransformSpace::PARENT);*/
 
     paddle1Node.setPosition(glm::vec3(-HALF_SIZE + 1.0f, 0.5, 0.0f), Lag::TransformSpace::WORLD);
     paddle1Node.setScale(glm::vec3(0.5f, 0.5f, 3.0f));
 
-    Lag::Entity *basePlane1 = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
-    basePlane1->attachToSceneNode(boardBaseNode1);
-
-    Lag::Entity *basePlane2 = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
-    basePlane2->attachToSceneNode(boardBaseNode2);
-
-    Lag::Entity *basePlane3 = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
-    basePlane3->attachToSceneNode(boardBaseNode3);
-
-    Lag::Entity *basePlane4 = createEntity(meshManager.getPlaneXZ(), "pointMaterial");
-    basePlane4->attachToSceneNode(boardBaseNode4);
+    Lag::Entity *basePlane = createEntity("plane", "pointMaterial");
+    basePlane->attachToSceneNode(boardBaseNode);
 
     Lag::Entity *leftCube = createEntity("cube", "pointMaterial");
     leftCube->attachToSceneNode(boardLeftNode);
@@ -150,7 +127,7 @@ void MainScene::onStart() {
     paddle1->attachToSceneNode(paddle1Node);
 
 
-    const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.03f, 0.03f);
+    /*const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.3f, 0.3f);
 
     Lag::PointLight &light1 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
     light1.attachToSceneNode(light1Node);
@@ -162,7 +139,7 @@ void MainScene::onStart() {
     light3.attachToSceneNode(light3Node);
 
     Lag::PointLight &light4 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
-    light4.attachToSceneNode(light4Node);
+    light4.attachToSceneNode(light4Node);*/
 
     initBalls(rootNode, 4);
 
@@ -197,7 +174,7 @@ void MainScene::initBalls(Lag::SceneNode &parentNode, int count) {
         addEntity(ball);
         ball->attachToSceneNode(ballNode);
 
-        Lag::PointLight &ballLight = createPointLight(Lag::Color(10.0f), glm::vec3(1.0f, 0.1f, 0.1f));
+        Lag::PointLight &ballLight = createPointLight(Lag::Color(15.0f), glm::vec3(1.0f, 0.1f, 0.1f));
         ballLight.attachToSceneNode(ballNode);
     }
 }

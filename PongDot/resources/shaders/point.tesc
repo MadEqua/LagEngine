@@ -25,7 +25,7 @@ void main() {
         vec3 v1 = model * gl_in[1].gl_Position.xyz;
         vec3 v2 = model * gl_in[2].gl_Position.xyz;
 
-        const float TRIS_PER_LENGTH = 15.0;
+        const float TRIS_PER_LENGTH = 1.5;
 
         float l0 = length(v2 - v0) * TRIS_PER_LENGTH;
         float l1 = length(v1 - v0) * TRIS_PER_LENGTH;
@@ -36,10 +36,10 @@ void main() {
         gl_TessLevelOuter[1] = l1;
         gl_TessLevelOuter[2] = l2;
 
-        /*gl_TessLevelInner[0] = 10.0;
-        gl_TessLevelOuter[0] = 10.0;
-        gl_TessLevelOuter[1] = 10.0;
-        gl_TessLevelOuter[2] = 10.0;*/
+        /*gl_TessLevelInner[0] = 2.0;
+        gl_TessLevelOuter[0] = 2.0;
+        gl_TessLevelOuter[1] = 2.0;
+        gl_TessLevelOuter[2] = 2.0;*/
     }
 
     gl_out[id].gl_Position = gl_in[id].gl_Position;

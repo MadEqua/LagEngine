@@ -31,30 +31,19 @@ float random(vec2 v) {
     return fract(sin(v.x * 4587.3) + sin(v.y * 8745.21));
 }
 
-vec3 wavingAnim(vec3 position) {
+vec3 circleAnim(vec3 position, vec3 normal) {
 
-    vec3 t = vec3(sin(time + random(position.xz) * 103.2),
-                  sin(time + random(position.zx) * 101.1),
-                  sin(time + random(position.yx) * 108.7));
+    float t = sin(time + random(position.xz * 114.0) * 165.0);
+    float disp = 0.1 * random(position.zy * 100.0) * t;
 
-    vec3 disp = vec3(0.021 * random(position.zy),
-                     0.025 * random(position.xz),
-                     0.027 * random(position.yz)) * t;
-
-    gl_PointSize = 8.0 * (t.x * 0.5 + 1.0);
-    return position + disp;
-}
-
-vec3 growingAnim(vec3 position) {
-    float t = sin(time + random(position.xy) * 0.3) * 0.5 + 0.5;
-    gl_PointSize = t * 15.0;
-    return mix(vec3(0.0), position, t);
+    gl_PointSize = 5.0 * (t * 0.5 + 1.0);
+    return position + normal * disp;
 }
 
 void main() {
     vec3 positionLocal = applyBaricentrics(gl_TessCoord, gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);
     vec3 normalLocal = applyBaricentrics(gl_TessCoord, tese_in[0].normal, tese_in[1].normal, tese_in[2].normal);
-    vec3 positionDisplaced = wavingAnim(positionLocal);
+    vec3 positionDisplaced = circleAnim(positionLocal, normalLocal);
 
     tese_out.positionWorld = vec3(modelMatrix * vec4(positionDisplaced, 1.0));
     tese_out.normalWorld = normalize(normalMatrix * normalLocal);

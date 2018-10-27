@@ -1,0 +1,19 @@
+<material renderMode="Patches">
+
+    <shader name="pointVertex"/>
+    <shader name="pointTessCtrl"/>
+    <shader name="pointSpiralTessEval"/>
+    <shader name="pointFragmentNoLight"/>
+
+    <texture name="circleSprite"/>
+    <texture name="perlinNoise"/>
+
+    <blending enabled="true">
+        <setting type="RGBA"
+                 sourceFunction="One"
+                 destinationFunction="One"
+                 equation="Add"/>
+    </blending>
+	
+    <depth testEnabled="false"/>
+</material>
