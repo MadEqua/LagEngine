@@ -3,7 +3,7 @@
 #include "XmlResource.h"
 #include "SubMesh.h"
 #include "Types.h"
-#include "AABB.h"
+#include "IBoundingVolume.h"
 
 #include <memory>
 #include <vector>
@@ -40,13 +40,13 @@ namespace Lag {
 
         inline bool hasData() const { return !subMeshes.empty(); }
 
-        inline const AABB& getAABB() const { return aabb; }
+        inline const IBoundingVolume& getBoundingVolume() const { return *boundingVolume; }
 
     private:
         friend class MeshBuilder;
 
         Mesh();
-        explicit Mesh(const std::string &file);
+        explicit Mesh(const std::string &file, BoundingVolumeType boundingVolumeType);
 
         bool loadImplementation() override;
         void unloadImplementation() override;
@@ -54,10 +54,12 @@ namespace Lag {
         void setVertices(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription, uint32 subMeshIndex);
         void setIndices(const byte *indices, uint32 indexCount, uint32 subMeshIndex);
 
-        void updateAABB();
+        void initBoundingVolume(BoundingVolumeType type);
+        void updateBoundingVolume();
 
         std::vector<std::unique_ptr<SubMesh>> subMeshes;
         bool isLocked;
-        AABB aabb;
+
+        std::unique_ptr<IBoundingVolume> boundingVolume;
     };
 }

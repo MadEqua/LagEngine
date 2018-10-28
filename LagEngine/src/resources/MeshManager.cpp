@@ -16,7 +16,17 @@ Mesh *MeshBuilder::build(const std::string &name) const {
 }
 
 Mesh *MeshBuilder::parseAndCreate(const std::string &path, const TiXmlElement &element) const {
-    return new Mesh(path + '/' + parseFileAttribute(element));
+    return new Mesh(path + '/' + parseFileAttribute(element),  parseBoundingVolumeType(element));
+}
+
+BoundingVolumeType MeshBuilder::parseBoundingVolumeType(const TiXmlElement &element) {
+    const char *bvStr = element.Attribute("boundingVolume");
+    if(bvStr) {
+        std::string str(bvStr);
+        if(str == "AABB" || str == "aabb") return BoundingVolumeType::AABB;
+        else if(str == "Sphere" || str == "sphere") return BoundingVolumeType::SPHERE;
+    }
+    return BoundingVolumeType::AABB;
 }
 
 MeshManager::MeshManager(MeshBuilder *builder) :

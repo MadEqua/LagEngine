@@ -5,7 +5,7 @@
 #include "Entity.h"
 
 namespace Lag {
-    class RenderOperation;
+    struct RenderOperation;
 };
 
 class Ball : public Lag::Entity {

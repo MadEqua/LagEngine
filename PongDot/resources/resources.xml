@@ -19,7 +19,7 @@
     </shader>
     
     <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment"/>
-    <shader name="pointSpiralTessEval" file="pointSpiral.tese" type="TesselationEvaluation">
+    <shader name="pointBallTessEval" file="pointBall.tese" type="TesselationEvaluation">
         <uniform name="modelMatrix" semantic="ModelMatrix"/>
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
         <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
@@ -27,8 +27,8 @@
     </shader>
     
     
-    <mesh name="plane" file="tesselatedPlane.obj"/>
-    <mesh name="sphere" file="tesselatedSphere.obj"/>
+    <mesh name="plane" file="tesselatedPlane.obj" boundingVolume="AABB"/>
+    <mesh name="sphere" file="tesselatedSphere.obj" boundingVolume="Sphere"/>
 
     
     <material name="pointMaterial" file="pointMaterial.xml"/>

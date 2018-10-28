@@ -21,13 +21,13 @@ void CollisionManager::checkCollisions() const {
             if(entity1->isCollider()) {
                 for(auto entity2 : entityList) {
                     if(entity2->isCollider() && entity1 != entity2) {
-                        auto &aabb1 = entity1->getWorldSpaceAABB();
-                        auto &aabb2 = entity2->getWorldSpaceAABB();
+                        auto &bv1 = entity1->getWorldSpaceBoundingVolume();
+                        auto &bv2 = entity2->getWorldSpaceBoundingVolume();
 
                         auto pair1 = std::make_pair(entity1, entity2);
                         auto pair2 = std::make_pair(entity2, entity1);
 
-                        if(aabb1.intersects(aabb2) && std::find(colliding.begin(), colliding.end(), pair2) == colliding.end()) {
+                        if(bv1.intersects(bv2) && std::find(colliding.begin(), colliding.end(), pair2) == colliding.end()) {
                             colliding.push_back(pair1);
                         }
                     }

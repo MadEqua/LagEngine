@@ -18,6 +18,8 @@ void Paddle::onFrameStart(float timePassed) {
     glm::vec3 pos = getWorldPosition();
     pos += velocity * timePassed;
     getParentSceneNode()->setPosition(pos, Lag::TransformSpace::WORLD);
+
+    Entity::onFrameStart(timePassed);
 }
 
 void Paddle::onKeyPress(int key, int modifier)  {

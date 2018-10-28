@@ -6,6 +6,7 @@
 #include "Types.h"
 #include "VertexData.h"
 #include "IndexData.h"
+#include "IBoundingVolume.h"
 
 #include "AABB.h"
 
@@ -22,6 +23,8 @@ namespace Lag {
         inline VertexData const* getVertexData() const { return vertexData.get(); }
         inline IndexData const* getIndexData() const { return indexData.get(); }
 
+        inline const IBoundingVolume& getBoundingVolume() const { return *boundingVolume; }
+
     private:
         friend class Mesh;
 
@@ -29,10 +32,10 @@ namespace Lag {
         SubMesh(VertexData &vxData, IndexData &idxData);
         explicit SubMesh(VertexData &vxData);
 
-        void updateAABB(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription);
+        void initBoundingVolume(const IBoundingVolume &parentBoundingVolume, const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription);
 
         std::unique_ptr<VertexData> vertexData;
         std::unique_ptr<IndexData> indexData; //optional
-        AABB aabb;
+        std::unique_ptr<IBoundingVolume> boundingVolume;
     };
 }

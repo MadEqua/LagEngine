@@ -41,7 +41,7 @@ vec3 wavingAnim(vec3 position) {
                      0.025 * random(position.xz),
                      0.027 * random(position.yz)) * t;
 
-    gl_PointSize = 8.0 * (t.x * 0.5 + 1.0);
+    gl_PointSize = 6.0 * (t.x * 0.5 + 1.0);
     return position + disp;
 }
 

@@ -15,14 +15,20 @@
 #include "assimp/Importer.hpp"
 #include "assimp/postprocess.h"
 
+#include "AABB.h"
+#include "BoundingSphere.h"
+
 using namespace Lag;
 
-Mesh::Mesh() : isLocked(false) {
+Mesh::Mesh() : 
+    isLocked(false) {
+    initBoundingVolume(BoundingVolumeType::AABB);
 }
 
-Mesh::Mesh(const std::string &file) :
+Mesh::Mesh(const std::string &file, BoundingVolumeType boundingVolumeType) :
         isLocked(false),
         XmlResource(file) {
+    initBoundingVolume(boundingVolumeType);
 }
 
 bool Mesh::loadImplementation() {
@@ -138,7 +144,7 @@ bool Mesh::loadImplementation() {
         }
     }
 
-    updateAABB();
+    updateBoundingVolume();
     return true;
 }
 
@@ -158,7 +164,7 @@ void Mesh::unlock() {
     if (isLocked) {
         isLocked = false;
 
-        updateAABB();
+        updateBoundingVolume();
 
         if(subMeshes[0]->vertexData->vertexCount <= 0) {
             LogManager::getInstance().log(LogType::WARNING, LogVerbosity::NORMAL, "Mesh",
@@ -224,7 +230,7 @@ void Mesh::setVertices(const byte *vertices, uint32 vertexCount, const VertexDes
     //Give the submesh the ownership of the VertexData
     auto &subMesh = *subMeshes[subMeshIndex];
     subMesh.vertexData = std::unique_ptr<VertexData>(vertexData);
-    subMesh.updateAABB(vertices, vertexCount, vertexDescription);
+    subMesh.initBoundingVolume(*boundingVolume, vertices, vertexCount, vertexDescription);
 }
 
 void Mesh::setIndices(const byte *indices, uint32 indexCount, uint32 subMeshIndex) {
@@ -275,8 +281,14 @@ void Mesh::setIndices(const byte *indices, uint32 indexCount, uint32 subMeshInde
     subMesh.indexData = std::unique_ptr<IndexData>(indexData);
 }
 
-void Mesh::updateAABB() {
+void Mesh::initBoundingVolume(BoundingVolumeType type) {
+    if(type == BoundingVolumeType::AABB) boundingVolume = std::make_unique<AABB>();
+    else if(type == BoundingVolumeType::SPHERE) boundingVolume = std::make_unique<BoundingSphere>();
+    else boundingVolume = std::make_unique<AABB>();
+}
+
+void Mesh::updateBoundingVolume() {
     for(auto &subMesh : subMeshes) {
-        aabb.enclose(subMesh->aabb);
+        boundingVolume->enclose(subMesh->getBoundingVolume());
     }
 }

@@ -14,7 +14,7 @@
 
 namespace Lag {
     class Material;
-    class AABB;
+    class IBoundingVolume;
 
     struct RenderOperation;
     enum class RenderMode : uint8;
@@ -40,7 +40,8 @@ namespace Lag {
         void setMesh(const std::string &meshName);
         void setMesh(Handle<Mesh> mesh);
 
-        AABB getWorldSpaceAABB() const;
+        void updateWorldSpaceBoundingVolume();
+        inline const IBoundingVolume& getWorldSpaceBoundingVolume() { return *worldSpaceBoundingVolume; }
 
         inline const std::string& getColliderName() const { return colliderName; }
         inline bool isCollider() const { return collider; }
@@ -70,10 +71,11 @@ namespace Lag {
 
         bool collider;
         std::string colliderName;
+        std::unique_ptr<IBoundingVolume> worldSpaceBoundingVolume;
 
-#ifdef ENABLE_AABB_GIZMOS
-        Handle<Mesh> aabbMesh;
-        Handle<Material> aabbMaterial;
+#ifdef ENABLE_BV_GIZMOS
+        Handle<Mesh> boundingVolumeMesh;
+        Handle<Material> boundingVolumeMaterial;
 #endif 
     };
 }

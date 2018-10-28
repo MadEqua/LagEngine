@@ -16,7 +16,11 @@ SubMesh::SubMesh(VertexData &vxData) :
         vertexData(&vxData) {
 }
 
-void SubMesh::updateAABB(const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription) {
+void SubMesh::initBoundingVolume(const IBoundingVolume &parentBoundingVolume, const byte *vertices, uint32 vertexCount, const VertexDescription &vertexDescription) {
+    //To inherit the same type
+    boundingVolume = parentBoundingVolume.clone();
+    boundingVolume->empty();
+    
     const VertexAttribute *posAttribute = vertexDescription.getAttribute(VertexAttributeSemantic::POSITION);
     if(posAttribute) {
         glm::vec3 pos;
@@ -39,7 +43,7 @@ void SubMesh::updateAABB(const byte *vertices, uint32 vertexCount, const VertexD
                     pos[component] = Utils::convertValueToFloat(componentPtr, posAttribute->getType());
             }
 
-            aabb.enclose(pos);
+            boundingVolume->enclose(pos);
         }
     }
     else {

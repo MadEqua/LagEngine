@@ -181,7 +181,13 @@ set(SOURCES
         ${SRC_FOLDER}/collisions/CollisionManager.cpp
         ${SRC_FOLDER}/collisions/AABB.h
         ${SRC_FOLDER}/collisions/AABB.cpp
+        ${SRC_FOLDER}/collisions/BoundingSphere.h
+        ${SRC_FOLDER}/collisions/BoundingSphere.cpp
+        ${SRC_FOLDER}/collisions/IBoundingVolume.h
+        ${SRC_FOLDER}/collisions/IBoundingVolume.cpp
         ${SRC_FOLDER}/collisions/ICollisionListener.h
+        ${SRC_FOLDER}/collisions/CollisionUtils.h
+        ${SRC_FOLDER}/collisions/CollisionUtils.cpp
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h

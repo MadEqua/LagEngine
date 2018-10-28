@@ -1,11 +1,9 @@
 #pragma once
 
-#include "glm/glm.hpp"
-
-#include <vector>
+#include "IBoundingVolume.h"
 
 namespace Lag {
-    class AABB {
+    class AABB : public IBoundingVolume {
     public:
         AABB();
         AABB(const AABB &other);
@@ -16,14 +14,12 @@ namespace Lag {
         //Will enclose the other transformed AABB.
         AABB(const AABB &other, const glm::mat4 &transform);
 
-        void empty();
-        void enclose(const glm::vec3 &point);
-        void enclose(const AABB &other);
+        std::unique_ptr<IBoundingVolume> clone() const override;
 
-        //Transforms itself by the matrix and recompute the bounds.
-        AABB transform(const glm::mat4 &transform) const;
+        void empty() override;
+        void enclose(const glm::vec3 &point) override;
 
-        bool intersects(const AABB &other) const;
+        void transform(const glm::mat4 &transform) override;
 
         inline glm::vec3 getMin() const { return glm::vec3(min[0], min[1], min[2]); }
         inline glm::vec3 getMax() const { return glm::vec3(max[0], max[1], max[2]); }

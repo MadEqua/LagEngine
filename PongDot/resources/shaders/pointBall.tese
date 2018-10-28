@@ -36,7 +36,7 @@ vec3 circleAnim(vec3 position, vec3 normal) {
     float t = sin(time + random(position.xz * 114.0) * 165.0);
     float disp = 0.1 * random(position.zy * 100.0) * t;
 
-    gl_PointSize = 5.0 * (t * 0.5 + 1.0);
+    gl_PointSize = 3.0 * (t * 0.5 + 1.0);
     return position + normal * disp;
 }
 

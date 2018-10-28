@@ -2,7 +2,7 @@
 
     <shader name="pointVertex"/>
     <shader name="pointTessCtrl"/>
-    <shader name="pointSpiralTessEval"/>
+    <shader name="pointBallTessEval"/>
     <shader name="pointFragmentNoLight"/>
 
     <texture name="circleSprite"/>

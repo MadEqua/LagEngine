@@ -7,6 +7,8 @@
 #include "SubEntity.h"
 #include "Mesh.h"
 
+#include "BoundingSphere.h"
+#include "AABB.h"
 #include "SceneNode.h"
 
 using namespace Lag;
@@ -30,26 +32,37 @@ void Entity::addToRenderQueue(RenderQueue &renderQueue, Viewport &viewport, Rend
     for (auto &ptr : subEntities)
         ptr->addToRenderQueue(renderQueue, viewport, renderTarget);
 
-#ifdef ENABLE_AABB_GIZMOS
+#ifdef ENABLE_BV_GIZMOS
     if(collider && renderTarget.getRenderPhase() == RenderPhase::COLOR) {
         RenderOperation &ro = renderQueue.addRenderOperation();
         ro.renderTarget = &renderTarget;
-        ro.vertexData = const_cast<VertexData *>(aabbMesh->getSubMeshes()[0]->getVertexData());
-        ro.indexData = const_cast<IndexData *>(aabbMesh->getSubMeshes()[0]->getIndexData());
+        ro.vertexData = const_cast<VertexData *>(boundingVolumeMesh->getSubMeshes()[0]->getVertexData());
+        ro.indexData = const_cast<IndexData *>(boundingVolumeMesh->getSubMeshes()[0]->getIndexData());
         ro.renderable = this;
         ro.viewport = &viewport;
         ro.passId = 0;
-        ro.material = aabbMaterial.get();
+        ro.material = boundingVolumeMaterial.get();
     }
 #endif
 }
 
 void Entity::preRender(Renderer &renderer, const RenderOperation &renderOperation) {
-#ifdef ENABLE_AABB_GIZMOS
+#ifdef ENABLE_BV_GIZMOS
     if(collider) {
-        AABB worldSpaceAABB = getWorldSpaceAABB();
-        glm::vec3 pos = worldSpaceAABB.getCenter();
-        glm::vec3 scale = worldSpaceAABB.getDimensions();
+        glm::vec3 pos;
+        glm::vec3 scale;
+
+        if(worldSpaceBoundingVolume->getType() == BoundingVolumeType::AABB) {
+            AABB &aabb = *dynamic_cast<AABB*>(worldSpaceBoundingVolume.get());
+            pos = aabb.getCenter();
+            scale = aabb.getDimensions();
+        }
+        else if(worldSpaceBoundingVolume->getType() == BoundingVolumeType::SPHERE) {
+            BoundingSphere &bs = *dynamic_cast<BoundingSphere*>(worldSpaceBoundingVolume.get());
+            pos = bs.getCenter();
+            scale = glm::vec3(bs.getRadius() * 2.0f);
+        }
+
         glm::mat4 transform(scale.x, 0.0f, 0.0f, 0.0f,
                             0.0f, scale.y, 0.0f, 0.0f,
                             0.0f, 0.0f, scale.z, 0.0f,
@@ -63,7 +76,7 @@ void Entity::preRender(Renderer &renderer, const RenderOperation &renderOperatio
 }
 
 void Entity::render(Renderer &renderer, const RenderOperation &renderOperation) {
-#ifdef ENABLE_AABB_GIZMOS
+#ifdef ENABLE_BV_GIZMOS
     if(collider) {
         renderer.renderIndexed(renderOperation.material->getRenderMode(), *renderOperation.vertexData, *renderOperation.indexData);
     }
@@ -99,32 +112,45 @@ void Entity::setMesh(Handle<Mesh> mesh) {
     this->mesh = mesh;
 }
 
-AABB Entity::getWorldSpaceAABB() const {
+void Entity::updateWorldSpaceBoundingVolume() {
     if(collider && isAttachedToSceneNode()) {
-        return mesh->getAABB().transform(getLocalToWorldTransform());
+        auto clone = mesh->getBoundingVolume().clone();
+        worldSpaceBoundingVolume.swap(clone);
+        worldSpaceBoundingVolume->transform(getLocalToWorldTransform());
     }
-    return AABB();
 }
 
 void Entity::setNonCollider() {
-#ifdef ENABLE_AABB_GIZMOS
+#ifdef ENABLE_BV_GIZMOS
     if(collider) {
-        aabbMaterial.invalidate();
-        aabbMesh.invalidate();
+        boundingVolumeMaterial.invalidate();
+        boundingVolumeMesh.invalidate();
+        worldSpaceBoundingVolume.reset();
     }
 #endif
+
     collider = false;
 }
 
 void Entity::setAsCollider(const std::string &colliderName) {
-#ifdef ENABLE_AABB_GIZMOS
+    this->colliderName = colliderName;
+    worldSpaceBoundingVolume = mesh->getBoundingVolume().clone();
+    worldSpaceBoundingVolume->empty();
+
+#ifdef ENABLE_BV_GIZMOS
     if(!collider) {
-        aabbMesh = Root::getInstance().getMeshManager().getAABBGizmo();
-        aabbMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
+        if(worldSpaceBoundingVolume->getType() == BoundingVolumeType::AABB) {
+            boundingVolumeMesh = Root::getInstance().getMeshManager().getAABBGizmo();
+            boundingVolumeMaterial = Root::getInstance().getMaterialManager().get("aabbGizmoMaterial");
+        }
+        else if(worldSpaceBoundingVolume->getType() == BoundingVolumeType::SPHERE) {
+            boundingVolumeMesh = Root::getInstance().getMeshManager().get("sphere");
+            boundingVolumeMaterial = Root::getInstance().getMaterialManager().get("sphereGizmoMaterial");
+        }
     }
 #endif
-    collider = true; 
-    this->colliderName = colliderName;
+
+    collider = true;
 }
 
 void Entity::onCollision(Entity &other) {
@@ -134,6 +160,7 @@ void Entity::onCollision(Entity &other) {
 // Callbacks from SceneManager
 /////////////////////////////////
 void Entity::onFrameStart(float timePassed) {
+    updateWorldSpaceBoundingVolume();
 }
 
 void Entity::onFrameRenderingQueued(float timePassed) {

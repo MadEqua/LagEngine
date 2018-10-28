@@ -8,7 +8,7 @@
 
 Ball::Ball() :
     Entity("sphere", "ballMaterial"),
-    velocity(3.0f, 0.0f, 5.0f) {
+    velocity(10.0f, 0.0f, 12.0f) {
 
     setAsCollider("ball");
 }
@@ -34,6 +34,8 @@ void Ball::onFrameStart(float timePassed) {
     getParentSceneNode()->rotate(20.0f * glm::length(velocity) * timePassed, rotationAxis, Lag::TransformSpace::WORLD);
 
     getParentSceneNode()->translate(velocity * timePassed, Lag::TransformSpace::WORLD);
+
+    Entity::onFrameStart(timePassed);
 }
 
 //TODO: This does not work because we should send the uniform on the SubEntity prerender, not the Entity. The bound shader will not be correct.

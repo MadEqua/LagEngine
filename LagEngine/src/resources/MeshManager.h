@@ -3,6 +3,7 @@
 #include "XmlResourceManager.h"
 #include "Mesh.h"
 #include "MeshRepository.h"
+#include "IBoundingVolume.h"
 
 #include <string>
 
@@ -15,6 +16,9 @@ namespace Lag {
         Mesh *parseAndCreate(const std::string &path, const TiXmlElement &element) const override;
 
         bool fromXml;
+
+    protected:
+        static BoundingVolumeType parseBoundingVolumeType(const TiXmlElement &element);
     };
 
 
