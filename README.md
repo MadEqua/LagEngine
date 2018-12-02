@@ -1,9 +1,10 @@
 # LagEngine
 
-This project exists as a learning experience about the implementation and design decisions of a 3D rendering engine. 
-While it tries to expose a friendly programming interface, it is not meant to have a GUI or an editor.
+This project exists as a learning experience about the implementation and design decisions of a 3D rendering engine. It’s also a project to keep my C++ skills on check.
 
-This is not a finished engine.
+While it tries to expose a friendly programming interface it is not meant to have a GUI or an editor (at least for now).
+
+It includes a demo where an AI plays a version of Pong on a stylized scene.
 
 # Current features:
 - Forward rendering based on simple per-pixel lighting, supporting directional and point lights.
