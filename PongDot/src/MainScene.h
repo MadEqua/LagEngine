@@ -20,9 +20,8 @@ public:
 private:
     Lag::FreeCamera *camera;
 
-    void initBalls(Lag::SceneNode &parentNode, int count);
+    void initBallsAndPaddles(Lag::SceneNode &parentNode);
     void initBoard(Lag::SceneNode &parentNode);
-    void initPaddles(Lag::SceneNode &parentNode);
     void initGround(Lag::SceneNode &parentNode);
 
 

@@ -11,6 +11,8 @@ public:
     void onCollision(Entity &other) override;
     void onFrameStart(float timePassed) override;
 
+    inline const glm::vec3& getVelocity() const { return velocity; }
+
 protected:
     void onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
 

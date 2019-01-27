@@ -27,8 +27,7 @@ void MainScene::onStart() {
     Lag::SceneNode &rootNode = getSceneGraph().getRootSceneNode();
 
     initBoard(rootNode);
-    initBalls(rootNode, 4);
-    initPaddles(rootNode);
+    initBallsAndPaddles(rootNode);
     initGround(rootNode);
 
     Lag::Root::getInstance().getCollisionManager().registerObserver(*this);
@@ -52,11 +51,16 @@ void MainScene::onFrameStart(float timePassed) {
 void MainScene::onCollision(Lag::Entity &entity1, Lag::Entity &entity2) {
 }
 
-void MainScene::initBalls(Lag::SceneNode &parentNode, int count) {
-    for(int i = 0; i < count; ++i) {
+void MainScene::initBallsAndPaddles(Lag::SceneNode &parentNode) {
+    const int BALL_COUNT = 4;
+    
+    std::vector<Ball*> balls(BALL_COUNT);
+
+    for(int i = 0; i < BALL_COUNT; ++i) {
         Lag::SceneNode &ballNode = parentNode.createChildSceneNode("ball" + i);
 
-        ballNode.setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.5f, glm::linearRand(-20.0f, 20.0f)));
+        ballNode.setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
+        ballNode.setScale(glm::vec3(1.2f, 1.2f, 1.2f));
 
         Ball *ball = new Ball();
         addEntity(ball);
@@ -64,7 +68,44 @@ void MainScene::initBalls(Lag::SceneNode &parentNode, int count) {
 
         Lag::PointLight &ballLight = createPointLight(Lag::Color(15.0f), glm::vec3(1.0f, 0.1f, 0.1f));
         ballLight.attachToSceneNode(ballNode);
+
+        balls[i] = ball;
     }
+
+    const float PADDLE_SMALL_SIZE = 0.6f;
+    const float PADDLE_LARGE_SIZE = 4.0f;
+
+    Lag::SceneNode &paddle1Node = parentNode.createChildSceneNode("paddle1");
+    paddle1Node.setPosition(glm::vec3(-HALF_BOARD_SIZE + 2.0f, 0.75, 0.0f), Lag::TransformSpace::WORLD);
+    paddle1Node.setScale(glm::vec3(PADDLE_SMALL_SIZE, PADDLE_SMALL_SIZE, PADDLE_LARGE_SIZE));
+
+    Lag::SceneNode &paddle2Node = parentNode.createChildSceneNode("paddle2");
+    paddle2Node.setPosition(glm::vec3(HALF_BOARD_SIZE - 2.0f, 0.75, 0.0f), Lag::TransformSpace::WORLD);
+    paddle2Node.setScale(glm::vec3(PADDLE_SMALL_SIZE, PADDLE_SMALL_SIZE, PADDLE_LARGE_SIZE));
+
+    Lag::SceneNode &paddle3Node = parentNode.createChildSceneNode("paddle3");
+    paddle3Node.setPosition(glm::vec3(0.0f, 0.75, -HALF_BOARD_SIZE + 2.0f), Lag::TransformSpace::WORLD);
+    paddle3Node.setScale(glm::vec3(PADDLE_LARGE_SIZE, PADDLE_SMALL_SIZE, PADDLE_SMALL_SIZE));
+
+    Lag::SceneNode &paddle4Node = parentNode.createChildSceneNode("paddle4");
+    paddle4Node.setPosition(glm::vec3(0.0f, 0.75, HALF_BOARD_SIZE - 2.0f), Lag::TransformSpace::WORLD);
+    paddle4Node.setScale(glm::vec3(PADDLE_LARGE_SIZE, PADDLE_SMALL_SIZE, PADDLE_SMALL_SIZE));
+
+    Paddle *paddle1 = new Paddle(balls, glm::vec3(1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, 1.0f));
+    addEntity(paddle1);
+    paddle1->attachToSceneNode(paddle1Node);
+
+    Paddle *paddle2 = new Paddle(balls, glm::vec3(-1.0f, 0.0f, 0.0f), glm::vec3(0.0f, 0.0f, -1.0f));
+    addEntity(paddle2);
+    paddle2->attachToSceneNode(paddle2Node);
+
+    Paddle *paddle3 = new Paddle(balls, glm::vec3(0.0f, 0.0f, 1.0f), glm::vec3(-1.0f, 0.0f, 0.0f));
+    addEntity(paddle3);
+    paddle3->attachToSceneNode(paddle3Node);
+
+    Paddle *paddle4 = new Paddle(balls, glm::vec3(0.0f, 0.0f, -1.0f), glm::vec3(1.0f, 0.0f, 0.0f));
+    addEntity(paddle4);
+    paddle4->attachToSceneNode(paddle4Node);
 }
 
 void MainScene::initBoard(Lag::SceneNode &parentNode) {
@@ -165,17 +206,6 @@ void MainScene::initBoard(Lag::SceneNode &parentNode) {
 
     Lag::PointLight &light4 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
     light4.attachToSceneNode(light4Node);
-}
-
-void MainScene::initPaddles(Lag::SceneNode &parentNode) {
-    Lag::SceneNode &paddle1Node = parentNode.createChildSceneNode("paddle1");
-
-    paddle1Node.setPosition(glm::vec3(-HALF_BOARD_SIZE + 1.0f, 0.5, 0.0f), Lag::TransformSpace::WORLD);
-    paddle1Node.setScale(glm::vec3(0.5f, 0.5f, 3.0f));
-
-    Paddle *paddle1 = new Paddle();
-    addEntity(paddle1);
-    paddle1->attachToSceneNode(paddle1Node);
 }
 
 void MainScene::initGround(Lag::SceneNode &parentNode) {
