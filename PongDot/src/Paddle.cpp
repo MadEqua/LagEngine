@@ -8,9 +8,13 @@
 #include "Material.h"
 
 #include "Ball.h"
+#include "Scene.h"
+
 #include <glm/glm.hpp>
 
-Paddle::Paddle(std::vector<Ball*> &balls, const glm::vec3 &normal, const glm::vec3 &tangent) :
+Paddle::Paddle(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name,
+               std::vector<Ball*> &balls, const glm::vec3 &position, const glm::vec3 &scale,
+               const glm::vec3 &normal, const glm::vec3 &tangent) :
     Entity("cube", "pointMaterial"),
     velocity(0.0f),
     balls(balls),
@@ -24,6 +28,13 @@ Paddle::Paddle(std::vector<Ball*> &balls, const glm::vec3 &normal, const glm::ve
 
     this->color1 = color1.toIntABGR();
     this->color2 = color2.toIntABGR();
+
+    Lag::SceneNode &paddleNode = parentNode.createChildSceneNode(name);
+    paddleNode.setPosition(position);
+    paddleNode.setScale(scale);
+
+    scene.addEntity(this);
+    attachToSceneNode(paddleNode);
 }
 
 void Paddle::onFrameStart(float timePassed) {

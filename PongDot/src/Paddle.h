@@ -7,9 +7,16 @@
 
 class Ball;
 
+namespace Lag {
+    class Scene;
+    class SceneNode;
+}
+
 class Paddle : public Lag::Entity {
 public:
-    Paddle(std::vector<Ball*> &ballsm, const glm::vec3 &normal, const glm::vec3 &tangent);
+    Paddle(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name, 
+           std::vector<Ball*> &balls, const glm::vec3 &position, const glm::vec3 &scale,
+           const glm::vec3 &normal, const glm::vec3 &tangent);
 
     void onFrameStart(float timePassed) override;
 
