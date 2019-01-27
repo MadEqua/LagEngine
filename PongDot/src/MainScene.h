@@ -21,4 +21,20 @@ private:
     Lag::FreeCamera *camera;
 
     void initBalls(Lag::SceneNode &parentNode, int count);
+    void initBoard(Lag::SceneNode &parentNode);
+    void initPaddles(Lag::SceneNode &parentNode);
+    void initGround(Lag::SceneNode &parentNode);
+
+
+    const float BOARD_SIZE = 50.0f;
+    const float HALF_BOARD_SIZE = BOARD_SIZE * 0.5f;
+    const float QUARTER_BOARD_SIZE = HALF_BOARD_SIZE * 0.5f;
+
+    const float WALL_HEIGHT = 2.0f;
+    const float HALF_WALL_HEIGHT = WALL_HEIGHT * 0.5f;
+
+    const float TOWER_HEIGHT = WALL_HEIGHT * 5.0f;
+    const float HALF_TOWER_HEIGHT = TOWER_HEIGHT * 0.5f;
+
+    const float GROUND_SIZE = BOARD_SIZE * 5.0f;
 };

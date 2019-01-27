@@ -46,8 +46,8 @@ bool GLFWRenderWindow::loadImplementation() {
     }
     else {
         glfwWindowHint(GLFW_SAMPLES, initializationParameters.MSAAsamples);
-        glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? GLFW_TRUE : GLFW_FALSE);
-        glfwWindowHint(GLFW_DOUBLEBUFFER, GLFW_TRUE);
+        glfwWindowHint(GLFW_SRGB_CAPABLE, initializationParameters.sRGB ? true : false);
+        glfwWindowHint(GLFW_DOUBLEBUFFER, true);
 
         glfwWindowHint(GLFW_CLIENT_API, GLFW_OPENGL_API);
         glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 4);
@@ -55,9 +55,9 @@ bool GLFWRenderWindow::loadImplementation() {
         glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 
 #ifdef ENABLE_DEBUG
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_TRUE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, true);
 #else
-        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, GLFW_FALSE);
+        glfwWindowHint(GLFW_OPENGL_DEBUG_CONTEXT, false);
 #endif
 
         window = glfwCreateWindow(initializationParameters.width, initializationParameters.height,
@@ -81,7 +81,7 @@ bool GLFWRenderWindow::loadImplementation() {
             return false;
         }
 
-        glfwSwapInterval(initializationParameters.vsync ? GLFW_TRUE : GLFW_FALSE);
+        glfwSwapInterval(initializationParameters.vsync ? true : true);
         setVirtualCursor(false);
 
         LogManager::getInstance().log(LogType::INFO, LogVerbosity::NORMAL,

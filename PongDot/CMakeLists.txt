@@ -13,7 +13,9 @@ set(SOURCES
         ${SRC_FOLDER}/Ball.h
         ${SRC_FOLDER}/Ball.cpp
         ${SRC_FOLDER}/Paddle.h
-        ${SRC_FOLDER}/Paddle.cpp)
+        ${SRC_FOLDER}/Paddle.cpp
+        ${SRC_FOLDER}/Plane.h
+        ${SRC_FOLDER}/Plane.cpp)
 
 set(INCLUDE_FOLDERS ${SRC_FOLDER})
 

@@ -156,6 +156,13 @@ void Entity::setAsCollider(const std::string &colliderName) {
 void Entity::onCollision(Entity &other) {
 }
 
+void Entity::onSubEntityPreRender(SubEntity &subEntity, Renderer &renderer, const RenderOperation &renderOperation) {
+}
+
+void Entity::onSubEntityRender(SubEntity &subEntity, Renderer &renderer, const RenderOperation &renderOperation) {
+}
+
+
 /////////////////////////////////
 // Callbacks from SceneManager
 /////////////////////////////////

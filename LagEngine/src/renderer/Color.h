@@ -7,9 +7,11 @@ namespace Lag {
     public:
         Color();
 
-        explicit Color(int v);
-        Color(int r, int g, int b);
-        Color(int r, int g, int b, int a);
+        //Expecting Packed AGBR
+        explicit Color(uint32 v);
+
+        Color(uint32 r, uint32 g, uint32 b);
+        Color(uint32 r, uint32 g, uint32 b, uint32 a);
 
         explicit Color(float v);
         Color(float r, float g, float b);
@@ -21,6 +23,10 @@ namespace Lag {
         inline float b() const { return channels[2]; }
         inline float alpha() const { return channels[3]; }
 
+        //Good to unpack on GLSL with vec4 c = unpackUnorm4x8(). 
+        //Result can be accessed with v.rgba.
+        uint32 toIntABGR() const;
+
         inline void setR(float r) { channels[0] = r; }
         inline void setG(float g) { channels[1] = g; }
         inline void setB(float b) { channels[2] = b; }
@@ -31,6 +37,7 @@ namespace Lag {
         bool operator!=(const Color &rhs) const;
 
     private:
+        //RGBA
         float channels[4];
     };
 }

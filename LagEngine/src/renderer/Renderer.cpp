@@ -35,7 +35,7 @@ void TextureBindings::reset() {
 
 Renderer::Renderer(IGraphicsAPI &graphicsAPI, SceneManager &sceneManager, RenderTargetManager &renderTargetManager) :
         sceneManager(sceneManager), graphicsAPI(graphicsAPI), renderTargetManager(renderTargetManager),
-        clearColor(126, 192, 238), stencilClearValue(0), depthClearValue(1.0f),
+        clearColor(126u, 192u, 238u), stencilClearValue(0), depthClearValue(1.0f),
         actualFrame(0) {
     resetToBasicState();
     renderTargetManager.getRenderWindow()->RenderTarget::registerObserver(*this);

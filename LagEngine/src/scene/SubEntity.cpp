@@ -55,6 +55,8 @@ void SubEntity::preRender(Renderer &renderer, const RenderOperation &renderOpera
                                                    *renderOperation.viewport,
                                                    parent.getLocalToWorldTransform(),
                                                    parent.getNormalTransform());
+
+    parent.onSubEntityPreRender(*this, renderer, renderOperation);
 }
 
 
@@ -66,4 +68,6 @@ void SubEntity::render(Renderer &renderer, const RenderOperation &renderOperatio
     else {
         renderer.renderIndexed(renderMode, *renderOperation.vertexData, *renderOperation.indexData);
     }
+
+    parent.onSubEntityRender(*this, renderer, renderOperation);
 }

@@ -11,6 +11,12 @@ Ball::Ball() :
     velocity(10.0f, 0.0f, 12.0f) {
 
     setAsCollider("ball");
+
+    Lag::Color color1(0.8f, 0.06f, 0.08f);
+    Lag::Color color2(0.4f, 0.04f, 0.01f);
+
+    this->color1 = color1.toIntABGR();
+    this->color2 = color2.toIntABGR();
 }
 
 void Ball::onCollision(Entity &other) {
@@ -38,11 +44,8 @@ void Ball::onFrameStart(float timePassed) {
     Entity::onFrameStart(timePassed);
 }
 
-//TODO: This does not work because we should send the uniform on the SubEntity prerender, not the Entity. The bound shader will not be correct.
-void Ball::preRender(Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) {
-    Entity::preRender(renderer, renderOperation);
-    //auto color = glm::vec3(0.875f, 0.902f, 0.0f);
-    //material->getGpuProgram().getUniformByName("mainColor")->setValue(reinterpret_cast<const void*>(&color));
+void Ball::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) {
+    Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
+    material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color1));
+    material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color2));
 }
-
-

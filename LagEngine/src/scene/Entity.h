@@ -35,6 +35,10 @@ namespace Lag {
         void preRender(Renderer &renderer, const RenderOperation &renderOperation) override;
         void render(Renderer &renderer, const RenderOperation &renderOperation) override;
 
+        //To be called by SubEntities
+        virtual void onSubEntityPreRender(SubEntity &subEntity, Renderer &renderer, const RenderOperation &renderOperation);
+        virtual void onSubEntityRender(SubEntity &subEntity, Renderer &renderer, const RenderOperation &renderOperation);
+
         void setMaterial(const std::string &materialName);
         void setMaterial(Handle<Material> material);
         void setMesh(const std::string &meshName);

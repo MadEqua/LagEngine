@@ -1,5 +1,7 @@
 #include "Color.h"
 
+#include <glm/glm.hpp>
+
 using namespace Lag;
 
 Color::Color() {
@@ -9,21 +11,22 @@ Color::Color() {
     channels[3] = 1.0f;
 }
 
-Color::Color(int v) {
-    channels[0] = static_cast<float>(v) / 255.0f;
-    channels[1] = static_cast<float>(v) / 255.0f;
-    channels[2] = static_cast<float>(v) / 255.0f;
-    channels[3] = 1.0f;
+Color::Color(uint32 v) {
+    glm::vec4 vec = glm::unpackUnorm4x8(v);
+    channels[0] = vec[0];
+    channels[1] = vec[1];
+    channels[2] = vec[2];
+    channels[3] = vec[3];
 }
 
-Color::Color(int r, int g, int b) {
+Color::Color(uint32 r, uint32 g, uint32 b) {
     channels[0] = static_cast<float>(r) / 255.0f;
     channels[1] = static_cast<float>(g) / 255.0f;
     channels[2] = static_cast<float>(b) / 255.0f;
     channels[3] = 1.0f;
 }
 
-Color::Color(int r, int g, int b, int a) {
+Color::Color(uint32 r, uint32 g, uint32 b, uint32 a) {
     channels[0] = static_cast<float>(r) / 255.0f;
     channels[1] = static_cast<float>(g) / 255.0f;
     channels[2] = static_cast<float>(b) / 255.0f;
@@ -60,4 +63,9 @@ bool Color::operator==(const Color &rhs) const {
 
 bool Color::operator!=(const Color &rhs) const {
     return !(rhs == *this);
+}
+
+uint32 Color::toIntABGR() const {
+    glm::vec4 v(channels[0], channels[1], channels[2], channels[3]);
+    return glm::packUnorm4x8(v);
 }

@@ -4,11 +4,6 @@
 
 #include "Entity.h"
 
-namespace Lag {
-    struct RenderOperation;
-};
-
-
 class Paddle : public Lag::Entity {
 public:
     Paddle();
@@ -18,8 +13,10 @@ public:
     void onKeyPress(int key, int modifier) override;
     void onKeyRelease(int key, int modifier) override;
 
-    void preRender(Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
+protected:
+    void onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
 
 private:
     glm::vec3 velocity;
+    Lag::uint32 color1, color2;
 };

@@ -107,8 +107,8 @@ void GpuProgramStageBuilder::parseUniforms(GpuProgramStage &stage, const TiXmlEl
 GpuProgramUniformType GpuProgramStageBuilder::parseUniformTypeFromString(const std::string &type) {
     if (type == "bool") return GpuProgramUniformType::BOOL;
     else if (type == "float") return GpuProgramUniformType::FLOAT;
-    else if (type == "int32") return GpuProgramUniformType::INT32;
-    else if (type == "uint32") return GpuProgramUniformType::UINT32;
+    else if (type == "int32" || type == "int") return GpuProgramUniformType::INT32;
+    else if (type == "uint32" || type == "uint") return GpuProgramUniformType::UINT32;
     else if (type == "matrix") return GpuProgramUniformType::MATRIX;
     else return GpuProgramUniformType::UNKNOWN;
 }

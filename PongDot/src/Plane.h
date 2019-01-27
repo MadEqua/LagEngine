@@ -1,21 +1,15 @@
 #pragma once
 
-#include <glm/glm.hpp>
-
 #include "Entity.h"
+#include "Color.h"
 
-class Ball : public Lag::Entity {
+class Plane : public Lag::Entity {
 public:
-    Ball();
-
-    void onCollision(Entity &other) override;
-    void onFrameStart(float timePassed) override;
+    Plane(const Lag::Color &color1, const Lag::Color &color2);
 
 protected:
     void onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
 
 private:
-    bool isColliding;
-    glm::vec3 velocity;
     Lag::uint32 color1, color2;
 };

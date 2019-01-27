@@ -226,18 +226,20 @@ target_sources(LagEngine
 
 target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_INCLUDE_FOLDERS})
 
+
+
 ###############################################
 #GLFW
 ###############################################
-target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/glfw-3.2.1/include)
+target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/glfw-3.1.2/include)
 
 find_library(GLFW_LIBRARY_DEBUG
-        NAMES glfw3d.lib
-        HINTS ${DEPENDENCIES_FOLDER}/glfw-3.2.1/lib)
+        NAMES glfw3.lib
+        HINTS ${DEPENDENCIES_FOLDER}/glfw-3.1.2/lib)
 
 find_library(GLFW_LIBRARY_RELEASE
         NAMES glfw3.lib
-        HINTS ${DEPENDENCIES_FOLDER}/glfw-3.2.1/lib)
+        HINTS ${DEPENDENCIES_FOLDER}/glfw-3.1.2/lib)
 
 target_link_libraries(LagEngine
         PRIVATE debug ${GLFW_LIBRARY_DEBUG}
@@ -251,7 +253,7 @@ target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/glew-2.1.0/i
 add_definitions(-DGLEW_STATIC)
 
 find_library(GLEW_LIBRARY_DEBUG
-        NAMES glew32sd.lib
+        NAMES glew32s.lib
         HINTS ${DEPENDENCIES_FOLDER}/glew-2.1.0/lib)
 
 find_library(GLEW_LIBRARY_RELEASE
@@ -268,23 +270,23 @@ target_link_libraries(LagEngine PRIVATE ${OPENGL_LIBRARIES})
 ###############################################
 #Assimp
 ###############################################
-target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/assimp-4.1.0/include)
+target_include_directories(LagEngine PRIVATE ${DEPENDENCIES_FOLDER}/assimp-1.3.0/include)
 
 find_library(ASSIMP_LIBRARY_DEBUG
-        NAMES assimp-vc140-mtd.lib
-        HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
+        NAMES assimp-vc130-mtd.lib
+        HINTS ${DEPENDENCIES_FOLDER}/assimp-1.3.0/lib/debug)
 
 find_library(ASSIMP_LIBRARY_RELEASE
-        NAMES assimp-vc140-mt.lib
-        HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
+        NAMES assimp-vc130-mt.lib
+        HINTS ${DEPENDENCIES_FOLDER}/assimp-1.3.0/lib/release)
 
 find_library(ASSIMP_LIBRARY_DYN_DEBUG
-        NAMES assimp-vc140-mtd.dll
-        HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
+        NAMES assimp-vc130-mtd.dll
+        HINTS ${DEPENDENCIES_FOLDER}/assimp-1.3.0/lib/debug)
 
 find_library(ASSIMP_LIBRARY_DYN_RELEASE
-        NAMES assimp-vc140-mt.dll
-        HINTS ${DEPENDENCIES_FOLDER}/assimp-4.1.0/lib)
+        NAMES assimp-vc130-mt.dll
+        HINTS ${DEPENDENCIES_FOLDER}/assimp-1.3.0/lib/release)
 
 target_link_libraries(LagEngine
         PRIVATE debug ${ASSIMP_LIBRARY_DEBUG}
@@ -293,7 +295,7 @@ target_link_libraries(LagEngine
 ###############################################
 #GLM
 ###############################################
-target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_FOLDER}/glm-0.9.9.0/include)
+target_include_directories(LagEngine PUBLIC ${DEPENDENCIES_FOLDER}/glm-0.9.9.3/include)
 
 
 ###############################################

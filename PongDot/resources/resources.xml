@@ -6,7 +6,8 @@
         <uniform name="pointLightPositions" semantic="PointLightPositions"/>
         <uniform name="pointLightColors" semantic="PointLightColors"/>
         <uniform name="pointLightAttenuations" semantic="PointLightAttenuations"/>
-        <!--<uniform name="mainColor" semantic="Custom" type="float" size="3"/>-->
+        <uniform name="color1" semantic="Custom" type="uint" size="1"/>
+        <uniform name="color2" semantic="Custom" type="uint" size="1"/>
     </shader>
     <shader name="pointTessCtrl" file="point.tesc" type="TesselationControl">
         <uniform name="modelMatrix" semantic="ModelMatrix"/>
@@ -17,8 +18,12 @@
         <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
         <uniform name="time" semantic="Timer"/>
     </shader>
+
+    <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment">
+        <uniform name="color1" semantic="Custom" type="uint" size="1"/>
+        <uniform name="color2" semantic="Custom" type="uint" size="1"/>
+    </shader>
     
-    <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment"/>
     <shader name="pointBallTessEval" file="pointBall.tese" type="TesselationEvaluation">
         <uniform name="modelMatrix" semantic="ModelMatrix"/>
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
