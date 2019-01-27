@@ -57,18 +57,7 @@ void MainScene::initBallsAndPaddles(Lag::SceneNode &parentNode) {
     std::vector<Ball*> balls(BALL_COUNT);
 
     for(int i = 0; i < BALL_COUNT; ++i) {
-        Lag::SceneNode &ballNode = parentNode.createChildSceneNode("ball" + i);
-
-        ballNode.setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
-        ballNode.setScale(glm::vec3(1.2f, 1.2f, 1.2f));
-
-        Ball *ball = new Ball();
-        addEntity(ball);
-        ball->attachToSceneNode(ballNode);
-
-        Lag::PointLight &ballLight = createPointLight(Lag::Color(15.0f), glm::vec3(1.0f, 0.1f, 0.1f));
-        ballLight.attachToSceneNode(ballNode);
-
+        Ball *ball = new Ball(*this, parentNode, "ball" + i);
         balls[i] = ball;
     }
 

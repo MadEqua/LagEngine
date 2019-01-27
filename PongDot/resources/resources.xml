@@ -23,15 +23,7 @@
     </shader>
 
     <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment">
-        <uniform name="color1" semantic="Custom" type="uint" size="1"/>
-        <uniform name="color2" semantic="Custom" type="uint" size="1"/>
-    </shader>
-    
-    <shader name="pointBallTessEval" file="pointBall.tese" type="TesselationEvaluation">
-        <uniform name="modelMatrix" semantic="ModelMatrix"/>
-        <uniform name="mvpMatrix" semantic="MvpMatrix"/>
-        <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
-        <uniform name="time" semantic="Timer"/>
+        <uniform name="color" semantic="Custom" type="uint" size="1"/>
     </shader>
     
     

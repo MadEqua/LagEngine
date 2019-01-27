@@ -35,6 +35,7 @@ namespace Lag {
 
         bool operator==(const Color &rhs) const;
         bool operator!=(const Color &rhs) const;
+        Color& operator*(float v);
 
     private:
         //RGBA

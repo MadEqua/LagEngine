@@ -3,10 +3,17 @@
 #include <glm/glm.hpp>
 
 #include "Entity.h"
+#include "Color.h"
+
+namespace Lag {
+    class Scene;
+    class SceneNode;
+    class Light;
+}
 
 class Ball : public Lag::Entity {
 public:
-    Ball();
+    Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name);
 
     void onCollision(Entity &other) override;
     void onFrameStart(float timePassed) override;
@@ -19,5 +26,14 @@ protected:
 private:
     bool isColliding;
     glm::vec3 velocity;
-    Lag::uint32 color1, color2;
+    Lag::uint32 color;
+
+    Lag::Light *light;
+    Lag::SceneNode *sceneNode;
+    Lag::Color lightBaseColor;
+
+    const float TIME_TO_FLASH = 0.33f;
+    const float LIGHT_INTENSITY = 15.0f;
+
+    float timeToDimElapsed;
 };

@@ -4,23 +4,37 @@
 #include "GpuProgramUniform.h"
 #include "Handle.h"
 #include "Material.h"
+#include "Scene.h"
+#include "PointLight.h"
+
+#include <glm/gtc/random.hpp>
 
 
-Ball::Ball() :
+Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name) :
     Entity("sphere", "ballMaterial"),
-    velocity(10.0f, 0.0f, 12.0f) {
+    velocity(10.0f, 0.0f, 12.0f),
+    timeToDimElapsed(0.0f) {
 
     setAsCollider("ball");
 
-    Lag::Color color1(0.8f, 0.06f, 0.08f);
-    Lag::Color color2(0.4f, 0.04f, 0.01f);
+    lightBaseColor = Lag::Color(glm::linearRand(0.1f, 1.0f), glm::linearRand(0.1f, 1.0f), glm::linearRand(0.1f, 1.0f));
 
-    this->color1 = color1.toIntABGR();
-    this->color2 = color2.toIntABGR();
+    this->color = lightBaseColor.toIntABGR();
+
+    sceneNode = &parentNode.createChildSceneNode(name);
+    sceneNode->setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
+    sceneNode->setScale(glm::vec3(1.1f));
+
+    scene.addEntity(this);
+    attachToSceneNode(*sceneNode);
+
+    light = &scene.createPointLight(lightBaseColor * LIGHT_INTENSITY, glm::vec3(1.0f, 0.1f, 0.1f));
+    light->attachToSceneNode(*sceneNode);
 }
 
 void Ball::onCollision(Entity &other) {
     isColliding = true;
+    timeToDimElapsed = TIME_TO_FLASH;
 }
 
 void Ball::onFrameStart(float timePassed) {
@@ -41,14 +55,26 @@ void Ball::onFrameStart(float timePassed) {
 
     getParentSceneNode()->translate(velocity * timePassed, Lag::TransformSpace::WORLD);
 
+    if(timeToDimElapsed > 0.0f) {
+        timeToDimElapsed = glm::max(0.0f, timeToDimElapsed - timePassed);
+
+        Lag::Color color = lightBaseColor;
+        float mix = glm::mix(1.0f, LIGHT_INTENSITY, timeToDimElapsed / TIME_TO_FLASH);
+        light->setColor(color * mix);
+    }
+
     Entity::onFrameStart(timePassed);
 }
 
 void Ball::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) {
     Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
-    material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color1));
-    material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color2));
+    material->getGpuProgram().getUniformByName("color")->setValue(reinterpret_cast<const void*>(&color));
 
     const float trisPerLength = 1.5f;
+    const float maxPointSize = glm::mix(1.5f, 6.0f, (timeToDimElapsed / TIME_TO_FLASH));
+    const float displacementStrength = glm::mix(0.1f, 0.4f, (timeToDimElapsed / TIME_TO_FLASH));
+
     material->getGpuProgram().getUniformByName("trisPerLength")->setValue(reinterpret_cast<const void*>(&trisPerLength));
+    material->getGpuProgram().getUniformByName("maxPointSize")->setValue(reinterpret_cast<const void*>(&maxPointSize));
+    material->getGpuProgram().getUniformByName("displacementStrength")->setValue(reinterpret_cast<const void*>(&displacementStrength));
 }

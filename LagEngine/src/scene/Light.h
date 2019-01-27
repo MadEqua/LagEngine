@@ -11,6 +11,7 @@ namespace Lag {
         Light(const Color &color, bool castShadow = true);
 
         inline const Color &getColor() const { return color; }
+        inline void setColor(const Color &color) { this->color = color; }
         inline bool getCastShadow() const { return castShadow; }
 
     protected:

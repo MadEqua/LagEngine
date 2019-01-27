@@ -65,6 +65,13 @@ bool Color::operator!=(const Color &rhs) const {
     return !(rhs == *this);
 }
 
+Color& Color::operator*(float v) {
+    channels[0] *= v;
+    channels[1] *= v;
+    channels[2] *= v;
+    return *this;
+}
+
 uint32 Color::toIntABGR() const {
     glm::vec4 v(channels[0], channels[1], channels[2], channels[3]);
     return glm::packUnorm4x8(v);
