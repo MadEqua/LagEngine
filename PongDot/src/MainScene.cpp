@@ -119,7 +119,7 @@ void MainScene::initBoard(Lag::SceneNode &parentNode) {
 
     const Lag::Color color1(0.08f, 0.06f, 0.9f);
     const Lag::Color color2(0.01f, 0.04f, 0.4f);
-    Plane *basePlane = new Plane(color1, color2);
+    Plane *basePlane = new Plane(color1, color2, 1.3f, 6.0f, 0.03f);
     basePlane->attachToSceneNode(boardBaseNode);
     addEntity(basePlane);
 
@@ -152,7 +152,7 @@ void MainScene::initBoard(Lag::SceneNode &parentNode) {
     tower4Cube->attachToSceneNode(tower4Node);
 
 
-    const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.3f, 0.3f);
+    const glm::vec3 TOWER_LIGHT_ATTENUATIONS = glm::vec3(1.0f, 0.35f, 0.35f);
 
     Lag::PointLight &light1 = createPointLight(Lag::Color(2.0f), TOWER_LIGHT_ATTENUATIONS);
     light1.attachToSceneNode(light1Node);
@@ -179,14 +179,44 @@ void MainScene::initPaddles(Lag::SceneNode &parentNode) {
 }
 
 void MainScene::initGround(Lag::SceneNode &parentNode) {
-    Lag::SceneNode &groundNode = parentNode.createChildSceneNode("groundNode");
-    groundNode.setScale(glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE));
-    groundNode.setPosition(glm::vec3(0.0f, -1.0f, 0.0f));
+    Lag::SceneNode &groundNode1 = parentNode.createChildSceneNode("groundNode1");
+    Lag::SceneNode &groundNode2 = parentNode.createChildSceneNode("groundNode2");
+    Lag::SceneNode &groundNode3 = parentNode.createChildSceneNode("groundNode3");
+    Lag::SceneNode &groundNode4 = parentNode.createChildSceneNode("groundNode4");
 
-    const Lag::Color color1(0.1f, 0.2f, 0.25f);
-    const Lag::Color color2(0.05f, 0.5f, 0.1f);
+    const float SMALL_BIAS = 1.0f;
 
-    Plane *groundPlane = new Plane(color1, color2);
-    groundPlane->attachToSceneNode(groundNode);
-    addEntity(groundPlane);
+    groundNode1.setScale(glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE));
+    groundNode1.setPosition(glm::vec3(-HALF_BOARD_SIZE - HALF_GROUND_SIZE - SMALL_BIAS, 0.0f, 0.0f));
+
+    groundNode2.setScale(glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE));
+    groundNode2.setPosition(glm::vec3(HALF_BOARD_SIZE + HALF_GROUND_SIZE + SMALL_BIAS, 0.0f, 0.0f));
+
+    groundNode3.setScale(glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE));
+    groundNode3.setPosition(glm::vec3(0.0f, 0.0f, HALF_BOARD_SIZE + HALF_GROUND_SIZE + SMALL_BIAS));
+
+    groundNode4.setScale(glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE));
+    groundNode4.setPosition(glm::vec3(0.0f, 0.0f, -HALF_BOARD_SIZE - HALF_GROUND_SIZE - SMALL_BIAS));
+
+    const Lag::Color COLOR_1(0.1f, 0.2f, 0.25f);
+    const Lag::Color COLOR_2(0.05f, 0.5f, 0.1f);
+    const float TRIS_PER_LENGTH = 2.0f;
+    const float MAX_POINT_SIZE = 3.0f;
+    const float DISPLACEMENT_STRENGTH = 0.002f;
+
+    Plane *groundPlane1 = new Plane(COLOR_1, COLOR_2, TRIS_PER_LENGTH, MAX_POINT_SIZE, DISPLACEMENT_STRENGTH);
+    groundPlane1->attachToSceneNode(groundNode1);
+    addEntity(groundPlane1);
+
+    Plane *groundPlane2 = new Plane(COLOR_1, COLOR_2, TRIS_PER_LENGTH, MAX_POINT_SIZE, DISPLACEMENT_STRENGTH);
+    groundPlane2->attachToSceneNode(groundNode2);
+    addEntity(groundPlane2);
+
+    Plane *groundPlane3 = new Plane(COLOR_1, COLOR_2, TRIS_PER_LENGTH, MAX_POINT_SIZE, DISPLACEMENT_STRENGTH);
+    groundPlane3->attachToSceneNode(groundNode3);
+    addEntity(groundPlane3);
+
+    Plane *groundPlane4 = new Plane(COLOR_1, COLOR_2, TRIS_PER_LENGTH, MAX_POINT_SIZE, DISPLACEMENT_STRENGTH);
+    groundPlane4->attachToSceneNode(groundNode4);
+    addEntity(groundPlane4);
 }

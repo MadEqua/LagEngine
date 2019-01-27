@@ -41,4 +41,7 @@ void Paddle::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &rend
     Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
     material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color1));
     material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color2));
+
+    const float trisPerLength = 1.5f;
+    material->getGpuProgram().getUniformByName("trisPerLength")->setValue(reinterpret_cast<const void*>(&trisPerLength));
 }

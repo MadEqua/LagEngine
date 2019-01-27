@@ -37,4 +37,5 @@ private:
     const float HALF_TOWER_HEIGHT = TOWER_HEIGHT * 0.5f;
 
     const float GROUND_SIZE = BOARD_SIZE * 5.0f;
+    const float HALF_GROUND_SIZE = GROUND_SIZE * 0.5f;
 };

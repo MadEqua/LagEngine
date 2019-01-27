@@ -37,7 +37,7 @@ void Ball::onFrameStart(float timePassed) {
     }
 
     glm::vec3 rotationAxis = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), velocity));
-    getParentSceneNode()->rotate(20.0f * glm::length(velocity) * timePassed, rotationAxis, Lag::TransformSpace::WORLD);
+    getParentSceneNode()->rotate(25.0f * glm::length(velocity) * timePassed, rotationAxis, Lag::TransformSpace::WORLD);
 
     getParentSceneNode()->translate(velocity * timePassed, Lag::TransformSpace::WORLD);
 
@@ -48,4 +48,7 @@ void Ball::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &render
     Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
     material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color1));
     material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color2));
+
+    const float trisPerLength = 1.5f;
+    material->getGpuProgram().getUniformByName("trisPerLength")->setValue(reinterpret_cast<const void*>(&trisPerLength));
 }

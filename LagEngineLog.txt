@@ -1,0 +1,40 @@
+------------------------------------------------------------
+LagEngine Session Start - [27-01-19 - 02:11:42]
+------------------------------------------------------------
+
+[** ERROR **] [IniParser] Error opening .ini file: startup.ini
+[INFO] [RenderTargetManager] Initialized successfully.
+[INFO] [RenderTargetManager] Getting object with name: 0
+[INFO] [RenderTargetManager] Created object with name: 0
+[INFO] [GLFWRenderWindow] Initialized successfully.
+[INFO] [RenderTargetManager] Loaded object: 0
+[INFO] [GLFWInputManager] Initialized successfully.
+[INFO] [GL4_5GraphicsAPI] OpenGL version: 4.5. Version string: 4.5.0 NVIDIA 417.35
+Vendor: NVIDIA Corporation
+Renderer: GeForce GTX 1050 Ti/PCIe/SSE2
+GLSL Version: 4.50 NVIDIA
+
+[INFO] [GL4_5GraphicsAPI] Linear RGB Default Framebuffer.
+[INFO] [GL4_5GraphicsAPI] Non-Multisampled Default Framebuffer.
+[INFO] [GpuBufferManager] Initialized successfully.
+[INFO] [GpuProgramManager] Initialized successfully.
+[INFO] [InputDescriptionManager] Initialized successfully.
+[INFO] [Root] Resources file: LagResources/resources.xml does not exist or is malformed.
+[INFO] [GpuProgramManager] Cleared all objects successfully.
+[INFO] [GpuProgramManager] Destroyed successfully.
+[INFO] [GpuBufferManager] Cleared all objects successfully.
+[INFO] [GpuBufferManager] Destroyed successfully.
+[INFO] [InputDescriptionManager] Cleared all objects successfully.
+[INFO] [InputDescriptionManager] Destroyed successfully.
+[INFO] [GLFWInputManager] Destroyed successfully.
+[INFO] [RenderTargetManager] Clearing unused object: 0.
+[INFO] [GLFWRenderWindow] Destroyed successfully.
+[INFO] [RenderTargetManager] Unloaded object: 0
+[INFO] [RenderTargetManager] Cleared 1 unused objects.
+[INFO] [RenderTargetManager] Cleared all objects successfully.
+[INFO] [RenderTargetManager] Destroyed successfully.
+
+------------------------------------------------------------
+LagEngine Session End - [27-01-19 - 02:11:43]
+------------------------------------------------------------
+

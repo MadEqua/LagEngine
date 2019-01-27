@@ -6,6 +6,8 @@ uniform mat4 mvpMatrix;
 uniform mat4 modelMatrix;
 uniform mat3 normalMatrix;
 uniform float time;
+uniform float maxPointSize;
+uniform float displacementStrength;
 
 in TesCtrlShaderOut {
     vec3 normal;
@@ -37,19 +39,19 @@ vec3 wavingAnim(vec3 position) {
                   sin(time + random(position.zx) * 101.1),
                   sin(time + random(position.yx) * 108.7));
 
-    vec3 disp = vec3(0.021 * random(position.zy),
-                     0.025 * random(position.xz),
-                     0.027 * random(position.yz)) * t;
+    vec3 disp = vec3(displacementStrength * random(position.zy),
+                     displacementStrength * random(position.xz),
+                     displacementStrength * random(position.yz)) * t;
 
-    gl_PointSize = 6.0 * (t.x * 0.5 + 1.0);
+    gl_PointSize = maxPointSize * (t.y * 0.5 + 1.0);
     return position + disp;
 }
 
-vec3 growingAnim(vec3 position) {
+/*vec3 growingAnim(vec3 position) {
     float t = sin(time + random(position.xy) * 0.3) * 0.5 + 0.5;
     gl_PointSize = t * 15.0;
     return mix(vec3(0.0), position, t);
-}
+}*/
 
 void main() {
     vec3 positionLocal = applyBaricentrics(gl_TessCoord, gl_in[0].gl_Position.xyz, gl_in[1].gl_Position.xyz, gl_in[2].gl_Position.xyz);

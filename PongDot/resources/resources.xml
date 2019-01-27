@@ -11,12 +11,15 @@
     </shader>
     <shader name="pointTessCtrl" file="point.tesc" type="TesselationControl">
         <uniform name="modelMatrix" semantic="ModelMatrix"/>
+        <uniform name="trisPerLength" semantic="Custom" type="float" size="1"/>
     </shader>
     <shader name="pointTessEval" file="point.tese" type="TesselationEvaluation">
         <uniform name="modelMatrix" semantic="ModelMatrix"/>
         <uniform name="mvpMatrix" semantic="MvpMatrix"/>
         <uniform name="normalMatrix" semantic="NormalWorldMatrix"/>
         <uniform name="time" semantic="Timer"/>
+        <uniform name="maxPointSize" semantic="Custom" type="float" size="1"/>
+        <uniform name="displacementStrength" semantic="Custom" type="float" size="1"/>
     </shader>
 
     <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment">
