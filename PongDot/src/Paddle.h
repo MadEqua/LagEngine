@@ -40,5 +40,5 @@ private:
     ClosestBall findClosestBallComingTowards();
 
     const float SPEED = 15.0f;
-    const float DIST_THRESHOLD = 1.0f;
+    const float BALL_CLOSE_ENOUGH_THRESHOLD = 1.0f;
 };

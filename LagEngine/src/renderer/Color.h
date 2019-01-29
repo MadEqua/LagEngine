@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Types.h"
+#include <glm/glm.hpp>
 
 namespace Lag {
     class Color {
@@ -17,7 +18,9 @@ namespace Lag {
         Color(float r, float g, float b);
         Color(float r, float g, float b, float a);
 
-        inline const float *getRGBAfloat() const { return channels; }
+        Color(const glm::vec3 &vec);
+        Color(const glm::vec4 &vec);
+
         inline float r() const { return channels[0]; }
         inline float g() const { return channels[1]; }
         inline float b() const { return channels[2]; }
@@ -26,6 +29,11 @@ namespace Lag {
         //Good to unpack on GLSL with vec4 c = unpackUnorm4x8(). 
         //Result can be accessed with v.rgba.
         uint32 toIntABGR() const;
+
+        inline glm::vec3 toVec3() const { return glm::vec3(channels[0], channels[1], channels[2]); }
+        inline glm::vec4 toVec4() const { return glm::vec4(channels[0], channels[1], channels[2], channels[3]); }
+
+        inline const float *getRGBAfloat() const { return channels; }
 
         inline void setR(float r) { channels[0] = r; }
         inline void setG(float g) { channels[1] = g; }

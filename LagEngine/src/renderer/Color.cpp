@@ -54,6 +54,20 @@ Color::Color(float r, float g, float b, float a) {
     channels[3] = a;
 }
 
+Color::Color(const glm::vec3 &vec) {
+    channels[0] = vec[0];
+    channels[1] = vec[1];
+    channels[2] = vec[2];
+    channels[3] = 1.0f;
+}
+
+Color::Color(const glm::vec4 &vec) {
+    channels[0] = vec[0];
+    channels[1] = vec[1];
+    channels[2] = vec[2];
+    channels[3] = vec[3];
+}
+
 bool Color::operator==(const Color &rhs) const {
     return channels[0] == rhs.channels[0] &&
             channels[1] == rhs.channels[1] &&

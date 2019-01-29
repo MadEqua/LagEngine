@@ -19,6 +19,7 @@ public:
     void onFrameStart(float timePassed) override;
 
     inline const glm::vec3& getVelocity() const { return velocity; }
+    inline const Lag::Color &getColor() const { return color; }
 
 protected:
     void onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
@@ -26,7 +27,7 @@ protected:
 private:
     bool isColliding;
     glm::vec3 velocity;
-    Lag::uint32 color;
+    Lag::Color color;
 
     Lag::Light *light;
     Lag::SceneNode *sceneNode;
@@ -35,5 +36,5 @@ private:
     const float TIME_TO_FLASH = 0.33f;
     const float LIGHT_INTENSITY = 15.0f;
 
-    float timeToDimElapsed;
+    float timeToFlash;
 };

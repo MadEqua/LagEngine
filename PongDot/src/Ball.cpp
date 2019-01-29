@@ -9,17 +9,21 @@
 
 #include <glm/gtc/random.hpp>
 
+#define GLM_ENABLE_EXPERIMENTAL
+#include <glm/gtx/color_space.hpp>
+
 
 Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name) :
     Entity("sphere", "ballMaterial"),
     velocity(10.0f, 0.0f, 12.0f),
-    timeToDimElapsed(0.0f) {
+    timeToFlash(0.0f) {
 
     setAsCollider("ball");
 
-    lightBaseColor = Lag::Color(glm::linearRand(0.1f, 1.0f), glm::linearRand(0.1f, 1.0f), glm::linearRand(0.1f, 1.0f));
-
-    this->color = lightBaseColor.toIntABGR();
+    //TODO: check for correctness
+    //glm::vec3 hsv(glm::linearRand(0.0f, 360.0f), glm::linearRand(0.8f, 0.9f), glm::linearRand(0.8f, 0.9f));
+    glm::vec3 hsv(glm::linearRand(0.0f, 360.0f), 0.9f, 0.9f);
+    color = Lag::Color(glm::rgbColor(hsv));
 
     sceneNode = &parentNode.createChildSceneNode(name);
     sceneNode->setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
@@ -34,7 +38,7 @@ Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &nam
 
 void Ball::onCollision(Entity &other) {
     isColliding = true;
-    timeToDimElapsed = TIME_TO_FLASH;
+    timeToFlash = TIME_TO_FLASH;
 }
 
 void Ball::onFrameStart(float timePassed) {
@@ -55,11 +59,11 @@ void Ball::onFrameStart(float timePassed) {
 
     getParentSceneNode()->translate(velocity * timePassed, Lag::TransformSpace::WORLD);
 
-    if(timeToDimElapsed > 0.0f) {
-        timeToDimElapsed = glm::max(0.0f, timeToDimElapsed - timePassed);
+    if(timeToFlash > 0.0f) {
+        timeToFlash = glm::max(0.0f, timeToFlash - timePassed);
 
         Lag::Color color = lightBaseColor;
-        float mix = glm::mix(1.0f, LIGHT_INTENSITY, timeToDimElapsed / TIME_TO_FLASH);
+        float mix = glm::mix(1.0f, LIGHT_INTENSITY, timeToFlash / TIME_TO_FLASH);
         light->setColor(color * mix);
     }
 
@@ -68,11 +72,13 @@ void Ball::onFrameStart(float timePassed) {
 
 void Ball::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) {
     Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
+
+    const Lag::uint32 color = this->color.toIntABGR();
     material->getGpuProgram().getUniformByName("color")->setValue(reinterpret_cast<const void*>(&color));
 
     const float trisPerLength = 1.5f;
-    const float maxPointSize = glm::mix(1.5f, 6.0f, (timeToDimElapsed / TIME_TO_FLASH));
-    const float displacementStrength = glm::mix(0.1f, 0.4f, (timeToDimElapsed / TIME_TO_FLASH));
+    const float maxPointSize = glm::mix(1.5f, 6.0f, (timeToFlash / TIME_TO_FLASH));
+    const float displacementStrength = glm::mix(0.1f, 0.4f, (timeToFlash / TIME_TO_FLASH));
 
     material->getGpuProgram().getUniformByName("trisPerLength")->setValue(reinterpret_cast<const void*>(&trisPerLength));
     material->getGpuProgram().getUniformByName("maxPointSize")->setValue(reinterpret_cast<const void*>(&maxPointSize));

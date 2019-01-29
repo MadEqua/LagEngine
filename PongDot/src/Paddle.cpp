@@ -24,7 +24,7 @@ Paddle::Paddle(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string 
     setAsCollider("paddle");
 
     Lag::Color color1(0.2f, 0.06f, 0.08f);
-    Lag::Color color2(0.1f, 0.04f, 0.01f);
+    Lag::Color color2(0.7f, 0.04f, 0.01f);
 
     this->color1 = color1.toIntABGR();
     this->color2 = color2.toIntABGR();
@@ -52,8 +52,12 @@ void Paddle::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &rend
     material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color1));
     material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color2));
 
-    const float trisPerLength = 2.0f;
+    const float trisPerLength = 15.0f;
+    const float maxPointSize = 4.0f;
+    const float displacementStrength = 0.05f;
     material->getGpuProgram().getUniformByName("trisPerLength")->setValue(reinterpret_cast<const void*>(&trisPerLength));
+    material->getGpuProgram().getUniformByName("maxPointSize")->setValue(reinterpret_cast<const void*>(&maxPointSize));
+    material->getGpuProgram().getUniformByName("displacementStrength")->setValue(reinterpret_cast<const void*>(&displacementStrength));
 }
 
 void Paddle::updateAI() {
@@ -67,7 +71,7 @@ void Paddle::updateAI() {
         glm::vec3 paddleToBallVec = closestBallPos - myPos;
         float projOnTangent = glm::dot(paddleToBallVec, tangent);
 
-        if(std::fabs(projOnTangent) > DIST_THRESHOLD) {
+        if(std::fabs(projOnTangent) > BALL_CLOSE_ENOUGH_THRESHOLD) {
             velocity = tangent * SPEED * glm::sign(projOnTangent);
         }
     }
