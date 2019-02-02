@@ -30,11 +30,10 @@ private:
     Lag::Color color;
 
     Lag::Light *light;
-    Lag::SceneNode *sceneNode;
     Lag::Color lightBaseColor;
 
     const float TIME_TO_FLASH = 0.33f;
-    const float LIGHT_INTENSITY = 15.0f;
+    const float LIGHT_INTENSITY = 10.0f;
 
     float timeToFlash;
 };

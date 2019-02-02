@@ -11,7 +11,7 @@ using namespace Lag;
 FreeCamera::FreeCamera(Scene &scene, float fovy, float nearPlane, float farPlane, float moveSpeed) :
         moveSpeed(moveSpeed) {
 
-    keyVector[0] = keyVector[1] = keyVector[2] = keyVector[3] = false;
+    keyVector[0] = keyVector[1] = keyVector[2] = keyVector[3] = keyVector[4] = false;
     lastCursor[0] = lastCursor[1] = -1;
 
     Root &root = Root::getInstance();
@@ -38,19 +38,23 @@ FreeCamera::~FreeCamera() {
 }
 
 void FreeCamera::onKeyPress(int key, int modifier) {
-    switch (key) {
-        case KEY_W:
-            keyVector[0] = true;
-            break;
-        case KEY_A:
-            keyVector[1] = true;
-            break;
-        case KEY_S:
-            keyVector[2] = true;
-            break;
-        case KEY_D:
-            keyVector[3] = true;
-            break;
+    switch(key) {
+    case KEY_W:
+        keyVector[0] = true;
+        break;
+    case KEY_A:
+        keyVector[1] = true;
+        break;
+    case KEY_S:
+        keyVector[2] = true;
+        break;
+    case KEY_D:
+        keyVector[3] = true;
+        break;
+    case KEY_LEFT_SHIFT:
+    case KEY_RIGHT_SHIFT:
+        keyVector[4] = true;
+        break;
     }
 }
 
@@ -67,6 +71,10 @@ void FreeCamera::onKeyRelease(int key, int modifier) {
             break;
         case KEY_D:
             keyVector[3] = false;
+            break;
+        case KEY_LEFT_SHIFT:
+        case KEY_RIGHT_SHIFT:
+            keyVector[4] = false;
             break;
     }
 }
@@ -104,15 +112,15 @@ void FreeCamera::onButtonReleased(int x, int y, int button, int modifiers) {
 }
 
 void FreeCamera::onFrameStart(float timePassed) {
-    if (keyVector[0])
-        sceneNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed), TransformSpace::LOCAL);
+    if(keyVector[0])
+        sceneNode->translate(glm::vec3(0.0f, 0.0f, -moveSpeed * timePassed * (keyVector[4] ? SHIFT_SPEED_MOD : 1.0f)), TransformSpace::LOCAL);
     else if (keyVector[2])
-        sceneNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed * timePassed), TransformSpace::LOCAL);
+        sceneNode->translate(glm::vec3(0.0f, 0.0f, moveSpeed * timePassed * (keyVector[4] ? SHIFT_SPEED_MOD : 1.0f)), TransformSpace::LOCAL);
 
     if (keyVector[1])
-        sceneNode->translate(glm::vec3(-moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::LOCAL);
+        sceneNode->translate(glm::vec3(-moveSpeed * timePassed * (keyVector[4] ? SHIFT_SPEED_MOD : 1.0f), 0.0f, 0.0f), TransformSpace::LOCAL);
     else if (keyVector[3])
-        sceneNode->translate(glm::vec3(moveSpeed * timePassed, 0.0f, 0.0f), TransformSpace::LOCAL);
+        sceneNode->translate(glm::vec3(moveSpeed * timePassed * (keyVector[4] ? SHIFT_SPEED_MOD : 1.0f), 0.0f, 0.0f), TransformSpace::LOCAL);
 }
 
 void FreeCamera::onFrameRenderingQueued(float timePassed) {

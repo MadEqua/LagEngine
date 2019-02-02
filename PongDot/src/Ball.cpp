@@ -6,11 +6,15 @@
 #include "Material.h"
 #include "Scene.h"
 #include "PointLight.h"
+#include "Utils.h"
 
 #include <glm/gtc/random.hpp>
 
 #define GLM_ENABLE_EXPERIMENTAL
 #include <glm/gtx/color_space.hpp>
+
+#include "Root.h"
+#include "InputManager.h"
 
 
 Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name) :
@@ -20,20 +24,19 @@ Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &nam
 
     setAsCollider("ball");
 
-    //TODO: check for correctness
-    //glm::vec3 hsv(glm::linearRand(0.0f, 360.0f), glm::linearRand(0.8f, 0.9f), glm::linearRand(0.8f, 0.9f));
-    glm::vec3 hsv(glm::linearRand(0.0f, 360.0f), 0.9f, 0.9f);
-    color = Lag::Color(glm::rgbColor(hsv));
+    //glm::vec3 rgb(glm::linearRand(0.5f, 1.0f), glm::linearRand(0.5f, 1.0f), glm::linearRand(0.5f, 1.0f));
+    glm::vec3 hsv(glm::linearRand(0.0f, 360.0f), glm::linearRand(0.8f, 0.99f), glm::linearRand(0.8f, 0.99f));
+    color = Lag::Color(Lag::Utils::HSVtoRGB(hsv));
 
-    sceneNode = &parentNode.createChildSceneNode(name);
-    sceneNode->setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
-    sceneNode->setScale(glm::vec3(1.1f));
+    Lag::SceneNode &sceneNode = parentNode.createChildSceneNode(name);
+    sceneNode.setPosition(glm::vec3(glm::linearRand(-20.0f, 20.0f), 0.75f, glm::linearRand(-20.0f, 20.0f)));
+    sceneNode.setScale(glm::vec3(1.1f));
 
     scene.addEntity(this);
-    attachToSceneNode(*sceneNode);
+    attachToSceneNode(sceneNode);
 
-    light = &scene.createPointLight(lightBaseColor * LIGHT_INTENSITY, glm::vec3(1.0f, 0.1f, 0.1f));
-    light->attachToSceneNode(*sceneNode);
+    light = &scene.createPointLight(lightBaseColor * LIGHT_INTENSITY, glm::vec3(0.1f, 0.1f, 0.1f));
+    light->attachToSceneNode(sceneNode);
 }
 
 void Ball::onCollision(Entity &other) {
@@ -74,9 +77,10 @@ void Ball::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &render
     Entity::onSubEntityPreRender(subEntity, renderer, renderOperation);
 
     const Lag::uint32 color = this->color.toIntABGR();
-    material->getGpuProgram().getUniformByName("color")->setValue(reinterpret_cast<const void*>(&color));
+    material->getGpuProgram().getUniformByName("color1")->setValue(reinterpret_cast<const void*>(&color));
+    material->getGpuProgram().getUniformByName("color2")->setValue(reinterpret_cast<const void*>(&color));
 
-    const float trisPerLength = 1.5f;
+    const float trisPerLength = 1.0f;
     const float maxPointSize = glm::mix(1.5f, 6.0f, (timeToFlash / TIME_TO_FLASH));
     const float displacementStrength = glm::mix(0.1f, 0.4f, (timeToFlash / TIME_TO_FLASH));
 

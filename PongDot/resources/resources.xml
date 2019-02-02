@@ -23,12 +23,14 @@
     </shader>
 
     <shader name="pointFragmentNoLight" file="pointNoLight.frag" type="Fragment">
-        <uniform name="color" semantic="Custom" type="uint" size="1"/>
+        <uniform name="color1" semantic="Custom" type="uint" size="1"/>
+        <uniform name="color2" semantic="Custom" type="uint" size="1"/>
     </shader>
     
     
     <mesh name="plane" file="tesselatedPlane.obj" boundingVolume="AABB"/>
     <mesh name="sphere" file="tesselatedSphere.obj" boundingVolume="Sphere"/>
+    <mesh name="star" file="star.obj"/>
 
     
     <material name="pointMaterial" file="pointMaterial.xml"/>

@@ -4,6 +4,7 @@
 #include <sstream>
 
 #include "Types.h"
+#include "glm/glm.hpp"
  
 
 class TiXmlNode;
@@ -41,5 +42,8 @@ namespace Lag {
 
         float convertNormalizedIntegerToFloat(const byte *integerPointer, VertexAttributeType type);
         float convertValueToFloat(const byte *valuePointer, VertexAttributeType type);
+
+        glm::vec3 RGBtoHSV(const glm::vec3 &rgb);
+        glm::vec3 HSVtoRGB(const glm::vec3 &hsv);
     }
 }

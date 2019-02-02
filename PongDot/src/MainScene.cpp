@@ -16,6 +16,7 @@
 #include "Paddle.h"
 #include "Plane.h"
 #include "Box.h"
+#include "Star.h"
 
 
 void MainScene::onStart() {
@@ -40,7 +41,7 @@ void MainScene::onEnd() {
 
 void MainScene::onInitializeViewports(Lag::RenderWindow &renderWindow) {
     camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
-    camera->getCamera().getParentSceneNode()->setPosition(glm::vec3(0, 10, 20));
+    camera->getCamera().getParentSceneNode()->lookAt(glm::vec3(20, 30, 20), glm::vec3(0), glm::vec3(0, 1, 0));
     renderWindow.createViewport(camera->getCamera());
 }
 
@@ -58,7 +59,7 @@ void MainScene::initBallsAndPaddles(Lag::SceneNode &parentNode) {
     std::vector<Ball*> balls(BALL_COUNT);
 
     for(int i = 0; i < BALL_COUNT; ++i) {
-        Ball *ball = new Ball(*this, parentNode, "ball" + i);
+        Ball *ball = new Ball(*this, parentNode, "ball" + std::to_string(i));
         balls[i] = ball;
     }
 
@@ -146,7 +147,7 @@ void MainScene::initBoard(Lag::SceneNode &parentNode) {
 }
 
 void MainScene::initGround(Lag::SceneNode &parentNode) {
-    const float GROUND_SIZE = BOARD_SIZE * 5.0f;
+    const float GROUND_SIZE = BOARD_SIZE * 6.0f;
     const float HALF_GROUND_SIZE = GROUND_SIZE * 0.5f;
 
     const float SMALL_BIAS = 1.0f;
@@ -177,4 +178,14 @@ void MainScene::initGround(Lag::SceneNode &parentNode) {
                                     glm::vec3(0.0f, 0.0f, -HALF_BOARD_SIZE - HALF_GROUND_SIZE - SMALL_BIAS),
                                     glm::vec3(GROUND_SIZE, 1.0f, GROUND_SIZE),
                                     COLOR_1, COLOR_2, TRIS_PER_LENGTH, MAX_POINT_SIZE, DISPLACEMENT_STRENGTH);
+
+
+    
+    for(int i = 0; i < 50; ++i) {
+        glm::vec3 position(glm::linearRand(-GROUND_SIZE * 0.5f, GROUND_SIZE * 0.5f) * 2.0f,
+                           glm::linearRand(50.0f, 250.0f), 
+                           glm::linearRand(-GROUND_SIZE * 0.5f, GROUND_SIZE * 0.5f) * 2.0f);
+        glm::vec3 scale(glm::linearRand(0.5f, 1.0f));
+        Star *star = new Star(*this, parentNode, "star" + std::to_string(i), position, scale, *camera->getCamera().getParentSceneNode());
+    }
 }

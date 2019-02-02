@@ -2,7 +2,6 @@
 
 #include "tinyxml/tinyxml.h"
 #include "VertexDescription.h"
-#include "glm/glm.hpp"
 #include "LogManager.h"
 
 using namespace Lag;
@@ -106,4 +105,106 @@ float Utils::convertValueToFloat(const byte *valuePointer, VertexAttributeType t
             //TODO Log warning
     }
     return 0.0f;
+}
+
+/*
+  Converts a given set of RGB values `r', `g', `b' into HSV
+  coordinates. The input RGB values are in the range [0, 1], and the
+  output HSV values are in the ranges h = [0, 360], and s, v = [0,
+  1], respectively.
+*/
+glm::vec3 Utils::RGBtoHSV(const glm::vec3 &rgb) {
+    glm::vec3 result;
+    
+    float fCMax = glm::max(glm::max(rgb.r, rgb.g), rgb.b);
+    float fCMin = glm::min(glm::min(rgb.r, rgb.g), rgb.b);
+    float fDelta = fCMax - fCMin;
+
+    if(fDelta > 0) {
+        if(fCMax == rgb.r) {
+            result[0] = 60 * (fmod(((rgb.g - rgb.b) / fDelta), 6));
+        }
+        else if(fCMax == rgb.g) {
+            result[0] = 60 * (((rgb.b - rgb.r) / fDelta) + 2);
+        }
+        else if(fCMax == rgb.b) {
+            result[0] = 60 * (((rgb.r - rgb.g) / fDelta) + 4);
+        }
+
+        if(fCMax > 0) {
+            result[1] = fDelta / fCMax;
+        }
+        else {
+            result[1] = 0;
+        }
+
+        result[2] = fCMax;
+    }
+    else {
+        result[0] = 0;
+        result[1] = 0;
+        result[2] = fCMax;
+    }
+
+    if(result[0] < 0) {
+        result[0] = 360 + result[0];
+    }
+    return result;
+}
+
+
+/*! 
+  Converts a given set of HSV values `h', `s', `v' into RGB
+  coordinates. The output RGB values are in the range [0, 1], and
+  the input HSV values are in the ranges h = [0, 360], and s, v =
+  [0, 1], respectively.
+*/
+glm::vec3 Utils::HSVtoRGB(const glm::vec3 &hsv) {
+    glm::vec3 result;
+    
+    float fC = hsv[2] * hsv[1]; // Chroma
+    float fHPrime = fmod(hsv[0] / 60.0f, 6);
+    float fX = fC * (1 - fabs(fmod(fHPrime, 2) - 1));
+    float fM = hsv[2] - fC;
+
+    if(0 <= fHPrime && fHPrime < 1) {
+        result[0] = fC;
+        result[1] = fX;
+        result[2] = 0;
+    }
+    else if(1 <= fHPrime && fHPrime < 2) {
+        result[0] = fX;
+        result[1] = fC;
+        result[2] = 0;
+    }
+    else if(2 <= fHPrime && fHPrime < 3) {
+        result[0] = 0;
+        result[1] = fC;
+        result[2] = fX;
+    }
+    else if(3 <= fHPrime && fHPrime < 4) {
+        result[0] = 0;
+        result[1] = fX;
+        result[2] = fC;
+    }
+    else if(4 <= fHPrime && fHPrime < 5) {
+        result[0] = fX;
+        result[1] = 0;
+        result[2] = fC;
+    }
+    else if(5 <= fHPrime && fHPrime < 6) {
+        result[0] = fC;
+        result[1] = 0;
+        result[2] = fX;
+    }
+    else {
+        result[0] = 0;
+        result[1] = 0;
+        result[2] = 0;
+    }
+
+    result[0] += fM;
+    result[1] += fM;
+    result[2] += fM;
+    return result;
 }

@@ -38,7 +38,7 @@ namespace Lag {
 
     protected:
         float moveSpeed;
-        bool keyVector[4]; //wasd
+        bool keyVector[5]; //wasd, shift
         int lastCursor[2]; //xy
 
         PerspectiveCamera *camera;
@@ -46,5 +46,7 @@ namespace Lag {
 
         bool lastFrameVirtualCursor;
         RenderWindow *renderWindow;
+
+        const float SHIFT_SPEED_MOD = 5.0f;
     };
 }

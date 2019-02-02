@@ -16,6 +16,8 @@ set(SOURCES
         ${SRC_FOLDER}/Paddle.cpp
         ${SRC_FOLDER}/Plane.h
         ${SRC_FOLDER}/Plane.cpp
+        ${SRC_FOLDER}/Star.h
+        ${SRC_FOLDER}/Star.cpp
         ${SRC_FOLDER}/Box.h
         ${SRC_FOLDER}/Box.cpp)
 
