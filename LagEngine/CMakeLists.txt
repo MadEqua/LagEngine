@@ -175,8 +175,13 @@ set(SOURCES
         ${SRC_FOLDER}/scene/Transform.h
         ${SRC_FOLDER}/utils/FreeCamera.cpp
         ${SRC_FOLDER}/utils/FreeCamera.h
+        ${SRC_FOLDER}/utils/InterpolatedCamera.cpp
+        ${SRC_FOLDER}/utils/InterpolatedCamera.h
         ${SRC_FOLDER}/utils/Utils.cpp
         ${SRC_FOLDER}/utils/Utils.h
+        ${SRC_FOLDER}/utils/Interpolator.h
+        ${SRC_FOLDER}/utils/LinearInterpolator.h
+        ${SRC_FOLDER}/utils/CubicHermiteInterpolator.h
         ${SRC_FOLDER}/collisions/CollisionManager.h
         ${SRC_FOLDER}/collisions/CollisionManager.cpp
         ${SRC_FOLDER}/collisions/AABB.h

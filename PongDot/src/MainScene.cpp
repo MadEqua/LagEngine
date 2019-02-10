@@ -3,11 +3,12 @@
 #include <glm/gtc/random.hpp>
 #include <glm/glm.hpp>
 
+#include <vector>
+
 #include "Root.h"
 #include "RenderWindow.h"
 #include "Renderer.h"
 #include "PerspectiveCamera.h"
-#include "FreeCamera.h"
 #include "Entity.h"
 #include "MeshManager.h"
 #include "PointLight.h"
@@ -17,6 +18,9 @@
 #include "Plane.h"
 #include "Box.h"
 #include "Star.h"
+
+//#include "FreeCamera.h"
+#include "InterpolatedCamera.h"
 
 
 void MainScene::onStart() {
@@ -40,8 +44,30 @@ void MainScene::onEnd() {
 }
 
 void MainScene::onInitializeViewports(Lag::RenderWindow &renderWindow) {
-    camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
-    camera->getCamera().getParentSceneNode()->lookAt(glm::vec3(20, 30, 20), glm::vec3(0), glm::vec3(0, 1, 0));
+    /*camera = new Lag::FreeCamera(*this, 45.0f, 0.1f, 1000.0f, 10.0f);
+    camera->getCamera().getParentSceneNode()->lookAt(glm::vec3(20, 30, 20), glm::vec3(0), glm::vec3(0, 1, 0));*/
+
+    const float CAMERA_HEIGHT = 20.0f;
+
+    std::vector<glm::vec3> positions = {
+        glm::vec3(HALF_BOARD_SIZE, CAMERA_HEIGHT, HALF_BOARD_SIZE),
+        glm::vec3(BOARD_SIZE, CAMERA_HEIGHT, -BOARD_SIZE),
+        glm::vec3(-HALF_BOARD_SIZE, CAMERA_HEIGHT * 0.3f, -HALF_BOARD_SIZE),
+        glm::vec3(-BOARD_SIZE, CAMERA_HEIGHT * 2.0f, BOARD_SIZE),
+        glm::vec3(-HALF_BOARD_SIZE, CAMERA_HEIGHT * 0.1f, 0.0f),
+
+        glm::vec3(HALF_BOARD_SIZE, CAMERA_HEIGHT, HALF_BOARD_SIZE)
+    };
+
+    std::vector<glm::vec3> lookAts = {
+        glm::vec3(0.0),
+        glm::vec3(HALF_BOARD_SIZE * 0.4f, CAMERA_HEIGHT * 0.4f, 0.0f),
+        glm::vec3(HALF_BOARD_SIZE * 0.4f, 0.0f, HALF_BOARD_SIZE * -0.4f),
+        
+        glm::vec3(0.0)
+    };
+
+    camera = new Lag::InterpolatedCamera(*this, 45.0f, 0.1f, 1000.0f, positions, lookAts, 30.0f);
     renderWindow.createViewport(camera->getCamera());
 }
 
@@ -183,7 +209,7 @@ void MainScene::initGround(Lag::SceneNode &parentNode) {
     
     for(int i = 0; i < 50; ++i) {
         glm::vec3 position(glm::linearRand(-GROUND_SIZE * 0.5f, GROUND_SIZE * 0.5f) * 2.0f,
-                           glm::linearRand(50.0f, 250.0f), 
+                           glm::linearRand(50.0f, 100.0f), 
                            glm::linearRand(-GROUND_SIZE * 0.5f, GROUND_SIZE * 0.5f) * 2.0f);
         glm::vec3 scale(glm::linearRand(0.5f, 1.0f));
         Star *star = new Star(*this, parentNode, "star" + std::to_string(i), position, scale, *camera->getCamera().getParentSceneNode());

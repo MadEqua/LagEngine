@@ -5,6 +5,7 @@
 
 namespace Lag {
     class FreeCamera;
+    class InterpolatedCamera;
     class SceneNode;
 }
 
@@ -18,7 +19,8 @@ public:
     void onCollision(Lag::Entity &entity1, Lag::Entity &entity2) override;
 
 private:
-    Lag::FreeCamera *camera;
+    //Lag::FreeCamera *camera;
+    Lag::InterpolatedCamera *camera;
 
     void initBallsAndPaddles(Lag::SceneNode &parentNode);
     void initBoard(Lag::SceneNode &parentNode);
