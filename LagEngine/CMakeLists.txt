@@ -193,6 +193,7 @@ set(SOURCES
         ${SRC_FOLDER}/collisions/ICollisionListener.h
         ${SRC_FOLDER}/collisions/CollisionUtils.h
         ${SRC_FOLDER}/collisions/CollisionUtils.cpp
+        ${SRC_FOLDER}/collisions/IntersectionResult.h
         ${SRC_FOLDER}/Constants.h
         ${SRC_FOLDER}/InitializationParameters.cpp
         ${SRC_FOLDER}/InitializationParameters.h

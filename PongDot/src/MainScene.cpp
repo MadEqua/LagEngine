@@ -76,7 +76,7 @@ void MainScene::onFrameStart(float timePassed) {
     Scene::onFrameStart(timePassed);
 }
 
-void MainScene::onCollision(Lag::Entity &entity1, Lag::Entity &entity2) {
+void MainScene::onCollision(Lag::Entity &entity1, Lag::Entity &entity2, const Lag::IntersectionResult &result) {
 }
 
 void MainScene::initBallsAndPaddles(Lag::SceneNode &parentNode) {

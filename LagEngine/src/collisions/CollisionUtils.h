@@ -1,5 +1,7 @@
 #pragma once
 
+#include "IntersectionResult.h"
+
 #include "glm/glm.hpp"
 
 namespace Lag {
@@ -9,9 +11,10 @@ namespace Lag {
 
     namespace CollisionUtils {
 
-        bool intersects(const AABB &aabb1, const AABB &aabb2);
-        bool intersects(const AABB &aabb, const BoundingSphere &sphere);
-        bool intersects(const BoundingSphere &sphere1, const BoundingSphere &sphere2);
+        IntersectionResult intersects(const AABB &aabb1, const AABB &aabb2);
+        IntersectionResult intersects(const AABB &aabb, const BoundingSphere &sphere);
+        IntersectionResult intersects(const BoundingSphere &sphere, const AABB &aabb);
+        IntersectionResult intersects(const BoundingSphere &sphere1, const BoundingSphere &sphere2);
 
         void enclose(AABB &encloser, const AABB &enclosee);
         void enclose(AABB &encloser, const BoundingSphere &enclosee);

@@ -52,7 +52,7 @@ namespace Lag {
         void setNonCollider();
         void setAsCollider(const std::string &colliderName);
 
-        virtual void onCollision(Entity &other);
+        virtual void onCollision(Entity &other, const IntersectionResult &result);
 
         //Callbacks coming from Scene
         virtual void onFrameStart(float timePassed);

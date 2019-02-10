@@ -15,7 +15,7 @@ class Ball : public Lag::Entity {
 public:
     Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name);
 
-    void onCollision(Entity &other) override;
+    void onCollision(Entity &other, const Lag::IntersectionResult &result) override;
     void onFrameStart(float timePassed) override;
 
     inline const glm::vec3& getVelocity() const { return velocity; }
@@ -25,7 +25,7 @@ protected:
     void onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &renderer, const Lag::RenderOperation &renderOperation) override;
 
 private:
-    bool isColliding;
+    Lag::IntersectionResult intersectionResult;
     glm::vec3 velocity;
     Lag::Color color;
 
@@ -33,7 +33,7 @@ private:
     Lag::Color lightBaseColor;
 
     const float TIME_TO_FLASH = 0.33f;
-    const float LIGHT_INTENSITY = 10.0f;
+    const float LIGHT_INTENSITY = 8.0f;
 
     float timeToFlash;
 };

@@ -29,6 +29,7 @@ private:
         float distance;
     };
 
+    glm::vec3 acceleration;
     glm::vec3 velocity;
     Lag::uint32 color1, color2;
     std::vector<Ball*> balls;
@@ -39,6 +40,7 @@ private:
     void updateAI();
     ClosestBall findClosestBallComingTowards();
 
-    const float SPEED = 15.0f;
+    const float ACCEL = 4.0f;
+    const float FRICTION = 0.85f;
     const float BALL_CLOSE_ENOUGH_THRESHOLD = 1.0f;
 };

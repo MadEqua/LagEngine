@@ -36,7 +36,7 @@ Box::Box(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name,
     attachToSceneNode(planeNode);
 }
 
-void Box::onCollision(Entity &other) {
+void Box::onCollision(Entity &other, const Lag::IntersectionResult &result) {
     if(other.getColliderName() == "ball") {
         timeToAnimate = TIME_TO_ANIMATE;
         Ball &ball = static_cast<Ball&>(other);

@@ -15,7 +15,7 @@ public:
           const Lag::Color &color1, const Lag::Color &color2, 
           float trisPerLength, const glm::vec2 &maxPointSizeLimits, const glm::vec2 displacementStrengthLimits);
 
-    void onCollision(Entity &other) override;
+    void onCollision(Entity &other, const Lag::IntersectionResult &result) override;
     void onFrameStart(float timePassed) override;
 
 protected:

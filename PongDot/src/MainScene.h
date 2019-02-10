@@ -16,7 +16,7 @@ public:
     void onInitializeViewports(Lag::RenderWindow &renderWindow) override;
 
     void onFrameStart(float timePassed) override;
-    void onCollision(Lag::Entity &entity1, Lag::Entity &entity2) override;
+    void onCollision(Lag::Entity &entity1, Lag::Entity &entity2, const Lag::IntersectionResult &result) override;
 
 private:
     //Lag::FreeCamera *camera;

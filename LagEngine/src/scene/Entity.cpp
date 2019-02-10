@@ -153,7 +153,7 @@ void Entity::setAsCollider(const std::string &colliderName) {
     collider = true;
 }
 
-void Entity::onCollision(Entity &other) {
+void Entity::onCollision(Entity &other, const IntersectionResult &result) {
 }
 
 void Entity::onSubEntityPreRender(SubEntity &subEntity, Renderer &renderer, const RenderOperation &renderOperation) {

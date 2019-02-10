@@ -4,6 +4,8 @@
 #include <vector>
 #include <memory>
 
+#include "IntersectionResult.h"
+
 #include "Types.h"
 
 namespace Lag {
@@ -26,7 +28,7 @@ namespace Lag {
         virtual void transform(const glm::mat4 &transform) = 0;
 
         void enclose(const IBoundingVolume &other);
-        bool intersects(const IBoundingVolume &other) const;
+        IntersectionResult intersects(const IBoundingVolume &other) const;
 
         inline BoundingVolumeType getType() const { return type; }
 

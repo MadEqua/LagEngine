@@ -17,6 +17,7 @@ Paddle::Paddle(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string 
                const glm::vec3 &normal, const glm::vec3 &tangent) :
     Entity("cube", "pointMaterial"),
     velocity(0.0f),
+    acceleration(0.0f),
     balls(balls),
     normal(normal),
     tangent(tangent) {
@@ -40,6 +41,9 @@ Paddle::Paddle(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string 
 void Paddle::onFrameStart(float timePassed) {
     updateAI();
 
+    velocity += acceleration;
+    velocity *= FRICTION;
+
     glm::vec3 pos = getWorldPosition();
     pos += velocity * timePassed;
     getParentSceneNode()->setPosition(pos, Lag::TransformSpace::WORLD);
@@ -62,7 +66,7 @@ void Paddle::onSubEntityPreRender(Lag::SubEntity &subEntity, Lag::Renderer &rend
 
 void Paddle::updateAI() {
     ClosestBall closestBallComingTowards = findClosestBallComingTowards();
-    velocity = glm::vec3(0.0f);
+    acceleration = glm::vec3(0.0f);
 
     if(closestBallComingTowards.ball != nullptr) {
         glm::vec3 closestBallPos = closestBallComingTowards.ball->getWorldPosition();
@@ -72,7 +76,7 @@ void Paddle::updateAI() {
         float projOnTangent = glm::dot(paddleToBallVec, tangent);
 
         if(std::fabs(projOnTangent) > BALL_CLOSE_ENOUGH_THRESHOLD) {
-            velocity = tangent * SPEED * glm::sign(projOnTangent);
+            acceleration = tangent * ACCEL * glm::sign(projOnTangent);
         }
     }
 }

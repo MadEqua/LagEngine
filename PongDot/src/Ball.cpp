@@ -19,7 +19,7 @@
 
 Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &name) :
     Entity("sphere", "ballMaterial"),
-    velocity(10.0f, 0.0f, 12.0f),
+    velocity(9.0f, 0.0f, 10.0f),
     timeToFlash(0.0f) {
 
     setAsCollider("ball");
@@ -35,26 +35,26 @@ Ball::Ball(Lag::Scene &scene, Lag::SceneNode &parentNode, const std::string &nam
     scene.addEntity(this);
     attachToSceneNode(sceneNode);
 
-    light = &scene.createPointLight(lightBaseColor * LIGHT_INTENSITY, glm::vec3(0.1f, 0.1f, 0.1f));
+    light = &scene.createPointLight(lightBaseColor * LIGHT_INTENSITY, glm::vec3(0.0f, 0.0f, .08f));
     light->attachToSceneNode(sceneNode);
 }
 
-void Ball::onCollision(Entity &other) {
-    isColliding = true;
+void Ball::onCollision(Entity &other, const Lag::IntersectionResult &result) {
+    intersectionResult = result;
     timeToFlash = TIME_TO_FLASH;
 }
 
 void Ball::onFrameStart(float timePassed) {
     glm::vec3 pos = getWorldPosition();
     
-    if(isColliding) {
-        isColliding = false;
+    if(intersectionResult.intersects) {
+        intersectionResult.intersects = false;
+        intersectionResult.penetration.y = 0.0f;
 
-        glm::vec3 n = glm::abs(pos.x) > glm::abs(pos.z) ? 
-            glm::vec3(-glm::sign(pos.x), 0.0f, 0.0f) :
-            glm::vec3(0.0f, 0.0f, -glm::sign(pos.z));
+        glm::vec3 pen = -intersectionResult.penetration;
+        parentSceneNode->translate(pen, Lag::TransformSpace::WORLD);
 
-        velocity = glm::reflect(velocity, n);
+        velocity = glm::reflect(velocity, glm::normalize(pen));
     }
 
     glm::vec3 rotationAxis = glm::normalize(glm::cross(glm::vec3(0.0f, 1.0f, 0.0f), velocity));
