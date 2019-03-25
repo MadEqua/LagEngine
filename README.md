@@ -6,6 +6,12 @@ While it tries to expose a friendly programming interface it is not meant to hav
 
 It includes a demo where an AI plays a version of Pong on a stylized scene.
 
+![](http://www.bmlourenco.com/public/images/lagengine/6.jpg)
+
+Demo video:
+https://youtu.be/miMLTeraOLc
+
+
 # Current features:
 - Forward rendering based on simple per-pixel lighting, supporting directional and point lights.
 - Supports meshes (loaded with Assimp library), XML material definition defining textures and shaders.
