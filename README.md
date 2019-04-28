@@ -8,8 +8,7 @@ It includes a demo where an AI plays a version of Pong on a stylized scene.
 
 ![](http://www.bmlourenco.com/public/images/lagengine/6.jpg)
 
-Demo video:
-https://youtu.be/miMLTeraOLc
+### Demo video: https://youtu.be/miMLTeraOLc
 
 
 # Current features:
