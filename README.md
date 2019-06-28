@@ -19,7 +19,7 @@ It includes a demo where an AI plays a version of Pong on a stylized scene.
 - Renderer based on a render-queue approach, iterating through all RenderTargets and through each of their Viewports to gather the Renderables. (Culling and queue sorting to be implemented)
 - SceneManager containing the various scene representations, each with its own purpose (object hierarchy, culling, fast iteration).
 - SceneGraph based on a hierarchy of SceneNodes. SceneNodes have a 3D space transformation relative to their parent.
-- SceneObjects can be attached to SceneNodes and are inherit their properties. (Example SceneObjects: Lights, MeshEntities, Cameras)
+- SceneObjects can be attached to SceneNodes and inherit their properties. (Example SceneObjects: Lights, MeshEntities, Cameras)
 - XML based ResourceManager for assets like meshes, image textures, shader code.
 - Hot reloading of file Resources (images, shaders, materials).
 
