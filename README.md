@@ -12,7 +12,7 @@ It includes a demo where an AI plays a version of Pong on a stylized scene.
 
 
 # Current features:
-- Forward rendering based on simple per-pixel lighting, supporting directional and point lights.
+- Forward rendering based on Blinn-Phong lighting, supporting directional and point lights.
 - Supports meshes (loaded with Assimp library), XML material definition defining textures and shaders.
 - Support render targets and various render passes. (WIP)
 - Interface-based renderer to allow multiple Graphics API to be implemented. Currently has a OpenGL 4.5 implementation.
