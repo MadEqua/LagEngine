@@ -6,7 +6,7 @@ While it tries to expose a friendly programming interface it is not meant to hav
 
 It includes a demo where an AI plays a version of Pong on a stylized scene.
 
-![](http://www.bmlourenco.com/public/images/lagengine/6.jpg)
+![](http://www.bmlourenco.com/portfolio/lagengine/images/gallery/6.jpg)
 
 ### Demo video: https://youtu.be/miMLTeraOLc
 
